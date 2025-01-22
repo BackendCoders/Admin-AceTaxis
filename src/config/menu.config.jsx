@@ -536,11 +536,11 @@ export const MENU_SIDEBAR = [
 ];
 export const MENU_MEGA = [
 	{
-		title: 'Home',
+		// title: 'Home',
 		path: '/',
 	},
 	{
-		title: 'Profiles',
+		// title: 'Profiles',
 		children: [
 			{
 				title: 'Profiles',
@@ -708,7 +708,7 @@ export const MENU_MEGA = [
 		],
 	},
 	{
-		title: 'My Account',
+		// title: 'My Account',
 		children: [
 			{
 				title: 'General Pages',
@@ -936,7 +936,7 @@ export const MENU_MEGA = [
 		],
 	},
 	{
-		title: 'Network',
+		// title: 'Network',
 		children: [
 			{
 				title: 'General Pages',
@@ -1034,7 +1034,7 @@ export const MENU_MEGA = [
 		],
 	},
 	{
-		title: 'Authentication',
+		// title: 'Authentication',
 		children: [
 			{
 				title: 'General pages',
@@ -1153,7 +1153,7 @@ export const MENU_MEGA = [
 		],
 	},
 	{
-		title: 'Help',
+		// title: 'Help',
 		children: [
 			{
 				title: 'Getting Started',
