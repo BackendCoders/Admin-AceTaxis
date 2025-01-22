@@ -33,10 +33,10 @@ const DropdownUser = ({
           <img className="size-9 rounded-full border-2 border-success" src={toAbsoluteUrl('/media/avatars/300-2.png')} alt="" />
           <div className="flex flex-col gap-1.5">
             <Link to="/account/hoteme/get-stard" className="text-sm text-gray-800 hover:text-primary font-semibold leading-none">
-              Cody Fisher
+              Abhishek Singh
             </Link>
             <a href="mailto:c.fisher@gmail.com" className="text-xs text-gray-600 hover:text-primary font-medium leading-none">
-              c.fisher@gmail.com
+              acetaxi@gmail.com
             </a>
           </div>
         </div>
@@ -48,26 +48,26 @@ const DropdownUser = ({
         <MenuSeparator />
         <div className="flex flex-col">
           <MenuItem>
-            <MenuLink path="/public-profile/profiles/default">
+            {/* <MenuLink path="/public-profile/profiles/default">
               <MenuIcon className="menu-icon">
                 <KeenIcon icon="badge" />
               </MenuIcon>
               <MenuTitle>
                 <FormattedMessage id="USER.MENU.PUBLIC_PROFILE" />
               </MenuTitle>
-            </MenuLink>
+            </MenuLink> */}
           </MenuItem>
           <MenuItem>
-            <MenuLink path="/account/home/user-profile">
+            {/* <MenuLink path="/account/home/user-profile">
               <MenuIcon>
                 <KeenIcon icon="profile-circle" />
               </MenuIcon>
               <MenuTitle>
                 <FormattedMessage id="USER.MENU.MY_PROFILE" />
               </MenuTitle>
-            </MenuLink>
+            </MenuLink> */}
           </MenuItem>
-          <MenuItem toggle="dropdown" trigger="hover" dropdownProps={{
+          {/* <MenuItem toggle="dropdown" trigger="hover" dropdownProps={{
           placement: isRTL() ? 'left-start' : 'right-start',
           modifiers: [{
             name: 'offset',
@@ -166,16 +166,16 @@ const DropdownUser = ({
                 </MenuLink>
               </MenuItem>
             </MenuSub>
-          </MenuItem>
+          </MenuItem> */}
           <MenuItem>
-            <MenuLink path="https://devs.keenthemes.com">
+            {/* <MenuLink path="https://devs.keenthemes.com">
               <MenuIcon>
                 <KeenIcon icon="message-programming" />
               </MenuIcon>
               <MenuTitle>
                 <FormattedMessage id="USER.MENU.DEV_FORUM" />
               </MenuTitle>
-            </MenuLink>
+            </MenuLink> */}
           </MenuItem>
           <DropdownUserLanguages menuItemRef={menuItemRef} />
           <MenuSeparator />

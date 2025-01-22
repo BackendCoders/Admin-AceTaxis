@@ -43,7 +43,7 @@ const DropdownUserLanguages = ({
       }
     }]
   }}>
-      <MenuLink>
+      {/* <MenuLink>
         <MenuIcon>
           <KeenIcon icon="icon" />
         </MenuIcon>
@@ -54,8 +54,8 @@ const DropdownUserLanguages = ({
           {currentLanguage.label}
           <img src={currentLanguage.flag} className="inline-block size-3.5 rounded-full" alt="{currentLanguage.label}" />
         </div>
-      </MenuLink>
-      <MenuSub className="menu-default light:border-gray-300 w-[190px]">{buildItems()}</MenuSub>
+      </MenuLink> */}
+      {/* <MenuSub className="menu-default light:border-gray-300 w-[190px]">{buildItems()}</MenuSub> */}
     </MenuItem>;
 };
 export { DropdownUserLanguages };
