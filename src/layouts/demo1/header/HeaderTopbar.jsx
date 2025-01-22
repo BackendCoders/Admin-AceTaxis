@@ -25,10 +25,10 @@ const HeaderTopbar = () => {
     setSearchModalOpen(false);
   };
   return <div className="flex items-center gap-2 lg:gap-3.5">
-      <button onClick={handleOpen} className="btn btn-icon btn-icon-lg size-9 rounded-full hover:bg-primary-light hover:text-primary text-gray-500">
+      {/* <button onClick={handleOpen} className="btn btn-icon btn-icon-lg size-9 rounded-full hover:bg-primary-light hover:text-primary text-gray-500">
         <KeenIcon icon="magnifier" />
       </button>
-      <ModalSearch open={searchModalOpen} onOpenChange={handleClose} />
+      <ModalSearch open={searchModalOpen} onOpenChange={handleClose} /> */}
 
       <Menu>
         <MenuItem ref={itemChatRef} onShow={handleShow} toggle="dropdown" trigger="click" dropdownProps={{
@@ -40,9 +40,9 @@ const HeaderTopbar = () => {
           }
         }]
       }}>
-          <MenuToggle className="btn btn-icon btn-icon-lg size-9 rounded-full hover:bg-primary-light hover:text-primary dropdown-open:bg-primary-light dropdown-open:text-primary text-gray-500">
+          {/* <MenuToggle className="btn btn-icon btn-icon-lg size-9 rounded-full hover:bg-primary-light hover:text-primary dropdown-open:bg-primary-light dropdown-open:text-primary text-gray-500">
             <KeenIcon icon="messages" />
-          </MenuToggle>
+          </MenuToggle> */}
 
           {DropdownChat({
           menuTtemRef: itemChatRef
@@ -60,9 +60,9 @@ const HeaderTopbar = () => {
           }
         }]
       }}>
-          <MenuToggle className="btn btn-icon btn-icon-lg size-9 rounded-full hover:bg-primary-light hover:text-primary dropdown-open:bg-primary-light dropdown-open:text-primary text-gray-500">
+          {/* <MenuToggle className="btn btn-icon btn-icon-lg size-9 rounded-full hover:bg-primary-light hover:text-primary dropdown-open:bg-primary-light dropdown-open:text-primary text-gray-500">
             <KeenIcon icon="element-11" />
-          </MenuToggle>
+          </MenuToggle> */}
 
           {DropdownApps()}
         </MenuItem>
@@ -78,9 +78,9 @@ const HeaderTopbar = () => {
           }
         }]
       }}>
-          <MenuToggle className="btn btn-icon btn-icon-lg relative cursor-pointer size-9 rounded-full hover:bg-primary-light hover:text-primary dropdown-open:bg-primary-light dropdown-open:text-primary text-gray-500">
+          {/* <MenuToggle className="btn btn-icon btn-icon-lg relative cursor-pointer size-9 rounded-full hover:bg-primary-light hover:text-primary dropdown-open:bg-primary-light dropdown-open:text-primary text-gray-500">
             <KeenIcon icon="notification-status" />
-          </MenuToggle>
+          </MenuToggle> */}
           {DropdownNotifications({
           menuTtemRef: itemNotificationsRef
         })}
