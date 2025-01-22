@@ -24,19 +24,21 @@ const ChannelStats = () => {
     path: ''
   }];
   const renderItem = (item, index) => {
-    return <div key={index} className="card flex-col justify-between gap-6 h-full bg-cover rtl:bg-[left_top_-1.7rem] bg-[right_top_-1.7rem] bg-no-repeat channel-stats-bg">
-        {item.logoDark ? <>
-            <img src={toAbsoluteUrl(`/media/brand-logos/${item.logo}`)} className="dark:hidden w-7 mt-4 ms-5" alt="" />
-            <img src={toAbsoluteUrl(`/media/brand-logos/${item.logoDark}`)} className="light:hidden w-7 mt-4 ms-5" alt="" />
-          </> : <img src={toAbsoluteUrl(`/media/brand-logos/${item.logo}`)} className="w-7 mt-4 ms-5" alt="" />}
+    return 
+    // <div key={index} className="card flex-col justify-between gap-6 h-full bg-cover rtl:bg-[left_top_-1.7rem] bg-[right_top_-1.7rem] bg-no-repeat channel-stats-bg">
+    //     {item.logoDark ? <>
+    //         <img src={toAbsoluteUrl(`/media/brand-logos/${item.logo}`)} className="dark:hidden w-7 mt-4 ms-5" alt="" />
+    //         <img src={toAbsoluteUrl(`/media/brand-logos/${item.logoDark}`)} className="light:hidden w-7 mt-4 ms-5" alt="" />
+    //       </> : <img src={toAbsoluteUrl(`/media/brand-logos/${item.logo}`)} className="w-7 mt-4 ms-5" alt="" />}
 
-        <div className="flex flex-col gap-1 pb-4 px-5">
-          <span className="text-3xl font-semibold text-gray-900">{item.info}</span>
-          <span className="text-2sm font-normal text-gray-700">{item.desc}</span>
-        </div>
-      </div>;
+    //     <div className="flex flex-col gap-1 pb-4 px-5">
+    //       <span className="text-3xl font-semibold text-gray-900">{item.info}</span>
+    //       <span className="text-2sm font-normal text-gray-700">{item.desc}</span>
+    //     </div>
+    //   </div>;
   };
-  return <Fragment>
+  return 
+  <Fragment>
       <style>
         {`
           .channel-stats-bg {

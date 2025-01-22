@@ -36,7 +36,7 @@ const DropdownUser = ({
               Abhishek Singh
             </Link>
             <a href="mailto:c.fisher@gmail.com" className="text-xs text-gray-600 hover:text-primary font-medium leading-none">
-              acetaxi@gmail.com
+              abhishek@gmail.com
             </a>
           </div>
         </div>
