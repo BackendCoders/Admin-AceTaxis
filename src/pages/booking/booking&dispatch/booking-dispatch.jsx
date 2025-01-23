@@ -11,11 +11,11 @@ const BookingDispatch = () => {
 	const [url, setUrl] = useState('https://devacetaxisdorset.vercel.app/'); // Default URL
 	
 		return (
-			<div className="">
+			<div>
 				<iframe
 					src={url}
 					title="Booking Dispatch Iframe"
-					className="w-full max-w-8xl h-[850px] border border-gray-300 rounded-lg shadow-lg"
+					className="w-full h-[900px]"
 				></iframe>
 			</div>
 		);
