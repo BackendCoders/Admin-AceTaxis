@@ -1,19 +1,19 @@
 {
 	"rewrites": [
 		{
-			"source": "/manifest.json",
+			"source": "/acetaxi/manifest.json",
 			"destination": "/manifest.json"
 		},
 		{
-			"source": "/assets/(.*)",
+			"source": "/acetaxi/assets/(.*)",
 			"destination": "/assets/$1"
 		},
 		{
-			"source": "/service-worker.js",
+			"source": "/acetaxi/service-worker.js",
 			"destination": "/service-worker.js"
 		},
 		{
-			"source": "/(.*)",
+			"source": "/acetaxi/(.*)",
 			"destination": "/index.html"
 		}
 	]
