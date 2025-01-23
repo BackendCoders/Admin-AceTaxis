@@ -14,7 +14,7 @@
 		},
 		{
 			"source": "/(.*)",
-			"destination": "/vite.config.js"
+			"destination": "/index.html"
 		}
 	]
 }
