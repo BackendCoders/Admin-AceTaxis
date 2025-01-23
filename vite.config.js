@@ -12,7 +12,7 @@ export default defineConfig({
 			plugins: [tailwindcss()],
 		},
 	},
-	base: '/acetaxi/',
+	base: '/',
 	resolve: {
 		alias: {
 			'@': fileURLToPath(new URL('./src', import.meta.url)),
