@@ -75,7 +75,6 @@ import {
 } from '@/pages/network';
 import { NewBooking } from '@/pages/booking';
 import { AuthPage } from '@/auth';
-import { RequireAuth } from '@/auth/RequireAuth';
 import { Demo1Layout } from '@/layouts/demo1';
 import { ErrorsRouting } from '@/errors';
 import {
