@@ -73,7 +73,7 @@ import {
 	NetworkUserTableTeamCrewPage,
 	NetworkVisitorsPage,
 } from '@/pages/network';
-import { NewBooking } from '@/pages/booking';
+import { NewBooking , BookingDispatch } from '@/pages/booking';
 import { AuthPage } from '@/auth';
 import { Demo1Layout } from '@/layouts/demo1';
 import { ErrorsRouting } from '@/errors';
@@ -94,6 +94,10 @@ const AppRoutingSetup = () => {
 				<Route
 					path='/dark-sidebar'
 					element={<Demo1DarkSidebarPage />}
+				/>
+        <Route
+					path='/bookings/booking-dispatch'
+					element={<BookingDispatch />}
 				/>
 				<Route
 					path='/bookings/new-booking'

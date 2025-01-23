@@ -15,127 +15,13 @@ export const MENU_SIDEBAR = [
 			},
 		],
 	},
+	// Booking & Disptach
 	{
-		heading: 'Booking',
+		title: 'Booking & Dispatch',
+		icon: 'chart-simple-3',
+		path: '/bookings/booking-dispatch',
 	},
-	{
-		title: 'Bookings',
-		icon: 'car',
-		children: [
-			// {
-			// 	title: 'Profiles',
-			// 	children: [
-			// 		{
-			// 			title: 'Default',
-			// 			path: '/public-profile/profiles/default',
-			// 		},
-			// 		{
-			// 			title: 'Creator',
-			// 			path: '/public-profile/profiles/creator',
-			// 		},
-			// 		{
-			// 			title: 'Company',
-			// 			path: '/public-profile/profiles/company',
-			// 		},
-			// 		{
-			// 			title: 'NFT',
-			// 			path: '/public-profile/profiles/nft',
-			// 		},
-			// 		{
-			// 			title: 'Blogger',
-			// 			path: '/public-profile/profiles/blogger',
-			// 		},
-			// 		{
-			// 			title: 'CRM',
-			// 			path: '/public-profile/profiles/crm',
-			// 		},
-			// 		{
-			// 			title: 'More',
-			// 			collapse: true,
-			// 			collapseTitle: 'Show less',
-			// 			expandTitle: 'Show 4 more',
-			// 			dropdownProps: {
-			// 				placement: 'right-start',
-			// 			},
-			// 			children: [
-			// 				{
-			// 					title: 'Gamer',
-			// 					path: '/public-profile/profiles/gamer',
-			// 				},
-			// 				{
-			// 					title: 'Feeds',
-			// 					path: '/public-profile/profiles/feeds',
-			// 				},
-			// 				{
-			// 					title: 'Plain',
-			// 					path: '/public-profile/profiles/plain',
-			// 				},
-			// 				{
-			// 					title: 'Modal',
-			// 					path: '/public-profile/profiles/modal',
-			// 				},
-			// 			],
-			// 		},
-			// 	],
-			// },
-			// {
-			// 	title: 'Projects',
-			// 	children: [
-			// 		{
-			// 			title: '3 Columns',
-			// 			path: '/public-profile/projects/3-columns',
-			// 		},
-			// 		{
-			// 			title: '2 Columns',
-			// 			path: '/public-profile/projects/2-columns',
-			// 		},
-			// 	],
-			// },
-			{
-				title: 'New Booking',
-				path: '/bookings/new-booking',
-			},
-			{
-				title: 'Search Booking',
-				path: '/bookings/search-booking',
-			},
-			{
-				title: 'Audit View',
-				path: '/bookings/audit-view',
-			},
-			{
-				title: 'Airport Runs',
-				path: '/bookings/airport-runs',
-			},
-			{
-				title: 'Card Bookings',
-				path: '/bookings/card-bookings',
-			},
-			// {
-			// 	title: 'More',
-			// 	collapse: true,
-			// 	collapseTitle: 'Show less',
-			// 	expandTitle: 'Show 3 more',
-			// 	dropdownProps: {
-			// 		placement: 'right-start',
-			// 	},
-			// 	children: [
-			// 		{
-			// 			title: 'Campaigns - Card',
-			// 			path: '/public-profile/campaigns/card',
-			// 		},
-			// 		{
-			// 			title: 'Campaigns - List',
-			// 			path: '/public-profile/campaigns/list',
-			// 		},
-			// 		{
-			// 			title: 'Empty',
-			// 			path: '/public-profile/empty',
-			// 		},
-			// 	],
-			// },
-		],
-	},
+
 	{
 		title: 'Dispatch',
 		icon: 'pencil',
@@ -314,6 +200,198 @@ export const MENU_SIDEBAR = [
 		],
 	},
 	{
+		title: 'Tracking',
+		icon: 'focus',
+		path: '/tracking',
+		// children: [
+		// 	{
+		// 		title: 'Availability',
+		// 		path: '/network/get-started',
+		// 	},
+		// 	{
+		// 		title: 'Availability Logs',
+		// 		path: '/network/get-started',
+		// 	},
+		// 	{
+		// 		title: 'Availability Reports',
+		// 		path: '/network/get-started',
+		// 	},
+		// 	// {
+		// 	// 	title: 'User Cards',
+		// 	// 	children: [
+		// 	// 		{
+		// 	// 			title: 'Mini Cards',
+		// 	// 			path: '/network/user-cards/mini-cards',
+		// 	// 		},
+		// 	// 		{
+		// 	// 			title: 'Team Crew',
+		// 	// 			path: '/network/user-cards/team-crew',
+		// 	// 		},
+		// 	// 		{
+		// 	// 			title: 'Author',
+		// 	// 			path: '/network/user-cards/author',
+		// 	// 		},
+		// 	// 		{
+		// 	// 			title: 'NFT',
+		// 	// 			path: '/network/user-cards/nft',
+		// 	// 		},
+		// 	// 		{
+		// 	// 			title: 'Social',
+		// 	// 			path: '/network/user-cards/social',
+		// 	// 		},
+		// 	// 	],
+		// 	// },
+		// 	// {
+		// 	// 	title: 'User Table',
+		// 	// 	children: [
+		// 	// 		{
+		// 	// 			title: 'Team Crew',
+		// 	// 			path: '/network/user-table/team-crew',
+		// 	// 		},
+		// 	// 		{
+		// 	// 			title: 'App Roster',
+		// 	// 			path: '/network/user-table/app-roster',
+		// 	// 		},
+		// 	// 		{
+		// 	// 			title: 'Market Authors',
+		// 	// 			path: '/network/user-table/market-authors',
+		// 	// 		},
+		// 	// 		{
+		// 	// 			title: 'SaaS Users',
+		// 	// 			path: '/network/user-table/saas-users',
+		// 	// 		},
+		// 	// 		{
+		// 	// 			title: 'Store Clients',
+		// 	// 			path: '/network/user-table/store-clients',
+		// 	// 		},
+		// 	// 		{
+		// 	// 			title: 'Visitors',
+		// 	// 			path: '/network/user-table/visitors',
+		// 	// 		},
+		// 	// 	],
+		// 	// },
+		// 	// {
+		// 	// 	title: 'Cooperations',
+		// 	// 	path: '/network/cooperations',
+		// 	// 	disabled: true,
+		// 	// },
+		// 	// {
+		// 	// 	title: 'Leads',
+		// 	// 	path: '/network/leads',
+		// 	// 	disabled: true,
+		// 	// },
+		// 	// {
+		// 	// 	title: 'Donators',
+		// 	// 	path: '/network/donators',
+		// 	// 	disabled: true,
+		// 	// },
+		// ],
+	},
+	// {
+	// 	title: 'Availability',
+	// 	icon: 'chart-simple-3',
+	// 	children: [
+	// 		{
+	// 			title: 'Availability',
+	// 			path: '/availability/availability',
+	// 		},
+	// 		{
+	// 			title: 'Availability Logs',
+	// 			path: '/availability/availability-logs',
+	// 		},
+	// 		{
+	// 			title: 'Availability Reports',
+	// 			path: '/availability/availability-reports',
+	// 		},
+	// 		// {
+	// 		// 	title: 'User Cards',
+	// 		// 	children: [
+	// 		// 		{
+	// 		// 			title: 'Mini Cards',
+	// 		// 			path: '/network/user-cards/mini-cards',
+	// 		// 		},
+	// 		// 		{
+	// 		// 			title: 'Team Crew',
+	// 		// 			path: '/network/user-cards/team-crew',
+	// 		// 		},
+	// 		// 		{
+	// 		// 			title: 'Author',
+	// 		// 			path: '/network/user-cards/author',
+	// 		// 		},
+	// 		// 		{
+	// 		// 			title: 'NFT',
+	// 		// 			path: '/network/user-cards/nft',
+	// 		// 		},
+	// 		// 		{
+	// 		// 			title: 'Social',
+	// 		// 			path: '/network/user-cards/social',
+	// 		// 		},
+	// 		// 	],
+	// 		// },
+	// 		// {
+	// 		// 	title: 'User Table',
+	// 		// 	children: [
+	// 		// 		{
+	// 		// 			title: 'Team Crew',
+	// 		// 			path: '/network/user-table/team-crew',
+	// 		// 		},
+	// 		// 		{
+	// 		// 			title: 'App Roster',
+	// 		// 			path: '/network/user-table/app-roster',
+	// 		// 		},
+	// 		// 		{
+	// 		// 			title: 'Market Authors',
+	// 		// 			path: '/network/user-table/market-authors',
+	// 		// 		},
+	// 		// 		{
+	// 		// 			title: 'SaaS Users',
+	// 		// 			path: '/network/user-table/saas-users',
+	// 		// 		},
+	// 		// 		{
+	// 		// 			title: 'Store Clients',
+	// 		// 			path: '/network/user-table/store-clients',
+	// 		// 		},
+	// 		// 		{
+	// 		// 			title: 'Visitors',
+	// 		// 			path: '/network/user-table/visitors',
+	// 		// 		},
+	// 		// 	],
+	// 		// },
+	// 		// {
+	// 		// 	title: 'Cooperations',
+	// 		// 	path: '/network/cooperations',
+	// 		// 	disabled: true,
+	// 		// },
+	// 		// {
+	// 		// 	title: 'Leads',
+	// 		// 	path: '/network/leads',
+	// 		// 	disabled: true,
+	// 		// },
+	// 		// {
+	// 		// 	title: 'Donators',
+	// 		// 	path: '/network/donators',
+	// 		// 	disabled: true,
+	// 		// },
+	// 	],
+	// },
+
+	{
+		title: 'Availability',
+		icon: 'chart-simple-3',
+		path: '/availability/availability',
+	},
+	{
+		title: 'Availability Logs',
+		icon: 'chart-simple-3',
+		path: '/availability/availability-logs',
+	},
+	{
+		title: 'Availability Reports',
+		icon: 'chart-simple-3',
+		path: '/availability/availability-reports',
+	},
+
+	{
 		title: 'Local POIs',
 		icon: 'geolocation',
 		children: [
@@ -396,6 +474,129 @@ export const MENU_SIDEBAR = [
 			// },
 		],
 	},
+
+	// {
+	// 	heading: 'Booking',
+	// },
+	{
+		title: 'Bookings',
+		icon: 'car',
+		children: [
+			// {
+			// 	title: 'Profiles',
+			// 	children: [
+			// 		{
+			// 			title: 'Default',
+			// 			path: '/public-profile/profiles/default',
+			// 		},
+			// 		{
+			// 			title: 'Creator',
+			// 			path: '/public-profile/profiles/creator',
+			// 		},
+			// 		{
+			// 			title: 'Company',
+			// 			path: '/public-profile/profiles/company',
+			// 		},
+			// 		{
+			// 			title: 'NFT',
+			// 			path: '/public-profile/profiles/nft',
+			// 		},
+			// 		{
+			// 			title: 'Blogger',
+			// 			path: '/public-profile/profiles/blogger',
+			// 		},
+			// 		{
+			// 			title: 'CRM',
+			// 			path: '/public-profile/profiles/crm',
+			// 		},
+			// 		{
+			// 			title: 'More',
+			// 			collapse: true,
+			// 			collapseTitle: 'Show less',
+			// 			expandTitle: 'Show 4 more',
+			// 			dropdownProps: {
+			// 				placement: 'right-start',
+			// 			},
+			// 			children: [
+			// 				{
+			// 					title: 'Gamer',
+			// 					path: '/public-profile/profiles/gamer',
+			// 				},
+			// 				{
+			// 					title: 'Feeds',
+			// 					path: '/public-profile/profiles/feeds',
+			// 				},
+			// 				{
+			// 					title: 'Plain',
+			// 					path: '/public-profile/profiles/plain',
+			// 				},
+			// 				{
+			// 					title: 'Modal',
+			// 					path: '/public-profile/profiles/modal',
+			// 				},
+			// 			],
+			// 		},
+			// 	],
+			// },
+			// {
+			// 	title: 'Projects',
+			// 	children: [
+			// 		{
+			// 			title: '3 Columns',
+			// 			path: '/public-profile/projects/3-columns',
+			// 		},
+			// 		{
+			// 			title: '2 Columns',
+			// 			path: '/public-profile/projects/2-columns',
+			// 		},
+			// 	],
+			// },
+			{
+				title: 'New Booking',
+				path: '/bookings/new-booking',
+			},
+			{
+				title: 'Search Booking',
+				path: '/bookings/search-booking',
+			},
+			{
+				title: 'Audit View',
+				path: '/bookings/audit-view',
+			},
+			{
+				title: 'Airport Runs',
+				path: '/bookings/airport-runs',
+			},
+			{
+				title: 'Card Bookings',
+				path: '/bookings/card-bookings',
+			},
+			// {
+			// 	title: 'More',
+			// 	collapse: true,
+			// 	collapseTitle: 'Show less',
+			// 	expandTitle: 'Show 3 more',
+			// 	dropdownProps: {
+			// 		placement: 'right-start',
+			// 	},
+			// 	children: [
+			// 		{
+			// 			title: 'Campaigns - Card',
+			// 			path: '/public-profile/campaigns/card',
+			// 		},
+			// 		{
+			// 			title: 'Campaigns - List',
+			// 			path: '/public-profile/campaigns/list',
+			// 		},
+			// 		{
+			// 			title: 'Empty',
+			// 			path: '/public-profile/empty',
+			// 		},
+			// 	],
+			// },
+		],
+	},
+
 	{
 		title: 'Accounts',
 		icon: 'book-open',
@@ -562,181 +763,13 @@ export const MENU_SIDEBAR = [
 			// },
 		],
 	},
+
 	{
-		title: 'Availability',
-		icon: 'chart-simple-3',
-		children: [
-			{
-				title: 'Availability',
-				path: '/availability/availability',
-			},
-			{
-				title: 'Availability Logs',
-				path: '/availability/availability-logs',
-			},
-			{
-				title: 'Availability Reports',
-				path: '/availability/availability-reports',
-			},
-			// {
-			// 	title: 'User Cards',
-			// 	children: [
-			// 		{
-			// 			title: 'Mini Cards',
-			// 			path: '/network/user-cards/mini-cards',
-			// 		},
-			// 		{
-			// 			title: 'Team Crew',
-			// 			path: '/network/user-cards/team-crew',
-			// 		},
-			// 		{
-			// 			title: 'Author',
-			// 			path: '/network/user-cards/author',
-			// 		},
-			// 		{
-			// 			title: 'NFT',
-			// 			path: '/network/user-cards/nft',
-			// 		},
-			// 		{
-			// 			title: 'Social',
-			// 			path: '/network/user-cards/social',
-			// 		},
-			// 	],
-			// },
-			// {
-			// 	title: 'User Table',
-			// 	children: [
-			// 		{
-			// 			title: 'Team Crew',
-			// 			path: '/network/user-table/team-crew',
-			// 		},
-			// 		{
-			// 			title: 'App Roster',
-			// 			path: '/network/user-table/app-roster',
-			// 		},
-			// 		{
-			// 			title: 'Market Authors',
-			// 			path: '/network/user-table/market-authors',
-			// 		},
-			// 		{
-			// 			title: 'SaaS Users',
-			// 			path: '/network/user-table/saas-users',
-			// 		},
-			// 		{
-			// 			title: 'Store Clients',
-			// 			path: '/network/user-table/store-clients',
-			// 		},
-			// 		{
-			// 			title: 'Visitors',
-			// 			path: '/network/user-table/visitors',
-			// 		},
-			// 	],
-			// },
-			// {
-			// 	title: 'Cooperations',
-			// 	path: '/network/cooperations',
-			// 	disabled: true,
-			// },
-			// {
-			// 	title: 'Leads',
-			// 	path: '/network/leads',
-			// 	disabled: true,
-			// },
-			// {
-			// 	title: 'Donators',
-			// 	path: '/network/donators',
-			// 	disabled: true,
-			// },
-		],
+		title: 'Tariffs',
+		icon: 'simcard',
+		path: '/tariffs',
 	},
-	{
-		title: 'Tracking',
-		icon: 'focus',
-		path: '/tracking',
-		// children: [
-		// 	{
-		// 		title: 'Availability',
-		// 		path: '/network/get-started',
-		// 	},
-		// 	{
-		// 		title: 'Availability Logs',
-		// 		path: '/network/get-started',
-		// 	},
-		// 	{
-		// 		title: 'Availability Reports',
-		// 		path: '/network/get-started',
-		// 	},
-		// 	// {
-		// 	// 	title: 'User Cards',
-		// 	// 	children: [
-		// 	// 		{
-		// 	// 			title: 'Mini Cards',
-		// 	// 			path: '/network/user-cards/mini-cards',
-		// 	// 		},
-		// 	// 		{
-		// 	// 			title: 'Team Crew',
-		// 	// 			path: '/network/user-cards/team-crew',
-		// 	// 		},
-		// 	// 		{
-		// 	// 			title: 'Author',
-		// 	// 			path: '/network/user-cards/author',
-		// 	// 		},
-		// 	// 		{
-		// 	// 			title: 'NFT',
-		// 	// 			path: '/network/user-cards/nft',
-		// 	// 		},
-		// 	// 		{
-		// 	// 			title: 'Social',
-		// 	// 			path: '/network/user-cards/social',
-		// 	// 		},
-		// 	// 	],
-		// 	// },
-		// 	// {
-		// 	// 	title: 'User Table',
-		// 	// 	children: [
-		// 	// 		{
-		// 	// 			title: 'Team Crew',
-		// 	// 			path: '/network/user-table/team-crew',
-		// 	// 		},
-		// 	// 		{
-		// 	// 			title: 'App Roster',
-		// 	// 			path: '/network/user-table/app-roster',
-		// 	// 		},
-		// 	// 		{
-		// 	// 			title: 'Market Authors',
-		// 	// 			path: '/network/user-table/market-authors',
-		// 	// 		},
-		// 	// 		{
-		// 	// 			title: 'SaaS Users',
-		// 	// 			path: '/network/user-table/saas-users',
-		// 	// 		},
-		// 	// 		{
-		// 	// 			title: 'Store Clients',
-		// 	// 			path: '/network/user-table/store-clients',
-		// 	// 		},
-		// 	// 		{
-		// 	// 			title: 'Visitors',
-		// 	// 			path: '/network/user-table/visitors',
-		// 	// 		},
-		// 	// 	],
-		// 	// },
-		// 	// {
-		// 	// 	title: 'Cooperations',
-		// 	// 	path: '/network/cooperations',
-		// 	// 	disabled: true,
-		// 	// },
-		// 	// {
-		// 	// 	title: 'Leads',
-		// 	// 	path: '/network/leads',
-		// 	// 	disabled: true,
-		// 	// },
-		// 	// {
-		// 	// 	title: 'Donators',
-		// 	// 	path: '/network/donators',
-		// 	// 	disabled: true,
-		// 	// },
-		// ],
-	},
+
 	{
 		title: 'Billing & Payments',
 		icon: 'bitcoin',
@@ -843,34 +876,42 @@ export const MENU_SIDEBAR = [
 			// },
 		],
 	},
-	{
-		title: 'Tariffs',
-		icon: 'simcard',
-		path: '/tariffs',
-	},
+
 	{
 		title: 'Driver Earning Report',
 		icon: 'euro',
 		path: '/driver-earning-report',
 	},
+
 	{
-		title: 'Settings',
-		icon: 'setting-2',
-		children: [
-			{
-				title: 'Company Settings',
-				path: '/setting/company-settings',
-			},
-			{
-				title: 'Message Settings',
-				path: '/setting/msg-settings',
-			},
-			// {
-			// 	title: 'Availability Reports',
-			// 	path: '/network/get-started',
-			// },
-		],
+		title: 'Company Settings',
+		icon: 'euro',
+		path: '/setting/company-settings',
 	},
+
+	{
+		title: 'Message Settings',
+		icon: 'euro',
+		path: '/setting/msg-settings',
+	},
+	// {
+	// 	title: 'Settings',
+	// 	icon: 'setting-2',
+	// 	children: [
+	// 		{
+	// 			title: 'Company Settings',
+	// 			path: '/setting/company-settings',
+	// 		},
+	// 		{
+	// 			title: 'Message Settings',
+	// 			path: '/setting/msg-settings',
+	// 		},
+	// 		// {
+	// 		// 	title: 'Availability Reports',
+	// 		// 	path: '/network/get-started',
+	// 		// },
+	// 	],
+	// },
 	// {
 	// 	heading: 'Apps',
 	// },
