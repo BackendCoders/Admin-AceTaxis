@@ -746,11 +746,11 @@ export const MENU_SIDEBAR = [
 				children: [
 					{
 						title: 'Statement Processing',
-						path: '/auth/classic/login',
+						path: '/billing/driver/statement-processing',
 					},
 					{
 						title: 'Statement History',
-						path: '/auth/classic/signup',
+						path: '/billing/driver/statement-history',
 					},
 					// {
 					// 	title: '2FA',
@@ -788,15 +788,15 @@ export const MENU_SIDEBAR = [
 				children: [
 					{
 						title: 'Invoice Processor',
-						path: '/auth/login',
+						path: '/billing/account/invoice-processor',
 					},
 					{
 						title: 'Invoice History',
-						path: '/auth/signup',
+						path: '/billing/account/invoice-history',
 					},
 					{
 						title: 'Invoice Delete',
-						path: '/auth/2fa',
+						path: '/billing/account/invoice-delete',
 					},
 					// {
 					// 	title: 'Check Email',
