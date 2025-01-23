@@ -93,23 +93,23 @@ export const MENU_SIDEBAR = [
 			// },
 			{
 				title: 'New Booking',
-				path: '/public-profile/works',
+				path: '/bookings/new-booking',
 			},
 			{
 				title: 'Search Booking',
-				path: '/public-profile/teams',
+				path: '/bookings/search-booking',
 			},
 			{
 				title: 'Audit View',
-				path: '/public-profile/network',
+				path: '/bookings/audit-view',
 			},
 			{
 				title: 'Airport Runs',
-				path: '/public-profile/activity',
+				path: '/bookings/airport-runs',
 			},
 			{
 				title: 'Card Bookings',
-				path: '/public-profile/campaigns/card',
+				path: '/bookings/card-bookings',
 			},
 			// {
 			// 	title: 'More',
@@ -274,19 +274,19 @@ export const MENU_SIDEBAR = [
 			// },
 			{
 				title: 'Unallocated Jobs',
-				path: '/account/integrations',
+				path: '/dispatch/unallocated-jobs',
 			},
 			{
 				title: 'Allocated Jobs',
-				path: '/account/notifications',
+				path: '/dispatch/allocated-jobs',
 			},
 			{
 				title: 'Cancelled Jobs',
-				path: '/account/api-keys',
+				path: '/dispatch/cancelled-jobs',
 			},
 			{
 				title: 'Completed Jobs',
-				path: '/account/api-keys',
+				path: '/dispatch/completed-jobs',
 			},
 			// {
 			// 	title: 'More',
@@ -319,11 +319,11 @@ export const MENU_SIDEBAR = [
 		children: [
 			{
 				title: 'Add Local POI',
-				path: '/network/get-started',
+				path: '/localPOIs/add-local-Poi',
 			},
 			{
 				title: 'List Local POI',
-				path: '/network/get-started',
+				path: '/localPOIs/list-local-Poi',
 			},
 			// {
 			// 	title: 'User Cards',
@@ -402,11 +402,11 @@ export const MENU_SIDEBAR = [
 		children: [
 			{
 				title: 'Add Account',
-				path: '/network/get-started',
+				path: '/accounts/add-account',
 			},
 			{
 				title: 'List Account',
-				path: '/network/get-started',
+				path: '/accounts/list-account',
 			},
 			// {
 			// 	title: 'User Cards',
@@ -485,11 +485,11 @@ export const MENU_SIDEBAR = [
 		children: [
 			{
 				title: 'Register Driver',
-				path: '/network/get-started',
+				path: '/drivers/register-driver',
 			},
 			{
 				title: 'List Driver',
-				path: '/network/get-started',
+				path: '/drivers/list-driver',
 			},
 			// {
 			// 	title: 'User Cards',
@@ -568,15 +568,15 @@ export const MENU_SIDEBAR = [
 		children: [
 			{
 				title: 'Availability',
-				path: '/network/get-started',
+				path: '/availability/availability',
 			},
 			{
 				title: 'Availability Logs',
-				path: '/network/get-started',
+				path: '/availability/availability-logs',
 			},
 			{
 				title: 'Availability Reports',
-				path: '/network/get-started',
+				path: '/availability/availability-reports',
 			},
 			// {
 			// 	title: 'User Cards',
@@ -827,7 +827,7 @@ export const MENU_SIDEBAR = [
 			},
 			{
 				title: 'Vat Outputs',
-				path: '/auth/welcome-message',
+				path: '/billing/vat-outputs',
 			},
 			// {
 			// 	title: 'Account Deactivated',
@@ -851,7 +851,7 @@ export const MENU_SIDEBAR = [
 	{
 		title: 'Driver Earning Report',
 		icon: 'euro',
-		path: '/tariffs',
+		path: '/driver-earning-report',
 	},
 	{
 		title: 'Settings',
@@ -859,11 +859,11 @@ export const MENU_SIDEBAR = [
 		children: [
 			{
 				title: 'Company Settings',
-				path: '/network/get-started',
+				path: '/setting/company-settings',
 			},
 			{
 				title: 'Message Settings',
-				path: '/network/get-started',
+				path: '/setting/msg-settings',
 			},
 			// {
 			// 	title: 'Availability Reports',
