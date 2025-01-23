@@ -20,7 +20,7 @@ export const MENU_SIDEBAR = [
 	},
 	{
 		title: 'Bookings',
-		icon: 'profile-circle',
+		icon: 'car',
 		children: [
 			// {
 			// 	title: 'Profiles',
@@ -138,7 +138,7 @@ export const MENU_SIDEBAR = [
 	},
 	{
 		title: 'Dispatch',
-		icon: 'setting-2',
+		icon: 'pencil',
 		children: [
 			// {
 			// 	title: 'Account',
@@ -315,7 +315,7 @@ export const MENU_SIDEBAR = [
 	},
 	{
 		title: 'Local POIs',
-		icon: 'users',
+		icon: 'geolocation',
 		children: [
 			{
 				title: 'Add Local POI',
@@ -397,109 +397,478 @@ export const MENU_SIDEBAR = [
 		],
 	},
 	{
-		title: 'Authentication',
-		icon: 'security-user',
+		title: 'Accounts',
+		icon: 'book-open',
 		children: [
 			{
-				title: 'Classic',
+				title: 'Add Account',
+				path: '/network/get-started',
+			},
+			{
+				title: 'List Account',
+				path: '/network/get-started',
+			},
+			// {
+			// 	title: 'User Cards',
+			// 	children: [
+			// 		{
+			// 			title: 'Mini Cards',
+			// 			path: '/network/user-cards/mini-cards',
+			// 		},
+			// 		{
+			// 			title: 'Team Crew',
+			// 			path: '/network/user-cards/team-crew',
+			// 		},
+			// 		{
+			// 			title: 'Author',
+			// 			path: '/network/user-cards/author',
+			// 		},
+			// 		{
+			// 			title: 'NFT',
+			// 			path: '/network/user-cards/nft',
+			// 		},
+			// 		{
+			// 			title: 'Social',
+			// 			path: '/network/user-cards/social',
+			// 		},
+			// 	],
+			// },
+			// {
+			// 	title: 'User Table',
+			// 	children: [
+			// 		{
+			// 			title: 'Team Crew',
+			// 			path: '/network/user-table/team-crew',
+			// 		},
+			// 		{
+			// 			title: 'App Roster',
+			// 			path: '/network/user-table/app-roster',
+			// 		},
+			// 		{
+			// 			title: 'Market Authors',
+			// 			path: '/network/user-table/market-authors',
+			// 		},
+			// 		{
+			// 			title: 'SaaS Users',
+			// 			path: '/network/user-table/saas-users',
+			// 		},
+			// 		{
+			// 			title: 'Store Clients',
+			// 			path: '/network/user-table/store-clients',
+			// 		},
+			// 		{
+			// 			title: 'Visitors',
+			// 			path: '/network/user-table/visitors',
+			// 		},
+			// 	],
+			// },
+			// {
+			// 	title: 'Cooperations',
+			// 	path: '/network/cooperations',
+			// 	disabled: true,
+			// },
+			// {
+			// 	title: 'Leads',
+			// 	path: '/network/leads',
+			// 	disabled: true,
+			// },
+			// {
+			// 	title: 'Donators',
+			// 	path: '/network/donators',
+			// 	disabled: true,
+			// },
+		],
+	},
+	{
+		title: 'Drivers',
+		icon: 'users',
+		children: [
+			{
+				title: 'Register Driver',
+				path: '/network/get-started',
+			},
+			{
+				title: 'List Driver',
+				path: '/network/get-started',
+			},
+			// {
+			// 	title: 'User Cards',
+			// 	children: [
+			// 		{
+			// 			title: 'Mini Cards',
+			// 			path: '/network/user-cards/mini-cards',
+			// 		},
+			// 		{
+			// 			title: 'Team Crew',
+			// 			path: '/network/user-cards/team-crew',
+			// 		},
+			// 		{
+			// 			title: 'Author',
+			// 			path: '/network/user-cards/author',
+			// 		},
+			// 		{
+			// 			title: 'NFT',
+			// 			path: '/network/user-cards/nft',
+			// 		},
+			// 		{
+			// 			title: 'Social',
+			// 			path: '/network/user-cards/social',
+			// 		},
+			// 	],
+			// },
+			// {
+			// 	title: 'User Table',
+			// 	children: [
+			// 		{
+			// 			title: 'Team Crew',
+			// 			path: '/network/user-table/team-crew',
+			// 		},
+			// 		{
+			// 			title: 'App Roster',
+			// 			path: '/network/user-table/app-roster',
+			// 		},
+			// 		{
+			// 			title: 'Market Authors',
+			// 			path: '/network/user-table/market-authors',
+			// 		},
+			// 		{
+			// 			title: 'SaaS Users',
+			// 			path: '/network/user-table/saas-users',
+			// 		},
+			// 		{
+			// 			title: 'Store Clients',
+			// 			path: '/network/user-table/store-clients',
+			// 		},
+			// 		{
+			// 			title: 'Visitors',
+			// 			path: '/network/user-table/visitors',
+			// 		},
+			// 	],
+			// },
+			// {
+			// 	title: 'Cooperations',
+			// 	path: '/network/cooperations',
+			// 	disabled: true,
+			// },
+			// {
+			// 	title: 'Leads',
+			// 	path: '/network/leads',
+			// 	disabled: true,
+			// },
+			// {
+			// 	title: 'Donators',
+			// 	path: '/network/donators',
+			// 	disabled: true,
+			// },
+		],
+	},
+	{
+		title: 'Availability',
+		icon: 'chart-simple-3',
+		children: [
+			{
+				title: 'Availability',
+				path: '/network/get-started',
+			},
+			{
+				title: 'Availability Logs',
+				path: '/network/get-started',
+			},
+			{
+				title: 'Availability Reports',
+				path: '/network/get-started',
+			},
+			// {
+			// 	title: 'User Cards',
+			// 	children: [
+			// 		{
+			// 			title: 'Mini Cards',
+			// 			path: '/network/user-cards/mini-cards',
+			// 		},
+			// 		{
+			// 			title: 'Team Crew',
+			// 			path: '/network/user-cards/team-crew',
+			// 		},
+			// 		{
+			// 			title: 'Author',
+			// 			path: '/network/user-cards/author',
+			// 		},
+			// 		{
+			// 			title: 'NFT',
+			// 			path: '/network/user-cards/nft',
+			// 		},
+			// 		{
+			// 			title: 'Social',
+			// 			path: '/network/user-cards/social',
+			// 		},
+			// 	],
+			// },
+			// {
+			// 	title: 'User Table',
+			// 	children: [
+			// 		{
+			// 			title: 'Team Crew',
+			// 			path: '/network/user-table/team-crew',
+			// 		},
+			// 		{
+			// 			title: 'App Roster',
+			// 			path: '/network/user-table/app-roster',
+			// 		},
+			// 		{
+			// 			title: 'Market Authors',
+			// 			path: '/network/user-table/market-authors',
+			// 		},
+			// 		{
+			// 			title: 'SaaS Users',
+			// 			path: '/network/user-table/saas-users',
+			// 		},
+			// 		{
+			// 			title: 'Store Clients',
+			// 			path: '/network/user-table/store-clients',
+			// 		},
+			// 		{
+			// 			title: 'Visitors',
+			// 			path: '/network/user-table/visitors',
+			// 		},
+			// 	],
+			// },
+			// {
+			// 	title: 'Cooperations',
+			// 	path: '/network/cooperations',
+			// 	disabled: true,
+			// },
+			// {
+			// 	title: 'Leads',
+			// 	path: '/network/leads',
+			// 	disabled: true,
+			// },
+			// {
+			// 	title: 'Donators',
+			// 	path: '/network/donators',
+			// 	disabled: true,
+			// },
+		],
+	},
+	{
+		title: 'Tracking',
+		icon: 'focus',
+		path: '/tracking',
+		// children: [
+		// 	{
+		// 		title: 'Availability',
+		// 		path: '/network/get-started',
+		// 	},
+		// 	{
+		// 		title: 'Availability Logs',
+		// 		path: '/network/get-started',
+		// 	},
+		// 	{
+		// 		title: 'Availability Reports',
+		// 		path: '/network/get-started',
+		// 	},
+		// 	// {
+		// 	// 	title: 'User Cards',
+		// 	// 	children: [
+		// 	// 		{
+		// 	// 			title: 'Mini Cards',
+		// 	// 			path: '/network/user-cards/mini-cards',
+		// 	// 		},
+		// 	// 		{
+		// 	// 			title: 'Team Crew',
+		// 	// 			path: '/network/user-cards/team-crew',
+		// 	// 		},
+		// 	// 		{
+		// 	// 			title: 'Author',
+		// 	// 			path: '/network/user-cards/author',
+		// 	// 		},
+		// 	// 		{
+		// 	// 			title: 'NFT',
+		// 	// 			path: '/network/user-cards/nft',
+		// 	// 		},
+		// 	// 		{
+		// 	// 			title: 'Social',
+		// 	// 			path: '/network/user-cards/social',
+		// 	// 		},
+		// 	// 	],
+		// 	// },
+		// 	// {
+		// 	// 	title: 'User Table',
+		// 	// 	children: [
+		// 	// 		{
+		// 	// 			title: 'Team Crew',
+		// 	// 			path: '/network/user-table/team-crew',
+		// 	// 		},
+		// 	// 		{
+		// 	// 			title: 'App Roster',
+		// 	// 			path: '/network/user-table/app-roster',
+		// 	// 		},
+		// 	// 		{
+		// 	// 			title: 'Market Authors',
+		// 	// 			path: '/network/user-table/market-authors',
+		// 	// 		},
+		// 	// 		{
+		// 	// 			title: 'SaaS Users',
+		// 	// 			path: '/network/user-table/saas-users',
+		// 	// 		},
+		// 	// 		{
+		// 	// 			title: 'Store Clients',
+		// 	// 			path: '/network/user-table/store-clients',
+		// 	// 		},
+		// 	// 		{
+		// 	// 			title: 'Visitors',
+		// 	// 			path: '/network/user-table/visitors',
+		// 	// 		},
+		// 	// 	],
+		// 	// },
+		// 	// {
+		// 	// 	title: 'Cooperations',
+		// 	// 	path: '/network/cooperations',
+		// 	// 	disabled: true,
+		// 	// },
+		// 	// {
+		// 	// 	title: 'Leads',
+		// 	// 	path: '/network/leads',
+		// 	// 	disabled: true,
+		// 	// },
+		// 	// {
+		// 	// 	title: 'Donators',
+		// 	// 	path: '/network/donators',
+		// 	// 	disabled: true,
+		// 	// },
+		// ],
+	},
+	{
+		title: 'Billing & Payments',
+		icon: 'bitcoin',
+		children: [
+			{
+				title: 'Driver',
 				children: [
 					{
-						title: 'Sign In',
+						title: 'Statement Processing',
 						path: '/auth/classic/login',
 					},
 					{
-						title: 'Sign Up',
+						title: 'Statement History',
 						path: '/auth/classic/signup',
 					},
-					{
-						title: '2FA',
-						path: '/auth/classic/2fa',
-					},
-					{
-						title: 'Check Email',
-						path: '/auth/classic/check-email',
-					},
-					{
-						title: 'Reset Password',
-						children: [
-							{
-								title: 'Enter Email',
-								path: '/auth/classic/reset-password/enter-email',
-							},
-							{
-								title: 'Check Email',
-								path: '/auth/classic/reset-password/check-email',
-							},
-							{
-								title: 'Change Password',
-								path: '/auth/classic/reset-password/change',
-							},
-							{
-								title: 'Password Changed',
-								path: '/auth/classic/reset-password/changed',
-							},
-						],
-					},
+					// {
+					// 	title: '2FA',
+					// 	path: '/auth/classic/2fa',
+					// },
+					// {
+					// 	title: 'Check Email',
+					// 	path: '/auth/classic/check-email',
+					// },
+					// {
+					// 	title: 'Reset Password',
+					// 	children: [
+					// 		{
+					// 			title: 'Enter Email',
+					// 			path: '/auth/classic/reset-password/enter-email',
+					// 		},
+					// 		{
+					// 			title: 'Check Email',
+					// 			path: '/auth/classic/reset-password/check-email',
+					// 		},
+					// 		{
+					// 			title: 'Change Password',
+					// 			path: '/auth/classic/reset-password/change',
+					// 		},
+					// 		{
+					// 			title: 'Password Changed',
+					// 			path: '/auth/classic/reset-password/changed',
+					// 		},
+					// 	],
+					// },
 				],
 			},
 			{
-				title: 'Branded',
+				title: 'Account',
 				children: [
 					{
-						title: 'Sign In',
+						title: 'Invoice Processor',
 						path: '/auth/login',
 					},
 					{
-						title: 'Sign Up',
+						title: 'Invoice History',
 						path: '/auth/signup',
 					},
 					{
-						title: '2FA',
+						title: 'Invoice Delete',
 						path: '/auth/2fa',
 					},
-					{
-						title: 'Check Email',
-						path: '/auth/check-email',
-					},
-					{
-						title: 'Reset Password',
-						children: [
-							{
-								title: 'Enter Email',
-								path: '/auth/reset-password/enter-email',
-							},
-							{
-								title: 'Check Email',
-								path: '/auth/reset-password/check-email',
-							},
-							{
-								title: 'Change Password',
-								path: '/auth/reset-password/change',
-							},
-							{
-								title: 'Password Changed',
-								path: '/auth/reset-password/changed',
-							},
-						],
-					},
+					// {
+					// 	title: 'Check Email',
+					// 	path: '/auth/check-email',
+					// },
+					// {
+					// 	title: 'Reset Password',
+					// 	children: [
+					// 		{
+					// 			title: 'Enter Email',
+					// 			path: '/auth/reset-password/enter-email',
+					// 		},
+					// 		{
+					// 			title: 'Check Email',
+					// 			path: '/auth/reset-password/check-email',
+					// 		},
+					// 		{
+					// 			title: 'Change Password',
+					// 			path: '/auth/reset-password/change',
+					// 		},
+					// 		{
+					// 			title: 'Password Changed',
+					// 			path: '/auth/reset-password/changed',
+					// 		},
+					// 	],
+					// },
 				],
 			},
 			{
-				title: 'Welcome Message',
+				title: 'Vat Outputs',
 				path: '/auth/welcome-message',
 			},
+			// {
+			// 	title: 'Account Deactivated',
+			// 	path: '/auth/account-deactivated',
+			// },
+			// {
+			// 	title: 'Error 404',
+			// 	path: '/error/404',
+			// },
+			// {
+			// 	title: 'Error 500',
+			// 	path: '/error/500',
+			// },
+		],
+	},
+	{
+		title: 'Tariffs',
+		icon: 'simcard',
+		path: '/tariffs',
+	},
+	{
+		title: 'Driver Earning Report',
+		icon: 'euro',
+		path: '/tariffs',
+	},
+	{
+		title: 'Settings',
+		icon: 'setting-2',
+		children: [
 			{
-				title: 'Account Deactivated',
-				path: '/auth/account-deactivated',
+				title: 'Company Settings',
+				path: '/network/get-started',
 			},
 			{
-				title: 'Error 404',
-				path: '/error/404',
+				title: 'Message Settings',
+				path: '/network/get-started',
 			},
-			{
-				title: 'Error 500',
-				path: '/error/500',
-			},
+			// {
+			// 	title: 'Availability Reports',
+			// 	path: '/network/get-started',
+			// },
 		],
 	},
 	// {
