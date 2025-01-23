@@ -93,7 +93,7 @@ export const MENU_SIDEBAR = [
 			// },
 			{
 				title: 'New Booking',
-				path: '/bookings/new-booking',
+				path: '/newbooking',
 			},
 			{
 				title: 'Search Booking',
