@@ -64,7 +64,7 @@ export function login(data, navigate) {
 			dispatch(setToken(response.token));
 			dispatch(setUser(user));
 			dispatch(setIsAuth(true));
-			localStorage.setItem('authToken', JSON.stringify(response.token));
+			localStorage.setItem('authToken', response.token);
 			navigate('/');
 
 			sendLogs(
