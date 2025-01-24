@@ -197,6 +197,6 @@ export function logout(navigate) {
 		dispatch(setIsAuth(false));
 		localStorage.removeItem('token');
 		toast.success('Logged Out');
-		navigate('/');
+		navigate('/auth/classic/login');
 	};
 }
