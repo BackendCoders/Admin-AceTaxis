@@ -8,7 +8,6 @@ import * as Yup from 'yup';
 // import { useAuthContext } from '../../useAuthContext';
 import { toAbsoluteUrl } from '@/utils';
 import { Alert, KeenIcon } from '@/components';
-import { useLayout } from '@/providers';
 import { register } from '../../../service/operations/authApi';
 import { useDispatch } from 'react-redux';
 const initialValues = {
@@ -42,7 +41,6 @@ const Signup = () => {
 	// const from = location.state?.from?.pathname || '/';
 	const [showPassword, setShowPassword] = useState(false);
 	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-	const { currentLayout } = useLayout();
 	const formik = useFormik({
 		initialValues,
 		validationSchema: signupSchema,
@@ -87,11 +85,7 @@ const Signup = () => {
 							Already have an Account ?
 						</span>
 						<Link
-							to={
-								currentLayout?.name === 'auth-branded'
-									? '/auth/login'
-									: '/auth/classic/login'
-							}
+							to='/auth/login'
 							className='text-2sm link'
 						>
 							Sign In

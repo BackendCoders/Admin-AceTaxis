@@ -17,39 +17,39 @@ const AuthPage = () => (
 	<Routes>
 		<Route element={<AuthLayout />}>
 			<Route
-				path='/classic/login'
+				path='/login'
 				element={<Login />}
 			/>
 			<Route
-				path='/classic/signup'
+				path='/signup'
 				element={<Signup />}
 			/>
 			<Route
-				path='/classic/2fa'
+				path='/2fa'
 				element={<TwoFactorAuth />}
 			/>
 			<Route
-				path='/classic/check-email'
+				path='/check-email'
 				element={<CheckEmail />}
 			/>
 			<Route
-				path='/classic/reset-password'
+				path='/reset-password'
 				element={<ResetPassword />}
 			/>
 			<Route
-				path='/classic/reset-password/enter-email'
+				path='/reset-password/enter-email'
 				element={<ResetPasswordEnterEmail />}
 			/>
 			<Route
-				path='/classic/reset-password/check-email'
+				path='/reset-password/check-email'
 				element={<ResetPasswordCheckEmail />}
 			/>
 			<Route
-				path='/classic/reset-password/change'
+				path='/reset-password/change'
 				element={<ResetPasswordChange />}
 			/>
 			<Route
-				path='/classic/reset-password/changed'
+				path='/reset-password/changed'
 				element={<ResetPasswordChanged />}
 			/>
 			<Route

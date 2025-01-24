@@ -787,30 +787,30 @@ export const MENU_SIDEBAR = [
 					},
 					// {
 					// 	title: '2FA',
-					// 	path: '/auth/classic/2fa',
+					// 	path: '/auth/2fa',
 					// },
 					// {
 					// 	title: 'Check Email',
-					// 	path: '/auth/classic/check-email',
+					// 	path: '/auth/check-email',
 					// },
 					// {
 					// 	title: 'Reset Password',
 					// 	children: [
 					// 		{
 					// 			title: 'Enter Email',
-					// 			path: '/auth/classic/reset-password/enter-email',
+					// 			path: '/auth/reset-password/enter-email',
 					// 		},
 					// 		{
 					// 			title: 'Check Email',
-					// 			path: '/auth/classic/reset-password/check-email',
+					// 			path: '/auth/reset-password/check-email',
 					// 		},
 					// 		{
 					// 			title: 'Change Password',
-					// 			path: '/auth/classic/reset-password/change',
+					// 			path: '/auth/reset-password/change',
 					// 		},
 					// 		{
 					// 			title: 'Password Changed',
-					// 			path: '/auth/classic/reset-password/changed',
+					// 			path: '/auth/reset-password/changed',
 					// 		},
 					// 	],
 					// },
@@ -1454,48 +1454,6 @@ export const MENU_MEGA = [
 						children: [
 							{
 								title: 'Sign In',
-								path: '/auth/classic/login',
-							},
-							{
-								title: 'Sign Up',
-								path: '/auth/classic/signup',
-							},
-							{
-								title: '2FA',
-								path: '/auth/classic/2fa',
-							},
-							{
-								title: 'Check Email',
-								path: '/auth/classic/check-email',
-							},
-							{
-								title: 'Reset Password',
-								children: [
-									{
-										title: 'Enter Email',
-										path: '/auth/classic/reset-password/enter-email',
-									},
-									{
-										title: 'Check Email',
-										path: '/auth/classic/reset-password/check-email',
-									},
-									{
-										title: 'Change Password',
-										path: '/auth/classic/reset-password/change',
-									},
-									{
-										title: 'Password is Changed',
-										path: '/auth/classic/reset-password/changed',
-									},
-								],
-							},
-						],
-					},
-					{
-						title: 'Branded Layout',
-						children: [
-							{
-								title: 'Sign In',
 								path: '/auth/login',
 							},
 							{
@@ -1533,6 +1491,48 @@ export const MENU_MEGA = [
 							},
 						],
 					},
+					// {
+					// 	title: 'Branded Layout',
+					// 	children: [
+					// 		{
+					// 			title: 'Sign In',
+					// 			path: '/auth/login',
+					// 		},
+					// 		{
+					// 			title: 'Sign Up',
+					// 			path: '/auth/signup',
+					// 		},
+					// 		{
+					// 			title: '2FA',
+					// 			path: '/auth/2fa',
+					// 		},
+					// 		{
+					// 			title: 'Check Email',
+					// 			path: '/auth/check-email',
+					// 		},
+					// 		{
+					// 			title: 'Reset Password',
+					// 			children: [
+					// 				{
+					// 					title: 'Enter Email',
+					// 					path: '/auth/reset-password/enter-email',
+					// 				},
+					// 				{
+					// 					title: 'Check Email',
+					// 					path: '/auth/reset-password/check-email',
+					// 				},
+					// 				{
+					// 					title: 'Change Password',
+					// 					path: '/auth/reset-password/change',
+					// 				},
+					// 				{
+					// 					title: 'Password is Changed',
+					// 					path: '/auth/reset-password/changed',
+					// 				},
+					// 			],
+					// 		},
+					// 	],
+					// },
 				],
 			},
 			{

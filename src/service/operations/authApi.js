@@ -34,7 +34,7 @@ export function register(data, navigate) {
 			);
 		} else {
 			toast.error('Failed to Register New User');
-			navigate('/signup');
+			navigate('/auth/signup');
 		}
 
 		dispatch(setLoading(false));
@@ -65,7 +65,6 @@ export function login(data, navigate) {
 			dispatch(setUser(user));
 			dispatch(setIsAuth(true));
 			localStorage.setItem('token', JSON.stringify(response.token));
-
 			navigate('/');
 
 			sendLogs(
@@ -79,7 +78,7 @@ export function login(data, navigate) {
 			);
 		} else {
 			toast.error('Failed to Login User');
-			navigate('/signup');
+			navigate('/auth/signup');
 		}
 
 		dispatch(setLoading(false));
@@ -100,7 +99,7 @@ export function getUser(navigate) {
 			dispatch(setIsAuth(false));
 			dispatch(setUser(null));
 			dispatch(setGetUser(null));
-			navigate('/'); // Redirect to login
+			navigate('/auth/login'); // Redirect to login
 			return;
 		}
 		dispatch(setLoading(true));
@@ -127,7 +126,7 @@ export function getUser(navigate) {
 			dispatch(setIsAuth(false));
 			localStorage.removeItem('token');
 			// Redirect to login page
-			navigate('/');
+			navigate('/auth/login');
 		}
 
 		navigate('/');
@@ -167,7 +166,7 @@ export function verify(navigate) {
 					dispatch(setIsAuth(false));
 					localStorage.removeItem('token');
 					toast.error('User verification failed. Please log in again.');
-					navigate('/');
+					navigate('/auth/login');
 				}
 			} catch (error) {
 				// Handle any unexpected errors
@@ -177,14 +176,14 @@ export function verify(navigate) {
 				dispatch(setIsAuth(false));
 				localStorage.removeItem('token');
 				toast.error('An error occurred during verification.');
-				navigate('/');
+				navigate('/auth/login');
 			} finally {
 				dispatch(setLoading(false));
 			}
 		} else {
 			// If not authenticated, redirect to login
 			toast.error('You are not authenticated. Please log in.');
-			navigate('/');
+			navigate('/auth/login');
 		}
 	};
 }
@@ -197,6 +196,6 @@ export function logout(navigate) {
 		dispatch(setIsAuth(false));
 		localStorage.removeItem('token');
 		toast.success('Logged Out');
-		navigate('/auth/classic/login');
+		navigate('/auth/login');
 	};
 }

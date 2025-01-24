@@ -26,7 +26,7 @@ const CheckEmail = () => {
 
         <div className="flex items-center justify-center gap-1">
           <span className="text-xs text-gray-700">Didn’t receive an email?</span>
-          <Link to="/auth/classic/login" className="text-xs font-medium link">
+          <Link to="/auth/login" className="text-xs font-medium link">
             Resend
           </Link>
         </div>

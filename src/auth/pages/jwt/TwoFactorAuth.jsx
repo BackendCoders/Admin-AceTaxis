@@ -33,7 +33,7 @@ const TwoFactorAuth = () => {
 
         <div className="flex items-center justify-center mb-2">
           <span className="text-xs text-gray-700 me-1.5">Didn’t receive a code? (37s)</span>
-          <Link to="/auth/classic/login" className="text-xs link">
+          <Link to="/auth/login" className="text-xs link">
             Resend
           </Link>
         </div>
