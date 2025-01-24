@@ -1,13 +1,7 @@
 /** @format */
 
-import { useState } from 'react';
-// import { Link } from 'react-router-dom';
-// import { KeenIcon } from '@/components';
-
 const BookingDispatch = () => {
-	// Handle the empty state
-
-	const [url] = useState('https://head-less-devacetaxisdorset.vercel.app/')[0]; // Default URL
+	const url = import.meta.env.VITE_IFRAME_URL;
 
 	return (
 		<div>
