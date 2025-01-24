@@ -1,7 +1,7 @@
 /** @format */
 
 import { useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
@@ -36,16 +36,16 @@ const Login = () => {
 
 	const dispatch = useDispatch(); // Hook to dispatch Redux actions
 	const navigate = useNavigate(); // Hook for navigation
-	const location = useLocation(); // Hook to access location state
+	// const location = useLocation(); // Hook to access location state
 
-	const from = location.state?.from?.pathname || '/'; // Default redirect path after login
-	const { isAuth, error } = useSelector((state) => state.auth); // Extract auth state from Redux
+	// const from = location.state?.from?.pathname || '/'; // Default redirect path after login
+	const { error } = useSelector((state) => state.auth); // Extract auth state from Redux
 
 	// Formik for form handling
 	const formik = useFormik({
 		initialValues,
 		validationSchema: loginSchema,
-		onSubmit: async (values, { setStatus, setSubmitting }) => {
+		onSubmit: async (values, { setSubmitting }) => {
 			setLoading(true);
 
 			// Dispatch Redux login action
@@ -113,8 +113,7 @@ const Login = () => {
 							autoComplete='off'
 							{...formik.getFieldProps('username')}
 							className={clsx('form-control', {
-								'is-invalid':
-									formik.touched.username && formik.errors.username,
+								'is-invalid': formik.touched.username && formik.errors.username,
 							})}
 						/>
 					</label>
@@ -146,8 +145,7 @@ const Login = () => {
 							autoComplete='off'
 							{...formik.getFieldProps('password')}
 							className={clsx('form-control', {
-								'is-invalid':
-									formik.touched.password && formik.errors.password,
+								'is-invalid': formik.touched.password && formik.errors.password,
 							})}
 						/>
 						<button

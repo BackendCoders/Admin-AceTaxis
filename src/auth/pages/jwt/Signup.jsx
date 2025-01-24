@@ -3,12 +3,14 @@
 import clsx from 'clsx';
 import { useFormik } from 'formik';
 import { useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
-import { useAuthContext } from '../../useAuthContext';
+// import { useAuthContext } from '../../useAuthContext';
 import { toAbsoluteUrl } from '@/utils';
 import { Alert, KeenIcon } from '@/components';
 import { useLayout } from '@/providers';
+import { register } from '../../../service/operations/authApi';
+import { useDispatch } from 'react-redux';
 const initialValues = {
 	email: '',
 	password: '',
@@ -34,10 +36,10 @@ const signupSchema = Yup.object().shape({
 });
 const Signup = () => {
 	const [loading, setLoading] = useState(false);
-	const { register } = useAuthContext();
 	const navigate = useNavigate();
-	const location = useLocation();
-	const from = location.state?.from?.pathname || '/';
+	const dispatch = useDispatch();
+	// const location = useLocation();
+	// const from = location.state?.from?.pathname || '/';
 	const [showPassword, setShowPassword] = useState(false);
 	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 	const { currentLayout } = useLayout();
@@ -47,13 +49,12 @@ const Signup = () => {
 		onSubmit: async (values, { setStatus, setSubmitting }) => {
 			setLoading(true);
 			try {
-				if (!register) {
-					throw new Error('JWTProvider is required for this form.');
-				}
-				await register(values.email, values.password, values.changepassword);
-				navigate(from, {
-					replace: true,
-				});
+				const reqBody = {
+					email: values.email,
+					password: values.password,
+					confirmPassword: values.changepassword,
+				};
+				dispatch(register(reqBody, navigate));
 			} catch (error) {
 				console.error(error);
 				setStatus('The sign up details are incorrect');
