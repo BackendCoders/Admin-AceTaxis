@@ -1,10 +1,11 @@
 /** @format */
 
-import { useEffect } from "react";
+import { useEffect } from 'react';
 
 const BookingDispatch = () => {
 	const url = import.meta.env.VITE_IFRAME_URL;
 	const token = localStorage.getItem('authToken');
+	const user = localStorage.getItem('user');
 
 	useEffect(() => {
 		const iframe = document.getElementById('bookingDispatch');
@@ -12,10 +13,10 @@ const BookingDispatch = () => {
 		// Check if iframe exists and send token once iframe loads
 		if (iframe) {
 			iframe.onload = () => {
-				iframe.contentWindow.postMessage({ token }, url); // Send token to iframe
+				iframe.contentWindow.postMessage({ token, user }, url); // Send token to iframe
 			};
 		}
-	}, [url, token]);
+	}, [url, token, user]);
 
 	return (
 		<div>

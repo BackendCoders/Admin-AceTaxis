@@ -65,6 +65,7 @@ export function login(data, navigate) {
 			dispatch(setUser(user));
 			dispatch(setIsAuth(true));
 			localStorage.setItem('authToken', response.token);
+			localStorage.setItem('user', JSON.stringify(user));
 			navigate('/');
 
 			sendLogs(
@@ -88,7 +89,8 @@ export function login(data, navigate) {
 export function getUser(navigate) {
 	return async (dispatch, getState) => {
 		// Check for token in Redux state or localStorage
-		const storedToken = getState().auth.token || localStorage.getItem('authToken');
+		const storedToken =
+			getState().auth.token || localStorage.getItem('authToken');
 
 		const username = getState().auth.username;
 
@@ -125,6 +127,8 @@ export function getUser(navigate) {
 			dispatch(setToken(null));
 			dispatch(setIsAuth(false));
 			localStorage.removeItem('authToken');
+			localStorage.removeItem('user');
+
 			// Redirect to login page
 			navigate('/auth/login');
 		}
@@ -165,6 +169,8 @@ export function verify(navigate) {
 					dispatch(setUser(null));
 					dispatch(setIsAuth(false));
 					localStorage.removeItem('authToken');
+					localStorage.removeItem('user');
+
 					toast.error('User verification failed. Please log in again.');
 					navigate('/auth/login');
 				}
@@ -175,6 +181,8 @@ export function verify(navigate) {
 				dispatch(setUser(null));
 				dispatch(setIsAuth(false));
 				localStorage.removeItem('authToken');
+				localStorage.removeItem('user');
+
 				toast.error('An error occurred during verification.');
 				navigate('/auth/login');
 			} finally {
@@ -195,6 +203,8 @@ export function logout(navigate) {
 		dispatch(setGetUser(null));
 		dispatch(setIsAuth(false));
 		localStorage.removeItem('authToken');
+		localStorage.removeItem('user');
+
 		toast.success('Logged Out');
 		navigate('/auth/login');
 	};
