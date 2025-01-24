@@ -25,8 +25,8 @@ const loginSchema = Yup.object().shape({
 
 // Initial values updated to include username instead of email
 const initialValues = {
-	username: 'demoUser', // Placeholder username
-	password: 'demo1234',
+	username: 'peter', // Placeholder username
+	password: 'Polopolo121',
 	remember: false,
 };
 
