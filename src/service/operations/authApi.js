@@ -66,7 +66,7 @@ export function login(data, navigate) {
 			dispatch(setIsAuth(true));
 			localStorage.setItem('token', JSON.stringify(response.token));
 
-			navigate('/dashboard');
+			navigate('/');
 
 			sendLogs(
 				{

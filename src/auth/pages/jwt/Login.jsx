@@ -6,64 +6,77 @@ import clsx from 'clsx';
 import * as Yup from 'yup';
 import { useFormik } from 'formik';
 import { KeenIcon } from '@/components';
-import { toAbsoluteUrl } from '@/utils';
-import { useAuthContext } from '@/auth';
-import { useLayout } from '@/providers';
+import { useDispatch, useSelector } from 'react-redux'; // Import Redux hooks
+import { login } from '../../../service/operations/authApi'; // Redux login action
 import { Alert } from '@/components';
+
+// Validation schema updated to require `username` instead of `email`
 const loginSchema = Yup.object().shape({
-	email: Yup.string()
-		.email('Wrong email format')
+	username: Yup.string()
 		.min(3, 'Minimum 3 symbols')
 		.max(50, 'Maximum 50 symbols')
-		.required('Email is required'),
+		.required('Username is required'), // Changed from email to username
 	password: Yup.string()
 		.min(3, 'Minimum 3 symbols')
 		.max(50, 'Maximum 50 symbols')
 		.required('Password is required'),
 	remember: Yup.boolean(),
 });
+
+// Initial values updated to include username instead of email
 const initialValues = {
-	email: 'demo@keenthemes.com',
+	username: 'demoUser', // Placeholder username
 	password: 'demo1234',
 	remember: false,
 };
+
 const Login = () => {
-	const [loading, setLoading] = useState(false);
-	const { login } = useAuthContext();
-	const navigate = useNavigate();
-	const location = useLocation();
-	const from = location.state?.from?.pathname || '/';
-	const [showPassword, setShowPassword] = useState(false);
-	const { currentLayout } = useLayout();
+	const [loading, setLoading] = useState(false); // Local loading state
+	const [showPassword, setShowPassword] = useState(false); // Show/hide password state
+
+	const dispatch = useDispatch(); // Hook to dispatch Redux actions
+	const navigate = useNavigate(); // Hook for navigation
+	const location = useLocation(); // Hook to access location state
+
+	const from = location.state?.from?.pathname || '/'; // Default redirect path after login
+	const { isAuth, error } = useSelector((state) => state.auth); // Extract auth state from Redux
+
+	// Formik for form handling
 	const formik = useFormik({
 		initialValues,
 		validationSchema: loginSchema,
 		onSubmit: async (values, { setStatus, setSubmitting }) => {
 			setLoading(true);
-			try {
-				if (!login) {
-					throw new Error('JWTProvider is required for this form.');
-				}
-				await login(values.email, values.password);
-				if (values.remember) {
-					localStorage.setItem('email', values.email);
-				} else {
-					localStorage.removeItem('email');
-				}
-				navigate(from, {
-					replace: true,
-				});
-			} catch {
-				setStatus('The login details are incorrect');
-				setSubmitting(false);
+
+			// Dispatch Redux login action
+			await dispatch(
+				login(
+					{
+						username: values.username, // Pass username
+						password: values.password, // Pass password
+					},
+					navigate // Pass navigate to handle navigation after login
+				)
+			);
+
+			// Handle remember me logic
+			if (values.remember) {
+				localStorage.setItem('username', values.username);
+			} else {
+				localStorage.removeItem('username');
 			}
-			setLoading(false);
+
+			setLoading(false); // Stop the loading state
+			setSubmitting(false); // Reset Formik's submitting state
 		},
 	});
+
+	// Toggle password visibility
 	const togglePassword = (event) => {
 		event.preventDefault();
 		setShowPassword(!showPassword);
 	};
+
 	return (
 		<div className='card max-w-[390px] w-full'>
 			<form
@@ -80,11 +93,7 @@ const Login = () => {
 							Need an account?
 						</span>
 						<Link
-							to={
-								currentLayout?.name === 'auth-branded'
-									? '/auth/signup'
-									: '/auth/classic/signup'
-							}
+							to='/signup'
 							className='text-2sm link'
 						>
 							Sign up
@@ -92,75 +101,39 @@ const Login = () => {
 					</div>
 				</div>
 
-				<div className='grid grid-cols-2 gap-2.5'>
-					<a
-						href='#'
-						className='btn btn-light btn-sm justify-center'
-					>
-						<img
-							src={toAbsoluteUrl('/media/brand-logos/google.svg')}
-							className='size-3.5 shrink-0'
-						/>
-						Use Google
-					</a>
+				{/* Alert for errors */}
+				{error && <Alert variant='danger'>{error}</Alert>}
 
-					<a
-						href='#'
-						className='btn btn-light btn-sm justify-center'
-					>
-						<img
-							src={toAbsoluteUrl('/media/brand-logos/apple-black.svg')}
-							className='size-3.5 shrink-0 dark:hidden'
-						/>
-						<img
-							src={toAbsoluteUrl('/media/brand-logos/apple-white.svg')}
-							className='size-3.5 shrink-0 light:hidden'
-						/>
-						Use Apple
-					</a>
-				</div>
-
-				<div className='flex items-center gap-2'>
-					<span className='border-t border-gray-200 w-full'></span>
-					<span className='text-2xs text-gray-500 font-medium uppercase'>
-						Or
-					</span>
-					<span className='border-t border-gray-200 w-full'></span>
-				</div>
-
-				{formik.status && <Alert variant='danger'>{formik.status}</Alert>}
-
+				{/* Username Input */}
 				<div className='flex flex-col gap-1'>
-					<label className='form-label text-gray-900'>Email</label>
+					<label className='form-label text-gray-900'>Username</label>
 					<label className='input'>
 						<input
 							placeholder='Enter username'
 							autoComplete='off'
-							{...formik.getFieldProps('email')}
+							{...formik.getFieldProps('username')}
 							className={clsx('form-control', {
-								'is-invalid': formik.touched.email && formik.errors.email,
+								'is-invalid':
+									formik.touched.username && formik.errors.username,
 							})}
 						/>
 					</label>
-					{formik.touched.email && formik.errors.email && (
+					{formik.touched.username && formik.errors.username && (
 						<span
 							role='alert'
 							className='text-danger text-xs mt-1'
 						>
-							{formik.errors.email}
+							{formik.errors.username}
 						</span>
 					)}
 				</div>
 
+				{/* Password Input */}
 				<div className='flex flex-col gap-1'>
 					<div className='flex items-center justify-between gap-1'>
 						<label className='form-label text-gray-900'>Password</label>
 						<Link
-							to={
-								currentLayout?.name === 'auth-branded'
-									? '/auth/reset-password'
-									: '/auth/classic/reset-password'
-							}
+							to='/forgot-password'
 							className='text-2sm link shrink-0'
 						>
 							Forgot Password?
@@ -173,7 +146,8 @@ const Login = () => {
 							autoComplete='off'
 							{...formik.getFieldProps('password')}
 							className={clsx('form-control', {
-								'is-invalid': formik.touched.password && formik.errors.password,
+								'is-invalid':
+									formik.touched.password && formik.errors.password,
 							})}
 						/>
 						<button
@@ -204,6 +178,7 @@ const Login = () => {
 					)}
 				</div>
 
+				{/* Remember Me */}
 				<label className='checkbox-group'>
 					<input
 						className='checkbox checkbox-sm'
@@ -213,6 +188,7 @@ const Login = () => {
 					<span className='checkbox-label'>Remember me</span>
 				</label>
 
+				{/* Submit Button */}
 				<button
 					type='submit'
 					className='btn btn-primary flex justify-center grow'
@@ -224,4 +200,5 @@ const Login = () => {
 		</div>
 	);
 };
+
 export { Login };
