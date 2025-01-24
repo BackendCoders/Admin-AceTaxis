@@ -3,20 +3,23 @@
 import { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
-import { useAuthContext } from '@/auth';
-import { useLanguage } from '@/i18n';
+// import { useAuthContext } from '@/auth';
+// import { useLanguage } from '@/i18n';
 import { toAbsoluteUrl } from '@/utils';
 import { DropdownUserLanguages } from './DropdownUserLanguages';
 import { useSettings } from '@/providers/SettingsProvider';
-import { DefaultTooltip, KeenIcon } from '@/components';
+import {
+	// DefaultTooltip,
+	KeenIcon,
+} from '@/components';
 import {
 	MenuItem,
-	MenuLink,
+	// MenuLink,
 	MenuSub,
-	MenuTitle,
+	// MenuTitle,
 	MenuSeparator,
-	MenuArrow,
-	MenuIcon,
+	// MenuArrow,
+	// MenuIcon,
 } from '@/components/menu';
 import { useDispatch } from 'react-redux';
 import { logout } from '../../../service/operations/authApi';
@@ -26,7 +29,7 @@ const DropdownUser = ({ menuItemRef }) => {
 	// const {
 	//   logout
 	// } = logout();
-	const { isRTL } = useLanguage();
+	// const { isRTL } = useLanguage();
 	const handleThemeMode = (event) => {
 		const newThemeMode = event.target.checked ? 'dark' : 'light';
 		storeSettings({
