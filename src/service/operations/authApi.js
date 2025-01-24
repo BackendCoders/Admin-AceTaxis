@@ -65,7 +65,8 @@ export function login(data, navigate) {
 			dispatch(setUser(user));
 			dispatch(setIsAuth(true));
 			localStorage.setItem('authToken', response.token);
-			localStorage.setItem('user', JSON.stringify(user));
+			localStorage.setItem('username', JSON.stringify(user.username));
+			localStorage.setItem('userData', JSON.stringify(response));
 			navigate('/');
 
 			sendLogs(
@@ -127,7 +128,8 @@ export function getUser(navigate) {
 			dispatch(setToken(null));
 			dispatch(setIsAuth(false));
 			localStorage.removeItem('authToken');
-			localStorage.removeItem('user');
+			localStorage.removeItem('username');
+			localStorage.removeItem('userData');
 
 			// Redirect to login page
 			navigate('/auth/login');
@@ -169,7 +171,8 @@ export function verify(navigate) {
 					dispatch(setUser(null));
 					dispatch(setIsAuth(false));
 					localStorage.removeItem('authToken');
-					localStorage.removeItem('user');
+					localStorage.removeItem('username');
+					localStorage.removeItem('userData');
 
 					toast.error('User verification failed. Please log in again.');
 					navigate('/auth/login');
@@ -181,7 +184,8 @@ export function verify(navigate) {
 				dispatch(setUser(null));
 				dispatch(setIsAuth(false));
 				localStorage.removeItem('authToken');
-				localStorage.removeItem('user');
+				localStorage.removeItem('username');
+				localStorage.removeItem('userData');
 
 				toast.error('An error occurred during verification.');
 				navigate('/auth/login');
@@ -203,7 +207,8 @@ export function logout(navigate) {
 		dispatch(setGetUser(null));
 		dispatch(setIsAuth(false));
 		localStorage.removeItem('authToken');
-		localStorage.removeItem('user');
+		localStorage.removeItem('username');
+		localStorage.removeItem('userData');
 
 		toast.success('Logged Out');
 		navigate('/auth/login');
