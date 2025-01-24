@@ -15,7 +15,7 @@ const BookingDispatch = () => {
 				<iframe
 					src={url}
 					title="Booking Dispatch Iframe"
-					className="w-full h-[900px]  bg-white "
+					className="w-full h-[900px] bg-white "
 				></iframe>
 			</div>
 		);
