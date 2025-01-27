@@ -91,7 +91,7 @@ const DriverTracking = () => {
 					lat: selectedDriverData.latitude,
 					lng: selectedDriverData.longitude,
 				});
-				setMapZoom(14); // Zoom in
+				setMapZoom(18); // Zoom in
 
 				// Bounce the selected driver's marker
 				setIsBouncing(driverReg);
