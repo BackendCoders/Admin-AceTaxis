@@ -234,6 +234,7 @@ const DriverTracking = () => {
 										url: carImg, // Use the imported local image
 										scaledSize: new window.google.maps.Size(40, 40), // Adjust size of the icon
 									}}
+									animation={window.google.maps.Animation.BOUNCE} // Add bounce animation
 								/>
 							))}
 						</GoogleMap>
