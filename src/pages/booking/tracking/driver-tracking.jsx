@@ -19,7 +19,7 @@ import {
 } from '@mui/material';
 
 import { gstAllGPS } from '../../../service/operations/gpsApi';
-import carImg from '../../../../public/media/images/car/gps-navigation.png';
+// import carImg from '../../../../public/media/images/car/gps-navigation.png';
 
 const DriverTracking = () => {
 	const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
@@ -231,7 +231,8 @@ const DriverTracking = () => {
 										driver.speed || 'N/A'
 									} km/h`}
 									icon={{
-										url: carImg, // Use the imported local image
+										// url: carImg, // Use the imported local image
+                                        url: '/media/images/car/gps-navigation.png',
 										scaledSize: new window.google.maps.Size(40, 40), // Adjust size of the icon
 									}}
 									animation={window.google.maps.Animation.BOUNCE} // Add bounce animation
