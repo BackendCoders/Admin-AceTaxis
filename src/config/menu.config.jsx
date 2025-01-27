@@ -202,7 +202,7 @@ export const MENU_SIDEBAR = [
 	{
 		title: 'Tracking',
 		icon: 'focus',
-		path: '/tracking',
+		path: '/booking/driver-tracking',
 		// children: [
 		// 	{
 		// 		title: 'Availability',
