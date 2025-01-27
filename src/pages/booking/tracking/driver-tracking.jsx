@@ -5,7 +5,7 @@ import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 import {
 	Typography,
 	TextField,
-	Button,
+	// Button,
 	Table,
 	TableBody,
 	TableCell,
@@ -22,8 +22,10 @@ import { gstAllGPS } from '../../../service/operations/gpsApi';
 import carImg from '../../../../public/media/images/car/car2icon.png';
 
 const DriverTracking = () => {
+	const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
+
 	const { isLoaded } = useJsApiLoader({
-		googleMapsApiKey: 'AIzaSyD4pR99wUBL7JtFDAibNJnVAwBddoRLwZw', // Replace with your actual API key
+		googleMapsApiKey: `${apiKey}`, // Replace with your actual API key
 	});
 
 	const [search, setSearch] = useState('');
@@ -181,7 +183,7 @@ const DriverTracking = () => {
 								key={driver.userId}
 								value={driver.regNo}
 							>
-							 {driver.username} / {driver.regNo} 
+								{driver.username} / {driver.regNo}
 							</MenuItem>
 						))}
 					</Select>

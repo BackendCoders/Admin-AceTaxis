@@ -8,7 +8,6 @@ import localPoiReducer from '../slices/localPOISlice';
 import bookingReducer from '../slices/bookingSlice';
 import availabilityReducer from '../slices/availabilitySlice';
 
-
 const rootReducer = combineReducers({
 	auth: authReducer,
 	account: accountReducer,
