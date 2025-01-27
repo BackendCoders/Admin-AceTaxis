@@ -1,4 +1,4 @@
-import React, { forwardRef, Fragment } from 'react';
+import { forwardRef, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { useDemo1Layout } from '../';
 import { toAbsoluteUrl } from '@/utils';
@@ -9,11 +9,11 @@ const SidebarHeader = forwardRef((props, ref) => {
   } = useDemo1Layout();
   const lightLogo = () => <Fragment>
       <Link to="/" className="dark:hidden">
-        <img src={toAbsoluteUrl('/media/app/acelogo2.png')} className="default-logo min-h-[22px] max-w-[225px]" />
+        <img src={toAbsoluteUrl('/media/app/acelogo2.png')} className="default-logo min-h-[22px] max-w-[220px]" />
         <img src={toAbsoluteUrl('/media/app/mini-logo.svg')} className="small-logo min-h-[22px] max-w-none" />
       </Link>
       <Link to="/" className="hidden dark:block">
-        <img src={toAbsoluteUrl('/media/app/acelogo2.png')} className="default-logo min-h-[22px] max-w-[225px]" />
+        <img src={toAbsoluteUrl('/media/app/acelogo2.png')} className="default-logo min-h-[22px] max-w-[220px]" />
         <img src={toAbsoluteUrl('/media/app/mini-logo.svg')} className="small-logo min-h-[22px] max-w-none" />
       </Link>
     </Fragment>;
