@@ -19,7 +19,7 @@ import {
 } from '@mui/material';
 
 import { gstAllGPS } from '../../../service/operations/gpsApi';
-import carImg from '../../../../public/media/images/car/car2icon.png';
+import carImg from '../../../../public/media/images/car/gps-navigation.png';
 
 const DriverTracking = () => {
 	const { isLoaded } = useJsApiLoader({
@@ -181,7 +181,7 @@ const DriverTracking = () => {
 								key={driver.userId}
 								value={driver.regNo}
 							>
-							 {driver.username} / {driver.regNo} 
+								{driver.username} / {driver.regNo}
 							</MenuItem>
 						))}
 					</Select>
