@@ -33,6 +33,7 @@ const DriverTracking = () => {
 	const [drivers, setDrivers] = useState([]);
 	const [mapCenter, setMapCenter] = useState({ lat: 51.075, lng: -1.8 }); // Default map center
 	const [mapZoom, setMapZoom] = useState(8); // Default zoom level
+	const [isBouncing, setIsBouncing] = useState(false); // Track bounce state
 
 	// Function to fetch GPS data
 	const fetchGPSData = async () => {
@@ -65,21 +66,41 @@ const DriverTracking = () => {
 
 	const handleDriverSelection = (driverReg) => {
 		setSelectedDriver(driverReg);
-		if (driverReg !== 'All') {
+
+		if (driverReg === 'All') {
+			// Bounce all markers
+			setIsBouncing('all');
+
+			// Stop bounce after 2 seconds
+			setTimeout(() => {
+				setIsBouncing(null); // Reset bounce state
+			}, 2000);
+
+			// Reset to default map center and zoom
+			setMapCenter({ lat: 51.075, lng: -1.8 });
+			setMapZoom(1);
+		} else {
+			// Find the selected driver's data
 			const selectedDriverData = drivers.find(
 				(driver) => driver.regNo === driverReg
 			);
+
 			if (selectedDriverData) {
+				// Recenter map to the selected driver's location
 				setMapCenter({
 					lat: selectedDriverData.latitude,
 					lng: selectedDriverData.longitude,
-				}); // Recenter map
-				setMapZoom(14); // Zoom in to the driver's location
+				});
+				setMapZoom(14); // Zoom in
+
+				// Bounce the selected driver's marker
+				setIsBouncing(driverReg);
+
+				// Stop bounce after 2 seconds
+				setTimeout(() => {
+					setIsBouncing(null); // Reset bounce state
+				}, 2000);
 			}
-		} else {
-			// Reset to default center and zoom when 'All' is selected
-			setMapCenter({ lat: 51.075, lng: -1.8 });
-			setMapZoom(8);
 		}
 	};
 
@@ -231,11 +252,14 @@ const DriverTracking = () => {
 										driver.speed || 'N/A'
 									} km/h`}
 									icon={{
-										// url: carImg, // Use the imported local image
-                                        url: '/media/images/car/gps-navigation.png',
+										url: '/media/images/car/gps-navigation.png',
 										scaledSize: new window.google.maps.Size(40, 40), // Adjust size of the icon
 									}}
-									animation={window.google.maps.Animation.BOUNCE} // Add bounce animation
+									animation={
+										isBouncing === 'all' || isBouncing === driver.regNo
+											? window.google.maps.Animation.BOUNCE
+											: null
+									} // Bounce only if this driver's regNo matches the bouncing state
 								/>
 							))}
 						</GoogleMap>
