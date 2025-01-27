@@ -382,12 +382,12 @@ export const MENU_SIDEBAR = [
 	},
 	{
 		title: 'Availability Logs',
-		icon: 'chart-simple-3',
+		icon: 'graph',
 		path: '/availability/availability-logs',
 	},
 	{
 		title: 'Availability Reports',
-		icon: 'chart-simple-3',
+		icon: 'graph-up',
 		path: '/availability/availability-reports',
 	},
 
@@ -885,13 +885,13 @@ export const MENU_SIDEBAR = [
 
 	{
 		title: 'Company Settings',
-		icon: 'euro',
+		icon: 'setting-3',
 		path: '/setting/company-settings',
 	},
 
 	{
 		title: 'Message Settings',
-		icon: 'euro',
+		icon: 'social-media',
 		path: '/setting/msg-settings',
 	},
 	// {
