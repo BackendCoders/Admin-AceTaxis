@@ -316,7 +316,7 @@ const DriverTracking = () => {
 										<TableCell>
 											{driver.speed
 												? `${parseFloat(driver.speed).toFixed(2)} km/h` // Round to 2 decimal places
-												: '0 km/h'}{' '}
+												: '0 km/h'}
 										</TableCell>
 									</TableRow>
 								))}
