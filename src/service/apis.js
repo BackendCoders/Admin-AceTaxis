@@ -19,17 +19,26 @@ export const LocalPoiEndpoints = {
 };
 
 export const availabilityEndpoints = {
-	GET_GENERAL_AVAILABILITY: `${BASE}/api/Availability/General`,
-	GET_REMINDER_AVAILABILITY: `${BASE}/api/Availability/Reminder`,
+	GET_GENERAL_AVAILABILITY: (date) =>
+		`${BASE}/api/Availability/General?date=${date}`,
+	GET_REMINDER_AVAILABILITY: (key) =>
+		`${BASE}/api/Availability/Reminder?key=${key}`,
 };
 
 export const accountEndpoints = {
 	GETLIST_ACCOUNTS: `${BASE}/api/Accounts/GetList`,
 	UPLOAD_ACCOUNTS: `${BASE}/api/Accounts/Upload`,
-	GET_CLEAR_INVOICE: `${BASE}/api/Accounts/ClearInvoice`,
+	GET_CLEAR_INVOICE: (invoiceNo) =>
+		`${BASE}/api/Accounts/ClearInvoice?invoiceno=${invoiceNo}`,
 };
 
 export const bookingsEndpoints = {
+	CREATE_BOOKING: `${BASE}/api/Bookings/Create`,
+	ALLOCATE_BOOKINGS: `${BASE}/api/Bookings/Allocate`,
+	COMPLETE_BOOKINGS: `${BASE}/api/Bookings/Complete`,
+	BOOKING_QUOTE: `${BASE}/api/Bookings/Quote`,
+	UPDATE_BOOKING_QUOTE: `${BASE}/api/Bookings/UpdateQuote`,
+	REMOVE_COA: `${BASE}/api/Bookings/RemoveCOA`,
 	CANCEL_BOOKING: `${BASE}/api/Bookings/Cancel`,
 };
 
