@@ -78,7 +78,7 @@ const DriverTracking = () => {
 
 			// Reset to default map center and zoom
 			setMapCenter({ lat: 51.075, lng: -1.8 });
-			setMapZoom(1);
+			setMapZoom(2);
 		} else {
 			// Find the selected driver's data
 			const selectedDriverData = drivers.find(
