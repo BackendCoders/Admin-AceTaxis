@@ -19,7 +19,7 @@ const localPoisSlice = createSlice({
 			state.localPOIs = action.payload;
 		},
 		setLocalPOI(state, action) {
-			state.localPoi = action.payload;
+			state.localPOI = action.payload;
 		},
 	},
 });
