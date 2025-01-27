@@ -93,7 +93,7 @@ const Login = () => {
 							Need an account?
 						</span>
 						<Link
-							to='/signup'
+							to='/auth/signup'
 							className='text-2sm link'
 						>
 							Sign up
