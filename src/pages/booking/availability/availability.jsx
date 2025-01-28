@@ -209,7 +209,7 @@ const Availability = () => {
 							{availabilityData.map((item, index) => (
 								<tr
 									key={index}
-									className='bg-purple-200 text-gray-900'
+									className=' text-gray-900'
 								>
 									<td className='p-3 border text-center'>{item.type}</td>
 									<td className='p-3 border text-center'>{item.driver}</td>
