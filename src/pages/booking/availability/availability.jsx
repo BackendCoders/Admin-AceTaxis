@@ -3,8 +3,19 @@
 import { useState } from 'react';
 import { AvailabilityTable } from './availability-table';
 
+import {
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+} from '@/components/ui/popover';
+import { Calendar } from '@/components/ui/calendar';
+import { format } from 'date-fns';
+import { cn } from '@/lib/utils';
+import { KeenIcon } from '@/components';
+
 const Availability = () => {
 	const [selectedOption, setSelectedOption] = useState('Custom');
+	const [date, setDate] = useState(new Date());
 
 	const availabilityData = [
 		{ type: 'Available', driver: 1, details: '07:30 - 09:15 (AM SR)' },
@@ -23,11 +34,37 @@ const Availability = () => {
 
 			{/* Date & Unavailable Button */}
 			<div className='flex justify-between items-center mt-4'>
-				<input
-					type='date'
-					className='border p-2 rounded-md'
-					value='2025-01-28'
-				/>
+				<Popover>
+					<PopoverTrigger asChild>
+						<button
+							id='date'
+							className={cn(
+								'input data-[state=open]:border-primary',
+								!date && 'text-muted-foreground'
+							)}
+							style={{ width: '13rem' }}
+						>
+							<KeenIcon
+								icon='calendar'
+								className='-ms-0.5'
+							/>
+							{date ? format(date, 'LLL dd, y') : <span>Pick a date</span>}
+						</button>
+					</PopoverTrigger>
+					<PopoverContent
+						className='w-auto p-0'
+						align='start'
+					>
+						<Calendar
+							initialFocus
+							mode='single' // Single date selection
+							defaultMonth={date}
+							selected={date}
+							onSelect={setDate}
+							numberOfMonths={1}
+						/>
+					</PopoverContent>
+				</Popover>
 				<button className='bg-red-500 text-white px-6 py-2 rounded-md'>
 					UNAVAILABLE (ALL DAY)
 				</button>
@@ -50,7 +87,9 @@ const Availability = () => {
 
 			{/* Availability Section */}
 			<div className='mt-6 p-4 bg-gray-800 text-white rounded-md'>
-				<h3 className='font-semibold flex items-center justify-center'>📅 AVAILABILITY</h3>
+				<h3 className='font-semibold flex items-center justify-center'>
+					📅 AVAILABILITY
+				</h3>
 			</div>
 
 			{/* Conditionally Show Form or Table */}
@@ -126,7 +165,7 @@ const Availability = () => {
 			) : (
 				// Table for other options
 				<div className='overflow-x-auto mt-3'>
-                    <p className='font-medium'>MY AVAILABILITY: 28/01/25</p>
+					<p className='font-medium'>MY AVAILABILITY: 28/01/25</p>
 					<table className='w-full border-collapse border border-gray-300'>
 						<thead>
 							<tr className='bg-gray-200 text-gray-900'>
