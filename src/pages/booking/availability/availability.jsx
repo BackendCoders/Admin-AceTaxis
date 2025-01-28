@@ -23,7 +23,7 @@ const Availability = () => {
 	];
 
 	return (
-		<div className='p-6 bg-white shadow-md rounded-lg'>
+		<div className='p-6 shadow-md rounded-lg'>
 			{/* Header Section */}
 			<div className='flex justify-between items-center'>
 				<h2 className='text-xl font-semibold'>Availability</h2>
