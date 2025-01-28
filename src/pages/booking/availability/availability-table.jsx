@@ -249,7 +249,7 @@ const AvailabilityTable = () => {
 			data={driversData}
 			rowSelection={true}
 			onRowSelectionChange={handleRowSelection}
-			pagination={{ size: 10 }}
+			pagination={{ size: 5 }}
 			sorting={[{ id: 'driver', desc: false }]}
 			toolbar={<Toolbar />}
 			layout={{ card: true }}
