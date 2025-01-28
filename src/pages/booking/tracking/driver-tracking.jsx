@@ -174,7 +174,7 @@ const DriverTracking = () => {
 			{/* Search and Driver Selection Section */}
 			<Box className='flex flex-col lg:flex-row items-center space-y-4 lg:space-y-0 lg:space-x-4'>
 				{/* Search Box */}
-				<Box className='w-full lg:w-1/3'>
+				{/* <Box className='w-full lg:w-1/3'>
 					<Typography className='mb-1 text-gray-600 font-medium'>
 						Search by Driver
 					</Typography>
@@ -185,7 +185,7 @@ const DriverTracking = () => {
 						fullWidth
 						onChange={(e) => setSearch(e.target.value)}
 					/>
-				</Box>
+				</Box> */}
 
 				{/* Select Driver Dropdown */}
 				<Box className='w-full lg:w-1/4'>
