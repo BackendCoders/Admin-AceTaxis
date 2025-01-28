@@ -74,6 +74,7 @@ import {
 	NetworkVisitorsPage,
 } from '@/pages/network';
 import { NewBooking, BookingDispatch, DriverTracking } from '@/pages/booking';
+import { UnAllocated, Allocated, Completed, Cancelled } from '@/pages/Dispatch';
 import { AuthPage } from '@/auth';
 import { Demo1Layout } from '@/layouts/demo1';
 import { ErrorsRouting } from '@/errors';
@@ -126,19 +127,19 @@ const AppRoutingSetup = () => {
 					/>
 					<Route
 						path='/dispatch/unallocated-jobs'
-						element={<NewBooking />}
+						element={<UnAllocated />}
 					/>
 					<Route
 						path='/dispatch/allocated-jobs'
-						element={<NewBooking />}
+						element={<Allocated />}
 					/>
 					<Route
 						path='/dispatch/cancelled-jobs'
-						element={<NewBooking />}
+						element={<Cancelled />}
 					/>
 					<Route
 						path='/dispatch/completed-jobs'
-						element={<NewBooking />}
+						element={<Completed />}
 					/>
 					<Route
 						path='/localPOIs/add-local-Poi'
