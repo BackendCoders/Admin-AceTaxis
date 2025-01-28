@@ -50,7 +50,7 @@ const Availability = () => {
 
 			{/* Availability Section */}
 			<div className='mt-6 p-4 bg-gray-800 text-white rounded-md'>
-				<h3 className='font-semibold flex items-center'>📅 AVAILABILITY</h3>
+				<h3 className='font-semibold flex items-center justify-center'>📅 AVAILABILITY</h3>
 			</div>
 
 			{/* Conditionally Show Form or Table */}
@@ -95,37 +95,38 @@ const Availability = () => {
 							ADD UNAVAILABLE HOURS
 						</button>
 					</div>
-                    <div>
-                    <table className='w-full border-collapse border border-gray-300'>
-						<thead>
-							<tr className='bg-gray-200 text-gray-900'>
-								<th className='p-3 border'>Type</th>
-								<th className='p-3 border'>Driver #</th>
-								<th className='p-3 border'>Details</th>
-								<th className='p-3 border'>Actions</th>
-							</tr>
-						</thead>
-						<tbody>
-							{availabilityData.map((item, index) => (
-								<tr
-									key={index}
-									className='bg-purple-200 text-gray-900'
-								>
-									<td className='p-3 border'>{item.type}</td>
-									<td className='p-3 border'>{item.driver}</td>
-									<td className='p-3 border'>{item.details}</td>
-									<td className='p-3 border text-center'>
-										<button className='text-red-500'>🗑️</button>
-									</td>
+					<div>
+						<table className='w-full border-collapse border border-gray-300'>
+							<thead>
+								<tr className='bg-gray-200 text-gray-900'>
+									<th className='p-3 border'>Type</th>
+									<th className='p-3 border'>Driver #</th>
+									<th className='p-3 border'>Details</th>
+									<th className='p-3 border'>Actions</th>
 								</tr>
-							))}
-						</tbody>
-					</table>
-                    </div>
+							</thead>
+							<tbody>
+								{availabilityData.map((item, index) => (
+									<tr
+										key={index}
+										className='bg-purple-200 text-gray-900'
+									>
+										<td className='p-3 border'>{item.type}</td>
+										<td className='p-3 border'>{item.driver}</td>
+										<td className='p-3 border'>{item.details}</td>
+										<td className='p-3 border text-center'>
+											<button className='text-red-500'>🗑️</button>
+										</td>
+									</tr>
+								))}
+							</tbody>
+						</table>
+					</div>
 				</div>
 			) : (
 				// Table for other options
 				<div className='overflow-x-auto mt-3'>
+                    <p className='font-medium'>MY AVAILABILITY: 28/01/25</p>
 					<table className='w-full border-collapse border border-gray-300'>
 						<thead>
 							<tr className='bg-gray-200 text-gray-900'>
@@ -159,8 +160,8 @@ const Availability = () => {
 				ℹ️ No Availability
 			</div>
 
-            {/* Table */}
-            <AvailabilityTable />
+			{/* Table */}
+			<AvailabilityTable />
 		</div>
 	);
 };
