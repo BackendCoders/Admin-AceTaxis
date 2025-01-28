@@ -12,9 +12,8 @@ import { Calendar } from '@/components/ui/calendar';
 import { format, addDays } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { KeenIcon } from '@/components/keenicons';
-import { FaChevronUp } from "react-icons/fa";
-import { FaChevronDown } from "react-icons/fa";
-
+import { FaChevronUp } from 'react-icons/fa';
+import { FaChevronDown } from 'react-icons/fa';
 
 const AvailabilityReport = () => {
 	const [selectedTab, setSelectedTab] = useState('monthHours');
@@ -33,21 +32,19 @@ const AvailabilityReport = () => {
 	// ✅ Date Picker Component with Default Dates
 	const DateRangePicker = ({ dateRange, setDateRange }) => (
 		<div className='flex flex-col'>
-			<label className='text-gray-800 dark:text-gray-200 text-sm font-medium'>
-				Date Range
-			</label>
+			<label className='text-gray-800 text-sm font-medium'>Date Range</label>
 
 			<Popover>
 				<PopoverTrigger asChild>
 					<button
 						className={cn(
-							'flex items-center gap-2 border px-4 py-2 rounded-md dark:bg-gray-800 transition-all',
+							'flex items-center gap-2 border px-4 py-2 rounded-md  transition-all',
 							!dateRange && 'text-gray-400'
 						)}
 					>
 						<KeenIcon
 							icon='calendar'
-							className='text-gray-600 dark:text-gray-300'
+							className='text-gray-600'
 						/>
 						{dateRange?.from ? (
 							dateRange.to ? (
@@ -65,7 +62,7 @@ const AvailabilityReport = () => {
 				</PopoverTrigger>
 
 				<PopoverContent
-					className='w-auto p-2 shadow-md bg-white dark:bg-gray-900 rounded-lg'
+					className='w-auto p-2 shadow-md rounded-lg'
 					align='end'
 				>
 					<Calendar
@@ -179,24 +176,23 @@ const AvailabilityReport = () => {
 					<label className='text-gray-800 dark:text-gray-200 text-sm font-medium'>
 						Driver Number
 					</label>
-					<div className='flex items-center border rounded-md px-2 py-1 dark:bg-gray-800'>
-						
-						<span className='px-6 text-lg font-semibold'>{driverNumber}</span>
-           {/* Buttons placed vertically */}
-          <div className="flex flex-col">
-            <button
-              className="px-2 bg-gray-200 dark:bg-gray-700 rounded-t-md hover:bg-gray-300 dark:hover:bg-gray-600 transition-all"
-              onClick={() => setDriverNumber(driverNumber + 1)}
-            >
-              <FaChevronUp />
-            </button>
-            <button
-              className="px-2  bg-gray-200 dark:bg-gray-700 rounded-b-md hover:bg-gray-300 dark:hover:bg-gray-600 transition-all"
-              onClick={() => setDriverNumber(Math.max(0, driverNumber - 1))}
-            >
-              <FaChevronDown />
-            </button>
-          </div>
+					<div className='flex items-center border rounded-md px-2 py-1'>
+						<span className='px-6 text-lg'>{driverNumber}</span>
+						{/* Buttons placed vertically */}
+						<div className='flex flex-col'>
+							<button
+								className='px-2 dark:text-white rounded-t-md hover:bg-gray-300 transition-all'
+								onClick={() => setDriverNumber(driverNumber + 1)}
+							>
+								<FaChevronUp />
+							</button>
+							<button
+								className='px-2  dark:text-white rounded-b-md hover:bg-gray-300 transition-all'
+								onClick={() => setDriverNumber(Math.max(0, driverNumber - 1))}
+							>
+								<FaChevronDown />
+							</button>
+						</div>
 					</div>
 				</div>
 
