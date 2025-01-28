@@ -73,8 +73,15 @@ import {
 	NetworkUserTableTeamCrewPage,
 	NetworkVisitorsPage,
 } from '@/pages/network';
-import { NewBooking, BookingDispatch, DriverTracking , Availability, AvailabilityLogs, AvailabilityReport } from '@/pages/booking';
-import { UnAllocated, Allocated, Completed, Cancelled } from '@/pages/Dispatch';
+import {
+	NewBooking,
+	BookingDispatch,
+	DriverTracking,
+	Availability,
+	AvailabilityLogs,
+	AvailabilityReport,
+} from '@/pages/booking';
+import { UnAllocated, Allocated, Completed, Cancelled } from '@/pages/dispatch';
 import { AuthPage } from '@/auth';
 import { Demo1Layout } from '@/layouts/demo1';
 import { ErrorsRouting } from '@/errors';
