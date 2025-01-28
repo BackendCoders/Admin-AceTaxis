@@ -161,7 +161,7 @@ const AvailabilityReport = () => {
 	);
 
 	return (
-		<div className='p-6 shadow-md rounded-lg'>
+		<div className='p-6 rounded-lg'>
 			{/* Header Section */}
 			<div className='flex justify-between items-center'>
 				<h2 className='text-2xl font-semibold dark:text-white'>
@@ -173,7 +173,7 @@ const AvailabilityReport = () => {
 			<div className='flex items-center gap-4 mt-4'>
 				{/* Driver Number */}
 				<div className='flex flex-col'>
-					<label className='text-gray-800 dark:text-gray-200 text-sm font-medium'>
+					<label className='text-gray-800 dark:text-gray-800 text-sm font-medium'>
 						Driver Number
 					</label>
 					<div className='flex items-center border rounded-md px-2 py-1'>
@@ -205,7 +205,7 @@ const AvailabilityReport = () => {
 			</div>
 
 			{/* Swap Buttons - Centered */}
-			<div className='mt-6 flex justify-center gap-3 bg-gray-800 text-white rounded-md p-3 relative'>
+			<div className='mt-6 flex justify-center gap-6 border-b border-gray-300 dark:border-gray-200'>
 				{[
 					{ id: 'monthHours', label: '📌 MONTH HOURS', color: 'bg-green-400' },
 					{ id: 'weekHours', label: '🔧 WEEK# HOURS', color: 'bg-yellow-400' },
@@ -222,18 +222,23 @@ const AvailabilityReport = () => {
 				].map((tab) => (
 					<button
 						key={tab.id}
-						className={`relative px-5 py-2 rounded-md text-sm font-medium transition-all duration-300 flex items-center gap-2
-        ${selectedTab === tab.id ? ' shadow-md' : ''}`}
 						onClick={() => handleTabClick(tab.id)}
+						className={`relative px-5 pb-2 flex items-center gap-2 text-base font-medium transition-all duration-300
+        ${
+					selectedTab === tab.id
+						? 'text-blue-500 dark:text-blue-400'
+						: 'text-gray-700 dark:text-gray-700'
+				}`}
 					>
 						{tab.label}
 
-						{/* Animated active tab underline */}
-						{selectedTab === tab.id && (
-							<div className='absolute bottom-0 left-0 w-full h-1 bg-white rounded transition-all duration-300'></div>
-						)}
-						{/* Circular color indicator */}
+						{/* Circular Color Indicator */}
 						<span className={`w-2 h-2 rounded-full ${tab.color}`}></span>
+
+						{/* Active Tab - Blue Underline */}
+						{selectedTab === tab.id && (
+							<div className='absolute bottom-0 left-0 w-full h-[2px] bg-blue-500 dark:bg-blue-400 rounded transition-all duration-300'></div>
+						)}
 					</button>
 				))}
 			</div>
