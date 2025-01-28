@@ -111,6 +111,7 @@ const AvailabilityReport = () => {
 						title='Driver #'
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
+            className={` justify-center`}
 					/>
 				),
 				enableSorting: true,
@@ -130,6 +131,7 @@ const AvailabilityReport = () => {
 						title='Month'
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
+            className={` justify-center`}
 					/>
 				),
 				enableSorting: true,
@@ -148,6 +150,7 @@ const AvailabilityReport = () => {
 					<DataGridColumnHeader
 						title='Total Available Hours'
 						column={column}
+            className={` justify-center`}
 					/>
 				),
 				enableSorting: true,

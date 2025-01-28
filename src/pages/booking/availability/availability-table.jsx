@@ -144,6 +144,7 @@ const AvailabilityTable = () => {
 						title='Driver #'
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
+                        className={` justify-center`}
 					/>
 				),
 				enableSorting: true,
@@ -163,6 +164,7 @@ const AvailabilityTable = () => {
 						title='Full Name'
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
+                        className={` justify-center`}
 					/>
 				),
 				enableSorting: true,
@@ -181,6 +183,7 @@ const AvailabilityTable = () => {
 					<DataGridColumnHeader
 						title='Details'
 						column={column}
+                        className={` justify-center`}
 					/>
 				),
 				enableSorting: true,
