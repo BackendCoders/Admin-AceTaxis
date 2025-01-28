@@ -7,6 +7,7 @@ export * from './searchBooking';
 export * from './cardBookings';
 export * from './booking&dispatch';
 export * from './tracking';
+export * from './tariff';
 export * from './availability';
 export * from './availabilitylogs';
 export * from './availabilityreport';

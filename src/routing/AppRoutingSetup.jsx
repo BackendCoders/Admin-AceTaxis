@@ -84,6 +84,7 @@ import {
 	AirportRuns,
 	CardBookings,
 	AuditBooking,
+	Tariff,
 } from '@/pages/booking';
 import { UnAllocated, Allocated, Completed, Cancelled } from '@/pages/dispatch';
 import { AuthPage } from '@/auth';
@@ -194,10 +195,6 @@ const AppRoutingSetup = () => {
 					/>
 
 					<Route
-						path='/tracking'
-						element={<NewBooking />}
-					/>
-					<Route
 						path='/billing/driver/statement-processing'
 						element={<NewBooking />}
 					/>
@@ -223,7 +220,7 @@ const AppRoutingSetup = () => {
 					/>
 					<Route
 						path='/tariffs'
-						element={<NewBooking />}
+						element={<Tariff />}
 					/>
 					<Route
 						path='/driver-earning-report'
