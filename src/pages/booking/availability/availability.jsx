@@ -65,28 +65,39 @@ const Availability = () => {
 						/>
 					</PopoverContent>
 				</Popover>
-				<button className='bg-red-500 text-white px-6 py-2 rounded-md'>
+				<button
+					className='bg-red-500 text-white px-6 py-2 rounded-md text-sm font-medium tracking-wide 
+  hover:bg-red-600 transition-all duration-300'
+				>
 					UNAVAILABLE (ALL DAY)
 				</button>
 			</div>
 
 			{/* Swap Buttons */}
-			<div className='grid grid-cols-4 gap-2 mt-4 border rounded-md overflow-hidden'>
+			<div className='grid grid-cols-4 gap-2 mt-4 border border-gray-300 dark:border-gray-700 rounded-md overflow-hidden'>
 				{['Custom', 'SR AM Only', 'SR PM Only', 'SR Only'].map((option) => (
 					<button
 						key={option}
-						className={`text-center py-2 transition-colors ${
-							selectedOption === option ? 'bg-gray-800 text-white' : 'bg-white'
-						} border`}
 						onClick={() => setSelectedOption(option)}
+						className={`relative text-center py-2 text-sm font-medium transition-all duration-300
+        ${
+					selectedOption === option
+						? 'text-blue-500 dark:text-blue-400 border-b-2 border-blue-500 dark:border-blue-400'
+						: 'text-gray-700 dark:text-gray-700 hover:text-gray-900 dark:hover:text-gray-100'
+				}`}
 					>
 						{option}
+
+						{/* Active Tab - Blue Underline */}
+						{selectedOption === option && (
+							<div className='absolute bottom-0 left-0 w-full h-[2px] bg-blue-500 dark:bg-blue-400 transition-all duration-300'></div>
+						)}
 					</button>
 				))}
 			</div>
 
 			{/* Availability Section */}
-			<div className='mt-6 p-4 bg-gray-800 text-white rounded-md'>
+			<div className='mt-6 p-4 text-gray rounded-md'>
 				<h3 className='font-semibold flex items-center justify-center'>
 					📅 AVAILABILITY
 				</h3>
@@ -100,40 +111,59 @@ const Availability = () => {
 
 					{/* Time Inputs (Proper Labeling & Alignment) */}
 					<div className='grid grid-cols-2 gap-4 mt-3'>
+						{/* From Time Input */}
 						<div className='flex flex-col'>
-							<label className='text-gray-700 font-medium'>From</label>
+							<label className='text-gray-800 dark:text-gray-300 text-sm font-medium mb-1'>
+								From
+							</label>
 							<input
 								type='time'
-								className='border p-2 rounded-md w-full'
+								className='border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 p-2 rounded-md w-full 
+      text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:outline-none transition'
 							/>
 						</div>
+
+						{/* To Time Input */}
 						<div className='flex flex-col'>
-							<label className='text-gray-700 font-medium'>To</label>
+							<label className='text-gray-800 dark:text-gray-300 text-sm font-medium mb-1'>
+								To
+							</label>
 							<input
 								type='time'
-								className='border p-2 rounded-md w-full'
+								className='border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 p-2 rounded-md w-full 
+      text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:outline-none transition'
 							/>
 						</div>
 					</div>
 
 					{/* Note Input */}
 					<div className='mt-3'>
-						<label className='text-gray-700 font-medium'>Note</label>
+						<label className='text-gray-800 dark:text-gray-300 text-sm font-medium mb-1'>
+							Note
+						</label>
 						<textarea
-							className='border p-2 mt-1 w-full rounded-md'
+							className='border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 p-2 mt-1 w-full rounded-md
+    text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:outline-none transition'
 							placeholder='e.g., Locals Only..'
 						></textarea>
 					</div>
 
 					{/* Buttons - Spaced & Full Width */}
-					<div className='flex justify-between mt-4'>
-						<button className='bg-green-500 text-white px-6 py-2 rounded-md w-full mr-2'>
+					<div className='flex justify-between mt-4 gap-4 m-8'>
+						<button
+							className='bg-green-500 text-white px-6 py-2 rounded-lg w-full text-sm font-semibold tracking-wide
+      hover:bg-green-600 focus:ring-2 focus:ring-green-400 focus:outline-none transition-all duration-300'
+						>
 							ADD AVAILABLE HOURS
 						</button>
-						<button className='bg-red-500 text-white px-6 py-2 rounded-md w-full ml-2'>
+						<button
+							className='bg-red-500 text-white px-6 py-2 rounded-lg w-full text-sm font-semibold tracking-wide
+      hover:bg-red-600 focus:ring-2 focus:ring-red-400 focus:outline-none transition-all duration-300'
+						>
 							ADD UNAVAILABLE HOURS
 						</button>
 					</div>
+
 					<div>
 						<table className='w-full border-collapse border border-gray-300'>
 							<thead>
@@ -148,11 +178,11 @@ const Availability = () => {
 								{availabilityData.map((item, index) => (
 									<tr
 										key={index}
-										className='bg-purple-200 text-gray-900'
+										className='text-gray-900'
 									>
-										<td className='p-3 border'>{item.type}</td>
-										<td className='p-3 border'>{item.driver}</td>
-										<td className='p-3 border'>{item.details}</td>
+										<td className='p-3 border text-center'>{item.type}</td>
+										<td className='p-3 border text-center'>{item.driver}</td>
+										<td className='p-3 border text-center'>{item.details}</td>
 										<td className='p-3 border text-center'>
 											<button className='text-red-500'>🗑️</button>
 										</td>
@@ -164,7 +194,7 @@ const Availability = () => {
 				</div>
 			) : (
 				// Table for other options
-				<div className='overflow-x-auto mt-3'>
+				<div className='overflow-x-auto'>
 					<p className='font-medium'>MY AVAILABILITY: 28/01/25</p>
 					<table className='w-full border-collapse border border-gray-300'>
 						<thead>
@@ -181,9 +211,9 @@ const Availability = () => {
 									key={index}
 									className='bg-purple-200 text-gray-900'
 								>
-									<td className='p-3 border'>{item.type}</td>
-									<td className='p-3 border'>{item.driver}</td>
-									<td className='p-3 border'>{item.details}</td>
+									<td className='p-3 border text-center'>{item.type}</td>
+									<td className='p-3 border text-center'>{item.driver}</td>
+									<td className='p-3 border text-center'>{item.details}</td>
 									<td className='p-3 border text-center'>
 										<button className='text-red-500'>🗑️</button>
 									</td>
