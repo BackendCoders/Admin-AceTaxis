@@ -80,6 +80,10 @@ import {
 	Availability,
 	AvailabilityLogs,
 	AvailabilityReport,
+	SearchBooking,
+	AirportRuns,
+	CardBookings,
+	AuditBooking,
 } from '@/pages/booking';
 import { UnAllocated, Allocated, Completed, Cancelled } from '@/pages/dispatch';
 import { AuthPage } from '@/auth';
@@ -91,6 +95,9 @@ import {
 	AuthenticationGetStartedPage,
 } from '@/pages/authentication';
 import { RequireAuth } from '../auth';
+import { AddLocalPoi, ListLocalPoi } from '@/pages/localPoi';
+import { AddAccounts, ListAccounts } from '@/pages/accounts';
+import { RegisterDriver, ListDriver } from '@/pages/drivers';
 const AppRoutingSetup = () => {
 	return (
 		<Routes>
@@ -131,19 +138,19 @@ const AppRoutingSetup = () => {
 
 					<Route
 						path='/bookings/search-booking'
-						element={<NewBooking />}
+						element={<SearchBooking />}
 					/>
 					<Route
 						path='/bookings/audit-view'
-						element={<NewBooking />}
+						element={<AuditBooking />}
 					/>
 					<Route
 						path='/bookings/airport-runs'
-						element={<NewBooking />}
+						element={<AirportRuns />}
 					/>
 					<Route
 						path='/bookings/card-bookings'
-						element={<NewBooking />}
+						element={<CardBookings />}
 					/>
 					<Route
 						path='/dispatch/unallocated-jobs'
@@ -163,40 +170,29 @@ const AppRoutingSetup = () => {
 					/>
 					<Route
 						path='/localPOIs/add-local-Poi'
-						element={<NewBooking />}
+						element={<AddLocalPoi />}
 					/>
 					<Route
 						path='/localPOIs/list-local-Poi'
-						element={<NewBooking />}
+						element={<ListLocalPoi />}
 					/>
 					<Route
 						path='/accounts/add-account'
-						element={<NewBooking />}
+						element={<AddAccounts />}
 					/>
 					<Route
 						path='/accounts/list-account'
-						element={<NewBooking />}
+						element={<ListAccounts />}
 					/>
 					<Route
 						path='/drivers/register-driver'
-						element={<NewBooking />}
+						element={<RegisterDriver />}
 					/>
 					<Route
 						path='/drivers/list-driver'
-						element={<NewBooking />}
+						element={<ListDriver />}
 					/>
-					<Route
-						path='/availability/availability'
-						element={<NewBooking />}
-					/>
-					<Route
-						path='/availability/availability-logs'
-						element={<NewBooking />}
-					/>
-					<Route
-						path='/availability/availability-reports'
-						element={<NewBooking />}
-					/>
+
 					<Route
 						path='/tracking'
 						element={<NewBooking />}
