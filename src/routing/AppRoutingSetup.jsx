@@ -73,7 +73,7 @@ import {
 	NetworkUserTableTeamCrewPage,
 	NetworkVisitorsPage,
 } from '@/pages/network';
-import { NewBooking, BookingDispatch, DriverTracking } from '@/pages/booking';
+import { NewBooking, BookingDispatch, DriverTracking , Availability, AvailabilityLogs, AvailabilityReport } from '@/pages/booking';
 import { UnAllocated, Allocated, Completed, Cancelled } from '@/pages/Dispatch';
 import { AuthPage } from '@/auth';
 import { Demo1Layout } from '@/layouts/demo1';
@@ -109,6 +109,19 @@ const AppRoutingSetup = () => {
 						path='/booking/driver-tracking'
 						element={<DriverTracking />}
 					/>
+					<Route
+						path='/booking/availability'
+						element={<Availability />}
+					/>
+					<Route
+						path='/booking/availability-logs'
+						element={<AvailabilityLogs />}
+					/>
+					<Route
+						path='/booking/availability-report'
+						element={<AvailabilityReport />}
+					/>
+
 					<Route
 						path='/bookings/search-booking'
 						element={<NewBooking />}

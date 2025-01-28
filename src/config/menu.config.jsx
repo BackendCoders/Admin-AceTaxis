@@ -378,17 +378,17 @@ export const MENU_SIDEBAR = [
 	{
 		title: 'Availability',
 		icon: 'chart-simple-3',
-		path: '/availability/availability',
+		path: '/booking/availability',
 	},
 	{
 		title: 'Availability Logs',
 		icon: 'graph',
-		path: '/availability/availability-logs',
+		path: '/booking/availability-logs',
 	},
 	{
-		title: 'Availability Reports',
+		title: 'Availability Report',
 		icon: 'graph-up',
-		path: '/availability/availability-reports',
+		path: '/booking/availability-report',
 	},
 
 	{
