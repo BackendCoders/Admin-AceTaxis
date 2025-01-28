@@ -227,7 +227,7 @@ const AvailabilityReport = () => {
         ${
 					selectedTab === tab.id
 						? 'text-blue-500 dark:text-blue-400'
-						: 'text-gray-700 dark:text-gray-700'
+						: 'text-gray-600 dark:text-gray-700'
 				}`}
 					>
 						{tab.label}
