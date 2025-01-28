@@ -33,20 +33,20 @@ const AvailabilityLogs = () => {
 					</label>
 
 					<div className='flex items-center border border-gray-300 dark:border-gray-600 rounded-md px-2'>
-						<span className='px-6 text-lg font-semibold text-gray-900 dark:text-gray-500'>
+						<span className='px-6 text-lg font-semibold text-gray-600 dark:text-gray-500'>
 							{driverNumber}
 						</span>
 
 						{/* Buttons placed vertically */}
 						<div className='flex flex-col'>
 							<button
-								className='px-2 rounded-t-md hover:bg-gray-200  transition-all'
+								className='px-3 py-0.5 rounded-t-md hover:bg-gray-200  transition-all'
 								onClick={() => setDriverNumber(driverNumber + 1)}
 							>
 								<FaChevronUp />
 							</button>
 							<button
-								className='px-2 py-1 rounded-b-md hover:bg-gray-200  transition-all'
+								className='px-3 py-0.5 rounded-b-md hover:bg-gray-200  transition-all'
 								onClick={() => setDriverNumber(Math.max(0, driverNumber - 1))}
 							>
 								<FaChevronDown />

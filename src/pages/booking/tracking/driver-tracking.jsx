@@ -33,7 +33,7 @@ const DriverTracking = () => {
 	const [drivers, setDrivers] = useState([]);
 	const [mapCenter, setMapCenter] = useState({ lat: 51.075, lng: -1.8 }); // Default map center
 	const [mapZoom, setMapZoom] = useState(8); // Default zoom level
-	const [isBouncing, setIsBouncing] = useState(false); // Track bounce state
+	const [isBouncing, setIsBouncing] = useState(false); // Track bounce state\
 
 	// Function to fetch GPS data
 	const fetchGPSData = async () => {
@@ -123,7 +123,7 @@ const DriverTracking = () => {
 	return (
 		<Box className='p-4 space-y-6'>
 			{/* Header Section */}
-			<Box className='flex flex-col md:flex-row items-center justify-between bg-white p-4'>
+			<Box className='flex flex-col md:flex-row items-center justify-between p-4'>
 				{/* Title */}
 				<Typography
 					variant='h4'
@@ -173,20 +173,6 @@ const DriverTracking = () => {
 
 			{/* Search and Driver Selection Section */}
 			<Box className='flex flex-col lg:flex-row items-center space-y-4 lg:space-y-0 lg:space-x-4'>
-				{/* Search Box */}
-				{/* <Box className='w-full lg:w-1/3'>
-					<Typography className='mb-1 text-gray-600 font-medium'>
-						Search by Driver
-					</Typography>
-					<TextField
-						placeholder='Enter driver reg'
-						variant='outlined'
-						size='small'
-						fullWidth
-						onChange={(e) => setSearch(e.target.value)}
-					/>
-				</Box> */}
-
 				{/* Select Driver Dropdown */}
 				<Box className='w-full lg:w-1/4'>
 					<Typography className='mb-1 text-gray-600 font-medium'>
@@ -208,23 +194,6 @@ const DriverTracking = () => {
 							</MenuItem>
 						))}
 					</Select>
-				</Box>
-
-				{/* Action Buttons */}
-				<Box className='w-full lg:w-1/4 flex space-x-2'>
-					{/* <Button
-						variant='contained'
-						style={{ backgroundColor: '#6C63FF', width: '100%' }}
-					>
-						Find
-					</Button> */}
-					{/* <Button
-						variant='contained'
-						color='secondary'
-						style={{ width: '100%' }}
-					>
-						Re-Center
-					</Button> */}
 				</Box>
 			</Box>
 
