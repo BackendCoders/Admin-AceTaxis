@@ -12,8 +12,8 @@ import { Calendar } from '@/components/ui/calendar';
 import { format, addDays } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { KeenIcon } from '@/components/keenicons';
-import { FaChevronUp } from 'react-icons/fa';
-import { FaChevronDown } from 'react-icons/fa';
+import { IoChevronUpSharp } from 'react-icons/io5';
+import { IoChevronDownSharp } from 'react-icons/io5';
 
 const AvailabilityReport = () => {
 	const [selectedTab, setSelectedTab] = useState('monthHours');
@@ -111,7 +111,7 @@ const AvailabilityReport = () => {
 						title='Driver #'
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
-            className={` justify-center`}
+						className={` justify-center`}
 					/>
 				),
 				enableSorting: true,
@@ -131,7 +131,7 @@ const AvailabilityReport = () => {
 						title='Month'
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
-            className={` justify-center`}
+						className={` justify-center`}
 					/>
 				),
 				enableSorting: true,
@@ -150,7 +150,7 @@ const AvailabilityReport = () => {
 					<DataGridColumnHeader
 						title='Total Available Hours'
 						column={column}
-            className={` justify-center`}
+						className={` justify-center`}
 					/>
 				),
 				enableSorting: true,
@@ -187,13 +187,13 @@ const AvailabilityReport = () => {
 								className='px-2 dark:text-white rounded-t-md hover:bg-gray-300 transition-all'
 								onClick={() => setDriverNumber(driverNumber + 1)}
 							>
-								<FaChevronUp />
+								<IoChevronUpSharp />
 							</button>
 							<button
 								className='px-2  dark:text-white rounded-b-md hover:bg-gray-300 transition-all'
 								onClick={() => setDriverNumber(Math.max(0, driverNumber - 1))}
 							>
-								<FaChevronDown />
+								<IoChevronDownSharp />
 							</button>
 						</div>
 					</div>

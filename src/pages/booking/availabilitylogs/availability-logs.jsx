@@ -1,7 +1,7 @@
 /** @format */
 import { useState } from 'react';
-import { FaChevronUp } from 'react-icons/fa';
-import { FaChevronDown } from 'react-icons/fa';
+import { IoChevronUpSharp } from "react-icons/io5";
+import { IoChevronDownSharp } from "react-icons/io5";
 import {
 	Popover,
 	PopoverContent,
@@ -43,13 +43,13 @@ const AvailabilityLogs = () => {
 								className='px-3 py-0.5 rounded-t-md hover:bg-gray-200  transition-all'
 								onClick={() => setDriverNumber(driverNumber + 1)}
 							>
-								<FaChevronUp />
+								<IoChevronUpSharp />
 							</button>
 							<button
 								className='px-3 py-0.5 rounded-b-md hover:bg-gray-200  transition-all'
 								onClick={() => setDriverNumber(Math.max(0, driverNumber - 1))}
 							>
-								<FaChevronDown />
+								<IoChevronDownSharp  />
 							</button>
 						</div>
 					</div>
