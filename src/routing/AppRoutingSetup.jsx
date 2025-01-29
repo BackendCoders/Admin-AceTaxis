@@ -98,8 +98,8 @@ import {
 } from '@/pages/authentication';
 import { RequireAuth } from '../auth';
 import { ListLocalPoi } from '@/pages/localPoi';
-import { AddAccounts, ListAccounts } from '@/pages/accounts';
-import { RegisterDriver, ListDriver } from '@/pages/drivers';
+import { ListAccounts } from '@/pages/accounts';
+import { ListDriver } from '@/pages/drivers';
 import {
 	StateProcessing,
 	StatementHistory,
@@ -189,17 +189,10 @@ const AppRoutingSetup = () => {
 						element={<ListLocalPoi />}
 					/>
 					<Route
-						path='/accounts/add-account'
-						element={<AddAccounts />}
-					/>
-					<Route
 						path='/accounts/list-account'
 						element={<ListAccounts />}
 					/>
-					<Route
-						path='/drivers/register-driver'
-						element={<RegisterDriver />}
-					/>
+
 					<Route
 						path='/drivers/list-driver'
 						element={<ListDriver />}

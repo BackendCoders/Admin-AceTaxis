@@ -7,8 +7,7 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from '@/components/ui/dialog';
-
-function AddAccounts({ open, onOpenChange }) {
+function EditAccounts({ open, onOpenChange }) {
 	return (
 		<Dialog
 			open={open}
@@ -38,4 +37,4 @@ function AddAccounts({ open, onOpenChange }) {
 	);
 }
 
-export { AddAccounts };
+export { EditAccounts };
