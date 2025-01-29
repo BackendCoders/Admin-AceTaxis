@@ -96,7 +96,7 @@ import {
 	AuthenticationGetStartedPage,
 } from '@/pages/authentication';
 import { RequireAuth } from '../auth';
-import { AddLocalPoi, ListLocalPoi } from '@/pages/localPoi';
+import { ListLocalPoi } from '@/pages/localPoi';
 import { AddAccounts, ListAccounts } from '@/pages/accounts';
 import { RegisterDriver, ListDriver } from '@/pages/drivers';
 import {
@@ -178,10 +178,6 @@ const AppRoutingSetup = () => {
 					<Route
 						path='/dispatch/completed-jobs'
 						element={<Completed />}
-					/>
-					<Route
-						path='/localPOIs/add-local-Poi'
-						element={<AddLocalPoi />}
 					/>
 					<Route
 						path='/localPOIs/list-local-Poi'
