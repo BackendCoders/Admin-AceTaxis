@@ -15,7 +15,7 @@ const Demo1DarkSidebarPage = () => {
   return <Fragment>
       <Container>
         <Toolbar>
-          {/* <ToolbarHeading title="Dashboard" description="Central Hub for Personal Customization" /> */}
+          <ToolbarHeading title="Dashboard" description="Central Hub for Personal Customization" />
           <ToolbarActions>
             <Popover>
               <PopoverTrigger asChild>
