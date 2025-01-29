@@ -97,7 +97,7 @@ import {
 } from '@/pages/authentication';
 import { RequireAuth } from '../auth';
 import { ListLocalPoi } from '@/pages/localPoi';
-import { AddAccounts, ListAccounts } from '@/pages/accounts';
+import { ListAccounts } from '@/pages/accounts';
 import { RegisterDriver, ListDriver } from '@/pages/drivers';
 import {
 	StateProcessing,
@@ -182,10 +182,6 @@ const AppRoutingSetup = () => {
 					<Route
 						path='/localPOIs/list-local-Poi'
 						element={<ListLocalPoi />}
-					/>
-					<Route
-						path='/accounts/add-account'
-						element={<AddAccounts />}
 					/>
 					<Route
 						path='/accounts/list-account'
