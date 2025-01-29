@@ -11,3 +11,4 @@ export * from './tariff';
 export * from './availability';
 export * from './availabilitylogs';
 export * from './availabilityreport';
+export * from './cancelbyrange';

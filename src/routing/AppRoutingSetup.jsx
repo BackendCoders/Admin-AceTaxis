@@ -84,6 +84,7 @@ import {
 	AirportRuns,
 	CardBookings,
 	AuditBooking,
+	CancelByRange,
 	Tariff,
 } from '@/pages/booking';
 import { UnAllocated, Allocated, Completed, Cancelled } from '@/pages/dispatch';
@@ -154,6 +155,10 @@ const AppRoutingSetup = () => {
 					<Route
 						path='/bookings/audit-view'
 						element={<AuditBooking />}
+					/>
+					<Route 
+					  path='/bookings/cancelbyrange'
+					  element={<CancelByRange />}
 					/>
 					<Route
 						path='/bookings/airport-runs'
