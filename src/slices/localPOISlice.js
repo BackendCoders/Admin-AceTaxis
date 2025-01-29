@@ -8,7 +8,7 @@ const initialState = {
 	localPOI: null,
 };
 
-const localPoisSlice = createSlice({
+const localPoiSlice = createSlice({
 	name: 'localPoi',
 	initialState,
 	reducers: {
@@ -24,6 +24,6 @@ const localPoisSlice = createSlice({
 	},
 });
 
-export const { setLoading, setLocalPOIs, setLocalPOI } = localPoisSlice.actions;
+export const { setLoading, setLocalPOIs, setLocalPOI } = localPoiSlice.actions;
 
-export default localPoisSlice.reducer;
+export default localPoiSlice.reducer;

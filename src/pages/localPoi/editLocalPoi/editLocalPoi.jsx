@@ -7,7 +7,7 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from '@/components/ui/dialog';
-function AddLocalPoi({ open, onOpenChange }) {
+function EditLocalPoi({ open, onOpenChange }) {
 	return (
 		<Dialog
 			open={open}
@@ -37,4 +37,4 @@ function AddLocalPoi({ open, onOpenChange }) {
 	);
 }
 
-export { AddLocalPoi };
+export { EditLocalPoi };
