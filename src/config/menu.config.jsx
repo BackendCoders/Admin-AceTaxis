@@ -563,6 +563,10 @@ export const MENU_SIDEBAR = [
 				title: 'Card Bookings',
 				path: '/bookings/card-bookings',
 			},
+			{
+				title: 'Cancel Range',
+				path: '/bookings/cancelbyrange',
+			},
 			// {
 			// 	title: 'More',
 			// 	collapse: true,
