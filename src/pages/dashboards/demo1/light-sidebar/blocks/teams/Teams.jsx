@@ -173,20 +173,18 @@ const Teams = () => {
     const handleChange = event => {
       setInputValue(event.target.value); // Update local state
     };
-    return 
-    // <div className="card-header border-b-0 px-5">
-    //     <h3 className="card-title">Teams</h3>
-    //     <div className="input input-sm max-w-48">
-    //       <KeenIcon icon="magnifier" />
-    //       <input type="text" placeholder="Search Teams" value={inputValue} onChange={handleChange} onKeyDown={handleKeyDown} />
-    //     </div>
-    //   </div>;
+    return <div className="card-header border-b-0 px-5">
+        <h3 className="card-title">Teams</h3>
+        <div className="input input-sm max-w-48">
+          <KeenIcon icon="magnifier" />
+          <input type="text" placeholder="Search Teams" value={inputValue} onChange={handleChange} onKeyDown={handleKeyDown} />
+        </div>
+      </div>;
   };
-  return 
-  // <DataGrid columns={columns} serverSide={true} onFetchData={fetchTeams} rowSelection={true} getRowId={row => row.id} onRowSelectionChange={handleRowSelection} pagination={{
-  //   size: 5
-  // }} toolbar={<Toolbar setSearchQuery={setSearchQuery} />} layout={{
-  //   card: true
-  // }} />;
+  return   <DataGrid columns={columns} serverSide={true} onFetchData={fetchTeams} rowSelection={true} getRowId={row => row.id} onRowSelectionChange={handleRowSelection} pagination={{
+    size: 5
+  }} toolbar={<Toolbar setSearchQuery={setSearchQuery} />} layout={{
+    card: true
+  }} />;
 };
 export { Teams };

@@ -17,7 +17,7 @@ const EntryCallout = ({
         `}
       </style>
 
-      {/* <div className={`card h-full ${className}`}>
+      <div className={`card h-full ${className}`}>
         <div className="card-body p-10 bg-[length:80%] rtl:[background-position:-70%_25%] [background-position:175%_25%] bg-no-repeat entry-callout-bg">
           <div className="flex flex-col justify-center gap-4">
             <CommonAvatars size="size-10" group={[{
@@ -52,7 +52,7 @@ const EntryCallout = ({
             Get Started
           </Link>
         </div>
-      </div> */}
+      </div>
     </Fragment>;
 };
 export { EntryCallout };

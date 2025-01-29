@@ -169,51 +169,50 @@ const EarningsChart = () => {
 			},
 		},
 	};
-	return;
-	// <div className='card h-full'>
-	// 	<div className='card-header'>
-	// 		<h3 className='card-title'>Earnings</h3>
+	return <div className='card h-full'>
+		<div className='card-header'>
+			<h3 className='card-title'>Earnings</h3>
 
-	// 		<div className='flex items-center gap-5'>
-	// 			<label className='switch switch-sm'>
-	// 				<input
-	// 					name='check'
-	// 					type='checkbox'
-	// 					value='1'
-	// 					className='order-2'
-	// 					readOnly
-	// 				/>
-	// 				<span className='switch-label order-1'>Referrals only</span>
-	// 			</label>
+			<div className='flex items-center gap-5'>
+				<label className='switch switch-sm'>
+					<input
+						name='check'
+						type='checkbox'
+						value='1'
+						className='order-2'
+						readOnly
+					/>
+					<span className='switch-label order-1'>Referrals only</span>
+				</label>
 
-	// 			<Select defaultValue='1'>
-	// 				<SelectTrigger
-	// 					className='w-28'
-	// 					size='sm'
-	// 				>
-	// 					<SelectValue placeholder='Select' />
-	// 				</SelectTrigger>
-	// 				<SelectContent className='w-32'>
-	// 					<SelectItem value='1'>1 month</SelectItem>
-	// 					<SelectItem value='3'>3 months</SelectItem>
-	// 					<SelectItem value='6'>6 months</SelectItem>
-	// 					<SelectItem value='12'>12 months</SelectItem>
-	// 				</SelectContent>
-	// 			</Select>
-	// 		</div>
-	// 	</div>
-	// 	<div className='card-body flex flex-col justify-end items-stretch grow px-3 py-1'>
-	// 		{charData && (
-	// 			<ApexChart
-	// 				id='earnings_chart'
-	// 				options={options}
-	// 				series={options.series}
-	// 				type='area'
-	// 				max-width='694'
-	// 				height='250'
-	// 			/>
-	// 		)}
-	// 	</div>
-	// </div>;
+				<Select defaultValue='1'>
+					<SelectTrigger
+						className='w-28'
+						size='sm'
+					>
+						<SelectValue placeholder='Select' />
+					</SelectTrigger>
+					<SelectContent className='w-32'>
+						<SelectItem value='1'>1 month</SelectItem>
+						<SelectItem value='3'>3 months</SelectItem>
+						<SelectItem value='6'>6 months</SelectItem>
+						<SelectItem value='12'>12 months</SelectItem>
+					</SelectContent>
+				</Select>
+			</div>
+		</div>
+		<div className='card-body flex flex-col justify-end items-stretch grow px-3 py-1'>
+			{charData && (
+				<ApexChart
+					id='earnings_chart'
+					options={options}
+					series={options.series}
+					type='area'
+					max-width='694'
+					height='250'
+				/>
+			)}
+		</div>
+	</div>;
 };
 export { EarningsChart };
