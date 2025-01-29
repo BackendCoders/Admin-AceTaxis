@@ -99,6 +99,16 @@ import { RequireAuth } from '../auth';
 import { AddLocalPoi, ListLocalPoi } from '@/pages/localPoi';
 import { AddAccounts, ListAccounts } from '@/pages/accounts';
 import { RegisterDriver, ListDriver } from '@/pages/drivers';
+import {
+	StateProcessing,
+	StatementHistory,
+	InvoiceProcessor,
+	InvoiceHistory,
+	InvoiceDelete,
+	VatOutputs,
+} from '@/pages/billing&Payments';
+import { DriverEarningReport } from '@/pages/driverEarningReport';
+import { CompanySetting, MsgSettings } from '@/pages/bookingSettings';
 const AppRoutingSetup = () => {
 	return (
 		<Routes>
@@ -196,27 +206,27 @@ const AppRoutingSetup = () => {
 
 					<Route
 						path='/billing/driver/statement-processing'
-						element={<NewBooking />}
+						element={<StateProcessing />}
 					/>
 					<Route
 						path='/billing/driver/statement-history'
-						element={<NewBooking />}
+						element={<StatementHistory />}
 					/>
 					<Route
 						path='/billing/account/invoice-processor'
-						element={<NewBooking />}
+						element={<InvoiceProcessor />}
 					/>
 					<Route
 						path='/billing/account/invoice-history'
-						element={<NewBooking />}
+						element={<InvoiceHistory />}
 					/>
 					<Route
-						path='/billing/account/statement-delete'
-						element={<NewBooking />}
+						path='/billing/account/invoice-delete'
+						element={<InvoiceDelete />}
 					/>
 					<Route
 						path='/billing/vat-outputs'
-						element={<NewBooking />}
+						element={<VatOutputs />}
 					/>
 					<Route
 						path='/tariffs'
@@ -224,15 +234,15 @@ const AppRoutingSetup = () => {
 					/>
 					<Route
 						path='/driver-earning-report'
-						element={<NewBooking />}
+						element={<DriverEarningReport />}
 					/>
 					<Route
 						path='/setting/company-settings'
-						element={<NewBooking />}
+						element={<CompanySetting />}
 					/>
 					<Route
 						path='/setting/msg-settings'
-						element={<NewBooking />}
+						element={<MsgSettings />}
 					/>
 
 					<Route
