@@ -667,85 +667,78 @@ export const MENU_SIDEBAR = [
 	{
 		title: 'Drivers',
 		icon: 'users',
-		children: [
-			{
-				title: 'Register Driver',
-				path: '/drivers/register-driver',
-			},
-			{
-				title: 'List Driver',
-				path: '/drivers/list-driver',
-			},
-			// {
-			// 	title: 'User Cards',
-			// 	children: [
-			// 		{
-			// 			title: 'Mini Cards',
-			// 			path: '/network/user-cards/mini-cards',
-			// 		},
-			// 		{
-			// 			title: 'Team Crew',
-			// 			path: '/network/user-cards/team-crew',
-			// 		},
-			// 		{
-			// 			title: 'Author',
-			// 			path: '/network/user-cards/author',
-			// 		},
-			// 		{
-			// 			title: 'NFT',
-			// 			path: '/network/user-cards/nft',
-			// 		},
-			// 		{
-			// 			title: 'Social',
-			// 			path: '/network/user-cards/social',
-			// 		},
-			// 	],
-			// },
-			// {
-			// 	title: 'User Table',
-			// 	children: [
-			// 		{
-			// 			title: 'Team Crew',
-			// 			path: '/network/user-table/team-crew',
-			// 		},
-			// 		{
-			// 			title: 'App Roster',
-			// 			path: '/network/user-table/app-roster',
-			// 		},
-			// 		{
-			// 			title: 'Market Authors',
-			// 			path: '/network/user-table/market-authors',
-			// 		},
-			// 		{
-			// 			title: 'SaaS Users',
-			// 			path: '/network/user-table/saas-users',
-			// 		},
-			// 		{
-			// 			title: 'Store Clients',
-			// 			path: '/network/user-table/store-clients',
-			// 		},
-			// 		{
-			// 			title: 'Visitors',
-			// 			path: '/network/user-table/visitors',
-			// 		},
-			// 	],
-			// },
-			// {
-			// 	title: 'Cooperations',
-			// 	path: '/network/cooperations',
-			// 	disabled: true,
-			// },
-			// {
-			// 	title: 'Leads',
-			// 	path: '/network/leads',
-			// 	disabled: true,
-			// },
-			// {
-			// 	title: 'Donators',
-			// 	path: '/network/donators',
-			// 	disabled: true,
-			// },
-		],
+
+		path: '/drivers/list-driver',
+
+		// {
+		// 	title: 'User Cards',
+		// 	children: [
+		// 		{
+		// 			title: 'Mini Cards',
+		// 			path: '/network/user-cards/mini-cards',
+		// 		},
+		// 		{
+		// 			title: 'Team Crew',
+		// 			path: '/network/user-cards/team-crew',
+		// 		},
+		// 		{
+		// 			title: 'Author',
+		// 			path: '/network/user-cards/author',
+		// 		},
+		// 		{
+		// 			title: 'NFT',
+		// 			path: '/network/user-cards/nft',
+		// 		},
+		// 		{
+		// 			title: 'Social',
+		// 			path: '/network/user-cards/social',
+		// 		},
+		// 	],
+		// },
+		// {
+		// 	title: 'User Table',
+		// 	children: [
+		// 		{
+		// 			title: 'Team Crew',
+		// 			path: '/network/user-table/team-crew',
+		// 		},
+		// 		{
+		// 			title: 'App Roster',
+		// 			path: '/network/user-table/app-roster',
+		// 		},
+		// 		{
+		// 			title: 'Market Authors',
+		// 			path: '/network/user-table/market-authors',
+		// 		},
+		// 		{
+		// 			title: 'SaaS Users',
+		// 			path: '/network/user-table/saas-users',
+		// 		},
+		// 		{
+		// 			title: 'Store Clients',
+		// 			path: '/network/user-table/store-clients',
+		// 		},
+		// 		{
+		// 			title: 'Visitors',
+		// 			path: '/network/user-table/visitors',
+		// 		},
+		// 	],
+		// },
+		// {
+		// 	title: 'Cooperations',
+		// 	path: '/network/cooperations',
+		// 	disabled: true,
+		// },
+		// {
+		// 	title: 'Leads',
+		// 	path: '/network/leads',
+		// 	disabled: true,
+		// },
+		// {
+		// 	title: 'Donators',
+		// 	path: '/network/donators',
+		// 	disabled: true,
+		// },
 	},
 
 	{

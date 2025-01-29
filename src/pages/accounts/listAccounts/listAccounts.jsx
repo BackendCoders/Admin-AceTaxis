@@ -161,6 +161,21 @@ function ListAccounts() {
 	const columns = useMemo(
 		() => [
 			{
+				accessorKey: 'accountId',
+				header: ({ column }) => (
+					<DataGridColumnHeader
+						title='Acc #'
+						filter={<ColumnInputFilter column={column} />}
+						column={column}
+					/>
+				),
+				enableSorting: true,
+				cell: ({ row }) => (
+					<span className={`p-2 rounded-md`}>{row.original.accountId}</span>
+				),
+				meta: { headerClassName: 'w-20' },
+			},
+			{
 				accessorKey: 'name',
 				header: ({ column }) => (
 					<DataGridColumnHeader
@@ -174,6 +189,24 @@ function ListAccounts() {
 					<span className={`p-2 rounded-md`}>{row.original.name}</span>
 				),
 				meta: { headerClassName: 'w-20' },
+			},
+
+			{
+				accessorKey: 'address',
+				header: ({ column }) => (
+					<DataGridColumnHeader
+						title='Address'
+						filter={<ColumnInputFilter column={column} />}
+						column={column}
+					/>
+				),
+				enableSorting: true,
+				cell: ({ row }) => (
+					<span className={`font-medium ${row.original.color}`}>
+						{row.original.address}
+					</span>
+				),
+				meta: { headerClassName: 'min-w-[80px]' },
 			},
 			{
 				accessorKey: 'postcode',
@@ -193,10 +226,10 @@ function ListAccounts() {
 				meta: { headerClassName: 'min-w-[120px]' },
 			},
 			{
-				accessorKey: 'address',
+				accessorKey: 'email',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Address'
+						title='Email'
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -204,24 +237,7 @@ function ListAccounts() {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={`font-medium ${row.original.color}`}>
-						{row.original.address}
-					</span>
-				),
-				meta: { headerClassName: 'min-w-[80px]' },
-			},
-			{
-				accessorKey: 'type',
-				header: ({ column }) => (
-					<DataGridColumnHeader
-						title='Type'
-						filter={<ColumnInputFilter column={column} />}
-						column={column}
-					/>
-				),
-				enableSorting: true,
-				cell: ({ row }) => (
-					<span className={`font-medium ${row.original.color}`}>
-						{row.original.type}
+						{row.original.email}
 					</span>
 				),
 				meta: { headerClassName: 'min-w-[200px]' },

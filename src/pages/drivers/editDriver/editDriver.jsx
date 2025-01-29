@@ -7,7 +7,7 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from '@/components/ui/dialog';
-function RegisterDriver({ open, onOpenChange }) {
+function EditDriver({ open, onOpenChange }) {
 	return (
 		<Dialog
 			open={open}
@@ -37,4 +37,4 @@ function RegisterDriver({ open, onOpenChange }) {
 	);
 }
 
-export { RegisterDriver };
+export { EditDriver };
