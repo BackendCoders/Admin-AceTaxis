@@ -136,22 +136,7 @@ function DayEarning() {
 	const filteredData = tableData.filter((driver) =>
 		driver.fullname.toLowerCase().includes(searchQuery.toLowerCase())
 	);
-
-	// const fetchTeams = () => {
-	// 	if (!tableData) {
-	// 		return { data: [], totalCount: 0 };
-	// 	}
-	// 	// ✅ Filter Data Based on Search Query
-	// 	const filteredData = tableData.filter((driver) =>
-	// 		driver.fullname.toLowerCase().includes(searchQuery.toLowerCase())
-	// 	);
-
-	// 	return {
-	// 		data: filteredData,
-	// 		totalCount: filteredData.length, // Total count for pagination
-	// 	};
-	// };
-
+    
 	const handleRowSelection = (state) => {
 		const selectedRowIds = Object.keys(state);
 		if (selectedRowIds.length > 0) {
