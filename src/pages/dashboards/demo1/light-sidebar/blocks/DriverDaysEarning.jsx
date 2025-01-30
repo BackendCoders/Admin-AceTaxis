@@ -1,24 +1,22 @@
 /** @format */
-
 import { DataGrid, KeenIcon } from '@/components';
 import { toast } from 'sonner';
 import { useState, useMemo, useEffect } from 'react';
 
 import { useSelector } from 'react-redux';
 import isLightColor from '../../../../../utils/isLight';
-import { DayEarning } from './DriverDaysEarning';
-
-const EntryCallout = () => {
-	const { driverWeeksEarnings } = useSelector((state) => state.dashboard);
+function DayEarning() {
+	const { driverDaysEarnings } = useSelector((state) => state.dashboard);
 	const [searchQuery, setSearchQuery] = useState('');
 	const [tableData, setTableData] = useState([]);
-	console.log(driverWeeksEarnings);
+
+	console.log(driverDaysEarnings);
 
 	useEffect(() => {
-		if (driverWeeksEarnings) {
-			setTableData(driverWeeksEarnings);
+		if (driverDaysEarnings) {
+			setTableData(driverDaysEarnings);
 		}
-	}, [driverWeeksEarnings]);
+	}, [driverDaysEarnings]);
 
 	const columns = useMemo(
 		() => [
@@ -135,11 +133,24 @@ const EntryCallout = () => {
 		tableData?.reduce((acc, curr) => acc + (curr.takeHome || 0), 0) || 0;
 	const totalCommsSum =
 		tableData?.reduce((acc, curr) => acc + (curr.commission || 0), 0) || 0;
-
-	// ✅ Filter Data Based on Search Query
 	const filteredData = tableData.filter((driver) =>
 		driver.fullname.toLowerCase().includes(searchQuery.toLowerCase())
 	);
+
+	// const fetchTeams = () => {
+	// 	if (!tableData) {
+	// 		return { data: [], totalCount: 0 };
+	// 	}
+	// 	// ✅ Filter Data Based on Search Query
+	// 	const filteredData = tableData.filter((driver) =>
+	// 		driver.fullname.toLowerCase().includes(searchQuery.toLowerCase())
+	// 	);
+
+	// 	return {
+	// 		data: filteredData,
+	// 		totalCount: filteredData.length, // Total count for pagination
+	// 	};
+	// };
 
 	const handleRowSelection = (state) => {
 		const selectedRowIds = Object.keys(state);
@@ -166,7 +177,7 @@ const EntryCallout = () => {
 		};
 		return (
 			<div className='card-header border-b-0 px-5'>
-				<h3 className='card-title'>Weeks Totals</h3>
+				<h3 className='card-title'>Todays Totals</h3>
 				<div className='input input-sm max-w-48'>
 					<KeenIcon icon='magnifier' />
 					<input
@@ -183,8 +194,6 @@ const EntryCallout = () => {
 
 	return (
 		<>
-			<DayEarning />
-
 			<DataGrid
 				columns={columns}
 				data={filteredData}
@@ -198,7 +207,7 @@ const EntryCallout = () => {
 					card: true,
 				}}
 			/>
-			<div className='flex justify-end items-center mt-4 p-4 bg-gray-100 rounded-lg'>
+			<div className='flex justify-end items-center mt-4 p-4 bg-gray-100 rounded-lg mb-4'>
 				<div className='font-bold text-lg text-gray-800 flex gap-4'>
 					<span>Total Earnings:</span>
 					<div className='flex items-center gap-1'>
@@ -212,5 +221,6 @@ const EntryCallout = () => {
 			</div>
 		</>
 	);
-};
-export { EntryCallout };
+}
+
+export { DayEarning };

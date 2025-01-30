@@ -45,3 +45,7 @@ export const bookingsEndpoints = {
 export const gpsEndpoints = {
 	GET_ALL_GPS: `${BASE}/api/UserProfile/GetAllGPS`,
 };
+
+export const dashBoardEndpoints = {
+	GET_DASHBOARD: `${BASE}/api/AdminUI/Dashboard`,
+};
