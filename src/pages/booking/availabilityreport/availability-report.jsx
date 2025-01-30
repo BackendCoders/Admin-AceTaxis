@@ -208,7 +208,7 @@ const AvailabilityReport = () => {
 			</div>
 
 			{/* Swap Buttons - Centered */}
-			<div className='mt-6 flex justify-center gap-6 border-b border-gray-300 dark:border-gray-200'>
+			<div className='mt-6 flex justify-center gap-6 border-gray-300 dark:border-gray-200'>
 				{[
 					{ id: 'monthHours', label: '📌 MONTH HOURS', color: 'bg-green-400' },
 					{ id: 'weekHours', label: '🔧 WEEK# HOURS', color: 'bg-yellow-400' },
@@ -226,7 +226,7 @@ const AvailabilityReport = () => {
 					<button
 						key={tab.id}
 						onClick={() => handleTabClick(tab.id)}
-						className={`relative px-5 pb-2 flex items-center gap-2 text-base font-medium transition-all duration-300
+						className={`relative px-5 pb-2 flex items-center gap-2 text-base text-sm font-medium transition-all duration-300
         ${
 					selectedTab === tab.id
 						? 'text-blue-500 dark:text-blue-400'
