@@ -428,7 +428,7 @@ function SearchBooking() {
 											<KeenIcon icon='magnifier' />
 											<input
 												type='text'
-												placeholder='Search Accounts'
+												placeholder='Search Booking'
 												value={searchInput}
 												onChange={(e) => setSearchInput(e.target.value)}
 											/>
@@ -478,17 +478,17 @@ function SearchBooking() {
 											</PopoverContent>
 										</Popover>
 									</div>
-
 									<Select defaultValue='all'>
 										<SelectTrigger
-											className='w-38'
+											className='w-28'
 											size='sm'
 											style={{ height: '40px' }}
 										>
-											<SelectValue placeholder='Select' />
+											<SelectValue
+												placeholder='Select Driver'
+											/>
 										</SelectTrigger>
 										<SelectContent className='w-32'>
-											<SelectItem value='all'>Search by Driver</SelectItem>
 											<SelectItem value='all'>All</SelectItem>
 											<SelectItem value='cash'>Unallocated</SelectItem>
 											<SelectItem value='card'>kate hall</SelectItem>
@@ -499,14 +499,13 @@ function SearchBooking() {
 
 									<Select defaultValue='all'>
 										<SelectTrigger
-											className='w-38'
+											className='w-28'
 											size='sm'
 											style={{ height: '40px' }}
 										>
-											<SelectValue placeholder='Select' />
+											<SelectValue placeholder='Select Priced' />
 										</SelectTrigger>
 										<SelectContent className='w-32'>
-											<SelectItem value='all'>Search by Priced</SelectItem>
 											<SelectItem value='all'>All</SelectItem>
 											<SelectItem value='cash'>Without Price </SelectItem>
 											<SelectItem value='card'>Price</SelectItem>
@@ -515,14 +514,13 @@ function SearchBooking() {
 
 									<Select defaultValue='all'>
 										<SelectTrigger
-											className='w-38'
+											className='w-28'
 											size='sm'
 											style={{ height: '40px' }}
 										>
-											<SelectValue placeholder='Select' />
+											<SelectValue placeholder='Select Scope' />
 										</SelectTrigger>
 										<SelectContent className='w-32'>
-											<SelectItem value='all'>Search by Scope</SelectItem>
 											<SelectItem value='all'>All</SelectItem>
 											<SelectItem value='cash'>Cash</SelectItem>
 											<SelectItem value='card'>Card</SelectItem>
