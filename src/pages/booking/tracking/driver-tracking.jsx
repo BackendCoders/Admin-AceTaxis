@@ -175,7 +175,7 @@ const DriverTracking = () => {
 			<Box className='flex flex-col lg:flex-row items-center space-y-4 lg:space-y-0 lg:space-x-4'>
 				{/* Select Driver Dropdown */}
 				<Box className='w-full lg:w-1/4'>
-					<Typography className='mb-1 text-gray-600 font-medium'>
+					<Typography className='mb-1 text-gray-800 dark:text-gray-700 font-medium'>
 						Select Driver
 					</Typography>
 					<Select
@@ -183,12 +183,38 @@ const DriverTracking = () => {
 						onChange={(e) => handleDriverSelection(e.target.value)}
 						size='small'
 						fullWidth
+						sx={{
+							'borderColor': 'gray',
+							'color': 'gray',
+							'& .MuiOutlinedInput-notchedOutline': {
+								borderColor: 'gray',
+							},
+							'&:hover .MuiOutlinedInput-notchedOutline': {
+								borderColor: 'gray',
+							},
+							'&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+								borderColor: 'gray',
+							},
+							'& .MuiSelect-icon': {
+								color: 'gray',
+							},
+							'& .MuiSelect-select': {
+								color: 'gray',
+							},
+						}}
+						className=' dark:border-gray-700 dark:text-gray-400 rounded-md'
 					>
-						<MenuItem value='All'>All</MenuItem>
+						<MenuItem
+							value='All'
+							className='text-gray-700 dark:text-gray-400'
+						>
+							All
+						</MenuItem>
 						{drivers.map((driver) => (
 							<MenuItem
 								key={driver.userId}
 								value={driver.regNo}
+								className='text-gray-700 dark:text-gray-400'
 							>
 								{driver.username} / {driver.regNo}
 							</MenuItem>
