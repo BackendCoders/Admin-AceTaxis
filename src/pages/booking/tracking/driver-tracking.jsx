@@ -13,10 +13,17 @@ import {
 	// TableHead,
 	// TableRow,
 	// Paper,
-	Select,
-	MenuItem,
+	// Select,
+	// MenuItem,
 	Box,
 } from '@mui/material';
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from '@/components/ui/select';
 import {
 	DataGrid,
 	DataGridColumnHeader,
@@ -35,8 +42,8 @@ const DriverTracking = () => {
 		googleMapsApiKey: `${apiKey}`, // Replace with your actual API key
 	});
 
-	const [search, setSearch] = useState('');
-	const [selectedDriver, setSelectedDriver] = useState('All');
+	const search = '';
+	const [selectedDriver, setSelectedDriver] = useState('all');
 	const [drivers, setDrivers] = useState([]);
 	const [mapCenter, setMapCenter] = useState({ lat: 51.075, lng: -1.8 }); // Default map center
 	const [mapZoom, setMapZoom] = useState(8); // Default zoom level
@@ -112,7 +119,7 @@ const DriverTracking = () => {
 	};
 
 	const filteredDrivers =
-		selectedDriver === 'All'
+		selectedDriver === 'all'
 			? drivers.filter((driver) =>
 					driver.regNo?.toLowerCase().includes(search.toLowerCase())
 				)
@@ -181,51 +188,31 @@ const DriverTracking = () => {
 			{/* Search and Driver Selection Section */}
 			<Box className='flex flex-col lg:flex-row items-center space-y-4 lg:space-y-0 lg:space-x-4'>
 				{/* Select Driver Dropdown */}
-				<Box className='w-full lg:w-1/4'>
+				<Box className='w-full lg:w-[15%]'>
 					<Typography className='mb-1 text-gray-800 dark:text-gray-700 font-medium'>
 						Select Driver
 					</Typography>
+
 					<Select
 						value={selectedDriver}
-						onChange={(e) => handleDriverSelection(e.target.value)}
-						size='small'
-						fullWidth
-						sx={{
-							'borderColor': 'gray',
-							'color': 'gray',
-							'& .MuiOutlinedInput-notchedOutline': {
-								borderColor: 'gray',
-							},
-							'&:hover .MuiOutlinedInput-notchedOutline': {
-								borderColor: 'gray',
-							},
-							'&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-								borderColor: 'gray',
-							},
-							'& .MuiSelect-icon': {
-								color: 'gray',
-							},
-							'& .MuiSelect-select': {
-								color: 'gray',
-							},
-						}}
-						className=' dark:border-gray-700 dark:text-gray-400 rounded-md'
+						onValueChange={(value) => handleDriverSelection(value)} // Custom select uses onValueChange instead of onChange
 					>
-						<MenuItem
-							value='All'
-							className='text-gray-700 dark:text-gray-400'
-						>
-							All
-						</MenuItem>
-						{drivers.map((driver) => (
-							<MenuItem
-								key={driver.userId}
-								value={driver.regNo}
-								className='text-gray-700 dark:text-gray-400'
-							>
-								{driver.username} / {driver.regNo}
-							</MenuItem>
-						))}
+						<SelectTrigger>
+							<SelectValue placeholder='Select Driver' />
+						</SelectTrigger>
+
+						<SelectContent>
+							<SelectItem value='all'>All</SelectItem>
+
+							{drivers.map((driver) => (
+								<SelectItem
+									key={driver.userId}
+									value={driver.regNo}
+								>
+									{driver.username} / {driver.regNo}
+								</SelectItem>
+							))}
+						</SelectContent>
 					</Select>
 				</Box>
 			</Box>
