@@ -1,7 +1,7 @@
 /** @format */
 import { useState } from 'react';
-import { IoChevronUpSharp } from "react-icons/io5";
-import { IoChevronDownSharp } from "react-icons/io5";
+import { IoChevronUpSharp } from 'react-icons/io5';
+import { IoChevronDownSharp } from 'react-icons/io5';
 import {
 	Popover,
 	PopoverContent,
@@ -26,30 +26,32 @@ const AvailabilityLogs = () => {
 			{/* Filter Inputs */}
 			<div className='flex flex-wrap items-center gap-4 mt-4'>
 				{/* Driver Number Selection */}
-				<div className='flex flex-col'>
+				<div className='flex flex-col gap-1'>
 					{/* Improved Label Styling */}
-					<label className='text-gray-800 dark:text-gray-300 text-sm font-medium mb-1'>
-						Driver Number
-					</label>
+					<label className='form-label text-gray-900'>Driver Number</label>
 
-					<div className='flex items-center border border-gray-300 dark:border-gray-600 rounded-md px-2'>
-						<span className='px-6 text-lg font-semibold text-gray-600 dark:text-gray-500'>
-							{driverNumber}
-						</span>
+					<div className='flex items-center border rounded-md px-2 py-1 dark:bg-[#1F212A] border-gray-300 dark:border-gray-300 hover:shadow-md'>
+						<span className='px-4 text-xs font-medium'>{driverNumber}</span>
 
 						{/* Buttons placed vertically */}
 						<div className='flex flex-col'>
 							<button
-								className='px-3 py-0.5 rounded-t-md hover:bg-gray-200  transition-all'
+								className='px-2 dark:text-white rounded-t-md hover:bg-gray-300 transition-all'
 								onClick={() => setDriverNumber(driverNumber + 1)}
 							>
-								<IoChevronUpSharp />
+								<IoChevronUpSharp
+									fontSize='14'
+									className='dark:text-[#9A9CAE]'
+								/>
 							</button>
 							<button
-								className='px-3 py-0.5 rounded-b-md hover:bg-gray-200  transition-all'
+								className='px-2  dark:text-white rounded-b-md hover:bg-gray-300 transition-all'
 								onClick={() => setDriverNumber(Math.max(0, driverNumber - 1))}
 							>
-								<IoChevronDownSharp  />
+								<IoChevronDownSharp
+									fontSize='14'
+									className='dark:text-[#9A9CAE]'
+								/>
 							</button>
 						</div>
 					</div>
@@ -60,14 +62,17 @@ const AvailabilityLogs = () => {
 					{/* Added Label for Date Picker */}
 					<label
 						htmlFor='date'
-						className='text-gray-800 dark:text-gray-300 text-sm font-medium'
+						className='form-label text-gray-900'
 					>
 						Date
 					</label>
 
 					<div className='flex items-center gap-2 relative'>
 						<Popover>
-							<PopoverTrigger asChild>
+							<PopoverTrigger
+								asChild
+								className='h-[2.27rem]'
+							>
 								<button
 									id='date'
 									className={cn(
