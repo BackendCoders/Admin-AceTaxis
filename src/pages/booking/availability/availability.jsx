@@ -74,7 +74,7 @@ const Availability = () => {
 			</div>
 
 			{/* Swap Buttons */}
-			<div className='grid grid-cols-4 gap-2 mt-4 border border-gray-300 dark:border-gray-700 rounded-md overflow-hidden'>
+			<div className='grid grid-cols-4 gap-2 mt-4 border border-gray-300 dark:border-gray-200 rounded-md overflow-hidden'>
 				{['Custom', 'SR AM Only', 'SR PM Only', 'SR Only'].map((option) => (
 					<button
 						key={option}
@@ -118,7 +118,7 @@ const Availability = () => {
 							</label>
 							<input
 								type='time'
-								className='border border-gray-400 dark:border-gray-600 p-2 rounded-md w-full 
+								className='border border-gray-400 dark:border-gray-200 p-2 rounded-md w-full 
       text-gray-500 dark:text-gray-500 focus:ring-2 focus:ring-blue-500 focus:outline-none transition bg-transparent'
 							/>
 						</div>
@@ -130,7 +130,7 @@ const Availability = () => {
 							</label>
 							<input
 								type='time'
-								className='border border-gray-400 dark:border-gray-600 p-2 rounded-md w-full 
+								className='border border-gray-400 dark:border-gray-200 p-2 rounded-md w-full 
       text-gray-500 dark:text-gray-500 focus:ring-2 focus:ring-blue-500 focus:outline-none transition bg-transparent'
 							/>
 						</div>
@@ -142,7 +142,7 @@ const Availability = () => {
 							Note
 						</label>
 						<textarea
-							className='border border-gray-400 dark:border-gray-600 p-2 mt-1 w-full rounded-md
+							className='border border-gray-400 dark:border-gray-200 p-2 mt-1 w-full rounded-md
       text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:outline-none transition bg-transparent'
 							placeholder='e.g., Locals Only..'
 						></textarea>
