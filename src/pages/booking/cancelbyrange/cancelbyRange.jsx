@@ -26,21 +26,26 @@ const CancelByRange = () => {
 			{/* Filter Inputs */}
 			<div className='flex flex-wrap items-center gap-4 mt-4'>
 				{/* Driver Number Selection */}
-				<div className='flex flex-col'>
-					{/* Account Number Label */}
-					<label className='text-gray-800 dark:text-gray-300 text-sm font-medium mb-1'>
+
+				<div className='flex flex-col gap-1'>
+					<label
+						htmlFor='date'
+						className='form-label text-gray-900'
+					>
 						Account Number
 					</label>
-
-					{/* Editable Input Box */}
-					<input
-						type='number'
-						name='driverNumber'
-						value={driverNumber}
-						onChange={(e) => setDriverNumber(e.target.value)}
-						className='input border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 w-44 text-sm font-semibold text-gray-600 dark:text-gray-800'
-						placeholder='Enter Number'
-					/>
+					<label
+						className='input input-sm'
+						style={{ height: '40px' }}
+					>
+						<input
+							type='number'
+							name='driverNumber'
+							placeholder='Enter Number'
+							value={driverNumber}
+							onChange={(e) => setDriverNumber(e.target.value)}
+						/>
+					</label>
 				</div>
 
 				{/* Date Picker */}
@@ -48,7 +53,7 @@ const CancelByRange = () => {
 					{/* Added Label for Date Picker */}
 					<label
 						htmlFor='date'
-						className='text-gray-800 dark:text-gray-300 text-sm font-medium'
+						className='form-label text-gray-900'
 					>
 						Date
 					</label>
@@ -90,7 +95,7 @@ const CancelByRange = () => {
 						<div className='flex justify-end'>
 							<button
 								type='submit'
-								className='bg-green-700 hover:bg-green-900 text-sm text-white font-semibold px-6 py-2 rounded-md shadow-md transition-all'
+								className='btn btn-sm btn-primary px-4 py-4'
 							>
 								CANCEL JOBS
 							</button>
