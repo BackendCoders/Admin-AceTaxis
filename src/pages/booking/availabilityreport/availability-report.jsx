@@ -1,7 +1,7 @@
 /** @format */
 
 import { useState, useMemo } from 'react';
-import { DataGrid, DataGridColumnHeader, useDataGrid } from '@/components';
+import { DataGrid, DataGridColumnHeader } from '@/components';
 import { Input } from '@/components/ui/input';
 import {
 	Popover,
@@ -9,7 +9,7 @@ import {
 	PopoverTrigger,
 } from '@/components/ui/popover';
 import { Calendar } from '@/components/ui/calendar';
-import { format, addDays } from 'date-fns';
+import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { KeenIcon } from '@/components/keenicons';
 import { IoChevronUpSharp } from 'react-icons/io5';
@@ -164,7 +164,7 @@ const AvailabilityReport = () => {
 	);
 
 	return (
-		<div className='p-6 rounded-lg'>
+		<div className='pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1580px] w-full'>
 			{/* Header Section */}
 			<div className='flex justify-between items-center'>
 				<h2 className='text-2xl font-semibold dark:text-white'>

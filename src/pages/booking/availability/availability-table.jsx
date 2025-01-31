@@ -8,9 +8,9 @@ import { useMemo, useState } from 'react';
 import {
 	DataGrid,
 	DataGridColumnHeader,
-	useDataGrid,
-	DataGridRowSelectAll,
-	DataGridRowSelect,
+	// useDataGrid,
+	// DataGridRowSelectAll,
+	// DataGridRowSelect,
 } from '@/components';
 import {
 	Select,
@@ -208,7 +208,6 @@ const AvailabilityTable = () => {
 	};
 
 	const Toolbar = () => {
-		const { table } = useDataGrid();
 		const [searchInput, setSearchInput] = useState('');
 		return (
 			<div className='card-header flex-wrap gap-2 border-b-0 px-5'>

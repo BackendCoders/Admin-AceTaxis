@@ -1,7 +1,7 @@
 /** @format */
 
 import { Fragment, useState } from 'react';
-import { Container } from '@/components/container';
+// import { Container } from '@/components/container';
 import {
 	Toolbar,
 	ToolbarActions,
@@ -24,7 +24,7 @@ const Demo1LightSidebarPage = () => {
 	});
 	return (
 		<Fragment>
-			<Container>
+			<div className=' pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1580px] w-full'>
 				<Toolbar>
 					<ToolbarHeading
 						title='Dashboard'
@@ -74,11 +74,11 @@ const Demo1LightSidebarPage = () => {
 						</Popover>
 					</ToolbarActions>
 				</Toolbar>
-			</Container>
+			</div>
 
-			<Container>
+			<div className=' pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1580px] w-full'>
 				<Demo1LightSidebarContent />
-			</Container>
+			</div>
 		</Fragment>
 	);
 };

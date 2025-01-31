@@ -15,7 +15,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
-import { Container } from '@/components/container';
+// import { Container } from '@/components/container';
 import {
 	Popover,
 	PopoverContent,
@@ -281,15 +281,15 @@ function StatementHistory() {
 
 	return (
 		<Fragment>
-			<Container>
+			<div className='pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1580px] w-full'>
 				<Toolbar>
 					<ToolbarHeading>
 						<ToolbarPageTitle />
 						<ToolbarDescription>Showing {'23'} Local POIs </ToolbarDescription>
 					</ToolbarHeading>
 				</Toolbar>
-			</Container>
-			<Container>
+			</div>
+			<div className='pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1580px] w-full'>
 				<div className='flex flex-col items-stretch gap-5 lg:gap-7.5'>
 					<div className='flex flex-wrap items-center gap-5 justify-between'>
 						<div className='card card-grid min-w-full'>
@@ -393,7 +393,7 @@ function StatementHistory() {
 						</div>
 					</div>
 				</div>
-			</Container>
+			</div>
 		</Fragment>
 	);
 }

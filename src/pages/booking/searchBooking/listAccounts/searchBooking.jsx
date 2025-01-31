@@ -16,7 +16,7 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
-import { Container } from '@/components/container';
+// import { Container } from '@/components/container';
 import {
 	Popover,
 	PopoverContent,
@@ -28,9 +28,9 @@ import { cn } from '@/lib/utils';
 import {
 	DataGrid,
 	DataGridColumnHeader,
-	useDataGrid,
-	DataGridRowSelectAll,
-	DataGridRowSelect,
+	// useDataGrid,
+	// DataGridRowSelectAll,
+	// DataGridRowSelect,
 } from '@/components';
 import { addDays } from 'date-fns';
 import { Input } from '@/components/ui/input';
@@ -38,7 +38,7 @@ import { useDispatch } from 'react-redux';
 import { AddAccounts } from '../addAccounts';
 import { EditAccounts } from '../editAccounts';
 import { DeleteAccounts } from '../deleteAccounts';
-// import { setAccount } from '../../../slices/accountSlice';
+import { setAccount } from '../../../../slices/accountSlice';
 function SearchBooking() {
 	const dispatch = useDispatch();
 	const [searchInput, setSearchInput] = useState('');
@@ -398,7 +398,7 @@ function SearchBooking() {
 
 	return (
 		<Fragment>
-			<Container>
+			<div className='pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1580px] w-full'>
 				<Toolbar>
 					<ToolbarHeading>
 						<ToolbarPageTitle />
@@ -413,8 +413,8 @@ function SearchBooking() {
 						</button>
 					</ToolbarActions>
 				</Toolbar>
-			</Container>
-			<Container>
+			</div>
+			<div className='pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1580px] w-full'>
 				<div className='flex flex-col items-stretch gap-5 lg:gap-7.5'>
 					<div className='flex flex-wrap items-center gap-5 justify-between'>
 						<div className='card card-grid min-w-full'>
@@ -553,7 +553,7 @@ function SearchBooking() {
 						</div>
 					</div>
 				</div>
-			</Container>
+			</div>
 			{createAccountModal && (
 				<AddAccounts
 					open={createAccountModal}

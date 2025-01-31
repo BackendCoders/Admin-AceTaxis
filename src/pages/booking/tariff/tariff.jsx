@@ -8,7 +8,7 @@ import { useMemo, useState } from "react";
 import {
   DataGrid,
   DataGridColumnHeader,
-  useDataGrid,
+  // useDataGrid,
 } from "@/components";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -170,7 +170,7 @@ const Tariff = () => {
   };
 
   return (
-    <div className="container mx-auto mt-8 p-6">
+    <div className='pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1580px] w-full'>
       <h2 className="text-2xl font-semibold text-gray-700 mb-8">Tariff Configuration</h2>
 
       {/* Table */}

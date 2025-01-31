@@ -21,14 +21,14 @@ import {
 	EmailOutlined,
 } from '@mui/icons-material';
 import { format } from 'date-fns';
-import { Container } from '@/components/container';
-import {
-	Select,
-	SelectTrigger,
-	SelectContent,
-	SelectItem,
-	SelectValue,
-} from '@/components/ui/select';
+// import { Container } from '@/components/container';
+// import {
+// 	Select,
+// 	SelectTrigger,
+// 	SelectContent,
+// 	SelectItem,
+// 	SelectValue,
+// } from '@/components/ui/select';
 import { Calendar } from '@/components/ui/calendar';
 import {
 	Popover,
@@ -202,7 +202,7 @@ function CardBookings() {
 
 	return (
 		<Fragment>
-			<Container>
+			<div className='pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1580px] w-full'>
 				<Typography
 					variant='h5'
 					fontWeight='bold'
@@ -293,7 +293,7 @@ function CardBookings() {
 						</TableBody>
 					</Table>
 				</TableContainer>
-			</Container>
+			</div>
 		</Fragment>
 	);
 }

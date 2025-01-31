@@ -16,7 +16,7 @@ import { KeenIcon } from '@/components';
 // 	SelectTrigger,
 // 	SelectValue,
 // } from '@/components/ui/select';
-import { Container } from '@/components/container';
+// import { Container } from '@/components/container';
 // import {
 // 	Popover,
 // 	PopoverContent,
@@ -294,7 +294,7 @@ function ListLocalPoi() {
 
 	return (
 		<Fragment>
-			<Container>
+			<div className='pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1580px] w-full'>
 				<Toolbar>
 					<ToolbarHeading>
 						<ToolbarPageTitle />
@@ -309,8 +309,8 @@ function ListLocalPoi() {
 						</button>
 					</ToolbarActions>
 				</Toolbar>
-			</Container>
-			<Container>
+			</div>
+			<div className='pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1580px] w-full'>
 				<div className='flex flex-col items-stretch gap-5 lg:gap-7.5'>
 					<div className='flex flex-wrap items-center gap-5 justify-between'>
 						<div className='card card-grid min-w-full'>
@@ -407,7 +407,7 @@ function ListLocalPoi() {
 						</div>
 					</div>
 				</div>
-			</Container>
+			</div>
 			{createLocalPoiModal && (
 				<AddLocalPoi
 					open={createLocalPoiModal}
