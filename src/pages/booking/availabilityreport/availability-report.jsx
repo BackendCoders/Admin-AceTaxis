@@ -32,19 +32,22 @@ const AvailabilityReport = () => {
 	// ✅ Date Picker Component with Default Dates
 	const DateRangePicker = ({ dateRange, setDateRange }) => (
 		<div className='flex flex-col'>
-			<label className='text-gray-800 text-sm font-medium'>Date Range</label>
+			<label className='form-label text-gray-900'>Date Range</label>
 
 			<Popover>
-				<PopoverTrigger asChild>
+				<PopoverTrigger
+					asChild
+					className='h-9'
+				>
 					<button
 						className={cn(
-							'flex items-center gap-2 border px-4 py-2 rounded-md  transition-all',
+							'btn btn-sm btn-light data-[state=open]:bg-light-active',
 							!dateRange && 'text-gray-400'
 						)}
 					>
 						<KeenIcon
 							icon='calendar'
-							className='text-gray-600'
+							className='me-0.5'
 						/>
 						{dateRange?.from ? (
 							dateRange.to ? (
@@ -62,7 +65,7 @@ const AvailabilityReport = () => {
 				</PopoverTrigger>
 
 				<PopoverContent
-					className='w-auto p-2 shadow-md rounded-lg'
+					className='w-auto p-0'
 					align='end'
 				>
 					<Calendar
@@ -176,24 +179,28 @@ const AvailabilityReport = () => {
 			<div className='flex items-center gap-4 mt-4'>
 				{/* Driver Number */}
 				<div className='flex flex-col'>
-					<label className='text-gray-800 dark:text-gray-800 text-sm font-medium'>
-						Driver Number
-					</label>
-					<div className='flex items-center border rounded-md px-2 py-1'>
-						<span className='px-6 text-lg'>{driverNumber}</span>
+					<label className='form-label text-gray-900'>Driver Number</label>
+					<div className='flex items-center border rounded-md px-2 py-1 dark:bg-[#1F212A] border-gray-300 dark:border-gray-300 hover:shadow-md'>
+						<span className='px-4 text-xs font-medium'>{driverNumber}</span>
 						{/* Buttons placed vertically */}
 						<div className='flex flex-col'>
 							<button
 								className='px-2 dark:text-white rounded-t-md hover:bg-gray-300 transition-all'
 								onClick={() => setDriverNumber(driverNumber + 1)}
 							>
-								<IoChevronUpSharp />
+								<IoChevronUpSharp
+									fontSize='14'
+									className='dark:text-[#9A9CAE]'
+								/>
 							</button>
 							<button
 								className='px-2  dark:text-white rounded-b-md hover:bg-gray-300 transition-all'
 								onClick={() => setDriverNumber(Math.max(0, driverNumber - 1))}
 							>
-								<IoChevronDownSharp />
+								<IoChevronDownSharp
+									fontSize='14'
+									className='dark:text-[#9A9CAE]'
+								/>
 							</button>
 						</div>
 					</div>
