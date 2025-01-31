@@ -6,17 +6,24 @@ import {
 	Typography,
 	// TextField,
 	// Button,
-	Table,
-	TableBody,
-	TableCell,
-	TableContainer,
-	TableHead,
-	TableRow,
-	Paper,
+	// Table,
+	// TableBody,
+	// TableCell,
+	// TableContainer,
+	// TableHead,
+	// TableRow,
+	// Paper,
 	Select,
 	MenuItem,
 	Box,
 } from '@mui/material';
+import {
+	DataGrid,
+	DataGridColumnHeader,
+	// useDataGrid,
+	// DataGridRowSelectAll,
+	// DataGridRowSelect,
+} from '@/components';
 
 import { gstAllGPS } from '../../../service/operations/gpsApi';
 // import carImg from '../../../../public/media/images/car/gps-navigation.png';
@@ -271,53 +278,119 @@ const DriverTracking = () => {
 				</Box>
 
 				{/* Table Section */}
+				{/* Updated Table section design */}
 				<Box
-					className='rounded-lg shadow-md border border-gray-200 bg-white overflow-hidden'
-					style={{ flex: '35%' }}
+					className='rounded-lg shadow-md overflow-hidden'
+					style={{ flex: '43%' }}
 				>
-					<TableContainer
-						component={Paper}
-						className='h-full'
-					>
-						<Table stickyHeader>
-							<TableHead>
-								<TableRow>
-									<TableCell>#</TableCell>
-									<TableCell>Name</TableCell>
-									<TableCell>Reg</TableCell>
-									<TableCell>Last Updated</TableCell>
-									<TableCell>Speed (km/h)</TableCell>
-								</TableRow>
-							</TableHead>
-							<TableBody>
-								{filteredDrivers.map((driver) => (
-									<TableRow key={driver.userId}>
-										<TableCell>{driver.userId}</TableCell>
-										<TableCell>{driver.username || 'N/A'}</TableCell>
-										<TableCell>{driver.regNo || 'N/A'}</TableCell>
-										<TableCell>
-											{driver.gpsLastUpdated
-												? new Date(driver.gpsLastUpdated).toLocaleTimeString(
-														'en-US',
-														{
+					<div className='card card-grid min-w-full'>
+						<div className='card-header flex-wrap gap-2'>
+							<Typography
+								variant='h6'
+								className='font-bold text-gray-800'
+							>
+								Driver List
+							</Typography>
+						</div>
+
+						<div className='card-body'>
+							<DataGrid
+								columns={[
+									{
+										accessorKey: 'userId',
+										header: ({ column }) => (
+											<DataGridColumnHeader
+												title='#'
+												column={column}
+											/>
+										),
+										enableSorting: true,
+										cell: ({ row }) => <span>{row.original.userId}</span>,
+										meta: { headerClassName: 'w-20' },
+									},
+									{
+										accessorKey: 'username',
+										header: ({ column }) => (
+											<DataGridColumnHeader
+												title='Name'
+												column={column}
+											/>
+										),
+										enableSorting: true,
+										cell: ({ row }) => (
+											<span className='font-medium'>
+												{row.original.username || 'N/A'}
+											</span>
+										),
+										meta: { headerClassName: 'min-w-[120px]' },
+									},
+									{
+										accessorKey: 'regNo',
+										header: ({ column }) => (
+											<DataGridColumnHeader
+												title='Reg No'
+												column={column}
+											/>
+										),
+										enableSorting: true,
+										cell: ({ row }) => (
+											<span className='font-medium'>
+												{row.original.regNo || 'N/A'}
+											</span>
+										),
+										meta: { headerClassName: 'min-w-[120px]' },
+									},
+									{
+										accessorKey: 'gpsLastUpdated',
+										header: ({ column }) => (
+											<DataGridColumnHeader
+												title='Last Updated'
+												column={column}
+											/>
+										),
+										enableSorting: true,
+										cell: ({ row }) => (
+											<span>
+												{row.original.gpsLastUpdated
+													? new Date(
+															row.original.gpsLastUpdated
+														).toLocaleTimeString('en-US', {
 															hour: '2-digit',
 															minute: '2-digit',
 															second: '2-digit',
-														}
-													)
-												: 'N/A'}
-										</TableCell>
-
-										<TableCell>
-											{driver.speed
-												? `${parseFloat(driver.speed).toFixed(2)} km/h` // Round to 2 decimal places
-												: '0 km/h'}
-										</TableCell>
-									</TableRow>
-								))}
-							</TableBody>
-						</Table>
-					</TableContainer>
+														})
+													: 'N/A'}
+											</span>
+										),
+										meta: { headerClassName: 'min-w-[150px]' },
+									},
+									{
+										accessorKey: 'speed',
+										header: ({ column }) => (
+											<DataGridColumnHeader
+												title='Speed (km/h)'
+												column={column}
+											/>
+										),
+										enableSorting: true,
+										cell: ({ row }) => (
+											<span className='font-medium'>
+												{row.original.speed
+													? `${parseFloat(row.original.speed).toFixed(2)} km/h`
+													: '0 km/h'}
+											</span>
+										),
+										meta: { headerClassName: 'min-w-[100px]' },
+									},
+								]}
+								data={filteredDrivers}
+								rowSelection={true}
+								pagination={{ size: 5 }}
+								sorting={[{ id: 'userId', desc: false }]}
+								layout={{ card: true }}
+							/>
+						</div>
+					</div>
 				</Box>
 			</Box>
 		</Box>
