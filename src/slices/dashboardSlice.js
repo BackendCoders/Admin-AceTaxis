@@ -9,6 +9,7 @@ const initialState = {
 	driverWeeksEarnings: [],
 	driverDaysEarnings: [],
 	jobsBookedToday: [],
+	smsHeartBeat: null,
 };
 
 const dashboardSlice = createSlice({
@@ -30,6 +31,9 @@ const dashboardSlice = createSlice({
 		setJobsBookedToday(state, action) {
 			state.jobsBookedToday = action.payload;
 		},
+		setSmsHeartBeat(state, action) {
+			state.smsHeartBeat = action.payload;
+		},
 	},
 });
 
@@ -44,6 +48,7 @@ export function refreshDashboard() {
 				dispatch(setDriverWeeksEarnings(response?.driverWeeksEarnings));
 				dispatch(setDriverDaysEarnings(response?.driverDaysEarnings));
 				dispatch(setJobsBookedToday(response?.jobsBookedToday));
+				dispatch(setSmsHeartBeat(response?.smsHeartBeat));
 			}
 		} catch (error) {
 			console.error('Failed to refresh users:', error);
@@ -57,5 +62,6 @@ export const {
 	setDriverDaysEarnings,
 	setDriverWeeksEarnings,
 	setJobsBookedToday,
+	setSmsHeartBeat,
 } = dashboardSlice.actions;
 export default dashboardSlice.reducer;

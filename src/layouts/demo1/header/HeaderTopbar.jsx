@@ -1,110 +1,158 @@
-import { useRef, useState } from 'react';
-import { KeenIcon } from '@/components/keenicons';
+/** @format */
+
+import { useEffect, useRef } from 'react';
+// import { KeenIcon } from '@/components/keenicons';
 import { toAbsoluteUrl } from '@/utils';
 import { Menu, MenuItem, MenuToggle } from '@/components';
 import { DropdownUser } from '@/partials/dropdowns/user';
 import { DropdownNotifications } from '@/partials/dropdowns/notifications';
 import { DropdownApps } from '@/partials/dropdowns/apps';
 import { DropdownChat } from '@/partials/dropdowns/chat';
-import { ModalSearch } from '@/partials/modals/search/ModalSearch';
+// import { ModalSearch } from '@/partials/modals/search/ModalSearch';
 import { useLanguage } from '@/i18n';
+import { useDispatch, useSelector } from 'react-redux';
+import { refreshDashboard } from '../../../slices/dashboardSlice';
 const HeaderTopbar = () => {
-  const {
-    isRTL
-  } = useLanguage();
-  const itemChatRef = useRef(null);
-  const itemAppsRef = useRef(null);
-  const itemUserRef = useRef(null);
-  const itemNotificationsRef = useRef(null);
-  const handleShow = () => {
-    window.dispatchEvent(new Event('resize'));
-  };
-  const [searchModalOpen, setSearchModalOpen] = useState(false);
-  const handleOpen = () => setSearchModalOpen(true);
-  const handleClose = () => {
-    setSearchModalOpen(false);
-  };
-  return <div className="flex items-center gap-2 lg:gap-3.5">
-      {/* <button onClick={handleOpen} className="btn btn-icon btn-icon-lg size-9 rounded-full hover:bg-primary-light hover:text-primary text-gray-500">
+	const dispatch = useDispatch();
+	const { smsHeartBeat } = useSelector((state) => state.dashboard);
+	const { isRTL } = useLanguage();
+	const itemChatRef = useRef(null);
+	const itemAppsRef = useRef(null);
+	const itemUserRef = useRef(null);
+	const itemNotificationsRef = useRef(null);
+	const handleShow = () => {
+		window.dispatchEvent(new Event('resize'));
+	};
+	// const [searchModalOpen, setSearchModalOpen] = useState(false);
+	// const handleOpen = () => setSearchModalOpen(true);
+	// const handleClose = () => {
+	// 	setSearchModalOpen(false);
+	// };
+
+	useEffect(() => {
+		dispatch(refreshDashboard());
+	}, [dispatch]);
+	return (
+		<div className='flex items-center gap-2 lg:gap-3.5'>
+			{/* <button onClick={handleOpen} className="btn btn-icon btn-icon-lg size-9 rounded-full hover:bg-primary-light hover:text-primary text-gray-500">
         <KeenIcon icon="magnifier" />
       </button>
       <ModalSearch open={searchModalOpen} onOpenChange={handleClose} /> */}
 
-      <Menu>
-        <MenuItem ref={itemChatRef} onShow={handleShow} toggle="dropdown" trigger="click" dropdownProps={{
-        placement: isRTL() ? 'bottom-start' : 'bottom-end',
-        modifiers: [{
-          name: 'offset',
-          options: {
-            offset: isRTL() ? [-170, 10] : [170, 10]
-          }
-        }]
-      }}>
-          {/* <MenuToggle className="btn btn-icon btn-icon-lg size-9 rounded-full hover:bg-primary-light hover:text-primary dropdown-open:bg-primary-light dropdown-open:text-primary text-gray-500">
-            <KeenIcon icon="messages" />
-          </MenuToggle> */}
+			<Menu>
+				<MenuItem
+					ref={itemChatRef}
+					onShow={handleShow}
+					toggle='dropdown'
+					trigger='click'
+					dropdownProps={{
+						placement: isRTL() ? 'bottom-start' : 'bottom-end',
+						modifiers: [
+							{
+								name: 'offset',
+								options: {
+									offset: isRTL() ? [-170, 10] : [170, 10],
+								},
+							},
+						],
+					}}
+				>
+					{/* <MenuToggle className='btn btn-icon btn-icon-lg size-9 rounded-full hover:bg-primary-light hover:text-primary dropdown-open:bg-primary-light dropdown-open:text-primary text-gray-500'>
+						<KeenIcon icon='messages' />
+					</MenuToggle> */}
 
-          {DropdownChat({
-          menuTtemRef: itemChatRef
-        })}
-        </MenuItem>
-      </Menu>
+					{DropdownChat({
+						menuTtemRef: itemChatRef,
+					})}
+				</MenuItem>
+			</Menu>
 
-      <Menu>
-        <MenuItem ref={itemAppsRef} toggle="dropdown" trigger="click" dropdownProps={{
-        placement: isRTL() ? 'bottom-start' : 'bottom-end',
-        modifiers: [{
-          name: 'offset',
-          options: {
-            offset: isRTL() ? [-10, 10] : [10, 10]
-          }
-        }]
-      }}>
-          {/* <MenuToggle className="btn btn-icon btn-icon-lg size-9 rounded-full hover:bg-primary-light hover:text-primary dropdown-open:bg-primary-light dropdown-open:text-primary text-gray-500">
+			<Menu>
+				<MenuItem
+					ref={itemAppsRef}
+					toggle='dropdown'
+					trigger='click'
+					dropdownProps={{
+						placement: isRTL() ? 'bottom-start' : 'bottom-end',
+						modifiers: [
+							{
+								name: 'offset',
+								options: {
+									offset: isRTL() ? [-10, 10] : [10, 10],
+								},
+							},
+						],
+					}}
+				>
+					{/* <MenuToggle className="btn btn-icon btn-icon-lg size-9 rounded-full hover:bg-primary-light hover:text-primary dropdown-open:bg-primary-light dropdown-open:text-primary text-gray-500">
             <KeenIcon icon="element-11" />
           </MenuToggle> */}
 
-          {DropdownApps()}
-        </MenuItem>
-      </Menu>
+					{DropdownApps()}
+				</MenuItem>
+			</Menu>
 
-      <Menu>
-        <MenuItem ref={itemNotificationsRef} toggle="dropdown" trigger="click" dropdownProps={{
-        placement: isRTL() ? 'bottom-start' : 'bottom-end',
-        modifiers: [{
-          name: 'offset',
-          options: {
-            offset: isRTL() ? [-70, 10] : [70, 10] // [skid, distance]
-          }
-        }]
-      }}>
-          {/* <MenuToggle className="btn btn-icon btn-icon-lg relative cursor-pointer size-9 rounded-full hover:bg-primary-light hover:text-primary dropdown-open:bg-primary-light dropdown-open:text-primary text-gray-500">
+			<Menu>
+				<MenuItem
+					ref={itemNotificationsRef}
+					toggle='dropdown'
+					trigger='click'
+					dropdownProps={{
+						placement: isRTL() ? 'bottom-start' : 'bottom-end',
+						modifiers: [
+							{
+								name: 'offset',
+								options: {
+									offset: isRTL() ? [-70, 10] : [70, 10], // [skid, distance]
+								},
+							},
+						],
+					}}
+				>
+					{/* <MenuToggle className="btn btn-icon btn-icon-lg relative cursor-pointer size-9 rounded-full hover:bg-primary-light hover:text-primary dropdown-open:bg-primary-light dropdown-open:text-primary text-gray-500">
             <KeenIcon icon="notification-status" />
           </MenuToggle> */}
-          {DropdownNotifications({
-          menuTtemRef: itemNotificationsRef
-        })}
-        </MenuItem>
-      </Menu>
+					<div className='flex justify-center items-center bg-green-400 dark:bg-green-700 text-sm text-white px-3 py-2 rounded-md'>
+						SMS HEARTBEAT{' '}
+						{new Date(smsHeartBeat?.split('T')[0]).toLocaleDateString('en-GB')}{' '}
+						{smsHeartBeat?.split('T')[1].split('.')[0]}
+					</div>
+					{DropdownNotifications({
+						menuTtemRef: itemNotificationsRef,
+					})}
+				</MenuItem>
+			</Menu>
 
-      <Menu>
-        <MenuItem ref={itemUserRef} toggle="dropdown" trigger="click" dropdownProps={{
-        placement: isRTL() ? 'bottom-start' : 'bottom-end',
-        modifiers: [{
-          name: 'offset',
-          options: {
-            offset: isRTL() ? [-20, 10] : [20, 10] // [skid, distance]
-          }
-        }]
-      }}>
-          <MenuToggle className="btn btn-icon rounded-full">
-            <img className="size-9 rounded-full border-2 border-success shrink-0" src={toAbsoluteUrl('/media/avatars/300-2.png')} alt="" />
-          </MenuToggle>
-          {DropdownUser({
-          menuItemRef: itemUserRef
-        })}
-        </MenuItem>
-      </Menu>
-    </div>;
+			<Menu>
+				<MenuItem
+					ref={itemUserRef}
+					toggle='dropdown'
+					trigger='click'
+					dropdownProps={{
+						placement: isRTL() ? 'bottom-start' : 'bottom-end',
+						modifiers: [
+							{
+								name: 'offset',
+								options: {
+									offset: isRTL() ? [-20, 10] : [20, 10], // [skid, distance]
+								},
+							},
+						],
+					}}
+				>
+					<MenuToggle className='btn btn-icon rounded-full'>
+						<img
+							className='size-9 rounded-full border-2 border-success shrink-0'
+							src={toAbsoluteUrl('/media/avatars/300-2.png')}
+							alt=''
+						/>
+					</MenuToggle>
+					{DropdownUser({
+						menuItemRef: itemUserRef,
+					})}
+				</MenuItem>
+			</Menu>
+		</div>
+	);
 };
 export { HeaderTopbar };
