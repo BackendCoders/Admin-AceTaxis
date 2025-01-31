@@ -14,6 +14,7 @@ const BasicSettings = ({
           </label>
         </div>
       </div>
+
       <div className="card-table scrollable-x-auto pb-3">
         <table className="table align-middle text-sm text-gray-500">
           <tbody>
