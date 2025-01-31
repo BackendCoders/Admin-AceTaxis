@@ -12,12 +12,10 @@ import {
 	TableRow,
 	Paper,
 	Typography,
-	TextField,
 } from '@mui/material';
 import {
 	KeyboardArrowDown,
 	KeyboardArrowUp,
-	Search,
 	EmailOutlined,
 } from '@mui/icons-material';
 import { format } from 'date-fns';
@@ -97,29 +95,45 @@ function Row({ row }) {
 
 	return (
 		<>
-			<TableRow>
+			<TableRow className='bg-white dark:bg-[#14151A] hover:bg-gray-100'>
 				<TableCell>
 					<IconButton
 						size='small'
 						onClick={() => setOpen(!open)}
 					>
-						{open ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
+						{open ? (
+							<KeyboardArrowUp className='text-[#14151A] dark:text-gray-700' />
+						) : (
+							<KeyboardArrowDown className='text-[#14151A] dark:text-gray-700' />
+						)}
 					</IconButton>
 				</TableCell>
-				<TableCell>
-					<Typography color='primary'>{row.id}</Typography>
+				<TableCell className='text-[#14151A] dark:text-gray-700'>
+					<Typography className='dark:text-cyan-400 text-blue-400'>
+						{row.id}
+					</Typography>
 				</TableCell>
-				<TableCell>{row.date}</TableCell>
-				<TableCell>{row.driver}</TableCell>
-				<TableCell>{row.pickup}</TableCell>
-				<TableCell>{row.passenger}</TableCell>
-				<TableCell>{row.status}</TableCell>
-				<TableCell>
+				<TableCell className='text-[#14151A] dark:text-gray-700'>
+					{row.date}
+				</TableCell>
+				<TableCell className='text-[#14151A] dark:text-gray-700'>
+					{row.driver}
+				</TableCell>
+				<TableCell className='text-[#14151A] dark:text-gray-700'>
+					{row.pickup}
+				</TableCell>
+				<TableCell className='text-[#14151A] dark:text-gray-700'>
+					{row.passenger}
+				</TableCell>
+				<TableCell className='text-[#14151A] dark:text-gray-700'>
+					{row.status}
+				</TableCell>
+				<TableCell className='text-[#14151A] dark:text-gray-700'>
 					<Typography variant='body2'>{row.payment}</Typography>
 				</TableCell>
 				<TableCell>
 					<IconButton size='small'>
-						<EmailOutlined color='primary' />
+						<EmailOutlined className='text-blue-400 dark:text-cyan-400' />
 					</IconButton>
 				</TableCell>
 			</TableRow>
@@ -135,11 +149,12 @@ function Row({ row }) {
 					>
 						<Box
 							margin={1}
-							className='border rounded p-4'
+							className='border border-gray-400 rounded p-4 bg-gray-100 dark:bg-[#14151A] text-[#14151A] dark:text-gray-500'
 						>
 							<Typography
 								variant='h6'
 								gutterBottom
+								className='text-blue-400 dark:text-cyan-400'
 							>
 								Booking #: {row.id}
 							</Typography>
@@ -191,7 +206,7 @@ function Row({ row }) {
 function CardBookings() {
 	const [search, setSearch] = useState('');
 	const [date, setDate] = useState(new Date());
-	const [filterDriver, setFilterDriver] = useState('');
+	const filterDriver = '';
 
 	const filteredBookings = bookings.filter(
 		(b) =>
@@ -218,43 +233,15 @@ function CardBookings() {
 					alignItems='center'
 					mb={2}
 				>
-					<TextField
-						variant='outlined'
-						size='small'
-						placeholder='Search Passenger'
-						value={search}
-						onChange={(e) => setSearch(e.target.value)}
-						InputProps={{
-							startAdornment: (
-								<Search
-									fontSize='small'
-									className='text-gray-500 dark:text-gray-500'
-								/>
-							),
-						}}
-						sx={{
-							'& .MuiOutlinedInput-root': {
-								'& fieldset': {
-									borderColor: 'gray', // Default gray border
-								},
-								'&:hover fieldset': {
-									borderColor: 'gray', // Hover state
-								},
-								'&.Mui-focused fieldset': {
-									borderColor: 'gray', // Focused state
-								},
-							},
-						}}
-						className='
-    border-gray-600 text-gray-800 dark:border-gray-500 dark:text-gray-100
-    rounded-md'
-						inputProps={{
-							style: { color: 'gray', fontSize: '14px' },
-						}}
-						InputLabelProps={{
-							style: { color: '#A0AEC0' }, // gray-400
-						}}
-					/>
+					<div className='input input-sm max-w-48 h-10'>
+						<KeenIcon icon='magnifier' />
+						<input
+							type='text'
+							placeholder='Search Teams'
+							value={search}
+							onChange={(e) => setSearch(e.target.value)}
+						/>
+					</div>
 
 					<Popover>
 						<PopoverTrigger asChild>
@@ -285,23 +272,52 @@ function CardBookings() {
 				{/* Table */}
 				<TableContainer
 					component={Paper}
-					className=' shadow-none'
+					className='shadow-none bg-white dark:bg-[#14151A]'
 				>
-					<Table>
-						<TableHead>
+					<Table className='text-[#14151A] dark:text-gray-100'>
+						<TableHead
+							className='bg-gray-100 dark:bg-[#14151A]'
+							sx={{
+								'& .MuiTableCell-root': {
+									borderBottom: '1px solid #464852',
+								},
+							}}
+						>
 							<TableRow>
 								<TableCell />
-								<TableCell>#</TableCell>
-								<TableCell>Date</TableCell>
-								<TableCell>Driver #</TableCell>
-								<TableCell>Pickup</TableCell>
-								<TableCell>Passenger</TableCell>
-								<TableCell>Status</TableCell>
-								<TableCell>Payment #</TableCell>
-								<TableCell>Reminder</TableCell>
+								<TableCell className='text-[#14151A] dark:text-gray-700'>
+									#
+								</TableCell>
+								<TableCell className='text-[#14151A] dark:text-gray-700'>
+									Date
+								</TableCell>
+								<TableCell className='text-[#14151A] dark:text-gray-700'>
+									Driver #
+								</TableCell>
+								<TableCell className='text-[#14151A] dark:text-gray-700'>
+									Pickup
+								</TableCell>
+								<TableCell className='text-[#14151A] dark:text-gray-700'>
+									Passenger
+								</TableCell>
+								<TableCell className='text-[#14151A] dark:text-gray-700'>
+									Status
+								</TableCell>
+								<TableCell className='text-[#14151A] dark:text-gray-700'>
+									Payment #
+								</TableCell>
+								<TableCell className='text-[#14151A] dark:text-gray-700'>
+									Reminder
+								</TableCell>
 							</TableRow>
 						</TableHead>
-						<TableBody>
+						<TableBody
+							sx={{
+								'& .MuiTableCell-root': {
+									borderBottom: '1px solid #464852',
+								},
+							}}
+						>
 							{filteredBookings.map((row) => (
 								<Row
 									key={row.id}
