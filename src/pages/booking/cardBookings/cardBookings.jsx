@@ -228,14 +228,32 @@ function CardBookings() {
 							startAdornment: (
 								<Search
 									fontSize='small'
-									className='text-gray-500 dark:text-gray-400'
+									className='text-gray-500 dark:text-gray-500'
 								/>
 							),
 						}}
+						sx={{
+							'& .MuiOutlinedInput-root': {
+								'& fieldset': {
+									borderColor: 'gray', // Default gray border
+								},
+								'&:hover fieldset': {
+									borderColor: 'gray', // Hover state
+								},
+								'&.Mui-focused fieldset': {
+									borderColor: 'gray', // Focused state
+								},
+							},
+						}}
 						className='
-    border-gray-600 text-gray-800 placeholder-gray-500 
-    dark:border-gray-500 dark:text-gray-300 dark:placeholder-gray-400 dark:bg-gray-800
+    border-gray-600 text-gray-800 dark:border-gray-500 dark:text-gray-100
     rounded-md'
+						inputProps={{
+							style: { color: 'gray', fontSize: '14px' },
+						}}
+						InputLabelProps={{
+							style: { color: '#A0AEC0' }, // gray-400
+						}}
 					/>
 
 					<Popover>
