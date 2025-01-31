@@ -12,6 +12,13 @@ import { Calendar } from '@/components/ui/calendar';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { KeenIcon } from '@/components';
+import {
+	Select,
+	SelectTrigger,
+	SelectContent,
+	SelectItem,
+	SelectValue,
+} from '@/components/ui/select';
 
 const Availability = () => {
 	const [selectedOption, setSelectedOption] = useState('Custom');
@@ -27,9 +34,6 @@ const Availability = () => {
 			{/* Header Section */}
 			<div className='flex justify-between items-center'>
 				<h2 className='text-xl font-semibold'>Availability</h2>
-				<select className='border p-2 rounded-md'>
-					<option>All</option>
-				</select>
 			</div>
 
 			{/* Date & Unavailable Button */}
@@ -65,12 +69,31 @@ const Availability = () => {
 						/>
 					</PopoverContent>
 				</Popover>
-				<button
-					className='bg-red-700 text-white px-6 py-2 rounded-md text-sm font-medium tracking-wide 
+				<div className='flex gap-4'>
+				<Select defaultValue='all'>
+						<SelectTrigger
+							className='w-28 hover:shadow-lg'
+							size='sm'
+							style={{ height: '40px' }}
+						>
+							<SelectValue placeholder='Select' />
+						</SelectTrigger>
+						<SelectContent className='w-32'>
+							<SelectItem value='all'>All</SelectItem>
+							<SelectItem value='peter'>Peter</SelectItem>
+							<SelectItem value='cymen'>Cymen</SelectItem>
+							<SelectItem value='andrew'>Andrew</SelectItem>
+							<SelectItem value='louis'>Louis</SelectItem>
+						</SelectContent>
+					</Select>
+
+					<button
+						className='bg-red-700 text-white px-6 py-2 rounded-md text-sm font-medium tracking-wide 
   hover:bg-red-600 transition-all duration-300'
-				>
-					UNAVAILABLE (ALL DAY)
-				</button>
+					>
+						UNAVAILABLE (ALL DAY)
+					</button>
+				</div>
 			</div>
 
 			{/* Swap Buttons */}
