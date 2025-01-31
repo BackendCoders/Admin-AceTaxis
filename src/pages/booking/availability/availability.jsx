@@ -226,9 +226,9 @@ const Availability = () => {
 			)}
 
 			{/* No Availability Message */}
-			{/* <div className='mt-4 p-4 bg-blue-100 text-blue-800 rounded-md text-center'>
+			<div className='mt-4 mb-5 p-4 bg-blue-100  text-blue-800 rounded-md text-center'>
 				ℹ️ No Availability
-			</div> */}
+			</div>
 
 			{/* Table */}
 			<AvailabilityTable />
