@@ -66,7 +66,7 @@ const Availability = () => {
 					</PopoverContent>
 				</Popover>
 				<button
-					className='bg-red-500 text-white px-6 py-2 rounded-md text-sm font-medium tracking-wide 
+					className='bg-red-700 text-white px-6 py-2 rounded-md text-sm font-medium tracking-wide 
   hover:bg-red-600 transition-all duration-300'
 				>
 					UNAVAILABLE (ALL DAY)
@@ -106,68 +106,69 @@ const Availability = () => {
 			{/* Conditionally Show Form or Table */}
 			{selectedOption === 'Custom' ? (
 				// Custom Option: Show Form
-				<div className='p-4 mt-2 border rounded-md'>
+				<div className='p-4 mt-2 border rounded-md shadow-md'>
 					<p className='font-medium'>MY AVAILABILITY: 28/01/25</p>
 
-					{/* Time Inputs (Proper Labeling & Alignment) */}
+					{/* Time Inputs */}
 					<div className='grid grid-cols-2 gap-4 mt-3'>
 						{/* From Time Input */}
 						<div className='flex flex-col'>
-							<label className='text-gray-800 dark:text-gray-300 text-sm font-medium mb-1'>
+							<label className='text-gray-900 dark:text-gray-600 text-sm font-medium mb-1'>
 								From
 							</label>
 							<input
 								type='time'
-								className='border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 p-2 rounded-md w-full 
-      text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:outline-none transition'
+								className='border border-gray-400 dark:border-gray-600 p-2 rounded-md w-full 
+      text-gray-500 dark:text-gray-500 focus:ring-2 focus:ring-blue-500 focus:outline-none transition bg-transparent'
 							/>
 						</div>
 
 						{/* To Time Input */}
 						<div className='flex flex-col'>
-							<label className='text-gray-800 dark:text-gray-300 text-sm font-medium mb-1'>
+							<label className='text-gray-900 dark:text-gray-600 text-sm font-medium mb-1'>
 								To
 							</label>
 							<input
 								type='time'
-								className='border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 p-2 rounded-md w-full 
-      text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:outline-none transition'
+								className='border border-gray-400 dark:border-gray-600 p-2 rounded-md w-full 
+      text-gray-500 dark:text-gray-500 focus:ring-2 focus:ring-blue-500 focus:outline-none transition bg-transparent'
 							/>
 						</div>
 					</div>
 
 					{/* Note Input */}
 					<div className='mt-3'>
-						<label className='text-gray-800 dark:text-gray-300 text-sm font-medium mb-1'>
+						<label className='text-gray-900 dark:text-gray-600 text-sm font-medium mb-1'>
 							Note
 						</label>
 						<textarea
-							className='border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 p-2 mt-1 w-full rounded-md
-    text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:outline-none transition'
+							className='border border-gray-400 dark:border-gray-600 p-2 mt-1 w-full rounded-md
+      text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:outline-none transition bg-transparent'
 							placeholder='e.g., Locals Only..'
 						></textarea>
 					</div>
 
-					{/* Buttons - Spaced & Full Width */}
-					<div className='flex justify-between mt-4 gap-4 m-8'>
+					{/* Buttons */}
+					<div className='flex justify-between mt-4 gap-4'>
 						<button
-							className='bg-green-500 text-white px-6 py-2 rounded-lg w-full text-sm font-semibold tracking-wide
+							className='bg-green-700 text-white px-6 py-2 rounded-lg w-full text-sm font-semibold tracking-wide
       hover:bg-green-600 focus:ring-2 focus:ring-green-400 focus:outline-none transition-all duration-300'
 						>
 							ADD AVAILABLE HOURS
 						</button>
 						<button
-							className='bg-red-500 text-white px-6 py-2 rounded-lg w-full text-sm font-semibold tracking-wide
+							className='bg-red-700 text-white px-6 py-2 rounded-lg w-full text-sm font-semibold tracking-wide
       hover:bg-red-600 focus:ring-2 focus:ring-red-400 focus:outline-none transition-all duration-300'
 						>
 							ADD UNAVAILABLE HOURS
 						</button>
 					</div>
 
-					<div>
-						<table className='w-full border-collapse border border-gray-300'>
+					{/* Availability Table */}
+					<div className='mt-4'>
+						<table className='w-full border-collapse border border-gray-300 shadow-md'>
 							<thead>
-								<tr className='bg-gray-200 text-gray-900'>
+								<tr className='shadow-md text-gray-900'>
 									<th className='p-3 border'>Type</th>
 									<th className='p-3 border'>Driver #</th>
 									<th className='p-3 border'>Details</th>
@@ -225,9 +226,9 @@ const Availability = () => {
 			)}
 
 			{/* No Availability Message */}
-			<div className='mt-4 p-4 bg-blue-100 text-blue-800 rounded-md text-center'>
+			{/* <div className='mt-4 p-4 bg-blue-100 text-blue-800 rounded-md text-center'>
 				ℹ️ No Availability
-			</div>
+			</div> */}
 
 			{/* Table */}
 			<AvailabilityTable />

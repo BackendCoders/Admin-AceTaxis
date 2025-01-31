@@ -170,7 +170,7 @@ const AvailabilityTable = () => {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<div
-						className={`p-2 rounded-md text-center text-white ${row.original.color}`}
+						className={`p-2 rounded-md text-center text-gray-700`}
 					>
 						{row.original.name}
 					</div>
@@ -189,7 +189,7 @@ const AvailabilityTable = () => {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<div
-						className={`p-2 rounded-md text-center text-white ${row.original.color}`}
+						className={`p-2 rounded-md text-center text-gray-700`}
 					>
 						{row.original.details}
 					</div>
