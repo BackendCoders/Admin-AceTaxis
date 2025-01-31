@@ -69,15 +69,16 @@ const VatOutputs = () => {
 			<h2 className='text-2xl font-semibold text-gray-900 dark:text-gray-700'>
 			Calculate VAT on Commission
 			</h2>
+			<h5 className='text-gray-800 dark:text-gray-300 text-sm font-medium mb-1'>
+					Select date range to calculate VAT
+			</h5>
 
 			{/* Filter Inputs */}
 			<div className='flex flex-wrap items-center gap-6 mt-4'>
 
 				{/* Date Range Picker */}
 				<div className='flex flex-col'>
-					<label className='text-gray-800 dark:text-gray-300 text-sm font-medium mb-1'>
-					Select date range to calculate VAT
-					</label>
+					
 
 					<DateRangePicker
 						dateRange={dateRange}
