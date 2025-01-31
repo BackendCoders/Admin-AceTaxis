@@ -167,7 +167,7 @@ const AvailabilityReport = () => {
 		<div className='pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1580px] w-full'>
 			{/* Header Section */}
 			<div className='flex justify-between items-center'>
-				<h2 className='text-2xl font-semibold dark:text-white'>
+				<h2 className='text-2xl font-semibold dark:text-gray-700'>
 					Driver Availability Report #: {driverNumber}
 				</h2>
 			</div>

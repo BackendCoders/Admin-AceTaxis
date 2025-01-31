@@ -19,7 +19,7 @@ const AvailabilityLogs = () => {
 	return (
 		<div className='pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1580px] w-full'>
 			{/* Header Section */}
-			<h2 className='text-lg font-semibold text-gray-900 dark:text-white'>
+			<h2 className='text-lg font-semibold text-gray-900 dark:text-gray-700'>
 				Change Log of Availability #: {driverNumber}
 			</h2>
 
