@@ -102,7 +102,7 @@ const AvailabilityLogs = () => {
 			</div>
 
 			{/* No Availability Message */}
-			<div className='mt-4 p-4 bg-blue-100 dark:bg-blue-800 text-blue-800 dark:text-blue-200 rounded-md text-center text-sm font-medium'>
+			<div className='mt-4 p-4 bg-blue-100 dark:bg-blue-600 text-blue-800 dark:text-blue-200 rounded-md text-center text-sm font-medium'>
 				ℹ️ No Availability
 			</div>
 		</div>
