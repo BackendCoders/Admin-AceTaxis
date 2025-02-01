@@ -142,7 +142,7 @@ const AirportRuns = () => {
 			</div>
 
 			{/* Tab Navigation */}
-			<div className='flex border border-gray-300 dark:border-gray-700 rounded-md overflow-hidden'>
+			<div className='flex border border-gray-300 dark:border-gray-300 rounded-md overflow-hidden'>
 				{Object.keys(airportData).map((option) => (
 					<button
 						key={option}
