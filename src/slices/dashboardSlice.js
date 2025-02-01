@@ -9,6 +9,7 @@ const initialState = {
 	driverWeeksEarnings: [],
 	driverDaysEarnings: [],
 	jobsBookedToday: [],
+	allocationReplys: [],
 	smsHeartBeat: null,
 };
 
@@ -31,6 +32,9 @@ const dashboardSlice = createSlice({
 		setJobsBookedToday(state, action) {
 			state.jobsBookedToday = action.payload;
 		},
+		setAllocationReplys(state, action) {
+			state.allocationReplys = action.payload;
+		},
 		setSmsHeartBeat(state, action) {
 			state.smsHeartBeat = action.payload;
 		},
@@ -48,6 +52,7 @@ export function refreshDashboard() {
 				dispatch(setDriverWeeksEarnings(response?.driverWeeksEarnings));
 				dispatch(setDriverDaysEarnings(response?.driverDaysEarnings));
 				dispatch(setJobsBookedToday(response?.jobsBookedToday));
+				dispatch(setAllocationReplys(response?.allocationReplys));
 				dispatch(setSmsHeartBeat(response?.smsHeartBeat));
 			}
 		} catch (error) {
@@ -62,6 +67,7 @@ export const {
 	setDriverDaysEarnings,
 	setDriverWeeksEarnings,
 	setJobsBookedToday,
+	setAllocationReplys,
 	setSmsHeartBeat,
 } = dashboardSlice.actions;
 export default dashboardSlice.reducer;
