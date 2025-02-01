@@ -21,7 +21,7 @@ import {
 	// MenuArrow,
 	// MenuIcon,
 } from '@/components/menu';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux'; // Import useSelector
 import { logout } from '../../../service/operations/authApi';
 import { useNavigate } from 'react-router-dom'; // Import useLocation
 const DropdownUser = ({ menuItemRef }) => {
@@ -40,6 +40,14 @@ const DropdownUser = ({ menuItemRef }) => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
+  // 🔹 Fetch user data from Redux
+	const user = useSelector((state) => state.auth.user);
+
+	// 🔹 Safely get fullName (fallback if undefined)
+	const fullName = user?.fullName || 'Guest User';
+	const email = user?.email || 'guest@example.com';
+
+
 	const buildHeader = () => {
 		return (
 			<div className='flex items-center justify-between px-5 py-1.5 gap-1.5'>
@@ -54,13 +62,13 @@ const DropdownUser = ({ menuItemRef }) => {
 							to='/account/hoteme/get-stard'
 							className='text-sm text-gray-800 hover:text-primary font-semibold leading-none'
 						>
-							Abhishek Singh
+							{fullName} {/* ✅ Dynamic fullName from Redux */}
 						</Link>
 						<a
 							href='mailto:c.fisher@gmail.com'
 							className='text-xs text-gray-600 hover:text-primary font-medium leading-none'
 						>
-							abhishek@gmail.com
+							{email} {/* ✅ Dynamic email */}
 						</a>
 					</div>
 				</div>
