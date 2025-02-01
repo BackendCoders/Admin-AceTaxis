@@ -39,6 +39,7 @@ import { AddAccounts } from '../addAccounts';
 import { EditAccounts } from '../editAccounts';
 import { DeleteAccounts } from '../deleteAccounts';
 import { setAccount } from '../../../../slices/accountSlice';
+import { Link } from 'react-router-dom';
 function SearchBooking() {
 	const dispatch = useDispatch();
 	const [searchInput, setSearchInput] = useState('');
@@ -405,12 +406,14 @@ function SearchBooking() {
 						<ToolbarDescription>Showing {'23'} Accounts </ToolbarDescription>
 					</ToolbarHeading>
 					<ToolbarActions>
-						<button
-							className='btn btn-sm btn-primary px-4 py-4'
-							onClick={() => setAccountModal(true)}
-						>
-							+ Create New
-						</button>
+						<Link to='/bookings/booking-dispatch'>
+							<button
+								className='btn btn-sm btn-primary px-4 py-4'
+								// onClick={() => setAccountModal(true)}
+							>
+								+ Create New
+							</button>
+						</Link>
 					</ToolbarActions>
 				</Toolbar>
 			</div>
@@ -484,9 +487,7 @@ function SearchBooking() {
 											size='sm'
 											style={{ height: '40px' }}
 										>
-											<SelectValue
-												placeholder='Select Driver'
-											/>
+											<SelectValue placeholder='Select Driver' />
 										</SelectTrigger>
 										<SelectContent className='w-32'>
 											<SelectItem value='all'>All</SelectItem>
