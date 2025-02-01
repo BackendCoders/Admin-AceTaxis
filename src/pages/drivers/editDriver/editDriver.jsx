@@ -418,30 +418,43 @@ function EditDriver({ open, onOpenChange }) {
 									<span className='switch-label'>Show All Bookings</span>
 									<input
 										type='checkbox'
-										value='1'
-										name='check'
+										name='showAllBookings'
 										checked={formik.values.showAllBookings}
-										// onChange={formik.setFieldValue(
-										// 	'showAllBookings',
-										// 	!formik.values.showAllBookings
-										// )}
+										onChange={(e) =>
+											formik.setFieldValue('showAllBookings', e.target.checked)
+										}
 									/>
 								</label>
+								{formik.touched.showAllBookings &&
+									formik.errors.showAllBookings && (
+										<span
+											role='alert'
+											className='text-danger text-xs mt-1'
+										>
+											{formik.errors.showAllBookings}
+										</span>
+									)}
 							</div>
 							<div className='flex items-center gap-2'>
 								<label className='switch'>
 									<span className='switch-label'>Non Ace</span>
 									<input
 										type='checkbox'
-										value='1'
-										name='check'
+										name='nonAce'
 										checked={formik.values.nonAce}
-										// onChange={formik.setFieldValue(
-										// 	'nonAce',
-										// 	!formik.values.showAllBookings
-										// )}
+										onChange={(e) =>
+											formik.setFieldValue('nonAce', e.target.checked)
+										}
 									/>
 								</label>
+								{formik.touched.nonAce && formik.errors.nonAce && (
+									<span
+										role='alert'
+										className='text-danger text-xs mt-1'
+									>
+										{formik.errors.nonAce}
+									</span>
+								)}
 							</div>
 						</div>
 

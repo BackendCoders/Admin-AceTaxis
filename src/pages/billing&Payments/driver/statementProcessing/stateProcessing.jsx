@@ -19,6 +19,7 @@ import {
 	EmailOutlined,
 } from '@mui/icons-material';
 import { format } from 'date-fns';
+import MoneyIcon from '@mui/icons-material/Money';
 // import { Container } from '@/components/container';
 import {
 	Select,
@@ -34,6 +35,16 @@ import {
 	PopoverContent,
 } from '@/components/ui/popover';
 import { KeenIcon } from '@/components';
+import {
+	Dialog,
+	DialogBody,
+	DialogContent,
+	DialogDescription,
+	DialogHeader,
+	DialogTitle,
+} from '@/components/ui/dialog';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
 // Function to create booking data
 function createBooking(
@@ -107,9 +118,8 @@ const bookings = [
 ];
 
 // Collapsible Row Component
-function Row({ row }) {
+function Row({ row, setPriceBaseModal }) {
 	const [open, setOpen] = useState(false);
-
 	return (
 		<>
 			{/* Main Table Row */}
@@ -169,9 +179,12 @@ function Row({ row }) {
 					{row.total}
 				</TableCell>
 				<TableCell>
-					<span className='px-1 py-1 text-green-500 bg-green-50 border border-green-700 rounded-md text-sm font-semibold text-sm'>
-						100
-					</span>
+					<IconButton
+						size='small'
+						onClick={() => setPriceBaseModal(true)}
+					>
+						<MoneyIcon className='text-blue-500 dark:text-cyan-400' />
+					</IconButton>
 				</TableCell>
 
 				<TableCell>
@@ -250,6 +263,7 @@ function Row({ row }) {
 // Main Component
 function StateProcessing() {
 	const [search, setSearch] = useState('');
+	const [priceBaseModal, setPriceBaseModal] = useState(false);
 	const [date, setDate] = useState(new Date());
 	const filterDriver = '';
 
@@ -268,6 +282,10 @@ function StateProcessing() {
 			(passengerMatch || search === '') && (driverMatch || filterDriver === '')
 		);
 	});
+
+	const handleClose = () => {
+		if (priceBaseModal) setPriceBaseModal(false);
+	};
 
 	return (
 		<Fragment>
@@ -424,14 +442,106 @@ function StateProcessing() {
 								<Row
 									key={row.id}
 									row={row}
+									setPriceBaseModal={setPriceBaseModal}
 								/>
 							))}
 						</TableBody>
 					</Table>
 				</TableContainer>
 			</div>
+			{priceBaseModal && (
+				<PriceBase
+					open={priceBaseModal}
+					onOpenChange={handleClose}
+				/>
+			)}
 		</Fragment>
 	);
 }
 
 export { StateProcessing };
+
+function PriceBase({ open, onOpenChange }) {
+	const addLocalSchema = Yup.object().shape({
+		chargeFromBase: Yup.string().required('Contact Name is required'),
+	});
+
+	const initialValues = {
+		chargeFromBase: false,
+	};
+
+	const formik = useFormik({
+		initialValues,
+		validationSchema: addLocalSchema,
+		onSubmit: async (values, { setSubmitting }) => {
+			console.log('Submitted Values:', values);
+			setSubmitting(false);
+			onOpenChange(); // Reset Formik's submitting state
+		},
+	});
+	return (
+		<Dialog
+			open={open}
+			onOpenChange={onOpenChange}
+		>
+			<DialogContent className='max-w-[300px]'>
+				<DialogHeader className='border-0'>
+					<DialogTitle></DialogTitle>
+					<DialogDescription></DialogDescription>
+				</DialogHeader>
+				<DialogBody className='flex flex-col items-center pt-0 pb-4'>
+					<h3 className='text-lg font-medium text-gray-900 text-center mb-3'>
+						Price
+					</h3>
+
+					<form
+						onSubmit={formik.handleSubmit}
+						className='w-full'
+					>
+						<div className='w-full flex justify-center items-center gap-2'>
+							<div className='flex flex-col gap-1 pb-2 w-full'>
+								<div className='flex items-center gap-2'>
+									<label className='switch'>
+										<span className='switch-label'>Charge from base?</span>
+										<input
+											type='checkbox'
+											name='chargeFromBase'
+											checked={formik.values.chargeFromBase}
+											onChange={(e) =>
+												formik.setFieldValue('chargeFromBase', e.target.checked)
+											}
+										/>
+									</label>
+									{formik.touched.chargeFromBase &&
+										formik.errors.chargeFromBase && (
+											<span
+												role='alert'
+												className='text-danger text-xs mt-1'
+											>
+												{formik.errors.chargeFromBase}
+											</span>
+										)}
+								</div>
+							</div>
+						</div>
+
+						<div className='flex justify-end mb-2 mt-2'>
+							<button
+								className='btn btn-light'
+								onClick={() => onOpenChange()}
+							>
+								Cancel
+							</button>
+							<button
+								className='btn btn-primary ml-2'
+								type='submit'
+							>
+								Submit
+							</button>
+						</div>
+					</form>
+				</DialogBody>
+			</DialogContent>
+		</Dialog>
+	);
+}
