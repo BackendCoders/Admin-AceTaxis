@@ -47,7 +47,8 @@ const DriverTracking = () => {
 	const [drivers, setDrivers] = useState([]);
 	const [mapCenter, setMapCenter] = useState({ lat: 51.075, lng: -1.8 }); // Default map center
 	const [mapZoom, setMapZoom] = useState(2); // Default zoom level
-	const [isBouncing, setIsBouncing] = useState(false); // Track bounce state\
+	const [isBouncing, setIsBouncing] = useState(false); // Track bounce state
+	const [isFullScreen, setIsFullScreen] = useState(false); // ✅ Full-screen state
 
 	// Function to fetch GPS data
 	const fetchGPSData = async () => {
@@ -77,6 +78,23 @@ const DriverTracking = () => {
 
 		return () => clearInterval(interval); // Cleanup interval on unmount
 	}, []);
+
+
+		// Toggle Full-Screen Mode on F12
+		useEffect(() => {
+			const handleKeyDown = (event) => {
+				if (event.key === 'F12') {
+					event.preventDefault();
+					setIsFullScreen(prevState => !prevState); // Toggle full-screen
+				}
+				if (event.key === 'Escape' && isFullScreen) {
+					setIsFullScreen(false); // Exit full-screen on Escape key
+				}
+			};
+	
+			window.addEventListener('keydown', handleKeyDown);
+			return () => window.removeEventListener('keydown', handleKeyDown);
+		}, [isFullScreen]);
 
 	const handleDriverSelection = (driverReg) => {
 		setSelectedDriver(driverReg);
@@ -129,10 +147,14 @@ const DriverTracking = () => {
 						driver.regNo?.toLowerCase().includes(search.toLowerCase())
 				);
 
-	const containerStyle = {
-		width: '100%',
-		height: '100%',
-	};
+				const containerStyle = {
+					width: isFullScreen ? '100vw' : '100%',
+					height: isFullScreen ? '100vh' : '100%',
+					position: isFullScreen ? 'fixed' : 'relative',
+					top: isFullScreen ? 0 : 'auto',
+					left: isFullScreen ? 0 : 'auto',
+					zIndex: isFullScreen ? 9999 : 'auto',
+				};
 
 	return (
 		<Box className='p-4 space-y-6'>
@@ -264,7 +286,6 @@ const DriverTracking = () => {
 					)}
 				</Box>
 
-				{/* Table Section */}
 				{/* Updated Table section design */}
 				<Box
 					className='rounded-lg shadow-md overflow-hidden'
