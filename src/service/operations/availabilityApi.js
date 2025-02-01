@@ -32,7 +32,7 @@ export async function getReminderAvailability(key) {
 
 	console.log('Get reminder Availability API RESPONSE.........', response);
 
-	if (response.status === 200) {
+	if (response.status === "success") {
 		sendLogs(
 			{
 				url: GET_REMINDER_AVAILABILITY(key),

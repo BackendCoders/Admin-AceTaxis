@@ -33,7 +33,7 @@ export async function uploadAccounts(data) {
 	const response = await handlePostReq(UPLOAD_ACCOUNTS, data);
 	console.log('Upload Account API RESPONSE.........', response);
 
-	if (response.status === 200) {
+	if (response.status === "success") {
 		sendLogs(
 			{
 				url: UPLOAD_ACCOUNTS,
@@ -53,7 +53,7 @@ export async function getClearInvoice(invoiceNo) {
 
 	console.log('clear invoice api response ---', response);
 
-	if (response.status === 200) {
+	if (response.status === "success") {
 		sendLogs(
 			{
 				url: GET_CLEAR_INVOICE(invoiceNo),
