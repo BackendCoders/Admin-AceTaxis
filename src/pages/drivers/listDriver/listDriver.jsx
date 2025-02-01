@@ -188,7 +188,7 @@ function ListDriver() {
 				cell: ({ row }) => (
 					<span className={`p-2 rounded-md`}>{row.original.lastLogin}</span>
 				),
-				meta: { headerClassName: 'w-20' },
+				meta: { headerClassName: 'w-25' },
 			},
 			{
 				accessorKey: 'regNo',
@@ -203,7 +203,7 @@ function ListDriver() {
 				cell: ({ row }) => (
 					<span className={`p-2 rounded-md`}>{row.original.regNo}</span>
 				),
-				meta: { headerClassName: 'w-20' },
+				meta: { headerClassName: 'w-25' },
 			},
 			{
 				accessorKey: 'type',
@@ -220,7 +220,7 @@ function ListDriver() {
 						{row.original.type}
 					</span>
 				),
-				meta: { headerClassName: 'w-20' },
+				meta: { headerClassName: 'w-25' },
 			},
 			{
 				accessorKey: 'color',
@@ -252,7 +252,7 @@ function ListDriver() {
 				cell: ({ row }) => (
 					<span className={`p-2 rounded-md`}>{row.original.fullName}</span>
 				),
-				meta: { headerClassName: 'min-w-[200px]' },
+				meta: { headerClassName: 'w-25' },
 			},
 			{
 				accessorKey: 'phoneNumber',
@@ -269,7 +269,7 @@ function ListDriver() {
 						{row.original.phoneNumber}
 					</span>
 				),
-				meta: { headerClassName: 'w-20' },
+				meta: { headerClassName: 'w-25' },
 			},
 			{
 				accessorKey: 'role',
