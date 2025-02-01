@@ -17,6 +17,7 @@ import {
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import clsx from 'clsx';
+import { createPoi } from '../../../service/operations/localPOIApi';
 
 function AddLocalPoi({ open, onOpenChange }) {
 	const addLocalSchema = Yup.object().shape({
@@ -30,7 +31,7 @@ function AddLocalPoi({ open, onOpenChange }) {
 		name: '',
 		address: '',
 		postcode: '',
-		type: '1', // Placeholder username
+		type: 0, // Placeholder username
 	};
 
 	const formik = useFormik({
@@ -38,6 +39,8 @@ function AddLocalPoi({ open, onOpenChange }) {
 		validationSchema: addLocalSchema,
 		onSubmit: async (values, { setSubmitting }) => {
 			console.log('Submitted Values:', values);
+			const response = await createPoi(values);
+			console.log('Response', response);
 			setSubmitting(false);
 			onOpenChange(); // Reset Formik's submitting state
 		},
@@ -129,7 +132,7 @@ function AddLocalPoi({ open, onOpenChange }) {
 								<label className='form-label text-gray-900'>Type</label>
 
 								<Select
-									defaultValue='1'
+									defaultValue={0}
 									value={formik.values.type}
 									onValueChange={(value) => formik.setFieldValue('type', value)}
 								>
@@ -137,9 +140,12 @@ function AddLocalPoi({ open, onOpenChange }) {
 										<SelectValue placeholder='Select' />
 									</SelectTrigger>
 									<SelectContent>
-										<SelectItem value='1'>Not Set</SelectItem>
-										<SelectItem value='2'>Train Station</SelectItem>
-										<SelectItem value='3'>Super Market</SelectItem>
+										<SelectItem value={0}>Not Set</SelectItem>
+										<SelectItem value={1}>Train_Station</SelectItem>
+										<SelectItem value={2}>Supermarket</SelectItem>
+										<SelectItem value={3}>House</SelectItem>
+										<SelectItem value={4}>Pub</SelectItem>
+										<SelectItem value={5}>Restaurant</SelectItem>
 									</SelectContent>
 								</Select>
 								{formik.touched.type && formik.errors.type && (
