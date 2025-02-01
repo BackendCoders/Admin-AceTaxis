@@ -46,7 +46,7 @@ const DriverTracking = () => {
 	const [selectedDriver, setSelectedDriver] = useState('all');
 	const [drivers, setDrivers] = useState([]);
 	const [mapCenter, setMapCenter] = useState({ lat: 51.075, lng: -1.8 }); // Default map center
-	const [mapZoom, setMapZoom] = useState(8); // Default zoom level
+	const [mapZoom, setMapZoom] = useState(2); // Default zoom level
 	const [isBouncing, setIsBouncing] = useState(false); // Track bounce state\
 
 	// Function to fetch GPS data
@@ -81,7 +81,7 @@ const DriverTracking = () => {
 	const handleDriverSelection = (driverReg) => {
 		setSelectedDriver(driverReg);
 
-		if (driverReg === 'All') {
+		if (driverReg === 'all') {
 			// Bounce all markers
 			setIsBouncing('all');
 
