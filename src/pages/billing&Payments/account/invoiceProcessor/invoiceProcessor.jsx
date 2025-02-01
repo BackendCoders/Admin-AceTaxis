@@ -2,7 +2,7 @@
 import { useState, Fragment } from 'react';
 import {
 	Box,
-	Collapse,
+	// Collapse,
 	IconButton,
 	Table,
 	TableBody,
@@ -16,7 +16,7 @@ import {
 import {
 	KeyboardArrowDown,
 	KeyboardArrowUp,
-	EmailOutlined,
+	// EmailOutlined,
 } from '@mui/icons-material';
 import { format } from 'date-fns';
 // import { Container } from '@/components/container';
@@ -190,7 +190,7 @@ function Row({ row }) {
 // Main Component
 function InvoiceProcessor() {
 	const [search, setSearch] = useState('');
-	const [date, setDate] = useState(new Date());
+	// const [date, setDate] = useState(new Date());
 	const filterDriver = '';
 
 	const [dateRange, setDateRange] = useState({
@@ -248,15 +248,16 @@ function InvoiceProcessor() {
 			b.passenger && typeof b.passenger === 'string'
 				? b.passenger.toLowerCase().includes(search.toLowerCase())
 				: false;
-	
+
 		const driverMatch =
 			b.driver !== undefined && b.driver !== null
 				? String(b.driver) === filterDriver
 				: false;
-	
-		return (passengerMatch || search === '') && (driverMatch || filterDriver === '');
+
+		return (
+			(passengerMatch || search === '') && (driverMatch || filterDriver === '')
+		);
 	});
-	
 
 	return (
 		<Fragment>
@@ -280,7 +281,7 @@ function InvoiceProcessor() {
 						<KeenIcon icon='magnifier' />
 						<input
 							type='text'
-							placeholder='Search Teams'
+							placeholder='Search Invoice'
 							value={search}
 							onChange={(e) => setSearch(e.target.value)}
 						/>
@@ -334,7 +335,14 @@ function InvoiceProcessor() {
 					className='shadow-none bg-white dark:bg-[#14151A]'
 				>
 					<Table className='text-[#14151A] dark:text-gray-100'>
-						<TableHead className='bg-gray-100 dark:bg-[#14151A]'>
+						<TableHead
+							className='bg-gray-100 dark:bg-[#14151A]'
+							sx={{
+								'& .MuiTableCell-root': {
+									borderBottom: '1px solid #464852',
+								},
+							}}
+						>
 							<TableRow>
 								<TableCell />
 								<TableCell className='text-[#14151A] dark:text-gray-700'>

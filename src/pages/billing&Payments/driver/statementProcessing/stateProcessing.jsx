@@ -291,7 +291,7 @@ function StateProcessing() {
 						<KeenIcon icon='magnifier' />
 						<input
 							type='text'
-							placeholder='Search Teams'
+							placeholder='Search Statements'
 							value={search}
 							onChange={(e) => setSearch(e.target.value)}
 						/>

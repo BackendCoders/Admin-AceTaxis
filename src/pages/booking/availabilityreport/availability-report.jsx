@@ -233,12 +233,12 @@ const AvailabilityReport = () => {
 					<button
 						key={tab.id}
 						onClick={() => handleTabClick(tab.id)}
-						className={`relative px-5 pb-2 flex items-center gap-2 text-base text-sm font-medium transition-all duration-300
-        ${
-					selectedTab === tab.id
-						? 'text-blue-500 dark:text-blue-400'
-						: 'text-gray-600 dark:text-gray-700'
-				}`}
+						className={`relative px-5 pb-2 flex items-center gap-2 text-sm font-medium transition-all duration-300
+                        ${
+													selectedTab === tab.id
+														? 'text-blue-500 dark:text-blue-400'
+														: 'text-gray-600 dark:text-gray-700'
+												}`}
 					>
 						{tab.label}
 

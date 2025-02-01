@@ -154,7 +154,7 @@ function AuditBooking() {
 				accessorKey: 'date&Time of Change',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='date&Time of Change'
+						title='Date/Time of Change'
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -249,7 +249,7 @@ function AuditBooking() {
 					<ToolbarHeading>
 						<ToolbarPageTitle />
 						<ToolbarDescription>
-							Showing {'23'} AuditBooking Jobs{' '}
+							Showing {'23'} Audit Booking Jobs{' '}
 						</ToolbarDescription>
 					</ToolbarHeading>
 				</Toolbar>

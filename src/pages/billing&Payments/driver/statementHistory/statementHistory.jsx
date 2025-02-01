@@ -303,7 +303,7 @@ function StatementHistory() {
 											<KeenIcon icon='magnifier' />
 											<input
 												type='text'
-												placeholder='Search Earnings'
+												placeholder='Search History'
 												value={searchInput}
 												onChange={(e) => setSearchInput(e.target.value)}
 											/>

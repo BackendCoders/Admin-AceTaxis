@@ -237,7 +237,7 @@ function CardBookings() {
 						<KeenIcon icon='magnifier' />
 						<input
 							type='text'
-							placeholder='Search Teams'
+							placeholder='Search Booking'
 							value={search}
 							onChange={(e) => setSearch(e.target.value)}
 						/>
