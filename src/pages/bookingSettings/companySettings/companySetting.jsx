@@ -33,7 +33,7 @@ const CompanySetting = () => {
   return (
     <div className='pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1580px] w-full'>
       {/* ✅ Card Header */}
-      <div className="card-header border-b pb-4">
+      <div className=" pb-4">
         <h3 className="card-title text-lg font-semibold text-gray-700">Company Setup</h3>
       </div>
 
@@ -201,7 +201,7 @@ const CompanySetting = () => {
       </div>
 
       {/* ✅ Submit Button (Sticky at Bottom) */}
-      <div className="card-footer mt-6 flex justify-end">
+      <div className=" mt-6 flex justify-end">
         <button type="submit" className="btn btn-primary px-6 py-2 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-md">
           Submit
         </button>
