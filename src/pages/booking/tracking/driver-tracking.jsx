@@ -287,7 +287,7 @@ const DriverTracking = () => {
 
 				{/* Updated Table section design */}
 				<Box
-					className='rounded-lg shadow-md overflow-hidden'
+					className='rounded-lg'
 					style={{ flex: '43%' }}
 				>
 					<div className='card card-grid min-w-full'>
