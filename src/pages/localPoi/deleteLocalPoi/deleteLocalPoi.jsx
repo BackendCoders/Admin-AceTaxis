@@ -8,12 +8,13 @@ import {
 	DialogTitle,
 } from '@/components/ui/dialog';
 import { useSelector } from 'react-redux';
+import { deletePoi } from '../../../service/operations/localPOIApi';
 function DeleteLocalPoi({ open, onOpenChange }) {
 	const { localPOI } = useSelector((state) => state.localPoi);
-	const handleDelete = () => {
+	const handleDelete = async () => {
 		console.log('loacal Poi deleted', localPOI);
-		// Delete local POI logic goes here
-		onOpenChange(); // Close the modal after deletion
+		const response = await deletePoi(localPOI?.id);
+		if (response.status === 'success') onOpenChange(); // Close the modal after deletion
 	};
 	return (
 		<Dialog

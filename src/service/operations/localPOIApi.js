@@ -17,7 +17,7 @@ export async function getPoi(searchTerm) {
 	const response = await handlePostReq(GET_LOCAL_POI, searchTerm);
 	console.log('get local poi response ---', response);
 
-	if (response.status === 200) {
+	if (response.status === 'success') {
 		sendLogs(
 			{
 				url: GET_LOCAL_POI,
@@ -36,7 +36,7 @@ export async function getPoi2(searchTerm) {
 	const response = await handlePostReq(GET_LOCAL_POI2, searchTerm);
 	console.log('get local poi2 response ---', response);
 
-	if (response.status === 200) {
+	if (response.status === 'success') {
 		sendLogs(
 			{
 				url: GET_LOCAL_POI2,
@@ -55,7 +55,7 @@ export async function createPoi(data) {
 	const response = await handlePostReq(CREATE_LOCAL_POI, data);
 	console.log('create local poi response ---', response);
 
-	if (response.status === 200) {
+	if (response.status === 'success') {
 		sendLogs(
 			{
 				url: CREATE_LOCAL_POI,
@@ -74,7 +74,7 @@ export async function updatePoi(data) {
 	const response = await handlePostReq(UPDATE_LOCAL_POI, data);
 	console.log('update local poi response ---', response);
 
-	if (response.status === 200) {
+	if (response.status === 'success') {
 		sendLogs(
 			{
 				url: UPDATE_LOCAL_POI,
@@ -92,7 +92,7 @@ export async function updatePoi(data) {
 export async function uploadPoi(file) {
 	const response = await handlePostReq(UPLOAD_LOCAL_POI, file);
 	console.log('upload local poi response ---', response);
-	if (response.status === 200) {
+	if (response.status === 'success') {
 		sendLogs(
 			{
 				url: UPLOAD_LOCAL_POI,
@@ -110,7 +110,7 @@ export async function uploadPoi(file) {
 export async function deletePoi(id) {
 	const response = await handlePostReq(DELETE_LOCAL_POI, { id });
 	console.log('delete local poi response ---', response);
-	if (response.status === 200) {
+	if (response.status === 'success') {
 		sendLogs(
 			{
 				url: DELETE_LOCAL_POI,

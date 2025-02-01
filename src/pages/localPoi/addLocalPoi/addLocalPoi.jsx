@@ -40,9 +40,10 @@ function AddLocalPoi({ open, onOpenChange }) {
 		onSubmit: async (values, { setSubmitting }) => {
 			console.log('Submitted Values:', values);
 			const response = await createPoi(values);
-			console.log('Response', response);
-			setSubmitting(false);
-			onOpenChange(); // Reset Formik's submitting state
+			if (response.status === 'success') {
+				setSubmitting(false);
+				onOpenChange(); // Reset Formik's submitting state
+			}
 		},
 	});
 	return (
