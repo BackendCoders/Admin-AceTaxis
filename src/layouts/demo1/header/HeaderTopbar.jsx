@@ -112,7 +112,7 @@ const HeaderTopbar = () => {
 					{/* <MenuToggle className="btn btn-icon btn-icon-lg relative cursor-pointer size-9 rounded-full hover:bg-primary-light hover:text-primary dropdown-open:bg-primary-light dropdown-open:text-primary text-gray-500">
             <KeenIcon icon="notification-status" />
           </MenuToggle> */}
-					<div className='flex justify-center items-center bg-green-400 dark:bg-green-700 text-sm text-white px-3 py-2 rounded-md'>
+					<div className='flex justify-center items-center bg-green-400 dark:bg-green-700 text-2xs sm:text-sm text-white px-2 sm:px-3 py-1 sm:py-2 rounded-md'>
 						SMS HEARTBEAT{' '}
 						{new Date(smsHeartBeat?.split('T')[0]).toLocaleDateString('en-GB')}{' '}
 						{smsHeartBeat?.split('T')[1].split('.')[0]}
