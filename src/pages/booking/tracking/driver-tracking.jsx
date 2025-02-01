@@ -79,22 +79,21 @@ const DriverTracking = () => {
 		return () => clearInterval(interval); // Cleanup interval on unmount
 	}, []);
 
+	// Toggle Full-Screen Mode on F12
+	useEffect(() => {
+		const handleKeyDown = (event) => {
+			if (event.key === 'F12') {
+				event.preventDefault();
+				setIsFullScreen((prevState) => !prevState); // Toggle full-screen
+			}
+			if (event.key === 'Escape' && isFullScreen) {
+				setIsFullScreen(false); // Exit full-screen on Escape key
+			}
+		};
 
-		// Toggle Full-Screen Mode on F12
-		useEffect(() => {
-			const handleKeyDown = (event) => {
-				if (event.key === 'F12') {
-					event.preventDefault();
-					setIsFullScreen(prevState => !prevState); // Toggle full-screen
-				}
-				if (event.key === 'Escape' && isFullScreen) {
-					setIsFullScreen(false); // Exit full-screen on Escape key
-				}
-			};
-	
-			window.addEventListener('keydown', handleKeyDown);
-			return () => window.removeEventListener('keydown', handleKeyDown);
-		}, [isFullScreen]);
+		window.addEventListener('keydown', handleKeyDown);
+		return () => window.removeEventListener('keydown', handleKeyDown);
+	}, [isFullScreen]);
 
 	const handleDriverSelection = (driverReg) => {
 		setSelectedDriver(driverReg);
@@ -147,14 +146,14 @@ const DriverTracking = () => {
 						driver.regNo?.toLowerCase().includes(search.toLowerCase())
 				);
 
-				const containerStyle = {
-					width: isFullScreen ? '100vw' : '100%',
-					height: isFullScreen ? '100vh' : '100%',
-					position: isFullScreen ? 'fixed' : 'relative',
-					top: isFullScreen ? 0 : 'auto',
-					left: isFullScreen ? 0 : 'auto',
-					zIndex: isFullScreen ? 9999 : 'auto',
-				};
+	const containerStyle = {
+		width: isFullScreen ? '100vw' : '100%',
+		height: isFullScreen ? '100vh' : '100%',
+		position: isFullScreen ? 'fixed' : 'relative',
+		top: isFullScreen ? 0 : 'auto',
+		left: isFullScreen ? 0 : 'auto',
+		zIndex: isFullScreen ? 9999 : 'auto',
+	};
 
 	return (
 		<Box className='p-4 space-y-6'>
