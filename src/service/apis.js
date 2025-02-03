@@ -7,6 +7,8 @@ export const authEndpoints = {
 	REGISTER: `${BASE}/api/UserProfile/Register`,
 	GET_USER: (username) =>
 		`${BASE}/api/UserProfile/GetUser?username=${username}`,
+	RESET_PASSWORD: (userId) =>
+		`${BASE}/api/UserProfile/ResetPassword?userId=${userId}`,
 };
 
 export const LocalPoiEndpoints = {

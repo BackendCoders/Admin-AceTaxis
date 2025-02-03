@@ -12,7 +12,7 @@ import {
 import { handleGetReq, handlePostReq, setHeaders } from '../apiRequestHandler';
 import { sendLogs } from '../../utils/getLogs';
 
-const { LOGIN, REGISTER, GET_USER } = authEndpoints;
+const { LOGIN, REGISTER, GET_USER, RESET_PASSWORD } = authEndpoints;
 
 export function register(data, navigate) {
 	return async (dispatch) => {
@@ -198,6 +198,37 @@ export function verify(navigate) {
 			navigate('/auth/login');
 		}
 	};
+}
+
+export async function resetUserPassword(userId) {
+	// Fetch reset password link using the user ID
+	const response = await handleGetReq(RESET_PASSWORD(userId));
+
+	console.log('RESET PASSWORD API RESPONSE.........', response);
+
+	if (response.status === 'success') {
+		toast.success('Reset password request sent successfully');
+		sendLogs(
+			{
+				url: RESET_PASSWORD(userId),
+				reqBody: userId,
+				headers: setHeaders(),
+				response: response,
+			},
+			'info'
+		);
+		const mergedString = Object.keys(response)
+			.filter((key) => !isNaN(key)) // Keep only numeric keys
+			.sort((a, b) => a - b) // Sort keys in order
+			.map((key) => response[key]) // Extract values
+			.join('');
+		return {
+			...response,
+			password: mergedString,
+		};
+	} else {
+		toast.error('Failed to send reset password request');
+	}
 }
 
 export function logout(navigate) {

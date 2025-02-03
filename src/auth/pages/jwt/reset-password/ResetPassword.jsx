@@ -5,25 +5,19 @@ import { useFormik } from 'formik';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import * as Yup from 'yup';
-import { useNavigate } from 'react-router-dom';
-import { useAuthContext } from '@/auth/useAuthContext';
 import { Alert, KeenIcon } from '@/components';
 import { AxiosError } from 'axios';
+import { resetUserPassword } from '../../../../service/operations/authApi';
 const initialValues = {
-	email: '',
+	userId: 0,
 };
 const forgotPasswordSchema = Yup.object().shape({
-	email: Yup.string()
-		.email('Wrong email format')
-		.min(3, 'Minimum 3 symbols')
-		.max(50, 'Maximum 50 symbols')
-		.required('Email is required'),
+	userId: Yup.string().required('User Id is required'),
 });
 const ResetPassword = () => {
 	const [loading, setLoading] = useState(false);
+	const [newPassword, setNewPassword] = useState('');
 	const [hasErrors, setHasErrors] = useState(undefined);
-	const { requestPasswordResetLink } = useAuthContext();
-	const navigate = useNavigate();
 	const formik = useFormik({
 		initialValues,
 		validationSchema: forgotPasswordSchema,
@@ -31,24 +25,20 @@ const ResetPassword = () => {
 			setLoading(true);
 			setHasErrors(undefined);
 			try {
-				if (!requestPasswordResetLink) {
-					throw new Error('JWTProvider is required for this form.');
+				const response = await resetUserPassword(values.userId);
+				if (response.status === 'success') {
+					console.log(response);
+					setNewPassword(response.password);
+					setHasErrors(false);
+					setLoading(false);
 				}
-				await requestPasswordResetLink(values.email);
-				setHasErrors(false);
-				setLoading(false);
-				const params = new URLSearchParams();
-				params.append('email', values.email);
-				navigate({
-					pathname: '/auth/reset-password/check-email',
-					search: params.toString(),
-				});
 			} catch (error) {
 				if (error instanceof AxiosError && error.response) {
 					setStatus(error.response.data.message);
 				} else {
 					setStatus('Password reset failed. Please try again.');
 				}
+				setNewPassword('');
 				setHasErrors(true);
 				setLoading(false);
 				setSubmitting(false);
@@ -63,9 +53,9 @@ const ResetPassword = () => {
 				onSubmit={formik.handleSubmit}
 			>
 				<div className='text-center'>
-					<h3 className='text-lg font-semibold text-gray-900'>Your Email</h3>
+					<h3 className='text-lg font-semibold text-gray-900'>Your User Id</h3>
 					<span className='text-2sm text-gray-600 font-medium'>
-						Enter your email to reset password
+						Enter your user id to reset password
 					</span>
 				</div>
 
@@ -73,37 +63,42 @@ const ResetPassword = () => {
 
 				{hasErrors === false && (
 					<Alert variant='success'>
-						Password reset link sent. Please check your email to proceed
+						Password reset request sent. Please try to login now with new
+						password.
 					</Alert>
 				)}
 
 				<div className='flex flex-col gap-1'>
-					<label className='form-label text-gray-900'>Email</label>
+					<label className='form-label text-gray-900'>User Id</label>
 					<label className='input'>
 						<input
-							type='email'
-							placeholder='email@email.com'
+							type='number'
+							placeholder='Enter User Id'
 							autoComplete='off'
-							{...formik.getFieldProps('email')}
+							{...formik.getFieldProps('userId')}
 							className={clsx(
 								'form-control bg-transparent',
 								{
-									'is-invalid': formik.touched.email && formik.errors.email,
+									'is-invalid': formik.touched.userId && formik.errors.userId,
 								},
 								{
-									'is-valid': formik.touched.email && !formik.errors.email,
+									'is-valid': formik.touched.userId && !formik.errors.userId,
 								}
 							)}
 						/>
 					</label>
-					{formik.touched.email && formik.errors.email && (
+					{formik.touched.userId && formik.errors.userId && (
 						<span
 							role='alert'
 							className='text-danger text-xs mt-1'
 						>
-							{formik.errors.email}
+							{formik.errors.userId}
 						</span>
 					)}
+				</div>
+
+				<div className='text-blue-400'>
+					<span className='text-center text-sm'>{newPassword}</span>
 				</div>
 
 				<div className='flex flex-col gap-5 items-stretch'>
