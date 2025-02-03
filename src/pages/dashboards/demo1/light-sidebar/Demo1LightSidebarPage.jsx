@@ -1,6 +1,6 @@
 /** @format */
 
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 // import { Container } from '@/components/container';
 import {
 	Toolbar,
@@ -17,11 +17,19 @@ import { Calendar } from '@/components/ui/calendar';
 import { addDays, format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { KeenIcon } from '@/components/keenicons';
+import { useDispatch } from 'react-redux';
+import { refreshDashboard } from '../../../../slices/dashboardSlice';
 const Demo1LightSidebarPage = () => {
+	const dispatch = useDispatch();
 	const [date, setDate] = useState({
 		from: new Date(2025, 0, 20),
 		to: addDays(new Date(2025, 0, 20), 20),
 	});
+
+	useEffect(() => {
+		dispatch(refreshDashboard());
+	}, [dispatch]);
+
 	return (
 		<Fragment>
 			<div className=' pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1580px] w-full'>

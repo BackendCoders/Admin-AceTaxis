@@ -1,17 +1,12 @@
 /** @format */
 
-import { Fragment, useEffect } from 'react';
+import { Fragment } from 'react';
 import { toAbsoluteUrl } from '@/utils/Assets';
-import { useDispatch, useSelector } from 'react-redux';
-import { refreshDashboard } from '../../../../../slices/dashboardSlice';
+import { useSelector } from 'react-redux';
 import { KeenIcon } from '../../../../../components';
 const ChannelStats = () => {
-	const dispatch = useDispatch();
 	const { data } = useSelector((state) => state.dashboard);
 
-	useEffect(() => {
-		dispatch(refreshDashboard());
-	}, [dispatch]);
 	const items = [
 		{
 			icon: 'car',
