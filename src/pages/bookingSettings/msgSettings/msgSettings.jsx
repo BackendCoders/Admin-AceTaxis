@@ -32,18 +32,18 @@ const MsgSettings = () => {
 	};
 
 	return (
-		<div className="px-4 md:px-[1.875rem] ms-auto me-auto max-w-[1580px] w-full">
+		<div className='px-4 md:px-[1.875rem] ms-auto me-auto max-w-[1580px] w-full'>
 			{/* ✅ Page Header */}
-			<h3 className="text-lg md:text-xl font-semibold text-gray-700 mb-4">
+			<h3 className='text-lg md:text-xl font-semibold text-gray-700 mb-4'>
 				Message Settings
 			</h3>
 
 			{/* ✅ Grid Layout for Sections */}
-			<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+			<div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
 				{messageSections.map((section) => (
 					<div
 						key={section.stateKey}
-						className="border rounded-lg p-2 md:p-4 shadow-sm"
+						className='border rounded-lg p-2 md:p-4 shadow-sm'
 					>
 						{/* Section Title */}
 						<span
@@ -57,26 +57,29 @@ const MsgSettings = () => {
 						</span>
 
 						{/* Selection Box */}
-						<div className="mt-4 p-2 md:p-4 border rounded-md">
+						<div className='mt-4 p-2 md:p-4 border rounded-md'>
 							{['None', 'WhatsApp', 'Text Message'].map((type) => (
-								<label key={type} className="flex items-center gap-2 mt-2">
+								<label
+									key={type}
+									className='flex items-center gap-2 mt-2'
+								>
 									<input
-										type="radio"
+										type='radio'
 										name={section.stateKey}
 										value={type}
 										checked={messageSettings[section.stateKey] === type}
 										onChange={(e) =>
 											handleSelectionChange(section.stateKey, e.target.value)
 										}
-										className="radio"
+										className='radio'
 									/>
 									<span
 										className={`${
 											type === 'WhatsApp'
 												? 'text-green-500'
 												: type === 'Text Message'
-												? 'text-blue-500'
-												: 'text-gray-700'
+													? 'text-blue-500'
+													: 'text-gray-700'
 										} font-medium text-xs md:text-sm`}
 									>
 										{type}
@@ -89,8 +92,8 @@ const MsgSettings = () => {
 			</div>
 
 			{/* ✅ Save Settings Button */}
-			<div className="mt-6 flex justify-end">
-				<button className="bg-green-700 hover:bg-green-600 text-white px-4 md:px-6 py-2 rounded-md shadow-md transition-all text-xs md:text-sm">
+			<div className='mt-6 flex justify-end'>
+				<button className='bg-green-700 hover:bg-green-600 text-white px-4 md:px-6 py-2 rounded-md shadow-md transition-all text-xs md:text-sm'>
 					SAVE SETTINGS
 				</button>
 			</div>

@@ -209,7 +209,6 @@ const AirportRuns = () => {
 				</table>
 			</div>
 
-
 			<Tablejourney />
 		</div>
 	);
