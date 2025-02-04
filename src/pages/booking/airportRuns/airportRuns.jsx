@@ -10,6 +10,7 @@ import { Calendar } from '@/components/ui/calendar';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { KeenIcon } from '@/components';
+import { Tablejourney } from './tablejourney';
 
 const airportData = {
 	'Last 1 Month': [
@@ -207,6 +208,9 @@ const AirportRuns = () => {
 					</tbody>
 				</table>
 			</div>
+
+
+			<Tablejourney />
 		</div>
 	);
 };
