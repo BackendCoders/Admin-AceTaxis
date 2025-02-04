@@ -283,8 +283,19 @@ const DriverTracking = () => {
 							</Typography>
 						</Box>
 					)}
+					{/* Small text visible at bottom */}
+					<Box
+						className='absolute left-1/4 transform -translate-x-1/4 px-1 py-1 rounded-md shadow-md'
+						style={{ zIndex: 10 }}
+					>
+						<Typography
+							variant='caption'
+							className='text-gray-800 font-semibold'
+						>
+							🔍 Press <strong>F12</strong> to view the map in fullscreen mode.
+						</Typography>
+					</Box>
 				</Box>
-
 				{/* Updated Table section design */}
 				<Box
 					className='rounded-lg'
