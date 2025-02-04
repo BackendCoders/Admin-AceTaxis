@@ -92,7 +92,7 @@ const MsgSettings = () => {
 			</div>
 
 			{/* ✅ Save Settings Button */}
-			<div className='mt-6 flex justify-end'>
+			<div className='my-11 flex justify-start'>
 				<button className='bg-green-700 hover:bg-green-600 text-white px-4 md:px-6 py-2 rounded-md shadow-md transition-all text-xs md:text-sm'>
 					SAVE SETTINGS
 				</button>
