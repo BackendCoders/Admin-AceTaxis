@@ -53,5 +53,12 @@ export const dashBoardEndpoints = {
 };
 
 export const driverEarningEndpoints = {
-	GET_DRIVER_EARNINGS_REPORT: `${BASE}/api/AdminUI/DriverEarningsReport`
-}
+	GET_DRIVER_EARNINGS_REPORT: `${BASE}/api/AdminUI/DriverEarningsReport`,
+};
+
+export const settingsEndpoints = {
+	GET_MSG_CONFIG: `${BASE}/api/AdminUI/GetMessageConfig`,
+	SET_MSG_CONFIG: `${BASE}/api/AdminUI/SetMessageConfig`,
+	GET_COMPANY_CONFIG: `${BASE}/api/AdminUI/GetCompanyConfig`,
+	SET_COMPANY_CONFIG: `${BASE}/api/AdminUI/SetCompanyConfig`,
+};
