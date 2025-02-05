@@ -1,6 +1,6 @@
 /** @format */
 
-import { Fragment, useMemo, useState } from 'react';
+import { Fragment, useEffect, useMemo, useState } from 'react';
 import {
 	Toolbar,
 	ToolbarDescription,
@@ -32,17 +32,20 @@ import {
 	// DataGridRowSelect,
 } from '@/components';
 import { Input } from '@/components/ui/input';
+import { driverEarningsReport } from '../../../service/operations/dashboardApi';
 function DriverEarningReport() {
 	const [searchInput, setSearchInput] = useState('');
+	const [data, setData] = useState([]);
 	const [date, setDate] = useState({
 		from: new Date(),
 		to: addDays(new Date(), 20),
 	});
 	const driversData = useMemo(
 		() => [
+			...data,
 			{
 				driver: 10,
-				name: 'Alan Waistell',
+				name: 'Alan',
 				details: '00:00 - 23:59',
 				color: 'bg-yellow-500',
 			},
@@ -126,7 +129,7 @@ function DriverEarningReport() {
 			},
 			{
 				driver: 26,
-				name: 'Charles Farnham',
+				name: 'Charles',
 				details: '07:00 - 17:00 (all routes)',
 				color: 'bg-blue-800 text-white font-bold',
 			},
@@ -278,6 +281,16 @@ function DriverEarningReport() {
 			alert(`Selected Drivers: ${selectedRowIds.join(', ')}`);
 		}
 	};
+
+	useEffect(() => {
+		async function fetchDriverEarningsReport() {
+			const response = await driverEarningsReport();
+			if (response.status === 'success') {
+				setData(response?.data);
+			}
+		}
+		fetchDriverEarningsReport();
+	}, []);
 
 	return (
 		<Fragment>

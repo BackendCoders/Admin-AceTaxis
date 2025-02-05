@@ -51,3 +51,7 @@ export const gpsEndpoints = {
 export const dashBoardEndpoints = {
 	GET_DASHBOARD: `${BASE}/api/AdminUI/Dashboard`,
 };
+
+export const driverEarningEndpoints = {
+	GET_DRIVER_EARNINGS_REPORT: `${BASE}/api/AdminUI/DriverEarningsReport`
+}
