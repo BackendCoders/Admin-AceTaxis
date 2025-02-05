@@ -61,4 +61,10 @@ export const settingsEndpoints = {
 	SET_MSG_CONFIG: `${BASE}/api/AdminUI/SetMessageConfig`,
 	GET_COMPANY_CONFIG: `${BASE}/api/AdminUI/GetCompanyConfig`,
 	SET_COMPANY_CONFIG: `${BASE}/api/AdminUI/SetCompanyConfig`,
+	GET_TARIFF_CONFIG: `${BASE}/api/AdminUI/GetTariffConfig`,
+	SET_TARIFF_CONFIG: `${BASE}/api/AdminUI/SetTariffConfig`,
+};
+
+export const billingAndPaymentEndpoints = {
+	GET_VATOUTPUTS: `${BASE}/api/AdminUI/VATOutputs`,
 };

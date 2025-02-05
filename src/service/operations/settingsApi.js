@@ -9,6 +9,8 @@ const {
 	SET_COMPANY_CONFIG,
 	GET_MSG_CONFIG,
 	SET_MSG_CONFIG,
+	GET_TARIFF_CONFIG,
+	SET_TARIFF_CONFIG,
 } = settingsEndpoints;
 
 export async function getMsgConfig() {
@@ -77,6 +79,44 @@ export async function setCompanyConfig(data) {
 		sendLogs(
 			{
 				url: SET_COMPANY_CONFIG,
+				reqBody: data,
+				headers: setHeaders(),
+				response: response,
+			},
+			'info'
+		);
+		return response;
+	}
+}
+
+export async function getTariffConfig() {
+	const response = await handleGetReq(GET_TARIFF_CONFIG);
+
+	console.log('GET TARIFF CONFIG API RESPONSE.........', response);
+
+	if (response.status === 'success') {
+		sendLogs(
+			{
+				url: GET_TARIFF_CONFIG,
+				reqBody: null,
+				headers: setHeaders(),
+				response: response,
+			},
+			'info'
+		);
+		return response;
+	}
+}
+
+export async function setTariffConfig(data) {
+	const response = await handlePostReq(SET_TARIFF_CONFIG, data);
+
+	console.log('SET TARIFF CONFIG API RESPONSE.........', response);
+
+	if (response.status === 'success') {
+		sendLogs(
+			{
+				url: SET_TARIFF_CONFIG,
 				reqBody: data,
 				headers: setHeaders(),
 				response: response,
