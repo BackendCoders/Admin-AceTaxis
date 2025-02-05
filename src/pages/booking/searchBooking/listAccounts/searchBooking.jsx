@@ -54,7 +54,7 @@ function SearchBooking() {
 		() => [
 			{
 				driver: 10,
-				name: 'Alan Waistell',
+				name: 'Alan',
 				details: '00:00 - 23:59',
 				color: 'bg-yellow-500',
 			},
@@ -126,7 +126,7 @@ function SearchBooking() {
 			},
 			{
 				driver: 6,
-				name: 'Rob Holton',
+				name: 'Rob',
 				details: '07:00 - 22:00',
 				color: 'bg-blue-400',
 			},
@@ -138,7 +138,7 @@ function SearchBooking() {
 			},
 			{
 				driver: 26,
-				name: 'Charles Farnham',
+				name: 'Charles',
 				details: '07:00 - 17:00 (all routes)',
 				color: 'bg-blue-800 text-white font-bold',
 			},
@@ -191,7 +191,7 @@ function SearchBooking() {
 				),
 				enableSorting: true,
 				cell: ({ row }) => (
-					<span className={`p-2 rounded-md`}>{row.original.name}</span>
+					<span className={`p-2 rounded-md`}>{row.original.date}</span>
 				),
 				meta: { headerClassName: 'w-2' },
 			},
@@ -227,7 +227,7 @@ function SearchBooking() {
 						{row.original.postcode}
 					</span>
 				),
-				meta: { headerClassName: 'min-w-[120px]' },
+				meta: { headerClassName: 'w-5' },
 			},
 			{
 				accessorKey: 'Passenger',
@@ -244,7 +244,7 @@ function SearchBooking() {
 						{row.original.email}
 					</span>
 				),
-				meta: { headerClassName: 'min-w-[200px]' },
+				meta: { headerClassName: 'min-w-[200px] w-5' },
 			},
 			{
 				accessorKey: 'Pax',
@@ -261,7 +261,7 @@ function SearchBooking() {
 						{row.original.email}
 					</span>
 				),
-				meta: { headerClassName: 'min-w-[200px]' },
+				meta: { headerClassName: 'w-5' },
 			},
 			{
 				accessorKey: 'Phone',
@@ -295,7 +295,7 @@ function SearchBooking() {
 						{row.original.email}
 					</span>
 				),
-				meta: { headerClassName: 'min-w-[200px]' },
+				meta: { headerClassName: 'w-5' },
 			},
 			{
 				accessorKey: 'Acc',
@@ -312,7 +312,7 @@ function SearchBooking() {
 						{row.original.email}
 					</span>
 				),
-				meta: { headerClassName: 'min-w-[200px]' },
+				meta: { headerClassName: 'w-5' },
 			},
 			{
 				accessorKey: 'M',
@@ -329,7 +329,7 @@ function SearchBooking() {
 						{row.original.email}
 					</span>
 				),
-				meta: { headerClassName: 'min-w-[200px]' },
+				meta: { headerClassName: 'w-5' },
 			},
 			{
 				accessorKey: 'action',
