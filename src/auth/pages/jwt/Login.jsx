@@ -10,12 +10,12 @@ import { useDispatch, useSelector } from 'react-redux'; // Import Redux hooks
 import { login } from '../../../service/operations/authApi'; // Redux login action
 import { Alert } from '@/components';
 
-// Validation schema updated to require `username` instead of `email`
+// Validation schema
 const loginSchema = Yup.object().shape({
 	username: Yup.string()
 		.min(3, 'Minimum 3 symbols')
 		.max(50, 'Maximum 50 symbols')
-		.required('Username is required'), // Changed from email to username
+		.required('Username is required'),
 	password: Yup.string()
 		.min(3, 'Minimum 3 symbols')
 		.max(50, 'Maximum 50 symbols')
@@ -23,7 +23,7 @@ const loginSchema = Yup.object().shape({
 	remember: Yup.boolean(),
 });
 
-// Initial values updated to include username instead of email
+// Initial values
 const initialValues = {
 	username: 'peter', // Placeholder username
 	password: 'Polopolo121',
@@ -33,12 +33,8 @@ const initialValues = {
 const Login = () => {
 	const [loading, setLoading] = useState(false); // Local loading state
 	const [showPassword, setShowPassword] = useState(false); // Show/hide password state
-
 	const dispatch = useDispatch(); // Hook to dispatch Redux actions
 	const navigate = useNavigate(); // Hook for navigation
-	// const location = useLocation(); // Hook to access location state
-
-	// const from = location.state?.from?.pathname || '/'; // Default redirect path after login
 	const { error } = useSelector((state) => state.auth); // Extract auth state from Redux
 
 	// Formik for form handling

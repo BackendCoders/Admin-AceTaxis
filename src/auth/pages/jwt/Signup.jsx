@@ -37,10 +37,10 @@ const Signup = () => {
 	const [loading, setLoading] = useState(false);
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
-	// const location = useLocation();
-	// const from = location.state?.from?.pathname || '/';
 	const [showPassword, setShowPassword] = useState(false);
 	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+	// on Submission of form
 	const formik = useFormik({
 		initialValues,
 		validationSchema: signupSchema,
@@ -61,14 +61,18 @@ const Signup = () => {
 			}
 		},
 	});
+
+	// password visibility handlers
 	const togglePassword = (event) => {
 		event.preventDefault();
 		setShowPassword(!showPassword);
 	};
+
 	const toggleConfirmPassword = (event) => {
 		event.preventDefault();
 		setShowConfirmPassword(!showConfirmPassword);
 	};
+	
 	return (
 		<div className='card max-w-[370px] w-full'>
 			<form
