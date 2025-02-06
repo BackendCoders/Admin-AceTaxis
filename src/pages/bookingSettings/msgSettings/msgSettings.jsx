@@ -34,7 +34,7 @@ const MsgSettings = () => {
 	return (
 		<div className='px-4 md:px-[1.875rem] ms-auto me-auto max-w-[1580px] w-full'>
 			{/* ✅ Page Header */}
-			<h3 className='text-lg md:text-xl font-semibold text-gray-700 mb-4'>
+			<h3 className='text-xl leading-none font-medium text-gray-900 mb-4'>
 				Message Settings
 			</h3>
 
@@ -49,8 +49,8 @@ const MsgSettings = () => {
 						<span
 							className={`px-2 md:px-4 py-1 rounded-full text-xs md:text-sm font-semibold text-white ${
 								section.title.includes('CUSTOMER')
-									? 'bg-red-800'
-									: 'bg-blue-800'
+									? 'bg-red-700'
+									: 'bg-blue-700'
 							}`}
 						>
 							{section.title}
@@ -93,7 +93,7 @@ const MsgSettings = () => {
 
 			{/* ✅ Save Settings Button */}
 			<div className='my-11 flex justify-start'>
-				<button className='bg-green-700 hover:bg-green-600 text-white px-4 md:px-6 py-2 rounded-md shadow-md transition-all text-xs md:text-sm'>
+				<button className='btn btn-primary flex justify-center'>
 					SAVE SETTINGS
 				</button>
 			</div>

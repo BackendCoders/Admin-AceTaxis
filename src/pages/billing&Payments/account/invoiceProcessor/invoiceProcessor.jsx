@@ -264,8 +264,9 @@ function InvoiceProcessor() {
 			<div className='pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1580px] w-full'>
 				<Typography
 					variant='h5'
-					fontWeight='bold'
+					fontWeight='medium'
 					mb={2}
+					className='text-xl leading-none text-gray-900'
 				>
 					Account Job Processor
 				</Typography>

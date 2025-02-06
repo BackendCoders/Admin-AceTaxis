@@ -19,7 +19,7 @@ const CancelByRange = () => {
 	return (
 		<div className='pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1580px] w-full'>
 			{/* Header Section */}
-			<h2 className='text-xl font-semibold text-gray-900 dark:text-gray-800'>
+			<h2 className='text-xl leading-none font-medium text-gray-900 '>
 				Cancel Bookings By Date Range
 			</h2>
 

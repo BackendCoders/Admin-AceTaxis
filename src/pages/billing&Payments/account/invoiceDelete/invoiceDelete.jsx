@@ -16,7 +16,7 @@ const InvoiceDelete = () => {
 	return (
 		<div className='px-6 py-4 ms-auto me-auto max-w-[1580px] w-full'>
 			{/* Header Section */}
-			<h2 className='text-2xl font-semibold text-gray-900 dark:text-gray-700'>
+			<h2 className='text-xl leading-none font-medium text-gray-900'>
 				Delete Invoice
 			</h2>
 

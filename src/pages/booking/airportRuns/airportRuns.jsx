@@ -8,7 +8,7 @@ import {
 } from '@/components/ui/popover';
 import { Calendar } from '@/components/ui/calendar';
 import { format } from 'date-fns';
-import { cn } from '@/lib/utils';
+// import { cn } from '@/lib/utils';
 import { KeenIcon } from '@/components';
 import { Tablejourney } from './tablejourney';
 
@@ -108,7 +108,7 @@ const AirportRuns = () => {
 		<div className='max-w-[1580px] w-full mx-auto px-6 py-4'>
 			{/* Header Section */}
 			<div className='mb-4'>
-				<h2 className='text-xl font-semibold text-gray-900 dark:text-gray-700'>
+				<h2 className='text-xl leading-none font-medium text-gray-900 '>
 					Last Airport Journeys
 				</h2>
 				<h6 className='text-gray-600 dark:text-gray-600'>Select Period</h6>

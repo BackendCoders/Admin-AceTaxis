@@ -33,7 +33,7 @@ const Availability = () => {
 		<div className='pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1580px] w-full'>
 			{/* Header Section */}
 			<div className='flex justify-between items-center'>
-				<h2 className='text-xl font-semibold'>Availability</h2>
+				<h2 className='text-xl leading-none font-medium text-gray-900 '>Availability</h2>
 			</div>
 
 			{/* Date & Unavailable Button */}

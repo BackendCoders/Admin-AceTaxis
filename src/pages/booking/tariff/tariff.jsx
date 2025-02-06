@@ -69,7 +69,6 @@ const Tariff = () => {
 						title='Tariff Name'
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
-						// className="justify-center"
 					/>
 				),
 				enableSorting: true,
@@ -84,7 +83,6 @@ const Tariff = () => {
 						title='Description'
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
-						// className="justify-center"
 					/>
 				),
 				enableSorting: true,
@@ -101,7 +99,6 @@ const Tariff = () => {
 						title='Initial Charge'
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
-						// className="justify-center"
 					/>
 				),
 				cell: ({ row }) => (
@@ -128,7 +125,6 @@ const Tariff = () => {
 						title='First Mile Charge'
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
-						// className="justify-center"
 					/>
 				),
 				cell: ({ row }) => (
@@ -155,7 +151,6 @@ const Tariff = () => {
 						title='Additional Mile Charge'
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
-						// className="justify-center"
 					/>
 				),
 				cell: ({ row }) => (
@@ -184,7 +179,7 @@ const Tariff = () => {
 
 	return (
 		<div className='pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1580px] w-full'>
-			<h2 className='text-2xl font-semibold text-gray-700 mb-8'>
+			<h2 className='text-xl leading-none font-medium text-gray-900 mb-8'>
 				Tariff Configuration
 			</h2>
 

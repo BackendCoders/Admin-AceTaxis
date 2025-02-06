@@ -1,8 +1,8 @@
 /** @format */
 
 import { useState, useMemo } from 'react';
-import { DataGrid, DataGridColumnHeader } from '@/components';
-import { Input } from '@/components/ui/input';
+import { DataGrid } from '@/components';
+// import { Input } from '@/components/ui/input';
 import {
 	Popover,
 	PopoverContent,
@@ -30,17 +30,26 @@ const AvailabilityReport = () => {
 		<div className='flex flex-col'>
 			<label className='form-label text-gray-900'>Date Range</label>
 			<Popover>
-				<PopoverTrigger asChild className='h-9'>
+				<PopoverTrigger
+					asChild
+					className='h-9'
+				>
 					<button
 						className={cn(
 							'btn btn-sm btn-light data-[state=open]:bg-light-active',
 							!dateRange && 'text-gray-400'
 						)}
 					>
-						<KeenIcon icon='calendar' className='me-0.5' />
+						<KeenIcon
+							icon='calendar'
+							className='me-0.5'
+						/>
 						{dateRange?.from ? (
 							dateRange.to ? (
-								<>{format(dateRange.from, 'dd/MM/yyyy')} → {format(dateRange.to, 'dd/MM/yyyy')}</>
+								<>
+									{format(dateRange.from, 'dd/MM/yyyy')} →{' '}
+									{format(dateRange.to, 'dd/MM/yyyy')}
+								</>
 							) : (
 								format(dateRange.from, 'dd/MM/yyyy')
 							)
@@ -49,8 +58,17 @@ const AvailabilityReport = () => {
 						)}
 					</button>
 				</PopoverTrigger>
-				<PopoverContent className='w-auto p-0' align='end'>
-					<Calendar mode='range' selected={dateRange} onSelect={setDateRange} numberOfMonths={2} initialFocus />
+				<PopoverContent
+					className='w-auto p-0'
+					align='end'
+				>
+					<Calendar
+						mode='range'
+						selected={dateRange}
+						onSelect={setDateRange}
+						numberOfMonths={2}
+						initialFocus
+					/>
 				</PopoverContent>
 			</Popover>
 		</div>
@@ -148,10 +166,9 @@ const AvailabilityReport = () => {
 				{ driver: 10, weekendDay: 'Saturday', totalHours: 45 },
 			],
 		};
-	
+
 		return dataset[selectedTab] || [];
 	}, [selectedTab]);
-	
 
 	// ✅ Dynamic column headers based on selected tab
 	const columns = useMemo(() => {
@@ -167,7 +184,7 @@ const AvailabilityReport = () => {
 		<div className='pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1580px] w-full'>
 			{/* Header Section */}
 			<div className='flex justify-between items-center'>
-				<h2 className='text-2xl font-semibold dark:text-gray-700'>
+				<h2 className='text-xl leading-none font-medium text-gray-900 '>
 					Driver Availability Report #: {driverNumber}
 				</h2>
 			</div>
@@ -180,10 +197,16 @@ const AvailabilityReport = () => {
 					<div className='flex items-center border rounded-md px-2 py-1'>
 						<span className='px-4 text-xs font-medium'>{driverNumber}</span>
 						<div className='flex flex-col'>
-							<button className='px-2 hover:bg-gray-300' onClick={() => setDriverNumber(driverNumber + 1)}>
+							<button
+								className='px-2 hover:bg-gray-300'
+								onClick={() => setDriverNumber(driverNumber + 1)}
+							>
 								<IoChevronUpSharp fontSize='14' />
 							</button>
-							<button className='px-2 hover:bg-gray-300' onClick={() => setDriverNumber(Math.max(0, driverNumber - 1))}>
+							<button
+								className='px-2 hover:bg-gray-300'
+								onClick={() => setDriverNumber(Math.max(0, driverNumber - 1))}
+							>
 								<IoChevronDownSharp fontSize='14' />
 							</button>
 						</div>
@@ -191,7 +214,10 @@ const AvailabilityReport = () => {
 				</div>
 
 				{/* Date Range Picker */}
-				<DateRangePicker dateRange={dateRange} setDateRange={setDateRange} />
+				<DateRangePicker
+					dateRange={dateRange}
+					setDateRange={setDateRange}
+				/>
 			</div>
 
 			{/* Tabs - Centered */}
@@ -199,10 +225,20 @@ const AvailabilityReport = () => {
 				{[
 					{ id: 'monthHours', label: '📌 MONTH HOURS', color: 'bg-green-400' },
 					{ id: 'weekHours', label: '🔧 WEEK# HOURS', color: 'bg-yellow-400' },
-					{ id: 'weekdayHours', label: '⚙️ WEEKDAY HOURS', color: 'bg-blue-400' },
-					{ id: 'weekendHours', label: '⏳ WEEKEND HOURS', color: 'bg-red-500' },
+					{
+						id: 'weekdayHours',
+						label: '⚙️ WEEKDAY HOURS',
+						color: 'bg-blue-400',
+					},
+					{
+						id: 'weekendHours',
+						label: '⏳ WEEKEND HOURS',
+						color: 'bg-red-500',
+					},
 				].map((tab) => (
-					<button key={tab.id} onClick={() => handleTabClick(tab.id)}
+					<button
+						key={tab.id}
+						onClick={() => handleTabClick(tab.id)}
 						className={`relative px-5 pb-2 flex items-center gap-2 text-sm font-medium transition-all duration-300
 						${selectedTab === tab.id ? 'text-blue-500' : 'text-gray-600'}`}
 					>
@@ -220,7 +256,11 @@ const AvailabilityReport = () => {
 				<div className='w-[600px]'>
 					<DataGrid
 						columns={columns}
-						data={driverNumber === 0 ? dataByTab : dataByTab.filter((d) => d.driver === driverNumber)}
+						data={
+							driverNumber === 0
+								? dataByTab
+								: dataByTab.filter((d) => d.driver === driverNumber)
+						}
 						pagination={{ size: 5 }}
 						sorting={[{ id: 'driver', desc: false }]}
 						layout={{ card: true }}

@@ -158,7 +158,7 @@ const DriverTracking = () => {
 	return (
 		<Box className='p-4 space-y-6'>
 			{/* Header Section */}
-			<Box className='flex flex-col md:flex-row items-center justify-between p-4'>
+			<Box className='flex flex-col md:flex-row items-center justify-between'>
 				{/* Title */}
 				<Typography
 					variant='h4'

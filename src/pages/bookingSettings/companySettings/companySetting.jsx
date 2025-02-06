@@ -42,7 +42,7 @@ const CompanySetting = () => {
 		<div className='pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1580px] w-full'>
 			{/* ✅ Card Header */}
 			<div className=' pb-4'>
-				<h3 className='card-title text-lg font-semibold text-gray-700'>
+				<h3 className='text-xl leading-none font-medium text-gray-900'>
 					Company Setup
 				</h3>
 			</div>

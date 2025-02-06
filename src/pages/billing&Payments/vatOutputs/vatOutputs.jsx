@@ -1,7 +1,7 @@
 /** @format */
 
 import { useState } from 'react';
-import { IoChevronUpSharp, IoChevronDownSharp } from 'react-icons/io5';
+// import { IoChevronUpSharp, IoChevronDownSharp } from 'react-icons/io5';
 import {
 	Popover,
 	PopoverContent,
@@ -20,7 +20,6 @@ const VatOutputs = () => {
 
 	const DateRangePicker = ({ dateRange, setDateRange }) => (
 		<div className='flex flex-col'>
-
 			<Popover>
 				<PopoverTrigger asChild>
 					<button
@@ -66,27 +65,26 @@ const VatOutputs = () => {
 	return (
 		<div className='px-6 py-4 ms-auto me-auto max-w-[1580px] w-full'>
 			{/* Header Section */}
-			<h2 className='text-2xl font-semibold text-gray-900 dark:text-gray-700'>
-			Calculate VAT on Commission
+			<h2 className='text-xl leading-none font-medium text-gray-900 mb-2'>
+				Calculate VAT on Commission
 			</h2>
-			<h5 className='text-gray-800 dark:text-gray-300 text-sm font-medium mb-1'>
-					Select date range to calculate VAT
+			<h5 className='flex items-center text-gray-700 text-sm font-normal mb-1'>
+				Select date range to calculate VAT
 			</h5>
 
 			{/* Filter Inputs */}
 			<div className='flex flex-wrap items-center gap-6 mt-4'>
-
 				{/* Date Range Picker */}
 				<div className='flex flex-col'>
-					
-
 					<DateRangePicker
 						dateRange={dateRange}
 						setDateRange={setDateRange}
 					/>
 				</div>
 
-				<button className="btn btn-primary flex justify-center">CREATE CSV FILE</button>
+				<button className='btn btn-primary flex justify-center'>
+					CREATE CSV FILE
+				</button>
 			</div>
 		</div>
 	);

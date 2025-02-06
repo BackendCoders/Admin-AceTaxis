@@ -285,7 +285,9 @@ function StatementHistory() {
 				<Toolbar>
 					<ToolbarHeading>
 						<ToolbarPageTitle />
-						<ToolbarDescription>Showing {'23'} Local POIs </ToolbarDescription>
+						<ToolbarDescription>
+							Showing {'16'} History{' '}
+						</ToolbarDescription>
 					</ToolbarHeading>
 				</Toolbar>
 			</div>
