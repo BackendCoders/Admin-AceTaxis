@@ -8,30 +8,24 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from '@/components/ui/dialog';
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from '@/components/ui/select';
+
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import clsx from 'clsx';
+import { rejectWebBookings } from '../../../../service/operations/webBookingsApi';
+import { useSelector } from 'react-redux';
 
 function RejectWebBooking({ open, onOpenChange }) {
+	const { webBooking } = useSelector((state) => state.webBooking);
 	const addLocalSchema = Yup.object().shape({
-		name: Yup.string().required('Name is required'), // Changed from email to username
-		address: Yup.string().required('Address is required'),
-		postcode: Yup.string().required('Postcode is required'),
-		type: Yup.string().required('Type is required'),
+		byName: Yup.string().required('Name is required'), // Changed from email to username
+		reason: Yup.string().required('Reason is required'),
 	});
 
 	const initialValues = {
-		name: '',
-		address: '',
-		postcode: '',
-		type: 0, // Placeholder username
+		id: webBooking?.id,
+		byName: '',
+		reason: '',
 	};
 
 	const formik = useFormik({
@@ -39,11 +33,16 @@ function RejectWebBooking({ open, onOpenChange }) {
 		validationSchema: addLocalSchema,
 		onSubmit: async (values, { setSubmitting }) => {
 			console.log('Submitted Values:', values);
-			// const response = await createPoi(values);
-			// if (response.status === 'success') {
-			// 	setSubmitting(false);
-			// 	onOpenChange(); // Reset Formik's submitting state
-			// }
+			const payload = {
+				id: webBooking?.id,
+				byName: values.byName,
+				reason: values.reason,
+			};
+			const response = await rejectWebBookings(payload);
+			if (response.status === 'success') {
+				setSubmitting(false);
+				onOpenChange(); // Reset Formik's submitting state
+			}
 		},
 	});
 	return (
@@ -58,106 +57,54 @@ function RejectWebBooking({ open, onOpenChange }) {
 				</DialogHeader>
 				<DialogBody className='flex flex-col items-center pt-0 pb-4'>
 					<h3 className='text-lg font-medium text-gray-900 text-center mb-3'>
-						Reject Web Booking
+						Reject Web Booking {`${webBooking?.id}`}
 					</h3>
 
-					<form onSubmit={formik.handleSubmit}>
+					<form
+						onSubmit={formik.handleSubmit}
+						className='w-full'
+					>
 						<div className='flex flex-col gap-1 pb-2'>
 							<label className='form-label text-gray-900'>Name</label>
 							<label className='input'>
 								<input
 									placeholder='Enter name'
 									autoComplete='off'
-									{...formik.getFieldProps('name')}
+									{...formik.getFieldProps('byName')}
 									className={clsx('form-control', {
-										'is-invalid': formik.touched.name && formik.errors.name,
+										'is-invalid': formik.touched.byName && formik.errors.byName,
 									})}
 								/>
 							</label>
-							{formik.touched.name && formik.errors.name && (
+							{formik.touched.byName && formik.errors.byName && (
 								<span
 									role='alert'
 									className='text-danger text-xs mt-1'
 								>
-									{formik.errors.name}
+									{formik.errors.byName}
 								</span>
 							)}
 						</div>
 						<div className='flex flex-col gap-1 pb-2'>
-							<label className='form-label text-gray-900'>Address</label>
+							<label className='form-label text-gray-900'>Reason</label>
 							<label className='input'>
 								<input
-									placeholder='Enter address'
+									placeholder='Enter reason'
 									autoComplete='off'
-									{...formik.getFieldProps('address')}
+									{...formik.getFieldProps('reason')}
 									className={clsx('form-control', {
-										'is-invalid':
-											formik.touched.address && formik.errors.address,
+										'is-invalid': formik.touched.reason && formik.errors.reason,
 									})}
 								/>
 							</label>
-							{formik.touched.address && formik.errors.address && (
+							{formik.touched.reason && formik.errors.reason && (
 								<span
 									role='alert'
 									className='text-danger text-xs mt-1'
 								>
-									{formik.errors.address}
+									{formik.errors.reason}
 								</span>
 							)}
-						</div>
-
-						<div className='w-full flex justify-center items-center gap-2'>
-							<div className='flex flex-col gap-1 pb-2'>
-								<label className='form-label text-gray-900'>Postcode</label>
-								<label className='input'>
-									<input
-										placeholder='Enter postcode'
-										autoComplete='off'
-										{...formik.getFieldProps('postcode')}
-										className={clsx('form-control', {
-											'is-invalid':
-												formik.touched.postcode && formik.errors.postcode,
-										})}
-									/>
-								</label>
-								{formik.touched.postcode && formik.errors.postcode && (
-									<span
-										role='alert'
-										className='text-danger text-xs mt-1'
-									>
-										{formik.errors.postcode}
-									</span>
-								)}
-							</div>
-							<div className='flex flex-col gap-1 pb-2'>
-								<label className='form-label text-gray-900'>Type</label>
-
-								<Select
-									defaultValue={0}
-									value={formik.values.type}
-									onValueChange={(value) => formik.setFieldValue('type', value)}
-								>
-									<SelectTrigger className=' w-52'>
-										<SelectValue placeholder='Select' />
-									</SelectTrigger>
-									<SelectContent>
-										<SelectItem value={0}>Not Set</SelectItem>
-										<SelectItem value={1}>Train_Station</SelectItem>
-										<SelectItem value={2}>Supermarket</SelectItem>
-										<SelectItem value={3}>House</SelectItem>
-										<SelectItem value={4}>Pub</SelectItem>
-										<SelectItem value={5}>Restaurant</SelectItem>
-									</SelectContent>
-								</Select>
-								{formik.touched.type && formik.errors.type && (
-									<span
-										role='alert'
-										className='text-danger text-xs mt-1'
-									>
-										{formik.errors.type}
-									</span>
-								)}
-							</div>
 						</div>
 
 						<div className='flex justify-end mb-2 mt-2'>

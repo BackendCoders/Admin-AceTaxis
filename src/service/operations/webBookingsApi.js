@@ -1,14 +1,18 @@
 /** @format */
 
 // import { sendLogs } from '../../utils/getLogs';
-import { handleGetReq, handlePostReq } from '../apiRequestHandler';
+import { handlePostReq } from '../apiRequestHandler';
 import { webBookingEndpoints } from '../apis';
 
 const { GET_WEB_BOOKINGS, ACCEPT_WEB_BOOKING, REJECT_WEB_BOOKING } =
 	webBookingEndpoints;
 export async function getWebBookings() {
 	// Fetch current user details using token
-	const response = await handleGetReq(GET_WEB_BOOKINGS);
+	const response = await handlePostReq(GET_WEB_BOOKINGS, {
+		processed: false,
+		accepted: false,
+		rejected: false,
+	});
 
 	console.log('GET WEB BOOKINGS API RESPONSE.........', response);
 
