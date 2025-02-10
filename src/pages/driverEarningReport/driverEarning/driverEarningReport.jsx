@@ -322,7 +322,7 @@ function DriverEarningReport() {
 											/>
 										</label>
 									</div>
-									<div className='flex items-center gap-2.5'>
+									<div className='flex flex-wrap items-center gap-2.5'>
 										<Popover>
 											<PopoverTrigger asChild>
 												<button

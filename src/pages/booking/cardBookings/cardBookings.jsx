@@ -230,6 +230,7 @@ function CardBookings() {
 				{/* Filters */}
 				<Box
 					display='flex'
+					flexWrap='wrap'
 					gap={2}
 					alignItems='center'
 					mb={2}
