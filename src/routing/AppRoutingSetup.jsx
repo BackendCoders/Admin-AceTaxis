@@ -128,7 +128,7 @@ const AppRoutingSetup = () => {
 						element={<BookingDispatch />}
 					/>
 					<Route
-						path='/bookings/new-booking'
+						path='/bookings/web-booking'
 						element={<NewBooking />}
 					/>
 					<Route
@@ -156,9 +156,9 @@ const AppRoutingSetup = () => {
 						path='/bookings/audit-view'
 						element={<AuditBooking />}
 					/>
-					<Route 
-					  path='/bookings/cancelbyrange'
-					  element={<CancelByRange />}
+					<Route
+						path='/bookings/cancelbyrange'
+						element={<CancelByRange />}
 					/>
 					<Route
 						path='/bookings/airport-runs'

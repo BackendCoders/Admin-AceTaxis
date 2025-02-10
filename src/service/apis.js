@@ -68,3 +68,9 @@ export const settingsEndpoints = {
 export const billingAndPaymentEndpoints = {
 	GET_VATOUTPUTS: `${BASE}/api/AdminUI/VATOutputs`,
 };
+
+export const webBookingEndpoints = {
+	GET_WEB_BOOKINGS: `${BASE}/api/WeBooking/GetWebBookings`,
+	ACCEPT_WEB_BOOKING: `${BASE}/api/WeBooking/Accept`,
+	REJECT_WEB_BOOKING: `${BASE}/api/WeBooking/Reject`,
+};

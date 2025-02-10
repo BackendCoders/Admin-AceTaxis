@@ -544,8 +544,8 @@ export const MENU_SIDEBAR = [
 			// 	],
 			// },
 			{
-				title: 'New Booking',
-				path: '/bookings/new-booking',
+				title: 'Web Booking',
+				path: '/bookings/web-booking',
 			},
 			{
 				title: 'Search Booking',
