@@ -5,6 +5,7 @@ import {
 	Toolbar,
 	ToolbarDescription,
 	ToolbarHeading,
+	ToolbarActions,
 	ToolbarPageTitle,
 } from '@/partials/toolbar';
 import { KeenIcon } from '@/components';
@@ -34,6 +35,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { useDispatch, useSelector } from 'react-redux';
 import { refreshRejectedWebBookings } from '../../../slices/webBookingSlice';
+import { Link } from 'react-router-dom';
 function RejectedBookings() {
 	const dispatch = useDispatch();
 	const { rejectedWebBookings } = useSelector((state) => state.webBooking);
@@ -285,6 +287,13 @@ function RejectedBookings() {
 							Total {`${rejectedWebBookings.length}`} Rejected Web Job(s){' '}
 						</ToolbarDescription>
 					</ToolbarHeading>
+					<ToolbarActions>
+						<Link to='/bookings/web-booking'>
+							<button className='btn btn-sm btn-primary px-4 py-4'>
+								<KeenIcon icon='arrow-left' /> Back
+							</button>
+						</Link>
+					</ToolbarActions>
 				</Toolbar>
 			</div>
 			<div className='pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1580px] w-full'>
