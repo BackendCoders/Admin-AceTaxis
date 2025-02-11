@@ -41,9 +41,13 @@ export function refreshWebBookings() {
 			if (response.status === 'success') {
 				const bookingsArray = Object.keys(response)
 					.filter((key) => key !== 'status') // Exclude 'status' field
-					.map((key) => response[key]); // Convert objects to an array
+					.map((key) => response[key]);
 
-				dispatch(setWebBookings(bookingsArray));
+				const notAcceptedBookings = bookingsArray.filter(
+					(booking) => !booking.processed && booking.status !== 1
+				); // Convert objects to an array
+
+				dispatch(setWebBookings(notAcceptedBookings));
 			}
 		} catch (error) {
 			console.error('Failed to refresh web bookings:', error);

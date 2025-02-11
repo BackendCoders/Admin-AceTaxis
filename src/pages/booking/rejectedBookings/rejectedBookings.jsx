@@ -281,7 +281,7 @@ function RejectedBookings() {
 					<ToolbarHeading>
 						<ToolbarPageTitle />
 						<ToolbarDescription>
-							Showing {`${rejectedWebBookings.length}`} Rejected Job(s){' '}
+							Total {`${rejectedWebBookings.length}`} Rejected Web Job(s){' '}
 						</ToolbarDescription>
 					</ToolbarHeading>
 				</Toolbar>

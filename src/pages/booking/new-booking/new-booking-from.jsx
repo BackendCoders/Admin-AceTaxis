@@ -282,7 +282,7 @@ function NewBooking() {
 					<ToolbarHeading>
 						<ToolbarPageTitle />
 						<ToolbarDescription>
-							Showing {`${webBookings?.length}`} Web Jobs{' '}
+							Total {`${webBookings?.length}`} Web Job(s){' '}
 						</ToolbarDescription>
 					</ToolbarHeading>
 					<ToolbarActions>
