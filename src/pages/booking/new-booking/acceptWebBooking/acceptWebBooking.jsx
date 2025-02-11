@@ -24,7 +24,7 @@ function AcceptWebBooking({ open, onOpenChange }) {
 
 	const initialValues = {
 		byName: '',
-		requiredTime: `${webBooking?.pickupDateTime?.split('T')[1]}`,
+		requiredTime: `${webBooking?.pickupDateTime?.split('T')[1].slice(0, 5)}`,
 		price: '',
 	};
 

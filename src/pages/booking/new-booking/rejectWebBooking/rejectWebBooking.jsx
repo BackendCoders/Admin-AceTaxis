@@ -87,14 +87,18 @@ function RejectWebBooking({ open, onOpenChange }) {
 						</div>
 						<div className='flex flex-col gap-1 pb-2'>
 							<label className='form-label text-gray-900'>Reason</label>
-							<label className='input'>
-								<input
+							<label className=''>
+								<textarea
 									placeholder='Enter reason'
 									autoComplete='off'
 									{...formik.getFieldProps('reason')}
-									className={clsx('form-control', {
-										'is-invalid': formik.touched.reason && formik.errors.reason,
-									})}
+									className={clsx(
+										'form-control textarea text-2sm text-gray-600 font-normal',
+										{
+											'is-invalid':
+												formik.touched.reason && formik.errors.reason,
+										}
+									)}
 								/>
 							</label>
 							{formik.touched.reason && formik.errors.reason && (
