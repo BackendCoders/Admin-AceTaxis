@@ -12,10 +12,11 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import clsx from 'clsx';
 import { acceptWebBookings } from '../../../../service/operations/webBookingsApi';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { refreshWebBookings } from '../../../../slices/webBookingSlice';
 
 function AcceptWebBooking({ open, onOpenChange }) {
+	const dispatch = useDispatch();
 	const { webBooking } = useSelector((state) => state.webBooking);
 
 	console.log(webBooking);
@@ -42,7 +43,7 @@ function AcceptWebBooking({ open, onOpenChange }) {
 			};
 			const response = await acceptWebBookings(payload);
 			if (response.status === 'success') {
-				await refreshWebBookings();
+				await dispatch(refreshWebBookings());
 				setSubmitting(false);
 				onOpenChange(); // Reset Formik's submitting state
 			}

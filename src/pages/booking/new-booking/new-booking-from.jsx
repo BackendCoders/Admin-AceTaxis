@@ -70,10 +70,11 @@ function NewBooking() {
 				: '';
 
 			const isMatch =
-				booking.pickupAddress.toLowerCase().includes(searchValue) ||
-				booking.pickupPostCode.toLowerCase().includes(searchValue) ||
-				booking.destinationAddress.toLowerCase().includes(searchValue) ||
-				booking.destinationPostCode.toLowerCase().includes(searchValue);
+				booking?.pickupAddress.toLowerCase().includes(searchValue) ||
+				booking?.pickupPostCode.toLowerCase().includes(searchValue) ||
+				booking?.destinationAddress.toLowerCase().includes(searchValue) ||
+				booking?.destinationPostCode.toLowerCase().includes(searchValue) ||
+				booking?.passengerName.toLowerCase().includes(searchValue);
 
 			const isDateMatch = date
 				? bookingDate === format(date, 'yyyy-MM-dd')
@@ -317,24 +318,40 @@ function NewBooking() {
 									<div className='flex flex-wrap items-center gap-2.5'>
 										<Popover>
 											<PopoverTrigger asChild>
-												<button
-													id='date'
-													className={cn(
-														'input data-[state=open]:border-primary',
-														!date && 'text-muted-foreground'
+												<div className='relative'>
+													<button
+														id='date'
+														className={cn(
+															'input data-[state=open]:border-primary',
+															!date && 'text-muted-foreground'
+														)}
+														style={{ width: '13rem' }}
+													>
+														<KeenIcon
+															icon='calendar'
+															className='-ms-0.5'
+														/>
+														{date ? (
+															format(date, 'LLL dd, y')
+														) : (
+															<span>Pick a date</span>
+														)}
+													</button>
+													{date && (
+														<button
+															onClick={(e) => {
+																e.stopPropagation(); // Prevent closing popover
+																setDate(null); // Clear date
+															}}
+															className='absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700'
+														>
+															<KeenIcon
+																icon='cross-circle'
+																className=''
+															/>
+														</button>
 													)}
-													style={{ width: '13rem' }}
-												>
-													<KeenIcon
-														icon='calendar'
-														className='-ms-0.5'
-													/>
-													{date ? (
-														format(date, 'LLL dd, y')
-													) : (
-														<span>Pick a date</span>
-													)}
-												</button>
+												</div>
 											</PopoverTrigger>
 											<PopoverContent
 												className='w-auto p-0'

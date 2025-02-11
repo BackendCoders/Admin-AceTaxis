@@ -13,9 +13,11 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import clsx from 'clsx';
 import { rejectWebBookings } from '../../../../service/operations/webBookingsApi';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { refreshWebBookings } from '../../../../slices/webBookingSlice';
 
 function RejectWebBooking({ open, onOpenChange }) {
+	const dispatch = useDispatch();
 	const { webBooking } = useSelector((state) => state.webBooking);
 	const addLocalSchema = Yup.object().shape({
 		byName: Yup.string().required('Name is required'), // Changed from email to username
@@ -40,6 +42,7 @@ function RejectWebBooking({ open, onOpenChange }) {
 			};
 			const response = await rejectWebBookings(payload);
 			if (response.status === 'success') {
+				await dispatch(refreshWebBookings());
 				setSubmitting(false);
 				onOpenChange(); // Reset Formik's submitting state
 			}
