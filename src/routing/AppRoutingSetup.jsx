@@ -83,6 +83,7 @@ import {
 	SearchBooking,
 	AirportRuns,
 	CardBookings,
+	RejectedBookings,
 	AuditBooking,
 	CancelByRange,
 	Tariff,
@@ -130,6 +131,10 @@ const AppRoutingSetup = () => {
 					<Route
 						path='/bookings/web-booking'
 						element={<NewBooking />}
+					/>
+					<Route
+						path='/bookings/reject-booking'
+						element={<RejectedBookings />}
 					/>
 					<Route
 						path='/booking/driver-tracking'

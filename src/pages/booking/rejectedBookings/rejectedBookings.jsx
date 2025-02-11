@@ -1,11 +1,10 @@
 /** @format */
 
-import { Fragment, useEffect, useMemo, useState } from 'react';
+import { Fragment, useMemo, useState } from 'react';
 import {
 	Toolbar,
 	ToolbarDescription,
 	ToolbarHeading,
-	ToolbarActions,
 	ToolbarPageTitle,
 } from '@/partials/toolbar';
 import { KeenIcon } from '@/components';
@@ -33,27 +32,110 @@ import {
 	// DataGridRowSelect,
 } from '@/components';
 import { Input } from '@/components/ui/input';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-	refreshWebBookings,
-	setWebBooking,
-} from '../../../slices/webBookingSlice';
-import { AcceptWebBooking } from './acceptWebBooking';
-import { RejectWebBooking } from './rejectWebBooking';
-import { Link } from 'react-router-dom';
-function NewBooking() {
-	const dispatch = useDispatch();
-	const [acceptModal, setAcceptModal] = useState(false);
-	const [rejectModal, setRejectModal] = useState(false);
+function RejectedBookings() {
 	const [searchInput, setSearchInput] = useState('');
 	const [date, setDate] = useState(new Date());
-	const { webBookings } = useSelector((state) => state.webBooking);
-
-	console.log(webBookings);
-
-	useEffect(() => {
-		dispatch(refreshWebBookings());
-	}, [dispatch]);
+	const driversData = useMemo(
+		() => [
+			{
+				driver: 10,
+				name: 'Alan Waistell',
+				details: '00:00 - 23:59',
+				color: 'bg-yellow-500',
+			},
+			{
+				driver: 13,
+				name: 'Lee Harrison',
+				details: '00:00 - 23:59',
+				color: 'bg-blue-300',
+			},
+			{
+				driver: 30,
+				name: 'Richard Elgar',
+				details: '07:30 - 17:30',
+				color: 'bg-red-400',
+			},
+			{
+				driver: 16,
+				name: 'James Owen',
+				details: '07:00 - 17:00 (+/-)',
+				color: 'bg-gray-700 text-white font-bold',
+			},
+			{
+				driver: 14,
+				name: 'Andrew James',
+				details: '07:30 - 17:30',
+				color: 'bg-green-500',
+			},
+			{
+				driver: 4,
+				name: 'Paul Barber',
+				details: '07:00 - 18:00',
+				color: 'bg-green-400',
+			},
+			{
+				driver: 12,
+				name: 'Chris Gray',
+				details: '07:00 - 16:00',
+				color: 'bg-blue-700 text-white font-bold',
+			},
+			{
+				driver: 5,
+				name: 'Mark Phillips',
+				details: '07:00 - 16:30',
+				color: 'bg-pink-500',
+			},
+			{
+				driver: 11,
+				name: 'Nigel Reynolds',
+				details: '07:00 - 17:00',
+				color: 'bg-gray-400',
+			},
+			{
+				driver: 2,
+				name: 'Kate Hall',
+				details: '07:00 - 22:30',
+				color: 'bg-purple-400',
+			},
+			{
+				driver: 8,
+				name: 'Peter Farrell',
+				details: '08:20 - 10:00',
+				color: 'bg-purple-200',
+			},
+			{
+				driver: 7,
+				name: 'Caroline Stimson',
+				details: '11:00 - 17:00',
+				color: 'bg-red-200',
+			},
+			{
+				driver: 6,
+				name: 'Rob Holton',
+				details: '07:00 - 22:00',
+				color: 'bg-blue-400',
+			},
+			{
+				driver: 31,
+				name: 'Bill Wood',
+				details: '16:00 - 17:00',
+				color: 'bg-red-300',
+			},
+			{
+				driver: 26,
+				name: 'Charles Farnham',
+				details: '07:00 - 17:00 (all routes)',
+				color: 'bg-blue-800 text-white font-bold',
+			},
+			{
+				driver: 18,
+				name: 'Jean Williams',
+				details: '07:30 - 09:15 (AM SR)',
+				color: 'bg-yellow-400',
+			},
+		],
+		[]
+	);
 
 	const ColumnInputFilter = ({ column }) => {
 		return (
@@ -79,15 +161,15 @@ function NewBooking() {
 				),
 				enableSorting: true,
 				cell: ({ row }) => (
-					<span className={`p-2 rounded-md`}>{row?.original?.id}</span>
+					<span className={`p-2 rounded-md`}>{row.original.bookingId}</span>
 				),
 				meta: { headerClassName: 'w-20' },
 			},
 			{
-				accessorKey: 'pickUpDateTime',
+				accessorKey: 'date',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Pickup Date/Time'
+						title='Date'
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -95,20 +177,16 @@ function NewBooking() {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={`font-medium ${row.original.color}`}>
-						{new Date(
-							row.original.pickupDateTime?.split('T')[0]
-						)?.toLocaleDateString('en-GB')}{' '}
-						{row.original.pickupDateTime?.split('T')[1].split('.')[0]}
+						{row.original.date}
 					</span>
 				),
 				meta: { headerClassName: 'min-w-[120px]' },
 			},
-
 			{
-				accessorKey: 'pickupAddress',
+				accessorKey: 'driverId',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Pickup Address'
+						title='Driver #'
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -116,16 +194,16 @@ function NewBooking() {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={`font-medium ${row.original.color}`}>
-						{row?.original?.pickupAddress}, {row?.original?.pickupPostCode}
+						{row.original.driverId}
 					</span>
 				),
-				meta: { headerClassName: 'min-w-[200px]' },
+				meta: { headerClassName: 'min-w-[80px]' },
 			},
 			{
-				accessorKey: 'destinationAddress',
+				accessorKey: 'pickUp',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Destination Address'
+						title='Pick Up'
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -133,27 +211,27 @@ function NewBooking() {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={`font-medium ${row.original.color}`}>
-						{row.original.destinationAddress},{' '}
-						{row.original.destinationPostCode}
+						{row.original.pickUp}
 					</span>
 				),
 				meta: { headerClassName: 'min-w-[200px]' },
 			},
 			{
-				accessorKey: 'passengerName',
+				accessorKey: 'destination',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Passenger Name'
+						title='Destination'
+						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
 				),
 				enableSorting: true,
 				cell: ({ row }) => (
-					<span className={row.original.color}>
-						{row?.original?.passengerName}
+					<span className={`font-medium ${row.original.color}`}>
+						{row.original.destination}
 					</span>
 				),
-				meta: { headerClassName: 'w-18' },
+				meta: { headerClassName: 'min-w-[200px]' },
 			},
 			{
 				accessorKey: 'passenger',
@@ -165,75 +243,42 @@ function NewBooking() {
 				),
 				enableSorting: true,
 				cell: ({ row }) => (
-					<span className={row.original.color}>
-						{row?.original?.passengers}
-					</span>
+					<span className={row.original.color}>{row.original.passenger}</span>
 				),
-				meta: { headerClassName: 'w-18' },
+				meta: { headerClassName: 'min-w-[80px]' },
 			},
 			{
-				accessorKey: 'phoneNumber',
+				accessorKey: 'pax',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Phone Number'
+						title='Pax'
 						column={column}
 					/>
 				),
 				enableSorting: true,
 				cell: ({ row }) => (
-					<span className={row.original.color}>{row.original.phoneNumber}</span>
+					<span className={row.original.color}>{row.original.pax}</span>
 				),
 				meta: { headerClassName: 'min-w-[80px]' },
 			},
 
 			{
-				accessorKey: 'action',
+				accessorKey: 'lastUpdated',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Action'
+						title='Last Updated'
 						column={column}
 					/>
 				),
 				enableSorting: true,
 				cell: ({ row }) => (
-					<div className='w-full flex justify-start items-center gap-2'>
-						{!row?.accepted && (
-							<button
-								className='btn btn-sm btn-success px-4 py-4'
-								onClick={() => {
-									setAcceptModal(true);
-									dispatch(setWebBooking(row.original));
-								}}
-							>
-								Accept
-							</button>
-						)}
-						{!row?.accepted && (
-							<button
-								className='btn btn-sm btn-danger px-4 py-4'
-								onClick={() => {
-									setRejectModal(true);
-									dispatch(setWebBooking(row.original));
-								}}
-							>
-								Reject
-							</button>
-						)}
-					</div>
+					<span className={row.original.color}>{row.original.lastUpdated}</span>
 				),
 				meta: { headerClassName: 'min-w-[80px]' },
 			},
 		],
 		[]
 	);
-
-	const handleCloseAcceptModal = () => {
-		setAcceptModal(false);
-	};
-
-	const handleCloseRejectModal = () => {
-		setRejectModal(false);
-	};
 
 	const handleRowSelection = (state) => {
 		const selectedRowIds = Object.keys(state);
@@ -248,16 +293,9 @@ function NewBooking() {
 					<ToolbarHeading>
 						<ToolbarPageTitle />
 						<ToolbarDescription>
-							Showing {`${webBookings?.length}`} Web Jobs{' '}
+							Showing {'23'} Rejected Jobs{' '}
 						</ToolbarDescription>
 					</ToolbarHeading>
-					<ToolbarActions>
-						<Link to='/bookings/reject-booking'>
-							<button className='btn btn-sm btn-primary px-4 py-4'>
-								Rejected Bookings
-							</button>
-						</Link>
-					</ToolbarActions>
 				</Toolbar>
 			</div>
 			<div className='pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1580px] w-full'>
@@ -346,7 +384,7 @@ function NewBooking() {
 							<div className='card-body'>
 								<DataGrid
 									columns={columns}
-									data={webBookings}
+									data={driversData}
 									rowSelection={true}
 									onRowSelectionChange={handleRowSelection}
 									pagination={{ size: 10 }}
@@ -358,20 +396,8 @@ function NewBooking() {
 					</div>
 				</div>
 			</div>
-			{acceptModal && (
-				<AcceptWebBooking
-					open={acceptModal}
-					onOpenChange={handleCloseAcceptModal}
-				/>
-			)}
-			{rejectModal && (
-				<RejectWebBooking
-					open={rejectModal}
-					onOpenChange={handleCloseRejectModal}
-				/>
-			)}
 		</Fragment>
 	);
 }
 
-export { NewBooking };
+export { RejectedBookings };

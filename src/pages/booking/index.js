@@ -1,6 +1,7 @@
 /** @format */
 
 export * from './new-booking';
+export * from "./rejectedBookings";
 export * from './airportRuns';
 export * from './auditBooking';
 export * from './searchBooking';

@@ -548,6 +548,10 @@ export const MENU_SIDEBAR = [
 				path: '/bookings/web-booking',
 			},
 			{
+				title: 'Rejected Booking',
+				path: '/bookings/reject-booking',
+			},
+			{
 				title: 'Search Booking',
 				path: '/bookings/search-booking',
 			},
