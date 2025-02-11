@@ -46,6 +46,7 @@ function NewBooking() {
 	const [acceptModal, setAcceptModal] = useState(false);
 	const [rejectModal, setRejectModal] = useState(false);
 	const [searchInput, setSearchInput] = useState('');
+	const [selectedScope, setSelectedScope] = useState('3');
 	const [date, setDate] = useState(new Date());
 	const { webBookings } = useSelector((state) => state.webBooking);
 
@@ -54,6 +55,36 @@ function NewBooking() {
 	useEffect(() => {
 		dispatch(refreshWebBookings());
 	}, [dispatch]);
+
+	const filteredBookings = useMemo(() => {
+		// if No filtration is applied
+		if (!searchInput && selectedScope === '3' && !date) {
+			return webBookings;
+		}
+
+		return webBookings?.filter((booking) => {
+			const searchValue = searchInput?.toLowerCase();
+
+			const bookingDate = booking.pickupDateTime
+				? format(new Date(booking?.pickupDateTime), 'yyyy-MM-dd')
+				: '';
+
+			const isMatch =
+				booking.pickupAddress.toLowerCase().includes(searchValue) ||
+				booking.pickupPostCode.toLowerCase().includes(searchValue) ||
+				booking.destinationAddress.toLowerCase().includes(searchValue) ||
+				booking.destinationPostCode.toLowerCase().includes(searchValue);
+
+			const isDateMatch = date
+				? bookingDate === format(date, 'yyyy-MM-dd')
+				: true;
+
+			const isScopeMatch =
+				selectedScope === '3' || String(booking?.scope) === selectedScope;
+
+			return isMatch && isDateMatch && isScopeMatch;
+		});
+	}, [webBookings, searchInput, date, selectedScope]);
 
 	const ColumnInputFilter = ({ column }) => {
 		return (
@@ -98,7 +129,10 @@ function NewBooking() {
 						{new Date(
 							row.original.pickupDateTime?.split('T')[0]
 						)?.toLocaleDateString('en-GB')}{' '}
-						{row.original.pickupDateTime?.split('T')[1].split('.')[0]}
+						{row.original.pickupDateTime
+							?.split('T')[1]
+							.split('.')[0]
+							?.slice(0, 5)}
 					</span>
 				),
 				meta: { headerClassName: 'min-w-[120px]' },
@@ -317,7 +351,10 @@ function NewBooking() {
 											</PopoverContent>
 										</Popover>
 
-										<Select defaultValue='all'>
+										<Select
+											value={selectedScope}
+											onValueChange={setSelectedScope}
+										>
 											<SelectTrigger
 												className='w-28'
 												size='sm'
@@ -326,27 +363,27 @@ function NewBooking() {
 												<SelectValue placeholder='Select' />
 											</SelectTrigger>
 											<SelectContent className='w-32'>
-												<SelectItem value='all'>All</SelectItem>
-												<SelectItem value='cash'>Cash</SelectItem>
-												<SelectItem value='card'>Card</SelectItem>
-												<SelectItem value='account'>Account</SelectItem>
-												<SelectItem value='rank'>Rank</SelectItem>
+												<SelectItem value='3'>All</SelectItem>
+												<SelectItem value='0'>Cash</SelectItem>
+												<SelectItem value='4'>Card</SelectItem>
+												<SelectItem value='1'>Account</SelectItem>
+												<SelectItem value='2'>Rank</SelectItem>
 											</SelectContent>
 										</Select>
 
-										<button
+										{/* <button
 											className='btn btn-sm btn-outline btn-primary'
 											style={{ height: '40px' }}
 										>
 											<KeenIcon icon='magnifier' /> Search
-										</button>
+										</button> */}
 									</div>
 								</div>
 							</div>
 							<div className='card-body'>
 								<DataGrid
 									columns={columns}
-									data={webBookings}
+									data={filteredBookings}
 									rowSelection={true}
 									onRowSelectionChange={handleRowSelection}
 									pagination={{ size: 10 }}

@@ -1,11 +1,15 @@
 /** @format */
 
 import { createSlice } from '@reduxjs/toolkit';
-import { getWebBookings } from '../service/operations/webBookingsApi';
+import {
+	getRejectedWebBookings,
+	getWebBookings,
+} from '../service/operations/webBookingsApi';
 
 const initialState = {
 	loading: false,
 	webBookings: [],
+	rejectedWebBookings: [],
 	webBooking: null,
 };
 
@@ -18,6 +22,9 @@ const webBookingSlice = createSlice({
 		},
 		setWebBookings: (state, action) => {
 			state.webBookings = action.payload;
+		},
+		setRejectedWebBookings: (state, action) => {
+			state.rejectedWebBookings = action.payload;
 		},
 		setWebBooking: (state, action) => {
 			state.webBooking = action.payload;
@@ -44,6 +51,28 @@ export function refreshWebBookings() {
 	};
 }
 
-export const { setLoading, setWebBooking, setWebBookings } =
-	webBookingSlice.actions;
+export function refreshRejectedWebBookings() {
+	return async (dispatch) => {
+		try {
+			const response = await getRejectedWebBookings();
+
+			if (response.status === 'success') {
+				const bookingsArray = Object.keys(response)
+					.filter((key) => key !== 'status') // Exclude 'status' field
+					.map((key) => response[key]); // Convert objects to an array
+
+				dispatch(setRejectedWebBookings(bookingsArray));
+			}
+		} catch (error) {
+			console.error('Failed to refresh rejected web bookings:', error);
+		}
+	};
+}
+
+export const {
+	setLoading,
+	setWebBooking,
+	setWebBookings,
+	setRejectedWebBookings,
+} = webBookingSlice.actions;
 export default webBookingSlice.reducer;

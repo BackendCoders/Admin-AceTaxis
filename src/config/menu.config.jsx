@@ -548,7 +548,7 @@ export const MENU_SIDEBAR = [
 				path: '/bookings/web-booking',
 			},
 			{
-				title: 'Rejected Booking',
+				title: 'Rejected Bookings',
 				path: '/bookings/reject-booking',
 			},
 			{

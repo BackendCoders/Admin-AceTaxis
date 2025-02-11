@@ -30,6 +30,30 @@ export async function getWebBookings() {
 	}
 }
 
+export async function getRejectedWebBookings() {
+	// Fetch current user details using token
+	const response = await handlePostReq(GET_WEB_BOOKINGS, {
+		processed: true,
+		accepted: false,
+		rejected: true,
+	});
+
+	console.log('GET WEB BOOKINGS API RESPONSE.........', response);
+
+	if (response.status === 'success') {
+		// sendLogs(
+		// 	{
+		// 		url: GET_WEB_BOOKINGS,
+		// 		reqBody: null,
+		// 		headers: setHeaders(),
+		// 		response: response,
+		// 	},
+		// 	'info'
+		// );
+		return response;
+	}
+}
+
 export async function acceptWebBookings(data) {
 	// Fetch current user details using token
 	const response = await handlePostReq(ACCEPT_WEB_BOOKING, data);

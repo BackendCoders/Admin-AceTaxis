@@ -1,6 +1,6 @@
 /** @format */
 
-import { Fragment, useMemo, useState } from 'react';
+import { Fragment, useEffect, useMemo, useState } from 'react';
 import {
 	Toolbar,
 	ToolbarDescription,
@@ -32,110 +32,50 @@ import {
 	// DataGridRowSelect,
 } from '@/components';
 import { Input } from '@/components/ui/input';
+import { useDispatch, useSelector } from 'react-redux';
+import { refreshRejectedWebBookings } from '../../../slices/webBookingSlice';
 function RejectedBookings() {
+	const dispatch = useDispatch();
+	const { rejectedWebBookings } = useSelector((state) => state.webBooking);
 	const [searchInput, setSearchInput] = useState('');
+	const [selectedScope, setSelectedScope] = useState('3');
 	const [date, setDate] = useState(new Date());
-	const driversData = useMemo(
-		() => [
-			{
-				driver: 10,
-				name: 'Alan Waistell',
-				details: '00:00 - 23:59',
-				color: 'bg-yellow-500',
-			},
-			{
-				driver: 13,
-				name: 'Lee Harrison',
-				details: '00:00 - 23:59',
-				color: 'bg-blue-300',
-			},
-			{
-				driver: 30,
-				name: 'Richard Elgar',
-				details: '07:30 - 17:30',
-				color: 'bg-red-400',
-			},
-			{
-				driver: 16,
-				name: 'James Owen',
-				details: '07:00 - 17:00 (+/-)',
-				color: 'bg-gray-700 text-white font-bold',
-			},
-			{
-				driver: 14,
-				name: 'Andrew James',
-				details: '07:30 - 17:30',
-				color: 'bg-green-500',
-			},
-			{
-				driver: 4,
-				name: 'Paul Barber',
-				details: '07:00 - 18:00',
-				color: 'bg-green-400',
-			},
-			{
-				driver: 12,
-				name: 'Chris Gray',
-				details: '07:00 - 16:00',
-				color: 'bg-blue-700 text-white font-bold',
-			},
-			{
-				driver: 5,
-				name: 'Mark Phillips',
-				details: '07:00 - 16:30',
-				color: 'bg-pink-500',
-			},
-			{
-				driver: 11,
-				name: 'Nigel Reynolds',
-				details: '07:00 - 17:00',
-				color: 'bg-gray-400',
-			},
-			{
-				driver: 2,
-				name: 'Kate Hall',
-				details: '07:00 - 22:30',
-				color: 'bg-purple-400',
-			},
-			{
-				driver: 8,
-				name: 'Peter Farrell',
-				details: '08:20 - 10:00',
-				color: 'bg-purple-200',
-			},
-			{
-				driver: 7,
-				name: 'Caroline Stimson',
-				details: '11:00 - 17:00',
-				color: 'bg-red-200',
-			},
-			{
-				driver: 6,
-				name: 'Rob Holton',
-				details: '07:00 - 22:00',
-				color: 'bg-blue-400',
-			},
-			{
-				driver: 31,
-				name: 'Bill Wood',
-				details: '16:00 - 17:00',
-				color: 'bg-red-300',
-			},
-			{
-				driver: 26,
-				name: 'Charles Farnham',
-				details: '07:00 - 17:00 (all routes)',
-				color: 'bg-blue-800 text-white font-bold',
-			},
-			{
-				driver: 18,
-				name: 'Jean Williams',
-				details: '07:30 - 09:15 (AM SR)',
-				color: 'bg-yellow-400',
-			},
-		],
-		[]
-	);
+
+	useEffect(() => {
+		dispatch(refreshRejectedWebBookings());
+	}, [dispatch]);
+
+	const filteredBookings = useMemo(() => {
+		// if No filtration is applied
+		if (!searchInput && selectedScope === '3' && !date) {
+			return rejectedWebBookings;
+		}
+
+		return rejectedWebBookings?.filter((booking) => {
+			const searchValue = searchInput?.toLowerCase();
+
+			const bookingDate = booking.pickupDateTime
+				? format(new Date(booking?.pickupDateTime), 'yyyy-MM-dd')
+				: '';
+
+			const isMatch =
+				booking.pickupAddress.toLowerCase().includes(searchValue) ||
+				booking.pickupPostCode.toLowerCase().includes(searchValue) ||
+				booking.destinationAddress.toLowerCase().includes(searchValue) ||
+				booking.destinationPostCode.toLowerCase().includes(searchValue);
+
+			const isDateMatch = date
+				? bookingDate === format(date, 'yyyy-MM-dd')
+				: true;
+
+			const isScopeMatch =
+				selectedScope === '3' || String(booking?.scope) === selectedScope;
+
+			return isMatch && isDateMatch && isScopeMatch;
+		});
+	}, [rejectedWebBookings, searchInput, date, selectedScope]);
+
+	console.log('.....', filteredBookings);
 
 	const ColumnInputFilter = ({ column }) => {
 		return (
@@ -161,15 +101,15 @@ function RejectedBookings() {
 				),
 				enableSorting: true,
 				cell: ({ row }) => (
-					<span className={`p-2 rounded-md`}>{row.original.bookingId}</span>
+					<span className={`p-2 rounded-md`}>{row?.original?.id}</span>
 				),
 				meta: { headerClassName: 'w-20' },
 			},
 			{
-				accessorKey: 'date',
+				accessorKey: 'pickUpDateTime',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Date'
+						title='Pickup Date/Time'
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -177,102 +117,150 @@ function RejectedBookings() {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={`font-medium ${row.original.color}`}>
-						{row.original.date}
+						{new Date(
+							row.original.pickupDateTime?.split('T')[0]
+						)?.toLocaleDateString('en-GB')}{' '}
+						{row.original.pickupDateTime
+							?.split('T')[1]
+							.split('.')[0]
+							?.slice(0, 5)}
 					</span>
-				),
-				meta: { headerClassName: 'min-w-[120px]' },
-			},
-			{
-				accessorKey: 'driverId',
-				header: ({ column }) => (
-					<DataGridColumnHeader
-						title='Driver #'
-						filter={<ColumnInputFilter column={column} />}
-						column={column}
-					/>
-				),
-				enableSorting: true,
-				cell: ({ row }) => (
-					<span className={`font-medium ${row.original.color}`}>
-						{row.original.driverId}
-					</span>
-				),
-				meta: { headerClassName: 'min-w-[80px]' },
-			},
-			{
-				accessorKey: 'pickUp',
-				header: ({ column }) => (
-					<DataGridColumnHeader
-						title='Pick Up'
-						filter={<ColumnInputFilter column={column} />}
-						column={column}
-					/>
-				),
-				enableSorting: true,
-				cell: ({ row }) => (
-					<span className={`font-medium ${row.original.color}`}>
-						{row.original.pickUp}
-					</span>
-				),
-				meta: { headerClassName: 'min-w-[200px]' },
-			},
-			{
-				accessorKey: 'destination',
-				header: ({ column }) => (
-					<DataGridColumnHeader
-						title='Destination'
-						filter={<ColumnInputFilter column={column} />}
-						column={column}
-					/>
-				),
-				enableSorting: true,
-				cell: ({ row }) => (
-					<span className={`font-medium ${row.original.color}`}>
-						{row.original.destination}
-					</span>
-				),
-				meta: { headerClassName: 'min-w-[200px]' },
-			},
-			{
-				accessorKey: 'passenger',
-				header: ({ column }) => (
-					<DataGridColumnHeader
-						title='Passenger'
-						column={column}
-					/>
-				),
-				enableSorting: true,
-				cell: ({ row }) => (
-					<span className={row.original.color}>{row.original.passenger}</span>
-				),
-				meta: { headerClassName: 'min-w-[80px]' },
-			},
-			{
-				accessorKey: 'pax',
-				header: ({ column }) => (
-					<DataGridColumnHeader
-						title='Pax'
-						column={column}
-					/>
-				),
-				enableSorting: true,
-				cell: ({ row }) => (
-					<span className={row.original.color}>{row.original.pax}</span>
 				),
 				meta: { headerClassName: 'min-w-[80px]' },
 			},
 
 			{
-				accessorKey: 'lastUpdated',
+				accessorKey: 'pickupAddress',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Last Updated'
+						title='Pickup Address'
+						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
 				),
 				enableSorting: true,
 				cell: ({ row }) => (
-					<span className={row.original.color}>{row.original.lastUpdated}</span>
+					<span className={`font-medium ${row.original.color}`}>
+						{row?.original?.pickupAddress}, {row?.original?.pickupPostCode}
+					</span>
+				),
+				meta: { headerClassName: 'min-w-[120px]' },
+			},
+			{
+				accessorKey: 'destinationAddress',
+				header: ({ column }) => (
+					<DataGridColumnHeader
+						title='Destination Address'
+						filter={<ColumnInputFilter column={column} />}
+						column={column}
+					/>
+				),
+				enableSorting: true,
+				cell: ({ row }) => (
+					<span className={`font-medium ${row.original.color}`}>
+						{row.original.destinationAddress},{' '}
+						{row.original.destinationPostCode}
+					</span>
+				),
+				meta: { headerClassName: 'min-w-[120px]' },
+			},
+			// {
+			// 	accessorKey: 'passengerName',
+			// 	header: ({ column }) => (
+			// 		<DataGridColumnHeader
+			// 			title='Passenger Name'
+			// 			column={column}
+			// 		/>
+			// 	),
+			// 	enableSorting: true,
+			// 	cell: ({ row }) => (
+			// 		<span className={row.original.color}>
+			// 			{row?.original?.passengerName}
+			// 		</span>
+			// 	),
+			// 	meta: { headerClassName: 'w-18' },
+			// },
+			// {
+			// 	accessorKey: 'passenger',
+			// 	header: ({ column }) => (
+			// 		<DataGridColumnHeader
+			// 			title='Passenger'
+			// 			column={column}
+			// 		/>
+			// 	),
+			// 	enableSorting: true,
+			// 	cell: ({ row }) => (
+			// 		<span className={row.original.color}>
+			// 			{row?.original?.passengers}
+			// 		</span>
+			// 	),
+			// 	meta: { headerClassName: 'w-18' },
+			// },
+			// {
+			// 	accessorKey: 'phoneNumber',
+			// 	header: ({ column }) => (
+			// 		<DataGridColumnHeader
+			// 			title='Phone Number'
+			// 			column={column}
+			// 		/>
+			// 	),
+			// 	enableSorting: true,
+			// 	cell: ({ row }) => (
+			// 		<span className={row.original.color}>{row.original.phoneNumber}</span>
+			// 	),
+			// 	meta: { headerClassName: 'w-18' },
+			// },
+			{
+				accessorKey: 'rejectedReason',
+				header: ({ column }) => (
+					<DataGridColumnHeader
+						title='Reason'
+						column={column}
+					/>
+				),
+				enableSorting: true,
+				cell: ({ row }) => (
+					<span className={row.original.color}>
+						{row.original.rejectedReason}
+					</span>
+				),
+				meta: { headerClassName: 'min-w-[220px]' },
+			},
+			{
+				accessorKey: 'rejectedBy',
+				header: ({ column }) => (
+					<DataGridColumnHeader
+						title='Rejected By'
+						column={column}
+					/>
+				),
+				enableSorting: true,
+				cell: ({ row }) => (
+					<span className={row.original.color}>
+						{row.original.acceptedRejectedBy}
+					</span>
+				),
+				meta: { headerClassName: 'w-18' },
+			},
+			{
+				accessorKey: 'rejectedOn',
+				header: ({ column }) => (
+					<DataGridColumnHeader
+						title='Rejected On'
+						column={column}
+					/>
+				),
+				enableSorting: true,
+				cell: ({ row }) => (
+					<span className={row.original.color}>
+						{new Date(
+							row.original.acceptedRejectedOn?.split('T')[0]
+						)?.toLocaleDateString('en-GB')}{' '}
+						{row.original.acceptedRejectedOn
+							?.split('T')[1]
+							.split('.')[0]
+							?.slice(0, 5)}
+					</span>
 				),
 				meta: { headerClassName: 'min-w-[80px]' },
 			},
@@ -293,7 +281,7 @@ function RejectedBookings() {
 					<ToolbarHeading>
 						<ToolbarPageTitle />
 						<ToolbarDescription>
-							Showing {'23'} Rejected Jobs{' '}
+							Showing {`${rejectedWebBookings.length}`} Rejected Job(s){' '}
 						</ToolbarDescription>
 					</ToolbarHeading>
 				</Toolbar>
@@ -355,7 +343,10 @@ function RejectedBookings() {
 											</PopoverContent>
 										</Popover>
 
-										<Select defaultValue='all'>
+										<Select
+											value={selectedScope}
+											onValueChange={setSelectedScope}
+										>
 											<SelectTrigger
 												className='w-28'
 												size='sm'
@@ -364,27 +355,27 @@ function RejectedBookings() {
 												<SelectValue placeholder='Select' />
 											</SelectTrigger>
 											<SelectContent className='w-32'>
-												<SelectItem value='all'>All</SelectItem>
-												<SelectItem value='cash'>Cash</SelectItem>
-												<SelectItem value='card'>Card</SelectItem>
-												<SelectItem value='account'>Account</SelectItem>
-												<SelectItem value='rank'>Rank</SelectItem>
+												<SelectItem value='3'>All</SelectItem>
+												<SelectItem value='0'>Cash</SelectItem>
+												<SelectItem value='4'>Card</SelectItem>
+												<SelectItem value='1'>Account</SelectItem>
+												<SelectItem value='2'>Rank</SelectItem>
 											</SelectContent>
 										</Select>
 
-										<button
+										{/* <button
 											className='btn btn-sm btn-outline btn-primary'
 											style={{ height: '40px' }}
 										>
 											<KeenIcon icon='magnifier' /> Search
-										</button>
+										</button> */}
 									</div>
 								</div>
 							</div>
 							<div className='card-body'>
 								<DataGrid
 									columns={columns}
-									data={driversData}
+									data={filteredBookings}
 									rowSelection={true}
 									onRowSelectionChange={handleRowSelection}
 									pagination={{ size: 10 }}
