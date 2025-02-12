@@ -14,18 +14,22 @@ import clsx from 'clsx';
 import { acceptWebBookings } from '../../../../service/operations/webBookingsApi';
 import { useDispatch, useSelector } from 'react-redux';
 import { refreshWebBookings } from '../../../../slices/webBookingSlice';
+import toast from 'react-hot-toast';
 
 function AcceptWebBooking({ open, onOpenChange }) {
 	const dispatch = useDispatch();
+	const { user } = useSelector((state) => state.auth);
 	const { webBooking } = useSelector((state) => state.webBooking);
 
-	console.log(webBooking);
 	const addLocalSchema = Yup.object().shape({
 		byName: Yup.string().required('Name is required'), // Changed from email to username
 	});
 
 	const initialValues = {
-		byName: '',
+		byName:
+			user?.fullName ||
+			JSON.parse(localStorage?.getItem('userData'))?.fullName ||
+			'',
 		requiredTime: `${webBooking?.pickupDateTime?.split('T')[1].slice(0, 5)}`,
 		price: '',
 	};
@@ -39,13 +43,14 @@ function AcceptWebBooking({ open, onOpenChange }) {
 				id: webBooking?.id,
 				byName: values.byName,
 				requiredTime: values.requiredTime, // Changed from pickupDateTime to requiredTime
-				price: values.price,
+				price: values.price || 0,
 			};
 			const response = await acceptWebBookings(payload);
 			if (response.status === 'success') {
+				toast.success('Booking accepted Successfully');
 				await dispatch(refreshWebBookings());
-				setSubmitting(false);
 				onOpenChange(); // Reset Formik's submitting state
+				setSubmitting(false);
 			}
 		},
 	});

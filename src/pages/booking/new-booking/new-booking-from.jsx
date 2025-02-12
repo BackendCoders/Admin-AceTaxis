@@ -47,7 +47,7 @@ function NewBooking() {
 	const [rejectModal, setRejectModal] = useState(false);
 	const [searchInput, setSearchInput] = useState('');
 	const [selectedScope, setSelectedScope] = useState('3');
-	const [date, setDate] = useState(new Date());
+	const [date, setDate] = useState(null);
 	const { webBookings } = useSelector((state) => state.webBooking);
 
 	console.log(webBookings);
@@ -119,7 +119,7 @@ function NewBooking() {
 				accessorKey: 'pickUpDateTime',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Pickup Date/Time'
+						title='Arrive By'
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>

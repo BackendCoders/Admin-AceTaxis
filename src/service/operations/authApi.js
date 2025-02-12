@@ -23,15 +23,15 @@ export function register(data, navigate) {
 		if (response.status === 'success') {
 			toast.success('User Register Successfully');
 			navigate('/');
-			sendLogs(
-				{
-					url: REGISTER,
-					reqBody: data,
-					headers: setHeaders(),
-					response: response,
-				},
-				'info'
-			);
+			// sendLogs(
+			// 	{
+			// 		url: REGISTER,
+			// 		reqBody: data,
+			// 		headers: setHeaders(),
+			// 		response: response,
+			// 	},
+			// 	'info'
+			// );
 		} else {
 			toast.error('Failed to Register New User');
 			navigate('/auth/signup');
@@ -69,15 +69,15 @@ export function login(data, navigate) {
 			localStorage.setItem('userData', JSON.stringify(response));
 			navigate('/');
 
-			sendLogs(
-				{
-					url: LOGIN,
-					reqBody: data,
-					headers: setHeaders(),
-					response: response,
-				},
-				'info'
-			);
+			// sendLogs(
+			// 	{
+			// 		url: LOGIN,
+			// 		reqBody: data,
+			// 		headers: setHeaders(),
+			// 		response: response,
+			// 	},
+			// 	'info'
+			// );
 		} else {
 			toast.error('Failed to Login User');
 			navigate('/auth/signup');
