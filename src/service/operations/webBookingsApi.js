@@ -1,11 +1,16 @@
 /** @format */
 
 // import { sendLogs } from '../../utils/getLogs';
-import { handlePostReq } from '../apiRequestHandler';
+import axios from 'axios';
+import { handlePostReq, setHeaders } from '../apiRequestHandler';
 import { webBookingEndpoints } from '../apis';
 
-const { GET_WEB_BOOKINGS, ACCEPT_WEB_BOOKING, REJECT_WEB_BOOKING } =
-	webBookingEndpoints;
+const {
+	GET_WEB_BOOKINGS,
+	ACCEPT_WEB_BOOKING,
+	REJECT_WEB_BOOKING,
+	GET_DURATION,
+} = webBookingEndpoints;
 export async function getWebBookings() {
 	// Fetch current user details using token
 	const response = await handlePostReq(GET_WEB_BOOKINGS, {
@@ -91,5 +96,25 @@ export async function rejectWebBookings(data) {
 		// 	'info'
 		// );
 		return response;
+	}
+}
+
+export async function getDurationWebBookings(id) {
+	// Fetch current user details using token
+	const response = await axios.get(GET_DURATION(id), { headers: setHeaders() });
+
+	console.log('GET DURATION WEB BOOKINGS API RESPONSE.........', response);
+
+	if (response.status === 200) {
+		// sendLogs(
+		// 	{
+		// 		url: GET_DURATION,
+		// 		reqBody: data,
+		// 		headers: setHeaders(),
+		// 		response: response,
+		// 	},
+		// 	'info'
+		// );
+		return { data: response.data, status: 'success' };
 	}
 }

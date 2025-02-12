@@ -11,15 +11,20 @@ import {
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import clsx from 'clsx';
-import { acceptWebBookings } from '../../../../service/operations/webBookingsApi';
+import {
+	acceptWebBookings,
+	getDurationWebBookings,
+} from '../../../../service/operations/webBookingsApi';
 import { useDispatch, useSelector } from 'react-redux';
 import { refreshWebBookings } from '../../../../slices/webBookingSlice';
 import toast from 'react-hot-toast';
+import { useState } from 'react';
 
 function AcceptWebBooking({ open, onOpenChange }) {
 	const dispatch = useDispatch();
 	const { user } = useSelector((state) => state.auth);
 	const { webBooking } = useSelector((state) => state.webBooking);
+	const [journeyTime, setJourneyTime] = useState(null);
 
 	const addLocalSchema = Yup.object().shape({
 		byName: Yup.string().required('Name is required'), // Changed from email to username
@@ -30,8 +35,39 @@ function AcceptWebBooking({ open, onOpenChange }) {
 			user?.fullName ||
 			JSON.parse(localStorage?.getItem('userData'))?.fullName ||
 			'',
-		requiredTime: `${webBooking?.pickupDateTime?.split('T')[1].slice(0, 5)}`,
+		requiredTime:
+			journeyTime || `${webBooking?.pickupDateTime?.split('T')[1].slice(0, 5)}`,
 		price: '',
+	};
+
+	const handleJourneyClick = async () => {
+		try {
+			const response = await getDurationWebBookings(webBooking?.id);
+
+			if (response.status === 'success') {
+				const durationMinutes = response.data; // Minutes to subtract
+				const pickupTime = webBooking?.pickupDateTime
+					?.split('T')[1]
+					.slice(0, 5); // "HH:mm"
+
+				if (pickupTime) {
+					// Convert "HH:mm" string to Date object
+					const [hours, minutes] = pickupTime.split(':').map(Number);
+					const date = new Date();
+					date.setHours(hours);
+					date.setMinutes(minutes - durationMinutes); // Subtract minutes
+
+					// Format back to HH:mm
+					const updatedTime = date.toTimeString().slice(0, 5);
+
+					// Update state
+					setJourneyTime(updatedTime);
+					formik.setFieldValue('requiredTime', updatedTime);
+				}
+			}
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 	const formik = useFormik({
@@ -70,31 +106,46 @@ function AcceptWebBooking({ open, onOpenChange }) {
 					</h3>
 
 					<form onSubmit={formik.handleSubmit}>
-						<div className='flex flex-col gap-1 pb-2'>
-							<label className='form-label text-gray-900'>By Name</label>
-							<label className='input'>
-								<input
-									placeholder='Enter name'
-									autoComplete='off'
-									{...formik.getFieldProps('byName')}
-									className={clsx('form-control', {
-										'is-invalid': formik.touched.byName && formik.errors.byName,
-									})}
-								/>
-							</label>
-							{formik.touched.byName && formik.errors.byName && (
-								<span
-									role='alert'
-									className='text-danger text-xs mt-1'
+						<div className='w-full flex justify-center items-center gap-2'>
+							<div className='flex flex-col gap-1 pb-2 w-full'>
+								<label className='form-label text-gray-900'>By Name</label>
+								<label className='input'>
+									<input
+										placeholder='Enter name'
+										autoComplete='off'
+										{...formik.getFieldProps('byName')}
+										className={clsx('form-control', {
+											'is-invalid':
+												formik.touched.byName && formik.errors.byName,
+										})}
+									/>
+								</label>
+								{formik.touched.byName && formik.errors.byName && (
+									<span
+										role='alert'
+										className='text-danger text-xs mt-1'
+									>
+										{formik.errors.name}
+									</span>
+								)}
+							</div>
+							<div className='flex flex-col gap-1 pb-2 mt-4 w-full'>
+								<label className='form-label text-gray-900'></label>
+								<button
+									type='button'
+									className='btn btn-primary'
+									onClick={handleJourneyClick}
 								>
-									{formik.errors.name}
-								</span>
-							)}
+									Calculate Journey Time
+								</button>
+							</div>
 						</div>
 
 						<div className='w-full flex justify-center items-center gap-2'>
 							<div className='flex flex-col gap-1 pb-2'>
-								<label className='form-label text-gray-900'>Time</label>
+								<label className='form-label text-gray-900'>
+									Pickup Date Time
+								</label>
 								<label className='input'>
 									<input
 										placeholder='Enter Time'
