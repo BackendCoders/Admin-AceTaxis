@@ -113,6 +113,7 @@ function AcceptWebBooking({ open, onOpenChange }) {
 									<input
 										placeholder='Enter name'
 										autoComplete='off'
+										readOnly
 										{...formik.getFieldProps('byName')}
 										className={clsx('form-control', {
 											'is-invalid':
