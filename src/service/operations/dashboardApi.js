@@ -13,15 +13,15 @@ export async function dashboard() {
 	console.log('GET DASHBOARD API RESPONSE.........', response);
 
 	if (response.status === 'success') {
-		sendLogs(
-			{
-				url: GET_DASHBOARD,
-				reqBody: null,
-				headers: setHeaders(),
-				response: response,
-			},
-			'info'
-		);
+		// sendLogs(
+		// 	{
+		// 		url: GET_DASHBOARD,
+		// 		reqBody: null,
+		// 		headers: setHeaders(),
+		// 		response: response,
+		// 	},
+		// 	'info'
+		// );
 		return response;
 	}
 }
