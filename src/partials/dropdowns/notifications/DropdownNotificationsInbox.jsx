@@ -3,8 +3,13 @@
 import { useEffect, useRef, useState } from 'react';
 import { getHeight } from '@/utils';
 import { useViewport } from '@/hooks';
+import { useDispatch, useSelector } from 'react-redux';
+import { markAsReadNotification } from '../../../slices/notificationSlice';
+import { DropdownNotificationsItem } from './items';
 // import { DropdownNotificationsItem10, DropdownNotificationsItem11, DropdownNotificationsItem12, DropdownNotificationsItem13, DropdownNotificationsItem3, DropdownNotificationsItem5 } from './items';
 const DropdownNotificationsInbox = () => {
+	const dispatch = useDispatch();
+	const { webNotifications } = useSelector((state) => state.notification);
 	const footerRef = useRef(null);
 	const [listHeight, setListHeight] = useState(0);
 	const [viewportHeight] = useViewport();
@@ -16,9 +21,25 @@ const DropdownNotificationsInbox = () => {
 			setListHeight(availableHeight);
 		}
 	}, [viewportHeight]);
+
+	const markAsRead = async (id) => {
+		dispatch(markAsReadNotification(id));
+	};
+
 	const buildList = () => {
 		return (
 			<div className='flex flex-col gap-5 pt-3 pb-4 divider-y divider-gray-200'>
+				{webNotifications.length > 0 ? (
+					webNotifications.map((notification) => (
+						<DropdownNotificationsItem
+							key={notification.id}
+							notification={notification}
+							markAsRead={markAsRead}
+						/>
+					))
+				) : (
+					<div className='text-center text-gray-500 p-4'>No notifications</div>
+				)}
 				{/* <DropdownNotificationsItem10 />
 
         <div className="border-b border-b-gray-200"></div>
@@ -50,9 +71,9 @@ const DropdownNotificationsInbox = () => {
 			<>
 				<div className='border-b border-b-gray-200'></div>
 				<div className='grid grid-cols-2 p-5 gap-2.5'>
-					<button className='btn btn-sm btn-light justify-center'>
+					{/* <button className='btn btn-sm btn-light justify-center'>
 						Archive all
-					</button>
+					</button> */}
 					<button className='btn btn-sm btn-light justify-center'>
 						Mark all as read
 					</button>

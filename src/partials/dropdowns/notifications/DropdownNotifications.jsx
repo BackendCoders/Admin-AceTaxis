@@ -1,21 +1,38 @@
 /** @format */
 
-import { useLanguage } from '@/i18n';
+// import { useLanguage } from '@/i18n';
 import { KeenIcon } from '@/components';
-import { Menu, MenuItem, MenuSub, MenuToggle } from '@/components/menu';
+import { MenuSub } from '@/components/menu';
 import { Tab, TabPanel, Tabs, TabsList } from '@/components/tabs';
-import { DropdownCrud2 } from '@/partials/dropdowns/general';
+// import { DropdownCrud2 } from '@/partials/dropdowns/general';
 import { DropdownNotificationsAll } from './DropdownNotificationsAll';
 import { DropdownNotificationsInbox } from './DropdownNotificationsInbox';
 import { DropdownNotificationsTeam } from './DropdownNotificationsTeam';
 import { DropdownNotificationsFollowing } from './DropdownNotificationsFollowing';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { refreshNotifications } from '../../../slices/notificationSlice';
 const DropdownNotifications = ({ menuTtemRef }) => {
-	const { isRTL } = useLanguage();
+	const dispatch = useDispatch();
+	// const { isRTL } = useLanguage();
 	const handleClose = () => {
 		if (menuTtemRef.current) {
 			menuTtemRef.current.hide(); // Call the closeMenu method to hide the submenu
 		}
 	};
+
+	useEffect(() => {
+		dispatch(refreshNotifications());
+	}, [dispatch]);
+
+	useEffect(() => {
+		const intervalId = setInterval(() => {
+			dispatch(refreshNotifications());
+		}, 15000);
+
+		return () => clearInterval(intervalId); // Cleanup function to clear timeout on unmount
+	}, [dispatch]);
+
 	const buildHeader = () => {
 		return (
 			<div className='flex items-center justify-between gap-2.5 text-sm text-gray-900 font-semibold px-5 py-2.5 border-b border-b-gray-200'>
@@ -42,13 +59,13 @@ const DropdownNotifications = ({ menuTtemRef }) => {
 							value={2}
 							className='relative'
 						>
-							Office
+							Web Bookings
 							<span className='badge badge-dot badge-success size-[5px] absolute top-2 rtl:start-0 end-0 transform translate-y-1/2 translate-x-full'></span>
 						</Tab>
-						<Tab value={3}>Dispatcher</Tab>
+						<Tab value={3}>Mobile App</Tab>
 						{/* <Tab value={4}>Following</Tab> */}
 					</div>
-					<Menu>
+					{/* <Menu>
 						<MenuItem
 							toggle='dropdown'
 							trigger='click'
@@ -69,7 +86,7 @@ const DropdownNotifications = ({ menuTtemRef }) => {
 							</MenuToggle>
 							{DropdownCrud2()}
 						</MenuItem>
-					</Menu>
+					</Menu> */}
 				</TabsList>
 				<TabPanel value={1}>
 					<DropdownNotificationsAll />

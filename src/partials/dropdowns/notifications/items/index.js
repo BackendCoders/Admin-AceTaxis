@@ -1,3 +1,6 @@
+/** @format */
+
+export * from './DropdownNotificationsItem';
 export * from './DropdownNotificationsItem1';
 export * from './DropdownNotificationsItem2';
 export * from './DropdownNotificationsItem3';

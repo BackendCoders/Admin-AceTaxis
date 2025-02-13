@@ -75,3 +75,8 @@ export const webBookingEndpoints = {
 	REJECT_WEB_BOOKING: `${BASE}/api/WeBooking/Reject`,
 	GET_DURATION: (id) => `${BASE}/api/WeBooking/GetDuration?wid=${id}`,
 };
+
+export const notificationEndpoints = {
+	GET_NOTIFICATIONS: `${BASE}/api/AdminUI/GetNotifications`,
+	CLEAR_NOTIFICATIONS: (id) => `${BASE}/api/AdminUI/ClearNotification?id=${id}`,
+};

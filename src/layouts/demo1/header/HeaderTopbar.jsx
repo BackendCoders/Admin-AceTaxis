@@ -12,8 +12,10 @@ import { DropdownChat } from '@/partials/dropdowns/chat';
 import { useLanguage } from '@/i18n';
 import { useDispatch, useSelector } from 'react-redux';
 import { refreshDashboard } from '../../../slices/dashboardSlice';
+import { clearUnreadCount } from '../../../slices/notificationSlice';
 const HeaderTopbar = () => {
 	const dispatch = useDispatch();
+	const { unreadCount } = useSelector((state) => state.notification);
 	const { smsHeartBeat } = useSelector((state) => state.dashboard);
 	const { isRTL } = useLanguage();
 	const itemChatRef = useRef(null);
@@ -103,6 +105,7 @@ const HeaderTopbar = () => {
 					ref={itemNotificationsRef}
 					toggle='dropdown'
 					trigger='click'
+					onClick={() => dispatch(clearUnreadCount())}
 					dropdownProps={{
 						placement: isRTL() ? 'bottom-start' : 'bottom-end',
 						modifiers: [
@@ -116,7 +119,19 @@ const HeaderTopbar = () => {
 					}}
 				>
 					<MenuToggle className='btn btn-icon btn-icon-lg relative cursor-pointer size-9 rounded-full hover:bg-primary-light hover:text-primary dropdown-open:bg-primary-light dropdown-open:text-primary text-gray-500'>
-						<KeenIcon icon='notification-status' />
+						<div
+							className={`relative ${unreadCount > 0 ? 'animate-pulse' : ''}`}
+						>
+							<KeenIcon
+								icon='notification-status'
+								className='text-gray-500'
+							/>
+							{unreadCount > 0 && (
+								<span className='absolute -top-2 right-0 bg-green-500 text-white text-xs font-bold px-2 py-0.5 rounded-full'>
+									{unreadCount}
+								</span>
+							)}
+						</div>
 					</MenuToggle>
 
 					{DropdownNotifications({

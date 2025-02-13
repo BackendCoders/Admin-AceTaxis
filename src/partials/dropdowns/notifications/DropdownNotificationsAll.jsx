@@ -3,12 +3,20 @@
 import { useEffect, useRef, useState } from 'react';
 import { getHeight } from '@/utils';
 import { useViewport } from '@/hooks';
+import { useDispatch, useSelector } from 'react-redux';
+import { DropdownNotificationsItem } from './items';
+import { markAsReadNotification } from '../../../slices/notificationSlice';
 // import { DropdownNotificationsItem1, DropdownNotificationsItem2, DropdownNotificationsItem3, DropdownNotificationsItem4, DropdownNotificationsItem5, DropdownNotificationsItem6 } from './items';
 const DropdownNotificationsAll = () => {
+	const dispatch = useDispatch();
+	const { allNotifications } = useSelector((state) => state.notification);
+
+	// console.log('notifications---', allNotifications);
 	const footerRef = useRef(null);
 	const [listHeight, setListHeight] = useState(0);
 	const [viewportHeight] = useViewport();
 	const offset = 300;
+
 	useEffect(() => {
 		if (footerRef.current) {
 			const footerHeight = getHeight(footerRef.current);
@@ -16,9 +24,26 @@ const DropdownNotificationsAll = () => {
 			setListHeight(availableHeight);
 		}
 	}, [viewportHeight]);
+
+	const markAsRead = async (id) => {
+		dispatch(markAsReadNotification(id));
+	};
+
 	const buildList = () => {
 		return (
 			<div className='flex flex-col gap-5 pt-3 pb-4 divider-y divider-gray-200'>
+				{allNotifications.length > 0 ? (
+					allNotifications.map((notification) => (
+						<DropdownNotificationsItem
+							key={notification.id}
+							notification={notification}
+							markAsRead={markAsRead}
+						/>
+					))
+				) : (
+					<div className='text-center text-gray-500 p-4'>No notifications</div>
+				)}
+
 				{/* <DropdownNotificationsItem1 userName="Joe Lincoln" avatar="300-4.png" description="mentioned you in" link="Latest Trends" label="topic" time="18 mins ago" specialist="Web Design 2024" text="For an expert opinion, check out what Mike has to say on this topic!" />
 
         <div className="border-b border-b-gray-200"></div>
@@ -48,9 +73,9 @@ const DropdownNotificationsAll = () => {
 			<>
 				<div className='border-b border-b-gray-200'></div>
 				<div className='grid grid-cols-2 p-5 gap-2.5'>
-					<button className='btn btn-sm btn-light justify-center'>
+					{/* <button className='btn btn-sm btn-light justify-center'>
 						Archive all
-					</button>
+					</button> */}
 					<button className='btn btn-sm btn-light justify-center'>
 						Mark all as read
 					</button>

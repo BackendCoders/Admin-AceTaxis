@@ -108,7 +108,7 @@ export async function getDurationWebBookings(id) {
 	if (response.status === 200) {
 		// sendLogs(
 		// 	{
-		// 		url: GET_DURATION,
+		// 		url: GET_DURATION(id),
 		// 		reqBody: data,
 		// 		headers: setHeaders(),
 		// 		response: response,
