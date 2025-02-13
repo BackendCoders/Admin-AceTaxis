@@ -545,13 +545,23 @@ export const MENU_SIDEBAR = [
 			// 	],
 			// },
 			{
-				title: 'Web Booking',
-				path: '/bookings/web-booking',
+				title: 'Web Bookings',
+				children: [
+					{
+						title: 'All Web Requests',
+						path: '/bookings/web-booking',
+					},
+					{
+						title: 'Accepted Requests',
+						path: '/bookings/accept-booking',
+					},
+					{
+						title: 'Rejected Requests',
+						path: '/bookings/reject-booking',
+					},
+				],
 			},
-			{
-				title: 'Rejected Bookings',
-				path: '/bookings/reject-booking',
-			},
+
 			{
 				title: 'Search Booking',
 				path: '/bookings/search-booking',
