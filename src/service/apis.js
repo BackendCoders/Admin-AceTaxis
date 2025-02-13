@@ -79,4 +79,7 @@ export const webBookingEndpoints = {
 export const notificationEndpoints = {
 	GET_NOTIFICATIONS: `${BASE}/api/AdminUI/GetNotifications`,
 	CLEAR_NOTIFICATIONS: (id) => `${BASE}/api/AdminUI/ClearNotification?id=${id}`,
+	CLEAR_ALL_NOTIFICATIONS: (type) =>
+		`${BASE}/api/AdminUI/ClearAllNotifications?type=${type}`,
+	CLEAR_ALL_NOTIFICATIONS_WITHOUT_TYPE: `${BASE}/api/AdminUI/ClearAllNotifications`,
 };

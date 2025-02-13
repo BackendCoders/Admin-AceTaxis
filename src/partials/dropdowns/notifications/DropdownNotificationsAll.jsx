@@ -5,7 +5,10 @@ import { getHeight } from '@/utils';
 import { useViewport } from '@/hooks';
 import { useDispatch, useSelector } from 'react-redux';
 import { DropdownNotificationsItem } from './items';
-import { markAsReadNotification } from '../../../slices/notificationSlice';
+import {
+	markAsAllReadNotifications,
+	markAsReadNotification,
+} from '../../../slices/notificationSlice';
 // import { DropdownNotificationsItem1, DropdownNotificationsItem2, DropdownNotificationsItem3, DropdownNotificationsItem4, DropdownNotificationsItem5, DropdownNotificationsItem6 } from './items';
 const DropdownNotificationsAll = () => {
 	const dispatch = useDispatch();
@@ -27,6 +30,11 @@ const DropdownNotificationsAll = () => {
 
 	const markAsRead = async (id) => {
 		dispatch(markAsReadNotification(id));
+	};
+
+	const markAsAllRead = () => {
+		const type = 0;
+		dispatch(markAsAllReadNotifications(type));
 	};
 
 	const buildList = () => {
@@ -76,7 +84,10 @@ const DropdownNotificationsAll = () => {
 					{/* <button className='btn btn-sm btn-light justify-center'>
 						Archive all
 					</button> */}
-					<button className='btn btn-sm btn-light justify-center'>
+					<button
+						className='btn btn-sm btn-light justify-center'
+						onClick={markAsAllRead}
+					>
 						Mark all as read
 					</button>
 				</div>

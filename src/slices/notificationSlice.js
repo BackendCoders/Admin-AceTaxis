@@ -2,6 +2,8 @@
 
 import { createSlice } from '@reduxjs/toolkit';
 import {
+	clearALLNotification,
+	clearALLNotificationWithoutType,
 	clearNotification,
 	getNotifications,
 } from '../service/operations/notificationApi';
@@ -49,7 +51,7 @@ export function refreshNotifications() {
 					.map((key) => response[key]);
 
 				const webNotificationsArray = resultArray.filter(
-					(data) => data?.event === 2
+					(data) => data?.event === 3
 				);
 				dispatch(setALLNotifications(resultArray));
 				dispatch(setWebNotifications(webNotificationsArray));
@@ -64,6 +66,24 @@ export function markAsReadNotification(id) {
 	return async (dispatch) => {
 		try {
 			const response = await clearNotification(id);
+			if (response) {
+				dispatch(refreshNotifications());
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	};
+}
+
+export function markAsAllReadNotifications(type) {
+	return async (dispatch) => {
+		try {
+			let response;
+			if (type === 0) {
+				response = await clearALLNotificationWithoutType();
+			} else {
+				response = await clearALLNotification(type);
+			}
 			if (response) {
 				dispatch(refreshNotifications());
 			}
