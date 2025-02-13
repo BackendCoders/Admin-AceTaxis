@@ -199,20 +199,20 @@ function AcceptedBookings() {
 				),
 				meta: { headerClassName: 'w-18' },
 			},
-			{
-				accessorKey: 'phoneNumber',
-				header: ({ column }) => (
-					<DataGridColumnHeader
-						title='Phone Number'
-						column={column}
-					/>
-				),
-				enableSorting: true,
-				cell: ({ row }) => (
-					<span className={row.original.color}>{row.original.phoneNumber}</span>
-				),
-				meta: { headerClassName: 'w-18' },
-			},
+			// {
+			// 	accessorKey: 'phoneNumber',
+			// 	header: ({ column }) => (
+			// 		<DataGridColumnHeader
+			// 			title='Phone Number'
+			// 			column={column}
+			// 		/>
+			// 	),
+			// 	enableSorting: true,
+			// 	cell: ({ row }) => (
+			// 		<span className={row.original.color}>{row.original.phoneNumber}</span>
+			// 	),
+			// 	meta: { headerClassName: 'w-18' },
+			// },
 		],
 		[]
 	);
