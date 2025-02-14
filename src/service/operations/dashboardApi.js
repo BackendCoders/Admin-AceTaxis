@@ -55,16 +55,16 @@ export async function sendDirectMsgToDriver(driver, msg) {
 	console.log('SEND DIRECT MSG API RESPONSE.........', response);
 
 	if (response.status === 'success') {
-		sendLogs(
-			{
-				url: SEND_DIRECT_MSG_TO_DRIVER(driver, msg),
-				reqBody: null,
-				headers: setHeaders(),
-				response: response,
-			},
-			'info'
-		);
-		return response;
+		// sendLogs(
+		// 	{
+		// 		url: SEND_DIRECT_MSG_TO_DRIVER(driver, msg),
+		// 		reqBody: null,
+		// 		headers: setHeaders(),
+		// 		response: response,
+		// 	},
+		// 	'info'
+		// );
+		return true;
 	}
 }
 
@@ -74,16 +74,16 @@ export async function sendGlobalMsgToDriver(msg) {
 	console.log('SEND GLOBAL MSG API RESPONSE.........', response);
 
 	if (response.status === 'success') {
-		sendLogs(
-			{
-				url: SEND_DIRECT_MSG_TO_DRIVER(msg),
-				reqBody: null,
-				headers: setHeaders(),
-				response: response,
-			},
-			'info'
-		);
-		return response;
+		// sendLogs(
+		// 	{
+		// 		url: SEND_DIRECT_MSG_TO_DRIVER(msg),
+		// 		reqBody: null,
+		// 		headers: setHeaders(),
+		// 		response: response,
+		// 	},
+		// 	'info'
+		// );
+		return true;
 	}
 }
 

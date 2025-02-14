@@ -12,32 +12,45 @@ import {
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import clsx from 'clsx';
-import { rejectWebBookings } from '../../service/operations/webBookingsApi';
 import { useDispatch, useSelector } from 'react-redux';
-import { refreshWebBookings } from '../../slices/webBookingSlice';
 import toast from 'react-hot-toast';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { refreshDrivers } from '../../slices/dashboardSlice';
+import isLightColor from '../../utils/isLight';
+import { KeenIcon } from '@/components';
+import {
+	sendDirectMsgToDriver,
+	sendGlobalMsgToDriver,
+} from '../../service/operations/dashboardApi';
 
 function SendDriverMsgModal({ open, onOpenChange }) {
 	const dispatch = useDispatch();
-	const { user } = useSelector((state) => state.auth);
-	const { isDirectMsgModal, drivers } = useSelector((state) => state.dashboard);
-	const { webBooking } = useSelector((state) => state.webBooking);
+	const { isDirectMsgModal, isGlobalMsgModal, drivers } = useSelector(
+		(state) => state.dashboard
+	);
+	const [searchInput, setSearchInput] = useState('');
+	const [selectedDrivers, setSelectedDrivers] = useState([]);
 	console.log('drivers', drivers);
 
 	const addLocalSchema = Yup.object().shape({
-		byName: Yup.string().required('Name is required'), // Changed from email to username
-		reason: Yup.string().required('Reason is required'),
+		// Changed from email to username
+		message: Yup.string().required('message is required'),
 	});
 
+	const filteredDrivers = drivers.filter((driver) => {
+		return driver?.fullName.toLowerCase().includes(searchInput.toLowerCase());
+	});
+
+	const toggleDriverSelection = (driverId) => {
+		setSelectedDrivers((prevSelected) =>
+			prevSelected.includes(driverId)
+				? prevSelected.filter((id) => id !== driverId)
+				: [...prevSelected, driverId]
+		);
+	};
+
 	const initialValues = {
-		id: webBooking?.id,
-		byName:
-			user?.fullName ||
-			JSON.parse(localStorage?.getItem('userData'))?.fullName ||
-			'',
-		reason: '',
+		message: '',
 	};
 
 	const formik = useFormik({
@@ -45,17 +58,30 @@ function SendDriverMsgModal({ open, onOpenChange }) {
 		validationSchema: addLocalSchema,
 		onSubmit: async (values, { setSubmitting }) => {
 			console.log('Submitted Values:', values);
-			const payload = {
-				id: webBooking?.id,
-				byName: values.byName,
-				reason: values.reason,
-			};
-			const response = await rejectWebBookings(payload);
-			if (response.status === 'success') {
-				toast.success('Booking accepted Successfully');
-				await dispatch(refreshWebBookings());
+			try {
+				if (isDirectMsgModal) {
+					if (selectedDrivers.length === 0) {
+						toast.error('Please select at least one driver.');
+						setSubmitting(false);
+						return;
+					}
+
+					const promises = selectedDrivers.map((driverId) =>
+						sendDirectMsgToDriver(driverId, values.message)
+					);
+					await Promise.all(promises);
+					toast.success('Messages sent successfully!');
+				}
+				if (isGlobalMsgModal) {
+					await sendGlobalMsgToDriver(values.message);
+					toast.success('Global message sent successfully!');
+				}
+				onOpenChange();
+			} catch (error) {
+				toast.error('Failed to send messages.');
+				console.error(error);
+			} finally {
 				setSubmitting(false);
-				onOpenChange(); // Reset Formik's submitting state
 			}
 		},
 	});
@@ -72,7 +98,7 @@ function SendDriverMsgModal({ open, onOpenChange }) {
 			onOpenChange={onOpenChange}
 		>
 			<DialogContent
-				className={`${isDirectMsgModal ? 'max-w-[700px]' : 'max-w-[500px]'} `}
+				className={`${isDirectMsgModal ? 'max-w-[600px]' : 'max-w-[500px]'} `}
 			>
 				<DialogHeader className='border-0'>
 					<DialogTitle></DialogTitle>
@@ -85,16 +111,58 @@ function SendDriverMsgModal({ open, onOpenChange }) {
 							: 'Send Message to All Drivers'}
 					</h3>
 
-					<div className='flex justify-center items-start w-full'>
+					<div className='flex justify-center items-start gap-4 w-full'>
 						{isDirectMsgModal && (
 							<div className='flex-col w-[50%]'>
 								<h4 className='text-sm font-medium text-gray-900 text-start mb-3'>
 									Select Driver(s)
 								</h4>
-								<div>Hello</div>
-								<div>Hello</div>
-								<div>Hello</div>
-								<div>Hello</div>
+								<div className='flex mb-2'>
+									<label
+										className='input input-sm'
+										style={{ height: '40px' }}
+									>
+										<KeenIcon icon='magnifier' />
+										<input
+											type='text'
+											placeholder='Search Drivers'
+											value={searchInput}
+											onChange={(e) => setSearchInput(e.target.value)}
+										/>
+									</label>
+								</div>
+								<div className='max-h-[400px] h-[400px] overflow-y-auto scrollable-y'>
+									{filteredDrivers.length > 0 &&
+										filteredDrivers.map((driver) => (
+											<>
+												<div
+													key={driver.id}
+													className='p-1'
+												>
+													<div
+														style={{ backgroundColor: driver.colorRGB }}
+														className='rounded-md'
+													>
+														<label className='checkbox-group flex justify-between p-1'>
+															<span
+																className={`${isLightColor(driver.colorRGB) ? 'text-black' : 'text-white'} checkbox-label ml-2`}
+															>
+																{driver?.fullName}
+															</span>
+															<input
+																className='checkbox checkbox-sm mr-2'
+																type='checkbox'
+																checked={selectedDrivers.includes(driver.id)}
+																onChange={() =>
+																	toggleDriverSelection(driver.id)
+																}
+															/>
+														</label>
+													</div>
+												</div>
+											</>
+										))}
+								</div>
 							</div>
 						)}
 						<form
@@ -106,6 +174,7 @@ function SendDriverMsgModal({ open, onOpenChange }) {
 								<label className=''>
 									<textarea
 										placeholder='Enter message'
+										rows={6}
 										autoComplete='off'
 										{...formik.getFieldProps('message')}
 										className={clsx(
@@ -138,7 +207,7 @@ function SendDriverMsgModal({ open, onOpenChange }) {
 									className='btn btn-primary ml-2'
 									type='submit'
 								>
-									Submit
+									Send Message
 								</button>
 							</div>
 						</form>
