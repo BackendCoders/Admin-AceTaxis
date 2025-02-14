@@ -943,7 +943,7 @@ export const MENU_SIDEBAR = [
 export const MENU_MEGA = [
 	{
 		// title: 'Home',
-		path: '/',
+		// path: '/',
 	},
 	{
 		// title: 'Profiles',

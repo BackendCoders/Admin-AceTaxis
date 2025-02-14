@@ -50,9 +50,14 @@ export const gpsEndpoints = {
 
 export const dashBoardEndpoints = {
 	GET_DASHBOARD: `${BASE}/api/AdminUI/Dashboard`,
+	SEND_DIRECT_MSG_TO_DRIVER: (driver, msg) =>
+		`${BASE}/api/AdminUI/SendMessageToDriver?driver=${driver}&message=${encodeURIComponent(msg)}`,
+	SEND_GLOBAL_MSG_TO_DRIVER: (msg) =>
+		`${BASE}/api/AdminUI/SendMessageToAllDrivers?message=${encodeURIComponent(msg)}`,
 };
 
 export const driverEarningEndpoints = {
+	GET_ALL_DRIVERS: `${BASE}/api/UserProfile/ListUsers`,
 	GET_DRIVER_EARNINGS_REPORT: `${BASE}/api/AdminUI/DriverEarningsReport`,
 };
 
