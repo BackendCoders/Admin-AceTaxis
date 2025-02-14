@@ -147,6 +147,7 @@ function SendDriverMsgModal({ open, onOpenChange }) {
 															<span
 																className={`${isLightColor(driver.colorRGB) ? 'text-black' : 'text-white'} checkbox-label ml-2`}
 															>
+																{String(driver?.id).padStart(2, '0')} -{' '}
 																{driver?.fullName}
 															</span>
 															<input
