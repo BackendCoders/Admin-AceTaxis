@@ -10,29 +10,35 @@ import {
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import clsx from 'clsx';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateAccounts } from '../../../service/operations/accountApi';
+import { refreshAllAccounts } from '../../../slices/accountSlice';
 function EditAccounts({ open, onOpenChange }) {
+	const dispatch = useDispatch();
+	const { account } = useSelector((state) => state.account);
 	const editLocalSchema = Yup.object().shape({
 		contactName: Yup.string().required('Contact Name is required'),
 		businessName: Yup.string().required('Contact Name is required'),
 		address1: Yup.string().required('Address is required'),
+		address2: Yup.string().required('Address2 is required'),
 		postcode: Yup.string().required('Postcode is required'),
 		telephone: Yup.string().required('Telephone is required'),
 	});
 
 	const initialValues = {
-		contactName: '',
-		businessName: '',
-		address1: '',
-		address2: '',
-		address3: '',
-		address4: '',
-		postcode: '',
-		telephone: '',
-		email: '',
-		bookerEmail: '',
-		bookerName: '',
-		poNumber: '',
-		reference: '',
+		contactName: account?.contactName || '',
+		businessName: account?.businessName || '',
+		address1: account?.address1 || '',
+		address2: account?.address2 || '',
+		address3: account?.address3 || '',
+		address4: account?.address4 || '',
+		postcode: account?.postcode || '',
+		telephone: account?.telephone || '',
+		email: account?.email || '',
+		bookerEmail: account?.bookerEmail || '',
+		bookerName: account?.bookerName || '',
+		purchaseOrderNo: account?.purchaseOrderNo || '',
+		reference: account?.reference || '',
 	};
 
 	const formik = useFormik({
@@ -40,8 +46,16 @@ function EditAccounts({ open, onOpenChange }) {
 		validationSchema: editLocalSchema,
 		onSubmit: async (values, { setSubmitting }) => {
 			console.log('Submitted Values:', values);
-			setSubmitting(false);
-			onOpenChange(); // Reset Formik's submitting state
+			const payload = {
+				...values,
+				accNo: account?.accNo,
+			};
+			const response = await updateAccounts(payload);
+			if (response.status === 'success') {
+				dispatch(refreshAllAccounts());
+				setSubmitting(false);
+				onOpenChange(); // Reset Formik's submitting state
+			}
 		},
 	});
 	return (
@@ -331,22 +345,24 @@ function EditAccounts({ open, onOpenChange }) {
 									<input
 										placeholder='Enter po number'
 										autoComplete='off'
-										{...formik.getFieldProps('poNumber')}
+										{...formik.getFieldProps('purchaseOrderNo')}
 										className={clsx('form-control', {
 											'is-invalid':
-												formik.touched.poNumber && formik.errors.poNumber,
+												formik.touched.purchaseOrderNo &&
+												formik.errors.purchaseOrderNo,
 										})}
 									/>
 								</label>
 
-								{formik.touched.poNumber && formik.errors.poNumber && (
-									<span
-										role='alert'
-										className='text-danger text-xs mt-1'
-									>
-										{formik.errors.poNumber}
-									</span>
-								)}
+								{formik.touched.purchaseOrderNo &&
+									formik.errors.purchaseOrderNo && (
+										<span
+											role='alert'
+											className='text-danger text-xs mt-1'
+										>
+											{formik.errors.purchaseOrderNo}
+										</span>
+									)}
 							</div>
 						</div>
 

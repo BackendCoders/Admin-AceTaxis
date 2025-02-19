@@ -17,11 +17,16 @@ import {
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import clsx from 'clsx';
+import { createAccounts } from '../../../service/operations/accountApi';
+import { useDispatch } from 'react-redux';
+import { refreshAllAccounts } from '../../../slices/accountSlice';
 function AddAccounts({ open, onOpenChange }) {
+	const dispatch = useDispatch();
 	const addLocalSchema = Yup.object().shape({
 		contactName: Yup.string().required('Contact Name is required'),
 		businessName: Yup.string().required('Contact Name is required'),
 		address1: Yup.string().required('Address is required'),
+		address2: Yup.string().required('Address2 is required'),
 		postcode: Yup.string().required('Postcode is required'),
 		telephone: Yup.string().required('Telephone is required'),
 	});
@@ -38,7 +43,7 @@ function AddAccounts({ open, onOpenChange }) {
 		email: '',
 		bookerEmail: '',
 		bookerName: '',
-		poNumber: '',
+		purchaseOrderNo: '',
 		reference: '',
 	};
 
@@ -47,8 +52,13 @@ function AddAccounts({ open, onOpenChange }) {
 		validationSchema: addLocalSchema,
 		onSubmit: async (values, { setSubmitting }) => {
 			console.log('Submitted Values:', values);
-			setSubmitting(false);
-			onOpenChange(); // Reset Formik's submitting state
+			const response = await createAccounts(values);
+			if (response.status === 'success') {
+				dispatch(refreshAllAccounts());
+				onOpenChange();
+				setSubmitting(false);
+			}
+			// Reset Formik's submitting state
 		},
 	});
 	return (
@@ -338,22 +348,24 @@ function AddAccounts({ open, onOpenChange }) {
 									<input
 										placeholder='Enter po number'
 										autoComplete='off'
-										{...formik.getFieldProps('poNumber')}
+										{...formik.getFieldProps('purchaseOrderNo')}
 										className={clsx('form-control', {
 											'is-invalid':
-												formik.touched.poNumber && formik.errors.poNumber,
+												formik.touched.purchaseOrderNo &&
+												formik.errors.purchaseOrderNo,
 										})}
 									/>
 								</label>
 
-								{formik.touched.poNumber && formik.errors.poNumber && (
-									<span
-										role='alert'
-										className='text-danger text-xs mt-1'
-									>
-										{formik.errors.poNumber}
-									</span>
-								)}
+								{formik.touched.purchaseOrderNo &&
+									formik.errors.purchaseOrderNo && (
+										<span
+											role='alert'
+											className='text-danger text-xs mt-1'
+										>
+											{formik.errors.purchaseOrderNo}
+										</span>
+									)}
 							</div>
 						</div>
 

@@ -252,7 +252,7 @@ function ListLocalPoi() {
 					<ToolbarHeading>
 						<ToolbarPageTitle />
 						<ToolbarDescription>
-							Showing {`${localPOIs.length}`} Local POIs{' '}
+							Showing {localPOIs.length} Local POIs{' '}
 						</ToolbarDescription>
 					</ToolbarHeading>
 					<ToolbarActions>

@@ -1,6 +1,6 @@
 /** @format */
 
-import { Fragment, useMemo, useState } from 'react';
+import { Fragment, useEffect, useMemo, useState } from 'react';
 import {
 	Toolbar,
 	ToolbarDescription,
@@ -33,119 +33,27 @@ import {
 	// DataGridRowSelect,
 } from '@/components';
 import { Input } from '@/components/ui/input';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { AddAccounts } from '../addAccounts';
 import { EditAccounts } from '../editAccounts';
 import { DeleteAccounts } from '../deleteAccounts';
-import { setAccount } from '../../../slices/accountSlice';
+import { refreshAllAccounts, setAccount } from '../../../slices/accountSlice';
 function ListAccounts() {
 	const dispatch = useDispatch();
 	const [searchInput, setSearchInput] = useState('');
 	const [createAccountModal, setAccountModal] = useState(false);
 	const [editAccountModal, setEditAccountModal] = useState(false);
 	const [deleteAccountModal, setDeleteAccountModal] = useState(false);
+	const { accounts } = useSelector((state) => state.account);
 	// const [date, setDate] = useState(new Date());
-	const driversData = useMemo(
-		() => [
-			{
-				driver: 10,
-				fullname: 'Alan',
-				details: '00:00 - 23:59',
-				color: 'bg-yellow-500',
-			},
-			{
-				driver: 13,
-				fullname: 'Lee Harrison',
-				details: '00:00 - 23:59',
-				color: 'bg-blue-300',
-			},
-			{
-				driver: 30,
-				fullname: 'Richard Elgar',
-				details: '07:30 - 17:30',
-				color: 'bg-red-400',
-			},
-			{
-				driver: 16,
-				fullname: 'James Owen',
-				details: '07:00 - 17:00 (+/-)',
-				color: 'bg-gray-700 text-white font-bold',
-			},
-			{
-				driver: 14,
-				fullname: 'Andrew James',
-				details: '07:30 - 17:30',
-				color: 'bg-green-500',
-			},
-			{
-				driver: 4,
-				fullname: 'Paul Barber',
-				details: '07:00 - 18:00',
-				color: 'bg-green-400',
-			},
-			{
-				driver: 12,
-				fullname: 'Chris Gray',
-				details: '07:00 - 16:00',
-				color: 'bg-blue-700 text-white font-bold',
-			},
-			{
-				driver: 5,
-				fullname: 'Mark Phillips',
-				details: '07:00 - 16:30',
-				color: 'bg-pink-500',
-			},
-			{
-				driver: 11,
-				fullname: 'Nigel Reynolds',
-				details: '07:00 - 17:00',
-				color: 'bg-gray-400',
-			},
-			{
-				driver: 2,
-				fullname: 'Kate Hall',
-				details: '07:00 - 22:30',
-				color: 'bg-purple-400',
-			},
-			{
-				driver: 8,
-				fullname: 'Peter Farrell',
-				details: '08:20 - 10:00',
-				color: 'bg-purple-200',
-			},
-			{
-				driver: 7,
-				fullname: 'Caroline Stimson',
-				details: '11:00 - 17:00',
-				color: 'bg-red-200',
-			},
-			{
-				driver: 6,
-				fullname: 'Rob',
-				details: '07:00 - 22:00',
-				color: 'bg-blue-400',
-			},
-			{
-				driver: 31,
-				fullname: 'Bill Wood',
-				details: '16:00 - 17:00',
-				color: 'bg-red-300',
-			},
-			{
-				driver: 26,
-				fullname: 'Charles',
-				details: '07:00 - 17:00 (all routes)',
-				color: 'bg-blue-800 text-white font-bold',
-			},
-			{
-				driver: 18,
-				fullname: 'Jean Williams',
-				details: '07:30 - 09:15 (AM SR)',
-				color: 'bg-yellow-400',
-			},
-		],
-		[]
+
+	const filterAccounts = accounts?.filter((acc) =>
+		acc?.businessName?.toLowerCase()?.includes(searchInput.toLowerCase())
 	);
+
+	useEffect(() => {
+		dispatch(refreshAllAccounts());
+	}, [dispatch]);
 
 	const ColumnInputFilter = ({ column }) => {
 		return (
@@ -161,7 +69,7 @@ function ListAccounts() {
 	const columns = useMemo(
 		() => [
 			{
-				accessorKey: 'accountId',
+				accessorKey: 'accNo',
 				header: ({ column }) => (
 					<DataGridColumnHeader
 						title='Acc #'
@@ -171,12 +79,12 @@ function ListAccounts() {
 				),
 				enableSorting: true,
 				cell: ({ row }) => (
-					<span className={`p-2 rounded-md`}>{row.original.accountId}</span>
+					<span className={`p-2 rounded-md`}>{row.original.accNo}</span>
 				),
 				meta: { headerClassName: 'w-20' },
 			},
 			{
-				accessorKey: 'name',
+				accessorKey: 'businessName',
 				header: ({ column }) => (
 					<DataGridColumnHeader
 						title='Name'
@@ -186,13 +94,13 @@ function ListAccounts() {
 				),
 				enableSorting: true,
 				cell: ({ row }) => (
-					<span className={`p-2 rounded-md`}>{row.original.name}</span>
+					<span className={`p-2 rounded-md`}>{row.original.businessName}</span>
 				),
 				meta: { headerClassName: 'w-20' },
 			},
 
 			{
-				accessorKey: 'address',
+				accessorKey: 'address1',
 				header: ({ column }) => (
 					<DataGridColumnHeader
 						title='Address'
@@ -203,7 +111,7 @@ function ListAccounts() {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={`font-medium ${row.original.color}`}>
-						{row.original.address}
+						{row.original.address1}
 					</span>
 				),
 				meta: { headerClassName: 'min-w-[80px]' },
@@ -256,7 +164,7 @@ function ListAccounts() {
 						<button
 							className='rounded-full px-2 py-2  w-8 h-8 flex justify-center items-center hover:bg-red-100 group'
 							onClick={() => {
-								dispatch(setAccount(row));
+								dispatch(setAccount(row.original));
 								setEditAccountModal(true);
 							}}
 						>
@@ -268,7 +176,7 @@ function ListAccounts() {
 						<button
 							className='rounded-full px-2 py-2  w-8 h-8 flex justify-center items-center hover:bg-red-100 group'
 							onClick={() => {
-								dispatch(setAccount(row));
+								dispatch(setAccount(row.original));
 								setDeleteAccountModal(true);
 							}}
 						>
@@ -314,7 +222,9 @@ function ListAccounts() {
 				<Toolbar>
 					<ToolbarHeading>
 						<ToolbarPageTitle />
-						<ToolbarDescription>Showing {'23'} Accounts </ToolbarDescription>
+						<ToolbarDescription>
+							Showing {accounts.length} Accounts{' '}
+						</ToolbarDescription>
 					</ToolbarHeading>
 					<ToolbarActions>
 						<button
@@ -412,7 +322,7 @@ function ListAccounts() {
 							<div className='card-body'>
 								<DataGrid
 									columns={columns}
-									data={driversData}
+									data={filterAccounts}
 									rowSelection={true}
 									onRowSelectionChange={handleRowSelection}
 									pagination={{ size: 10 }}

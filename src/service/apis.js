@@ -26,8 +26,12 @@ export const availabilityEndpoints = {
 };
 
 export const accountEndpoints = {
-	GETLIST_ACCOUNTS: `${BASE}/api/Accounts/GetList`,
-	UPLOAD_ACCOUNTS: `${BASE}/api/Accounts/Upload`,
+	CREATE_ACCOUNTS: `${BASE}/api/AdminUI/AddAccount`,
+	GET_ACCOUNTS: `${BASE}/api/AdminUI/GetAccounts`,
+	UPDATE_ACCOUNTS: `${BASE}/api/AdminUI/UpdateAccount`,
+	DELETE_ACCOUNTS: (accno) =>
+		`${BASE}/api/AdminUI/DeleteAccount?accno=${accno}`,
+	REGISTER_ACCOUNT_WEB_BOOKER: `${BASE}/api/AdminUI/RegisterAccountWebBooker`,
 	GET_CLEAR_INVOICE: (invoiceNo) =>
 		`${BASE}/api/Accounts/ClearInvoice?invoiceno=${invoiceNo}`,
 };

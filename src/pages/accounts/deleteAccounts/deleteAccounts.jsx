@@ -8,12 +8,13 @@ import {
 	DialogTitle,
 } from '@/components/ui/dialog';
 import { useSelector } from 'react-redux';
+import { deleteAccounts } from '../../../service/operations/accountApi';
 function DeleteAccounts({ open, onOpenChange }) {
 	const { account } = useSelector((state) => state.account);
-	const handleDelete = () => {
+	const handleDelete = async () => {
 		console.log('account deleted', account);
-		// Delete local POI logic goes here
-		onOpenChange(); // Close the modal after deletion
+		const response = await deleteAccounts(account?.accNo);
+		if (response.status === 'success') onOpenChange(); // Close the modal after deletion
 	};
 	return (
 		<Dialog
@@ -27,7 +28,7 @@ function DeleteAccounts({ open, onOpenChange }) {
 				</DialogHeader>
 				<DialogBody className='flex flex-col items-center pt-2 pb-4'>
 					<h3 className='text-lg font-medium text-gray-900 text-center mb-2'>
-						Delete Account
+						Delete Account {account?.accNo}
 					</h3>
 
 					<div className='text-2sm text-center text-gray-700 mb-7'>
