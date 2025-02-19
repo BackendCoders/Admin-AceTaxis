@@ -11,12 +11,51 @@ import { Calendar } from '@/components/ui/calendar';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { KeenIcon } from '@/components';
+import { getVATOutputs } from '../../../service/operations/billing&Payment';
+import toast from 'react-hot-toast';
 
 const VatOutputs = () => {
 	const [dateRange, setDateRange] = useState({
-		from: new Date(2025, 0, 31), // January 31, 2025
-		to: new Date(2025, 0, 31), // Same default date
+		from: new Date(), // January 31, 2025
+		to: new Date(), // Same default date
 	});
+
+	const handleClick = async (e) => {
+		e.preventDefault();
+
+		if (!dateRange.from || !dateRange.to || dateRange.from > dateRange.to) {
+			toast.error('Invalid date range selected.');
+			return;
+		}
+
+		try {
+			const payload = {
+				start: format(dateRange.from, 'yyyy-MM-dd'),
+				end: format(dateRange.to, 'yyyy-MM-dd'),
+			};
+			const response = await getVATOutputs(payload);
+			if (response.status === 'success') {
+				delete response.status;
+				const csvString = Object.values(response).join('');
+
+				// ✅ Create a Blob object with CSV data
+				const blob = new Blob([csvString], { type: 'text/csv' });
+
+				// ✅ Create a temporary download link
+				const downloadLink = document.createElement('a');
+				downloadLink.href = URL.createObjectURL(blob);
+				downloadLink.setAttribute('download', 'VAT_Output.csv'); // Force download
+				document.body.appendChild(downloadLink);
+				downloadLink.click();
+				document.body.removeChild(downloadLink); // Cleanup after download
+
+				toast.success('CSV Created & Downloaded Successfully!');
+			}
+		} catch (error) {
+			console.error('Failed to fetch VAT outputs:', error);
+		}
+		// do something when the button is clicked
+	};
 
 	const DateRangePicker = ({ dateRange, setDateRange }) => (
 		<div className='flex flex-col'>
@@ -82,7 +121,10 @@ const VatOutputs = () => {
 					/>
 				</div>
 
-				<button className='btn btn-primary flex justify-center'>
+				<button
+					className='btn btn-primary flex justify-center'
+					onClick={handleClick}
+				>
 					CREATE CSV FILE
 				</button>
 			</div>
