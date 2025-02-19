@@ -49,7 +49,7 @@ export async function handlePostReq(URL, data) {
 			return null;
 		}
 	} catch (err) {
-		sendLogs({ url: URL, error: err.response }, 'error');
+		// sendLogs({ url: URL, error: err.response }, 'error');
 		return {
 			...err.response,
 			status: err.response.status > 499 ? 'error' : 'fail',

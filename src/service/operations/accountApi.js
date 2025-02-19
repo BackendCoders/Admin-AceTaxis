@@ -92,7 +92,7 @@ export async function registerAccountOnWebBooker(data) {
 		// );
 		return response;
 	}
-	return null;
+	return response;
 }
 
 export async function deleteAccounts(accno) {

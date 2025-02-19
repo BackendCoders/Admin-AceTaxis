@@ -1,5 +1,5 @@
 /** @format */
-import { useState, Fragment } from 'react';
+import { useState, Fragment, useEffect } from 'react';
 import {
 	Box,
 	Collapse,
@@ -34,60 +34,62 @@ import {
 	PopoverContent,
 } from '@/components/ui/popover';
 import { KeenIcon } from '@/components';
+import { useDispatch, useSelector } from 'react-redux';
+import { refreshAllCardBookings } from '../../../slices/bookingSlice';
 
 // Function to create booking data
-function createBooking(id, date, driver, pickup, passenger, status, payment) {
-	return {
-		id,
-		date,
-		driver,
-		pickup,
-		passenger,
-		status,
-		payment,
-		details: {
-			bookedBy: 'ACE TAXIS',
-			details: 'x 3 trips, pos 18 people. Should be about an hour',
-			lastUpdatedBy: 'ACE TAXIS',
-			lastUpdatedOn: '',
-			scope: 'Card',
-			mileage: 0,
-			duration: 26,
-			chargeFromBase: true,
-		},
-	};
-}
+// function createBooking(id, date, driver, pickup, passenger, status, payment) {
+// 	return {
+// 		id,
+// 		date,
+// 		driver,
+// 		pickup,
+// 		passenger,
+// 		status,
+// 		payment,
+// 		details: {
+// 			bookedBy: 'ACE TAXIS',
+// 			details: 'x 3 trips, pos 18 people. Should be about an hour',
+// 			lastUpdatedBy: 'ACE TAXIS',
+// 			lastUpdatedOn: '',
+// 			scope: 'Card',
+// 			mileage: 0,
+// 			duration: 26,
+// 			chargeFromBase: true,
+// 		},
+// 	};
+// }
 
 // Sample Data
-const bookings = [
-	createBooking(
-		82685,
-		'08/08/2025 23:30:00',
-		5,
-		'Pythouse Kitchen Gardens',
-		'Sophie Price',
-		'Pending',
-		'677ba9e8-14e0-aca1-894f-d5f37640191b'
-	),
-	createBooking(
-		88451,
-		'29/01/2025 13:00:00',
-		2,
-		'6 Barrowlea, Stalbridge. Sturminster Newton, Dorset',
-		'Olly',
-		'Pending',
-		'6799fcfd-c1fc-a15b-8be2-250fe9b3a14f'
-	),
-	createBooking(
-		88203,
-		'26/01/2025 00:03:00',
-		18,
-		'Red Lion',
-		'Ashley',
-		'Pending',
-		'67957c40-e62a-aad9-a10b-b08331d9933c'
-	),
-];
+// const bookings = [
+// 	createBooking(
+// 		82685,
+// 		'08/08/2025 23:30:00',
+// 		5,
+// 		'Pythouse Kitchen Gardens',
+// 		'Sophie Price',
+// 		'Pending',
+// 		'677ba9e8-14e0-aca1-894f-d5f37640191b'
+// 	),
+// 	createBooking(
+// 		88451,
+// 		'29/01/2025 13:00:00',
+// 		2,
+// 		'6 Barrowlea, Stalbridge. Sturminster Newton, Dorset',
+// 		'Olly',
+// 		'Pending',
+// 		'6799fcfd-c1fc-a15b-8be2-250fe9b3a14f'
+// 	),
+// 	createBooking(
+// 		88203,
+// 		'26/01/2025 00:03:00',
+// 		18,
+// 		'Red Lion',
+// 		'Ashley',
+// 		'Pending',
+// 		'67957c40-e62a-aad9-a10b-b08331d9933c'
+// 	),
+// ];
 
 // Collapsible Row Component
 function Row({ row }) {
@@ -204,16 +206,35 @@ function Row({ row }) {
 
 // Main Component
 function CardBookings() {
+	const dispatch = useDispatch();
+	const { cardBookings } = useSelector((state) => state.booking);
 	const [search, setSearch] = useState('');
 	const [date, setDate] = useState(new Date());
-	const filterDriver = '';
+	// const filterDriver = '';
 
-	const filteredBookings = bookings.filter(
-		(b) =>
-			(b.passenger.toLowerCase().includes(search.toLowerCase()) ||
-				search === '') &&
-			(b.driver.toString() === filterDriver || filterDriver === '')
-	);
+	const filteredBookings = (cardBookings || []).map((booking) => ({
+		id: booking.id,
+		date: booking.date, // Ensure correct date format
+		driver: booking.driverNumber || 'N/A',
+		pickup: booking.pickupLocation || 'Unknown',
+		passenger: booking.passengerName || 'Unknown',
+		status: booking.status || 'Pending',
+		payment: booking.paymentId || 'N/A',
+		details: {
+			bookedBy: booking.bookedBy || 'Unknown',
+			details: booking.tripDetails || '',
+			lastUpdatedBy: booking.lastUpdatedBy || 'N/A',
+			lastUpdatedOn: booking.lastUpdatedOn || '',
+			scope: booking.scope || 'Card',
+			mileage: booking.mileage || 0,
+			duration: booking.duration || 0,
+			chargeFromBase: booking.chargeFromBase || false,
+		},
+	}));
+
+	useEffect(() => {
+		dispatch(refreshAllCardBookings());
+	}, [dispatch]);
 
 	return (
 		<Fragment>

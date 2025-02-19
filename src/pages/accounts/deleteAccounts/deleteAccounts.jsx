@@ -7,14 +7,19 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from '@/components/ui/dialog';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { deleteAccounts } from '../../../service/operations/accountApi';
+import { refreshAllAccounts } from '../../../slices/accountSlice';
 function DeleteAccounts({ open, onOpenChange }) {
+	const dispatch = useDispatch();
 	const { account } = useSelector((state) => state.account);
 	const handleDelete = async () => {
 		console.log('account deleted', account);
 		const response = await deleteAccounts(account?.accNo);
-		if (response.status === 'success') onOpenChange(); // Close the modal after deletion
+		if (response.status === 'success') {
+			onOpenChange();
+			dispatch(refreshAllAccounts());
+		} // Close the modal after deletion
 	};
 	return (
 		<Dialog

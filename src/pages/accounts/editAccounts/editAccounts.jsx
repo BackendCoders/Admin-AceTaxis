@@ -57,6 +57,8 @@ function EditAccounts({ open, onOpenChange }) {
 			const response = await registerAccountOnWebBooker(payload);
 			if (response.status === 'success') {
 				toast.success('Registered account on web booker successfully');
+			} else {
+				toast.error('Failed to register');
 			}
 		} catch (error) {
 			console.log(error);
@@ -92,7 +94,7 @@ function EditAccounts({ open, onOpenChange }) {
 				</DialogHeader>
 				<DialogBody className='flex flex-col items-center pt-0 pb-4'>
 					<h3 className='text-lg font-medium text-gray-900 text-center mb-3'>
-						Add Accounts
+						Edit Account {account?.accNo}
 					</h3>
 
 					<form
