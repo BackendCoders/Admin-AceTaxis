@@ -10,6 +10,7 @@ const {
 	UPDATE_ACCOUNTS,
 	CREATE_ACCOUNTS,
 	DELETE_ACCOUNTS,
+	REGISTER_ACCOUNT_WEB_BOOKER,
 	GET_CLEAR_INVOICE,
 } = accountEndpoints;
 
@@ -58,6 +59,26 @@ export async function updateAccounts(data) {
 	// Upload accounts data using token
 	const response = await handlePostReq(UPDATE_ACCOUNTS, data);
 	console.log('Upload Account API RESPONSE.........', response);
+
+	if (response.status === 'success') {
+		// sendLogs(
+		// 	{
+		// 		url: UPDATE_ACCOUNTS,
+		// 		reqBody: data,
+		// 		headers: setHeaders(),
+		// 		response: response,
+		// 	},
+		// 	'info'
+		// );
+		return response;
+	}
+	return null;
+}
+
+export async function registerAccountOnWebBooker(data) {
+	// Upload accounts data using token
+	const response = await handlePostReq(REGISTER_ACCOUNT_WEB_BOOKER, data);
+	console.log('Register Account API RESPONSE.........', response);
 
 	if (response.status === 'success') {
 		// sendLogs(

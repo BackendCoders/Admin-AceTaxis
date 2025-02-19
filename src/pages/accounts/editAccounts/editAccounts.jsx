@@ -11,8 +11,12 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import clsx from 'clsx';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateAccounts } from '../../../service/operations/accountApi';
+import {
+	registerAccountOnWebBooker,
+	updateAccounts,
+} from '../../../service/operations/accountApi';
 import { refreshAllAccounts } from '../../../slices/accountSlice';
+import toast from 'react-hot-toast';
 function EditAccounts({ open, onOpenChange }) {
 	const dispatch = useDispatch();
 	const { account } = useSelector((state) => state.account);
@@ -39,6 +43,24 @@ function EditAccounts({ open, onOpenChange }) {
 		bookerName: account?.bookerName || '',
 		purchaseOrderNo: account?.purchaseOrderNo || '',
 		reference: account?.reference || '',
+	};
+
+	const handleRegisterWebBookerButton = async () => {
+		try {
+			const updatedValues = formik.values;
+			const payload = {
+				accno: account?.accNo || 0,
+				bookerName: updatedValues?.bookerName || '',
+				bookerEmail: updatedValues?.bookerEmail || '',
+				bookerPhone: updatedValues?.telephone || '',
+			};
+			const response = await registerAccountOnWebBooker(payload);
+			if (response.status === 'success') {
+				toast.success('Registered account on web booker successfully');
+			}
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 	const formik = useFormik({
@@ -391,7 +413,15 @@ function EditAccounts({ open, onOpenChange }) {
 
 						<div className='flex justify-end mb-2 mt-2'>
 							<button
-								className='btn btn-light'
+								type='button'
+								className='btn btn-primary'
+								onClick={handleRegisterWebBookerButton}
+							>
+								Register/Unregister Web Booker
+							</button>
+
+							<button
+								className='btn btn-light ml-2'
 								onClick={() => onOpenChange()}
 							>
 								Cancel
