@@ -1,34 +1,93 @@
 /** @format */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import {
+	getMsgConfig,
+	setMsgConfig,
+} from '../../../service/operations/settingsApi';
 
 const MsgSettings = () => {
+	const [data, setData] = useState({});
+	const typeMap = {
+		0: 'None',
+		1: 'WhatsApp',
+		2: 'Text Message',
+	};
+
+	const reverseTypeMap = {
+		'None': 0,
+		'WhatsApp': 1,
+		'Text Message': 2,
+	};
+
 	// ✅ Messaging Config Sections (Follows Your Format)
 	const messageSections = [
-		{ title: 'DRIVER - ON ALLOCATE', stateKey: 'driverAllocate' },
-		{ title: 'DRIVER - UN-ALLOCATE', stateKey: 'driverUnallocate' },
-		{ title: 'DRIVER - ON AMEND BOOKING', stateKey: 'driverAmend' },
-		{ title: 'DRIVER - ON CANCEL BOOKING', stateKey: 'driverCancel' },
-		{ title: 'CUSTOMER - ON ALLOCATE', stateKey: 'customerAllocate' },
-		{ title: 'CUSTOMER - UN-ALLOCATE', stateKey: 'customerUnallocate' },
-		{ title: 'CUSTOMER - ON AMEND BOOKING', stateKey: 'customerAmend' },
-		{ title: 'CUSTOMER - ON CANCEL BOOKING', stateKey: 'customerCancel' },
+		{ title: 'DRIVER - ON ALLOCATE', stateKey: 'driverOnAllocate' },
+		{ title: 'DRIVER - UN-ALLOCATE', stateKey: 'driverOnUnAllocate' },
+		{ title: 'DRIVER - ON AMEND BOOKING', stateKey: 'driverOnAmend' },
+		{ title: 'DRIVER - ON CANCEL BOOKING', stateKey: 'driverOnCancel' },
+		{ title: 'CUSTOMER - ON ALLOCATE', stateKey: 'customerOnAllocate' },
+		{ title: 'CUSTOMER - UN-ALLOCATE', stateKey: 'customerOnUnAllocate' },
+		{ title: 'CUSTOMER - ON AMEND BOOKING', stateKey: 'customerOnAmend' },
+		{ title: 'CUSTOMER - ON CANCEL BOOKING', stateKey: 'customerOnCancel' },
 		{
 			title: 'CUSTOMER - ON COMPLETE (Request Review)',
-			stateKey: 'customerComplete',
+			stateKey: 'customerOnComplete',
 		},
 	];
 
 	// ✅ State for message settings
-	const [messageSettings, setMessageSettings] = useState(
-		messageSections.reduce(
-			(acc, section) => ({ ...acc, [section.stateKey]: 'WhatsApp' }),
-			{}
-		)
-	);
+	const [messageSettings, setMessageSettings] = useState({});
+
+	async function fetchMsgConfig() {
+		try {
+			const response = await getMsgConfig();
+			if (response?.status === 'success') {
+				setData(response);
+				const formattedSettings = Object.keys(response).reduce((acc, key) => {
+					if (messageSections.some((section) => section.stateKey === key)) {
+						acc[key] = typeMap[response[key]] || 'None'; // Default to 'None' if missing
+					}
+					return acc;
+				}, {});
+				setMessageSettings(formattedSettings);
+			}
+		} catch (error) {
+			console.error('Failed to fetch msg config:', error);
+		}
+	}
+
+	useEffect(() => {
+		fetchMsgConfig();
+		// Update messageSettings when fetchMsgConfig resolves
+	}, []);
 
 	// ✅ Handle Selection Change
 	const handleSelectionChange = (key, value) => {
 		setMessageSettings((prev) => ({ ...prev, [key]: value }));
+	};
+
+	const handleSaveSettings = async () => {
+		// Convert text values back to API numeric values
+		const payload = Object.keys(messageSettings).reduce((acc, key) => {
+			acc[key] = reverseTypeMap[messageSettings[key]]; // Convert text to number
+			return acc;
+		}, {});
+
+		try {
+			const request = {
+				...payload,
+				id: data?.id || '',
+				ignoreAccountNos: data?.ignoreAccountNos || '',
+				smsPhoneHeartBeat:
+					data?.smsPhoneHeartBeat || '2025-02-19T09:09:14.208Z',
+			};
+			const response = await setMsgConfig(request);
+			if (response?.status === 'success') {
+				fetchMsgConfig();
+			}
+		} catch (error) {
+			console.error('Failed to update message settings:', error);
+		}
 	};
 
 	return (
@@ -93,7 +152,10 @@ const MsgSettings = () => {
 
 			{/* ✅ Save Settings Button */}
 			<div className='my-11 flex justify-start'>
-				<button className='btn btn-primary flex justify-center'>
+				<button
+					className='btn btn-primary flex justify-center'
+					onClick={handleSaveSettings}
+				>
 					SAVE SETTINGS
 				</button>
 			</div>
