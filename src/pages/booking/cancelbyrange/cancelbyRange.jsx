@@ -11,10 +11,33 @@ import { Calendar } from '@/components/ui/calendar';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { KeenIcon } from '@/components';
+import { cancelBookingByDateRange } from '../../../service/operations/bookingApi';
+import toast from 'react-hot-toast';
 
 const CancelByRange = () => {
 	const [driverNumber, setDriverNumber] = useState(0);
-	const [date, setDate] = useState(new Date());
+	const [dateRange, setDateRange] = useState({
+		from: new Date(), // January 31, 2025
+		to: new Date(), // Same default date
+	});
+
+	const handleCancelButton = async () => {
+		try {
+			const payload = {
+				from: dateRange?.from,
+				to: dateRange?.to,
+				accountNo: driverNumber || 0,
+			};
+
+			const response = await cancelBookingByDateRange(payload);
+			if (response.status === 'success') {
+				toast.success('Bookings Cancelled Successfully');
+			}
+		} catch (error) {
+			console.error('Error canceling bookings by date range:', error);
+			toast.error('Error cancelling bookings by date range');
+		}
+	};
 
 	return (
 		<div className='pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1580px] w-full'>
@@ -28,18 +51,11 @@ const CancelByRange = () => {
 				{/* Driver Number Selection */}
 
 				<div className='flex flex-col gap-1'>
-					<label
-						htmlFor='date'
-						className='form-label text-gray-900'
-					>
-						Account Number
-					</label>
-					<label
-						className='input input-sm'
-						style={{ height: '40px' }}
-					>
+					<label className='form-label text-gray-900'>Account Number</label>
+					<label className='input'>
 						<input
 							type='number'
+							autoComplete='off'
 							name='driverNumber'
 							placeholder='Enter Number'
 							value={driverNumber}
@@ -62,31 +78,40 @@ const CancelByRange = () => {
 						<Popover>
 							<PopoverTrigger asChild>
 								<button
-									id='date'
 									className={cn(
-										'input data-[state=open]:border-primary',
-										!date && 'text-muted-foreground'
+										'flex items-center gap-2 border px-4 py-2 rounded-md  transition-all',
+										!dateRange && 'text-gray-400'
 									)}
-									style={{ width: '13rem' }}
 								>
 									<KeenIcon
 										icon='calendar'
-										className='-ms-0.5'
+										className='text-gray-600'
 									/>
-									{date ? format(date, 'LLL dd, y') : <span>Pick a date</span>}
+									{dateRange?.from ? (
+										dateRange.to ? (
+											<>
+												{format(dateRange.from, 'dd/MM/yyyy')} →{' '}
+												{format(dateRange.to, 'dd/MM/yyyy')}
+											</>
+										) : (
+											format(dateRange.from, 'dd/MM/yyyy')
+										)
+									) : (
+										<span>Pick a date range</span>
+									)}
 								</button>
 							</PopoverTrigger>
+
 							<PopoverContent
-								className='w-auto p-0'
-								align='start'
+								className='w-auto p-2 shadow-md rounded-lg'
+								align='end'
 							>
 								<Calendar
+									mode='range'
+									selected={dateRange}
+									onSelect={setDateRange}
+									numberOfMonths={2}
 									initialFocus
-									mode='single' // Single date selection
-									defaultMonth={date}
-									selected={date}
-									onSelect={setDate}
-									numberOfMonths={1}
 								/>
 							</PopoverContent>
 						</Popover>
@@ -96,6 +121,7 @@ const CancelByRange = () => {
 							<button
 								type='submit'
 								className='btn btn-sm btn-primary px-4 py-4'
+								onClick={handleCancelButton}
 							>
 								CANCEL JOBS
 							</button>

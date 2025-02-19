@@ -37,13 +37,7 @@ export const accountEndpoints = {
 };
 
 export const bookingsEndpoints = {
-	CREATE_BOOKING: `${BASE}/api/Bookings/Create`,
-	ALLOCATE_BOOKINGS: `${BASE}/api/Bookings/Allocate`,
-	COMPLETE_BOOKINGS: `${BASE}/api/Bookings/Complete`,
-	BOOKING_QUOTE: `${BASE}/api/Bookings/Quote`,
-	UPDATE_BOOKING_QUOTE: `${BASE}/api/Bookings/UpdateQuote`,
-	REMOVE_COA: `${BASE}/api/Bookings/RemoveCOA`,
-	CANCEL_BOOKING: `${BASE}/api/Bookings/Cancel`,
+	CANCEL_BOOKING_DATE_RANGE: `${BASE}/api/AdminUI/CancelBookingsInRange`,
 };
 
 export const gpsEndpoints = {
