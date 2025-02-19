@@ -1,14 +1,15 @@
 /** @format */
 
-import { sendLogs } from '../../utils/getLogs';
-import { handleGetReq, handlePostReq, setHeaders } from '../apiRequestHandler';
+// import { sendLogs } from '../../utils/getLogs';
+import toast from 'react-hot-toast';
+import { handleGetReq, handlePostReq } from '../apiRequestHandler';
 import { settingsEndpoints } from '../apis';
 
 const {
 	GET_COMPANY_CONFIG,
-	SET_COMPANY_CONFIG,
+	UPDATE_COMPANY_CONFIG,
 	GET_MSG_CONFIG,
-	SET_MSG_CONFIG,
+	UPDATE_MSG_CONFIG,
 	GET_TARIFF_CONFIG,
 	SET_TARIFF_CONFIG,
 } = settingsEndpoints;
@@ -19,34 +20,35 @@ export async function getMsgConfig() {
 	console.log('GET MSG CONFIG API RESPONSE.........', response);
 
 	if (response.status === 'success') {
-		sendLogs(
-			{
-				url: GET_MSG_CONFIG,
-				reqBody: null,
-				headers: setHeaders(),
-				response: response,
-			},
-			'info'
-		);
+		// sendLogs(
+		// 	{
+		// 		url: GET_MSG_CONFIG,
+		// 		reqBody: null,
+		// 		headers: setHeaders(),
+		// 		response: response,
+		// 	},
+		// 	'info'
+		// );
 		return response;
 	}
 }
 
 export async function setMsgConfig(data) {
-	const response = await handlePostReq(SET_MSG_CONFIG, data);
+	const response = await handlePostReq(UPDATE_MSG_CONFIG, data);
 
 	console.log('SET MSG CONFIG API RESPONSE.........', response);
 
 	if (response.status === 'success') {
-		sendLogs(
-			{
-				url: SET_MSG_CONFIG,
-				reqBody: data,
-				headers: setHeaders(),
-				response: response,
-			},
-			'info'
-		);
+		// sendLogs(
+		// 	{
+		// 		url: UPDATE_MSG_CONFIG,
+		// 		reqBody: data,
+		// 		headers: setHeaders(),
+		// 		response: response,
+		// 	},
+		// 	'info'
+		// );
+		toast.success('Msg. Config Updated Successfully');
 		return response;
 	}
 }
@@ -57,34 +59,35 @@ export async function getCompanyConfig() {
 	console.log('GET COMPANY CONFIG API RESPONSE.........', response);
 
 	if (response.status === 'success') {
-		sendLogs(
-			{
-				url: GET_COMPANY_CONFIG,
-				reqBody: null,
-				headers: setHeaders(),
-				response: response,
-			},
-			'info'
-		);
+		// sendLogs(
+		// 	{
+		// 		url: GET_COMPANY_CONFIG,
+		// 		reqBody: null,
+		// 		headers: setHeaders(),
+		// 		response: response,
+		// 	},
+		// 	'info'
+		// );
 		return response;
 	}
 }
 
 export async function setCompanyConfig(data) {
-	const response = await handlePostReq(SET_COMPANY_CONFIG, data);
+	const response = await handlePostReq(UPDATE_COMPANY_CONFIG, data);
 
 	console.log('SET COMPANY CONFIG API RESPONSE.........', response);
 
 	if (response.status === 'success') {
-		sendLogs(
-			{
-				url: SET_COMPANY_CONFIG,
-				reqBody: data,
-				headers: setHeaders(),
-				response: response,
-			},
-			'info'
-		);
+		// sendLogs(
+		// 	{
+		// 		url: UPDATE_COMPANY_CONFIG,
+		// 		reqBody: data,
+		// 		headers: setHeaders(),
+		// 		response: response,
+		// 	},
+		// 	'info'
+		// );
+		toast.success('Company Config Updated Successfully');
 		return response;
 	}
 }
@@ -95,15 +98,15 @@ export async function getTariffConfig() {
 	console.log('GET TARIFF CONFIG API RESPONSE.........', response);
 
 	if (response.status === 'success') {
-		sendLogs(
-			{
-				url: GET_TARIFF_CONFIG,
-				reqBody: null,
-				headers: setHeaders(),
-				response: response,
-			},
-			'info'
-		);
+		// sendLogs(
+		// 	{
+		// 		url: GET_TARIFF_CONFIG,
+		// 		reqBody: null,
+		// 		headers: setHeaders(),
+		// 		response: response,
+		// 	},
+		// 	'info'
+		// );
 		return response;
 	}
 }
@@ -114,15 +117,15 @@ export async function setTariffConfig(data) {
 	console.log('SET TARIFF CONFIG API RESPONSE.........', response);
 
 	if (response.status === 'success') {
-		sendLogs(
-			{
-				url: SET_TARIFF_CONFIG,
-				reqBody: data,
-				headers: setHeaders(),
-				response: response,
-			},
-			'info'
-		);
+		// sendLogs(
+		// 	{
+		// 		url: SET_TARIFF_CONFIG,
+		// 		reqBody: data,
+		// 		headers: setHeaders(),
+		// 		response: response,
+		// 	},
+		// 	'info'
+		// );
 		return response;
 	}
 }

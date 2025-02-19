@@ -1,31 +1,41 @@
 /** @format */
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+
 import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from '@/components/ui/select';
+	getCompanyConfig,
+	setCompanyConfig,
+} from '../../../service/operations/settingsApi';
 
 const CompanySetting = () => {
 	// ✅ State to manage form data
 	const [companyData, setCompanyData] = useState({
-		companyName: 'Ace Taxis (Dorset) Ltd',
-		addressLine1: 'The Corner House',
-		addressLine2: '1 Briar Close',
-		addressLine3: 'Gillingham',
-		addressLine4: 'Dorset',
-		postcode: 'SP8 4SS',
-		email: 'bookings@acetaxisdorset.co.uk',
-		web: 'www.acetaxisdorset.co.uk',
-		phone: '01747821111',
-		companyNo: '08920974',
-		vatNo: '325 1273 31',
-		cardRate: '1.6',
-		revolutSecretKey: '',
+		id: 0,
+		companyName: '',
+		address1: '',
+		address2: '',
+		address3: '',
+		address4: '',
+		postcode: '',
+		email: '',
+		website: '',
+		phone: '',
+		companyNumber: '',
+		vatNumber: '',
+		cardTopupRate: 0,
+		revoluttSecretKey: '',
 	});
+
+	async function fetchCompanySettings() {
+		const response = await getCompanyConfig();
+		setCompanyData(response);
+	}
+
+	useEffect(() => {
+		fetchCompanySettings();
+	}, []);
+
+	console.log('company data', companyData);
 
 	// ✅ Handle Input Changes
 	const handleChange = (e) => {
@@ -33,9 +43,32 @@ const CompanySetting = () => {
 	};
 
 	// ✅ Handle Form Submission
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
-		alert('Company Settings Updated Successfully!');
+		try {
+			const payload = {
+				id: companyData?.id || 0,
+				companyName: companyData?.companyName || '',
+				address1: companyData?.address1 || '',
+				address2: companyData?.address2 || '',
+				address3: companyData?.address3 || '',
+				address4: companyData?.address4 || '',
+				postcode: companyData?.postcode || '',
+				email: companyData?.email || '',
+				website: companyData?.website || '',
+				phone: companyData?.phone || '',
+				companyNumber: companyData?.companyNumber || '',
+				vatNumber: companyData?.vatNumber || '',
+				cardTopupRate: companyData?.cardTopupRate || 0,
+				revoluttSecretKey: companyData?.revoluttSecretKey || '',
+			};
+			const response = await setCompanyConfig(payload);
+			if (response?.status === 'success') {
+				fetchCompanySettings();
+			}
+		} catch (error) {
+			console.error(error);
+		}
 	};
 
 	return (
@@ -49,10 +82,7 @@ const CompanySetting = () => {
 
 			{/* ✅ Card Body */}
 			<div className='card card-body grid gap-6'>
-				<form
-					onSubmit={handleSubmit}
-					className='grid grid-cols-1 md:grid-cols-2 gap-6'
-				>
+				<form className='grid grid-cols-1 md:grid-cols-2 gap-6'>
 					{/* ✅ Left Section - Company Details */}
 					<div className='space-y-4'>
 						<div>
@@ -60,7 +90,7 @@ const CompanySetting = () => {
 							<input
 								type='text'
 								name='companyName'
-								value={companyData.companyName}
+								value={companyData?.companyName}
 								onChange={handleChange}
 								className='input border border-gray-300 rounded-md p-2  focus:ring-blue-600'
 							/>
@@ -71,7 +101,7 @@ const CompanySetting = () => {
 							<input
 								type='text'
 								name='addressLine1'
-								value={companyData.addressLine1}
+								value={companyData?.address1}
 								onChange={handleChange}
 								className='input border border-gray-300 rounded-md p-2 focus:ring-blue-600'
 							/>
@@ -82,7 +112,7 @@ const CompanySetting = () => {
 							<input
 								type='text'
 								name='addressLine2'
-								value={companyData.addressLine2}
+								value={companyData?.address2}
 								onChange={handleChange}
 								className='input border border-gray-300 rounded-md p-2 focus:ring-blue-600'
 							/>
@@ -93,7 +123,7 @@ const CompanySetting = () => {
 							<input
 								type='text'
 								name='addressLine3'
-								value={companyData.addressLine3}
+								value={companyData?.address3}
 								onChange={handleChange}
 								className='input border border-gray-300 rounded-md p-2 focus:ring-blue-600'
 							/>
@@ -104,7 +134,7 @@ const CompanySetting = () => {
 							<input
 								type='text'
 								name='addressLine4'
-								value={companyData.addressLine4}
+								value={companyData?.address4}
 								onChange={handleChange}
 								className='input border border-gray-300 rounded-md p-2 focus:ring-blue-600'
 							/>
@@ -115,7 +145,7 @@ const CompanySetting = () => {
 							<input
 								type='text'
 								name='postcode'
-								value={companyData.postcode}
+								value={companyData?.postcode}
 								onChange={handleChange}
 								className='input border border-gray-300 rounded-md p-2 focus:ring-blue-600'
 							/>
@@ -129,7 +159,7 @@ const CompanySetting = () => {
 							<input
 								type='email'
 								name='email'
-								value={companyData.email}
+								value={companyData?.email}
 								onChange={handleChange}
 								className='input border border-gray-300 rounded-md p-2 focus:ring-blue-600'
 							/>
@@ -140,7 +170,7 @@ const CompanySetting = () => {
 							<input
 								type='text'
 								name='web'
-								value={companyData.web}
+								value={companyData?.website}
 								onChange={handleChange}
 								className='input border border-gray-300 rounded-md p-2 focus:ring-blue-600'
 							/>
@@ -151,7 +181,7 @@ const CompanySetting = () => {
 							<input
 								type='text'
 								name='phone'
-								value={companyData.phone}
+								value={companyData?.phone}
 								onChange={handleChange}
 								className='input border border-gray-300 rounded-md p-2  focus:ring-blue-600'
 							/>
@@ -162,7 +192,7 @@ const CompanySetting = () => {
 							<input
 								type='text'
 								name='companyNo'
-								value={companyData.companyNo}
+								value={companyData?.companyNumber}
 								onChange={handleChange}
 								className='input border border-gray-300 rounded-md p-2  focus:ring-blue-600'
 							/>
@@ -173,7 +203,7 @@ const CompanySetting = () => {
 							<input
 								type='text'
 								name='vatNo'
-								value={companyData.vatNo}
+								value={companyData?.vatNumber}
 								onChange={handleChange}
 								className='input border border-gray-300 rounded-md p-2  focus:ring-blue-600'
 							/>
@@ -182,22 +212,13 @@ const CompanySetting = () => {
 						{/* ✅ Card Rate Dropdown */}
 						<div>
 							<label className='form-label font-medium'>Card Rate %</label>
-							<Select
-								name='cardRate'
-								value={companyData.cardRate}
-								onValueChange={(value) =>
-									setCompanyData({ ...companyData, cardRate: value })
-								}
-							>
-								<SelectTrigger className='input border border-gray-300 rounded-md p-2 focus:ring-blue-600'>
-									<SelectValue placeholder='Select' />
-								</SelectTrigger>
-								<SelectContent>
-									<SelectItem value='1.6'>1.6%</SelectItem>
-									<SelectItem value='2.0'>2.0%</SelectItem>
-									<SelectItem value='2.5'>2.5%</SelectItem>
-								</SelectContent>
-							</Select>
+							<input
+								type='number'
+								name='cardTopupRate'
+								value={companyData.cardTopupRate}
+								onChange={handleChange}
+								className='input border border-gray-300 rounded-md p-2  focus:ring-blue-600'
+							/>
 						</div>
 
 						{/* ✅ Revolut Secret Key */}
@@ -207,8 +228,8 @@ const CompanySetting = () => {
 							</label>
 							<input
 								type='text'
-								name='revolutSecretKey'
-								value={companyData.revolutSecretKey}
+								name='revoluttSecretKey'
+								value={companyData.revoluttSecretKey}
 								onChange={handleChange}
 								className='input border border-gray-300 rounded-md p-2  focus:ring-blue-600'
 							/>
@@ -220,7 +241,7 @@ const CompanySetting = () => {
 			{/* ✅ Submit Button (Sticky at Bottom) */}
 			<div className=' mt-6 flex justify-end'>
 				<button
-					type='submit'
+					onClick={handleSubmit}
 					className='btn btn-sm btn-primary px-4 py-4'
 				>
 					Submit

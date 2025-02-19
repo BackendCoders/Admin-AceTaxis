@@ -61,9 +61,9 @@ export const driverEarningEndpoints = {
 
 export const settingsEndpoints = {
 	GET_MSG_CONFIG: `${BASE}/api/AdminUI/GetMessageConfig`,
-	SET_MSG_CONFIG: `${BASE}/api/AdminUI/SetMessageConfig`,
+	UPDATE_MSG_CONFIG: `${BASE}/api/AdminUI/UpdateMessageConfig`,
 	GET_COMPANY_CONFIG: `${BASE}/api/AdminUI/GetCompanyConfig`,
-	SET_COMPANY_CONFIG: `${BASE}/api/AdminUI/SetCompanyConfig`,
+	UPDATE_COMPANY_CONFIG: `${BASE}/api/AdminUI/UpdateCompanyConfig`,
 	GET_TARIFF_CONFIG: `${BASE}/api/AdminUI/GetTariffConfig`,
 	SET_TARIFF_CONFIG: `${BASE}/api/AdminUI/SetTariffConfig`,
 };
