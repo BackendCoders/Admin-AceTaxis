@@ -18,10 +18,12 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import clsx from 'clsx';
 import { createPoi } from '../../../service/operations/localPOIApi';
+import { refreshAllLocalPOIS } from '../../../slices/localPOISlice';
+import { useDispatch } from 'react-redux';
 
 function AddLocalPoi({ open, onOpenChange }) {
+	const dispatch = useDispatch();
 	const addLocalSchema = Yup.object().shape({
-		name: Yup.string().required('Name is required'), // Changed from email to username
 		address: Yup.string().required('Address is required'),
 		postcode: Yup.string().required('Postcode is required'),
 		type: Yup.string().required('Type is required'),
@@ -41,8 +43,9 @@ function AddLocalPoi({ open, onOpenChange }) {
 			console.log('Submitted Values:', values);
 			const response = await createPoi(values);
 			if (response.status === 'success') {
-				setSubmitting(false);
 				onOpenChange(); // Reset Formik's submitting state
+				setSubmitting(false);
+				dispatch(refreshAllLocalPOIS());
 			}
 		},
 	});
@@ -142,11 +145,20 @@ function AddLocalPoi({ open, onOpenChange }) {
 									</SelectTrigger>
 									<SelectContent>
 										<SelectItem value={0}>Not Set</SelectItem>
-										<SelectItem value={1}>Train_Station</SelectItem>
-										<SelectItem value={2}>Supermarket</SelectItem>
+										<SelectItem value={1}>Train Station</SelectItem>
+										<SelectItem value={2}>Super Market</SelectItem>
 										<SelectItem value={3}>House</SelectItem>
 										<SelectItem value={4}>Pub</SelectItem>
 										<SelectItem value={5}>Restaurant</SelectItem>
+										<SelectItem value={6}>Doctors</SelectItem>
+										<SelectItem value={7}>Airport</SelectItem>
+										<SelectItem value={8}>Ferry Port</SelectItem>
+										<SelectItem value={9}>Hotel</SelectItem>
+										<SelectItem value={10}>School</SelectItem>
+										<SelectItem value={11}>Hospital</SelectItem>
+										<SelectItem value={12}>Wedding Venue</SelectItem>
+										<SelectItem value={13}>Miscellaneous</SelectItem>
+										<SelectItem value={14}>Shopping Center</SelectItem>
 									</SelectContent>
 								</Select>
 								{formik.touched.type && formik.errors.type && (

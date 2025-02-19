@@ -17,28 +17,39 @@ import {
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import clsx from 'clsx';
+import { useDispatch, useSelector } from 'react-redux';
+import { updatePoi } from '../../../service/operations/localPOIApi';
+import { refreshAllLocalPOIS } from '../../../slices/localPOISlice';
 function EditLocalPoi({ open, onOpenChange }) {
+	const { localPOI } = useSelector((state) => state.localPoi);
+	const dispatch = useDispatch();
 	const addLocalSchema = Yup.object().shape({
-		name: Yup.string().required('Name is required'), // Changed from email to username
 		address: Yup.string().required('Address is required'),
 		postcode: Yup.string().required('Postcode is required'),
 		type: Yup.string().required('Type is required'),
 	});
 
 	const initialValues = {
-		name: '',
-		address: '',
-		postcode: '',
-		type: '1', // Placeholder username
+		name: localPOI?.name || '',
+		address: localPOI?.address || '',
+		postcode: localPOI?.postcode || '',
+		type: localPOI?.type || 0, // Placeholder username
 	};
 
 	const formik = useFormik({
 		initialValues,
 		validationSchema: addLocalSchema,
 		onSubmit: async (values, { setSubmitting }) => {
-			console.log('Submitted Values:', values);
-			setSubmitting(false);
-			onOpenChange(); // Reset Formik's submitting state
+			const payload = {
+				...values,
+				id: localPOI?.id,
+			};
+			const result = await updatePoi(payload);
+			if (result.status === 'success') {
+				onOpenChange(); // Reset Formik's submitting state
+				dispatch(refreshAllLocalPOIS());
+				setSubmitting(false);
+			}
 		},
 	});
 	return (
@@ -53,7 +64,7 @@ function EditLocalPoi({ open, onOpenChange }) {
 				</DialogHeader>
 				<DialogBody className='flex flex-col items-center pt-0 pb-4'>
 					<h3 className='text-lg font-medium text-gray-900 text-center mb-3'>
-						Edit Local POI
+						Edit Local POI {localPOI?.id}
 					</h3>
 
 					<form onSubmit={formik.handleSubmit}>
@@ -136,9 +147,21 @@ function EditLocalPoi({ open, onOpenChange }) {
 										<SelectValue placeholder='Select' />
 									</SelectTrigger>
 									<SelectContent>
-										<SelectItem value='1'>Not Set</SelectItem>
-										<SelectItem value='2'>Train Station</SelectItem>
-										<SelectItem value='3'>Super Market</SelectItem>
+										<SelectItem value={0}>Not Set</SelectItem>
+										<SelectItem value={1}>Train Station</SelectItem>
+										<SelectItem value={2}>Super Market</SelectItem>
+										<SelectItem value={3}>House</SelectItem>
+										<SelectItem value={4}>Pub</SelectItem>
+										<SelectItem value={5}>Restaurant</SelectItem>
+										<SelectItem value={6}>Doctors</SelectItem>
+										<SelectItem value={7}>Airport</SelectItem>
+										<SelectItem value={8}>Ferry Port</SelectItem>
+										<SelectItem value={9}>Hotel</SelectItem>
+										<SelectItem value={10}>School</SelectItem>
+										<SelectItem value={11}>Hospital</SelectItem>
+										<SelectItem value={12}>Wedding Venue</SelectItem>
+										<SelectItem value={13}>Miscellaneous</SelectItem>
+										<SelectItem value={14}>Shopping Center</SelectItem>
 									</SelectContent>
 								</Select>
 								{formik.touched.type && formik.errors.type && (

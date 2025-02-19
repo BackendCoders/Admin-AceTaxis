@@ -1,6 +1,7 @@
 /** @format */
 
 import { createSlice } from '@reduxjs/toolkit';
+import { getAllPois } from '../service/operations/localPOIApi';
 
 const initialState = {
 	loading: false,
@@ -23,6 +24,25 @@ const localPoiSlice = createSlice({
 		},
 	},
 });
+
+export function refreshAllLocalPOIS() {
+	return async (dispatch) => {
+		try {
+			const response = await getAllPois();
+			console.log(response.data);
+
+			if (response.status === 'success') {
+				const poisArray = Object.keys(response)
+					.filter((key) => key !== 'status') // Exclude 'status' field
+					.map((key) => response[key]);
+
+				dispatch(setLocalPOIs(poisArray));
+			}
+		} catch (error) {
+			console.error('Failed to refresh local Pois:', error);
+		}
+	};
+}
 
 export const { setLoading, setLocalPOIs, setLocalPOI } = localPoiSlice.actions;
 

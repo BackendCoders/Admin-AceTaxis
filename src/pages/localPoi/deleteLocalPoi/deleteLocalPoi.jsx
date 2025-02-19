@@ -7,14 +7,19 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from '@/components/ui/dialog';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { deletePoi } from '../../../service/operations/localPOIApi';
+import { refreshAllLocalPOIS } from '../../../slices/localPOISlice';
 function DeleteLocalPoi({ open, onOpenChange }) {
+	const dispatch = useDispatch();
 	const { localPOI } = useSelector((state) => state.localPoi);
 	const handleDelete = async () => {
 		console.log('local Poi deleted', localPOI);
 		const response = await deletePoi(localPOI?.id);
-		if (response.status === 'success') onOpenChange(); // Close the modal after deletion
+		if (response.status === 'success') {
+			onOpenChange();
+			dispatch(refreshAllLocalPOIS());
+		} // Close the modal after deletion
 	};
 	return (
 		<Dialog
@@ -28,7 +33,7 @@ function DeleteLocalPoi({ open, onOpenChange }) {
 				</DialogHeader>
 				<DialogBody className='flex flex-col items-center pt-2 pb-4'>
 					<h3 className='text-lg font-medium text-gray-900 text-center mb-2'>
-						Delete Local POI
+						Delete Local POI {localPOI?.id}
 					</h3>
 
 					<div className='text-2sm text-center text-gray-700 mb-7'>

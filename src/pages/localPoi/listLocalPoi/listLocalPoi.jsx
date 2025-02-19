@@ -1,6 +1,6 @@
 /** @format */
 
-import { Fragment, useMemo, useState } from 'react';
+import { Fragment, useEffect, useMemo, useState } from 'react';
 import {
 	Toolbar,
 	ToolbarDescription,
@@ -35,116 +35,30 @@ import {
 import { Input } from '@/components/ui/input';
 import { AddLocalPoi } from '../addLocalPoi';
 import { EditLocalPoi } from '../editLocalPoi';
-import { useDispatch } from 'react-redux';
-import { setLocalPOI } from '../../../slices/localPOISlice';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+	refreshAllLocalPOIS,
+	setLocalPOI,
+} from '../../../slices/localPOISlice';
 import { DeleteLocalPoi } from '../deleteLocalPoi';
 function ListLocalPoi() {
 	const dispatch = useDispatch();
+	const { localPOIs } = useSelector((state) => state.localPoi);
 	const [searchInput, setSearchInput] = useState('');
 	const [createLocalPoiModal, setCreateLocalPoiModal] = useState(false);
 	const [editLocalPoiModal, setEditLocalPoiModal] = useState(false);
 	const [deleteLocalPoiModal, setDeleteLocalPoiModal] = useState(false);
 	// const [date, setDate] = useState(new Date());
-	const driversData = useMemo(
-		() => [
-			{
-				driver: 10,
-				fullname: 'Alan',
-				details: '00:00 - 23:59',
-				color: 'bg-yellow-500',
-			},
-			{
-				driver: 13,
-				fullname: 'Lee Harrison',
-				details: '00:00 - 23:59',
-				color: 'bg-blue-300',
-			},
-			{
-				driver: 30,
-				fullname: 'Richard Elgar',
-				details: '07:30 - 17:30',
-				color: 'bg-red-400',
-			},
-			{
-				driver: 16,
-				fullname: 'James Owen',
-				details: '07:00 - 17:00 (+/-)',
-				color: 'bg-gray-700 text-white font-bold',
-			},
-			{
-				driver: 14,
-				fullname: 'Andrew James',
-				details: '07:30 - 17:30',
-				color: 'bg-green-500',
-			},
-			{
-				driver: 4,
-				fullname: 'Paul Barber',
-				details: '07:00 - 18:00',
-				color: 'bg-green-400',
-			},
-			{
-				driver: 12,
-				fullname: 'Chris Gray',
-				details: '07:00 - 16:00',
-				color: 'bg-blue-700 text-white font-bold',
-			},
-			{
-				driver: 5,
-				fullname: 'Mark Phillips',
-				details: '07:00 - 16:30',
-				color: 'bg-pink-500',
-			},
-			{
-				driver: 11,
-				fullname: 'Nigel Reynolds',
-				details: '07:00 - 17:00',
-				color: 'bg-gray-400',
-			},
-			{
-				driver: 2,
-				fullname: 'Kate Hall',
-				details: '07:00 - 22:30',
-				color: 'bg-purple-400',
-			},
-			{
-				driver: 8,
-				fullname: 'Peter Farrell',
-				details: '08:20 - 10:00',
-				color: 'bg-purple-200',
-			},
-			{
-				driver: 7,
-				fullname: 'Caroline Stimson',
-				details: '11:00 - 17:00',
-				color: 'bg-red-200',
-			},
-			{
-				driver: 6,
-				fullname: 'Rob',
-				details: '07:00 - 22:00',
-				color: 'bg-blue-400',
-			},
-			{
-				driver: 31,
-				fullname: 'Bill Wood',
-				details: '16:00 - 17:00',
-				color: 'bg-red-300',
-			},
-			{
-				driver: 26,
-				fullname: 'Charles',
-				details: '07:00 - 17:00 (all routes)',
-				color: 'bg-blue-800 text-white font-bold',
-			},
-			{
-				driver: 18,
-				fullname: 'Jean Williams',
-				details: '07:30 - 09:15 (AM SR)',
-				color: 'bg-yellow-400',
-			},
-		],
-		[]
+
+	useEffect(() => {
+		dispatch(refreshAllLocalPOIS());
+	}, [dispatch]);
+
+	const filterLocalPois = localPOIs?.filter(
+		(poi) =>
+			poi?.name?.toLowerCase().includes(searchInput.toLowerCase()) ||
+			poi?.address.toLowerCase().includes(searchInput.toLowerCase()) ||
+			poi?.postcode.toLowerCase().includes(searchInput.toLowerCase())
 	);
 
 	const ColumnInputFilter = ({ column }) => {
@@ -156,6 +70,43 @@ function ListLocalPoi() {
 				className='h-9 w-full max-w-40'
 			/>
 		);
+	};
+
+	const getLocalPoiType = (type) => {
+		switch (type) {
+			case 0:
+				return 'Not set';
+			case 1:
+				return 'Train Station';
+			case 2:
+				return 'Supermarket';
+			case 3:
+				return 'House';
+			case 4:
+				return 'Pub';
+			case 5:
+				return 'Restaurant';
+			case 6:
+				return 'Doctors';
+			case 7:
+				return 'Airport';
+			case 8:
+				return 'Ferry Port';
+			case 9:
+				return 'Hotel';
+			case 10:
+				return 'School';
+			case 11:
+				return 'Hospital';
+			case 12:
+				return 'Wedding Venue';
+			case 13:
+				return 'Miscellaneous';
+			case 14:
+				return 'Shopping Center';
+			default:
+				return '';
+		}
 	};
 
 	const columns = useMemo(
@@ -171,7 +122,9 @@ function ListLocalPoi() {
 				),
 				enableSorting: true,
 				cell: ({ row }) => (
-					<span className={`p-2 rounded-md`}>{row.original.name}</span>
+					<span className={`p-2 rounded-md`}>
+						{row.original.name ? row.original.name : '-'}
+					</span>
 				),
 				meta: { headerClassName: 'w-20' },
 			},
@@ -221,7 +174,7 @@ function ListLocalPoi() {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={`font-medium ${row.original.color}`}>
-						{row.original.type}
+						{getLocalPoiType(row.original.type)}
 					</span>
 				),
 				meta: { headerClassName: 'min-w-[200px]' },
@@ -240,7 +193,7 @@ function ListLocalPoi() {
 						<button
 							className='rounded-full px-2 py-2  w-8 h-8 flex justify-center items-center hover:bg-red-100 group'
 							onClick={() => {
-								dispatch(setLocalPOI(row));
+								dispatch(setLocalPOI(row.original));
 								setEditLocalPoiModal(true);
 							}}
 						>
@@ -252,7 +205,7 @@ function ListLocalPoi() {
 						<button
 							className='rounded-full px-2 py-2  w-8 h-8 flex justify-center items-center hover:bg-red-100 group'
 							onClick={() => {
-								dispatch(setLocalPOI(row));
+								dispatch(setLocalPOI(row.original));
 								setDeleteLocalPoiModal(true);
 							}}
 						>
@@ -298,7 +251,9 @@ function ListLocalPoi() {
 				<Toolbar>
 					<ToolbarHeading>
 						<ToolbarPageTitle />
-						<ToolbarDescription>Showing {'23'} Local POIs </ToolbarDescription>
+						<ToolbarDescription>
+							Showing {`${localPOIs.length}`} Local POIs{' '}
+						</ToolbarDescription>
 					</ToolbarHeading>
 					<ToolbarActions>
 						<button
@@ -396,7 +351,7 @@ function ListLocalPoi() {
 							<div className='card-body'>
 								<DataGrid
 									columns={columns}
-									data={driversData}
+									data={filterLocalPois}
 									rowSelection={true}
 									onRowSelectionChange={handleRowSelection}
 									pagination={{ size: 10 }}

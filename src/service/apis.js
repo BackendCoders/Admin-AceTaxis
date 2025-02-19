@@ -12,12 +12,10 @@ export const authEndpoints = {
 };
 
 export const LocalPoiEndpoints = {
-	CREATE_LOCAL_POI: `${BASE}/api/LocalPOI/Create`,
-	UPDATE_LOCAL_POI: `${BASE}/api/LocalPOI/Update`,
-	DELETE_LOCAL_POI: `${BASE}/api/LocalPOI/Delete`,
-	UPLOAD_LOCAL_POI: `${BASE}/api/LocalPOI/Upload`,
-	GET_LOCAL_POI: `${BASE}/api/LocalPOI/GetPOI`,
-	GET_LOCAL_POI2: `${BASE}/api/LocalPOI/GetPOI2`,
+	CREATE_LOCAL_POI: `${BASE}/api/AdminUI/AddPOI`,
+	UPDATE_LOCAL_POI: `${BASE}/api/AdminUI/UpdatePOI`,
+	DELETE_LOCAL_POI: (id) => `${BASE}/api/AdminUI/DeletePOI?id=${id}`,
+	GET_ALL_POIS: `${BASE}/api/AdminUI/GetPOIs`,
 };
 
 export const availabilityEndpoints = {

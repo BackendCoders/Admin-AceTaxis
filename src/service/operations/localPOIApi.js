@@ -1,51 +1,27 @@
 /** @format */
 
-import { sendLogs } from '../../utils/getLogs';
-import { handlePostReq, setHeaders } from '../apiRequestHandler';
+// import { sendLogs } from '../../utils/getLogs';
+import toast from 'react-hot-toast';
+import { handleGetReq, handlePostReq } from '../apiRequestHandler';
 import { LocalPoiEndpoints } from '../apis';
 
-const {
-	GET_LOCAL_POI,
-	GET_LOCAL_POI2,
-	CREATE_LOCAL_POI,
-	UPLOAD_LOCAL_POI,
-	UPDATE_LOCAL_POI,
-	DELETE_LOCAL_POI,
-} = LocalPoiEndpoints;
+const { CREATE_LOCAL_POI, UPDATE_LOCAL_POI, DELETE_LOCAL_POI, GET_ALL_POIS } =
+	LocalPoiEndpoints;
 
-export async function getPoi(searchTerm) {
-	const response = await handlePostReq(GET_LOCAL_POI, searchTerm);
-	console.log('get local poi response ---', response);
+export async function getAllPois() {
+	const response = await handleGetReq(GET_ALL_POIS);
+	console.log('get all pois response ---', response);
 
 	if (response.status === 'success') {
-		sendLogs(
-			{
-				url: GET_LOCAL_POI,
-				reqBody: searchTerm,
-				headers: setHeaders(),
-				response: response,
-			},
-			'info'
-		);
-		return response;
-	}
-	return null;
-}
-
-export async function getPoi2(searchTerm) {
-	const response = await handlePostReq(GET_LOCAL_POI2, searchTerm);
-	console.log('get local poi2 response ---', response);
-
-	if (response.status === 'success') {
-		sendLogs(
-			{
-				url: GET_LOCAL_POI2,
-				reqBody: searchTerm,
-				headers: setHeaders(),
-				response: response,
-			},
-			'info'
-		);
+		// sendLogs(
+		// 	{
+		// 		url: GET_LOCAL_POI2,
+		// 		reqBody: searchTerm,
+		// 		headers: setHeaders(),
+		// 		response: response,
+		// 	},
+		// 	'info'
+		// );
 		return response;
 	}
 	return null;
@@ -56,15 +32,16 @@ export async function createPoi(data) {
 	console.log('create local poi response ---', response);
 
 	if (response.status === 'success') {
-		sendLogs(
-			{
-				url: CREATE_LOCAL_POI,
-				reqBody: data,
-				headers: setHeaders(),
-				response: response,
-			},
-			'info'
-		);
+		// sendLogs(
+		// 	{
+		// 		url: CREATE_LOCAL_POI,
+		// 		reqBody: data,
+		// 		headers: setHeaders(),
+		// 		response: response,
+		// 	},
+		// 	'info'
+		// );
+		toast.success('Local POI Created Successfully');
 		return response;
 	}
 	return null;
@@ -75,51 +52,35 @@ export async function updatePoi(data) {
 	console.log('update local poi response ---', response);
 
 	if (response.status === 'success') {
-		sendLogs(
-			{
-				url: UPDATE_LOCAL_POI,
-				reqBody: data,
-				headers: setHeaders(),
-				response: response,
-			},
-			'info'
-		);
-		return response;
-	}
-	return null;
-}
-
-export async function uploadPoi(file) {
-	const response = await handlePostReq(UPLOAD_LOCAL_POI, file);
-	console.log('upload local poi response ---', response);
-	if (response.status === 'success') {
-		sendLogs(
-			{
-				url: UPLOAD_LOCAL_POI,
-				reqBody: file,
-				headers: setHeaders(),
-				response: response,
-			},
-			'info'
-		);
+		// sendLogs(
+		// 	{
+		// 		url: UPDATE_LOCAL_POI,
+		// 		reqBody: data,
+		// 		headers: setHeaders(),
+		// 		response: response,
+		// 	},
+		// 	'info'
+		// );
+		toast.success('Local POI Updated Successfully');
 		return response;
 	}
 	return null;
 }
 
 export async function deletePoi(id) {
-	const response = await handlePostReq(DELETE_LOCAL_POI, { id });
+	const response = await handleGetReq(DELETE_LOCAL_POI(id));
 	console.log('delete local poi response ---', response);
 	if (response.status === 'success') {
-		sendLogs(
-			{
-				url: DELETE_LOCAL_POI,
-				reqBody: { id },
-				headers: setHeaders(),
-				response: response,
-			},
-			'info'
-		);
+		// sendLogs(
+		// 	{
+		// 		url: DELETE_LOCAL_POI,
+		// 		reqBody: { id },
+		// 		headers: setHeaders(),
+		// 		response: response,
+		// 	},
+		// 	'info'
+		// );
+		toast.success('Local POI Deleted Successfully');
 		return response;
 	}
 	return false;
