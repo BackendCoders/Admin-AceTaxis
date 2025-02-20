@@ -1,6 +1,6 @@
 /** @format */
 
-import { useState, useMemo, Fragment } from 'react';
+import { useState, useMemo, Fragment, useEffect } from 'react';
 import { DataGrid } from '@/components';
 import {
 	Toolbar,
@@ -19,7 +19,14 @@ import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { KeenIcon } from '@/components/keenicons';
 import { useDispatch, useSelector } from 'react-redux';
-import { refreshAvailabilityReport } from '../../../slices/availabilitySlice';
+import {
+	refreshAvailabilityReport,
+	setAvailableHoursByDay,
+	setMonth,
+	setWeek,
+	setWeekDay,
+	setWeekEnd,
+} from '../../../slices/availabilitySlice';
 import toast from 'react-hot-toast';
 
 const AvailabilityReport = () => {
@@ -27,11 +34,21 @@ const AvailabilityReport = () => {
 	const { availableHoursByDay, weekDay, weekEnd, week, month, loading } =
 		useSelector((state) => state.availability);
 	const [selectedTab, setSelectedTab] = useState('dayHours');
-	const [driverNumber, setDriverNumber] = useState(0);
+	const [driverNumber, setDriverNumber] = useState();
 	const [dateRange, setDateRange] = useState({
 		from: new Date(), // December 28, 2024
 		to: new Date(), // January 28, 2025
 	});
+
+	useEffect(() => {
+		return () => {
+			dispatch(setAvailableHoursByDay([])); // Clear table data
+			dispatch(setWeekDay([])); // Clear table data
+			dispatch(setWeekEnd([])); // Clear table data
+			dispatch(setWeek([])); // Clear table data
+			dispatch(setMonth([])); // Clear table data
+		};
+	}, [dispatch]);
 
 	const handleSearch = async () => {
 		if (!driverNumber?.trim()) {

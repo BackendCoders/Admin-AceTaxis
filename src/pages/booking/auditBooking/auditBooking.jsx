@@ -174,7 +174,7 @@ function AuditBooking() {
 											<KeenIcon icon='magnifier' />
 											<input
 												type='text'
-												placeholder='Search Jobs'
+												placeholder='Search Booking Id'
 												value={searchInput}
 												onChange={(e) => setSearchInput(e.target.value)}
 											/>

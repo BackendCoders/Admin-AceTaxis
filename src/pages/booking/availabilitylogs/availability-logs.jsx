@@ -1,5 +1,5 @@
 /** @format */
-import { Fragment, useMemo, useState } from 'react';
+import { Fragment, useEffect, useMemo, useState } from 'react';
 import {
 	Toolbar,
 	ToolbarDescription,
@@ -35,7 +35,7 @@ const AvailabilityLogs = () => {
 	const { availabilityLog, loading } = useSelector(
 		(state) => state.availability
 	);
-	const [driverNumber, setDriverNumber] = useState(0);
+	const [driverNumber, setDriverNumber] = useState();
 	const [date, setDate] = useState(new Date());
 
 	const handleSearch = async () => {
@@ -49,6 +49,12 @@ const AvailabilityLogs = () => {
 			refreshAvailabilityLog(driverNumber, format(new Date(date), 'yyyy-MM-dd'))
 		);
 	};
+
+	useEffect(() => {
+		return () => {
+			dispatch(setAvailabilityLog([])); // Clear table data
+		};
+	}, [dispatch]);
 
 	const ColumnInputFilter = ({ column }) => {
 		return (
