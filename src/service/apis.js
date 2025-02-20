@@ -19,10 +19,14 @@ export const LocalPoiEndpoints = {
 };
 
 export const availabilityEndpoints = {
-	GET_GENERAL_AVAILABILITY: (date) =>
-		`${BASE}/api/Availability/General?date=${date}`,
-	GET_REMINDER_AVAILABILITY: (key) =>
-		`${BASE}/api/Availability/Reminder?key=${key}`,
+	GET_AVAILABILITY_LOG: (userId, date) =>
+		`${BASE}/api/AdminUI/AvailabilityLog?userid=${userId}&date=${date}`,
+	GET_AVAILABILITY: (userId, date) =>
+		`${BASE}/api/AdminUI/GetAvailability?userid=${userId}&date=${date}`,
+	DELETE_AVAILABILITY: (id) =>
+		`${BASE}/api/AdminUI/DeleteAvailability?availabilityId=${id}`,
+	SET_AVAILABILITY: `${BASE}/api/AdminUI/SetAvailability`,
+	AVAILABILITY_REPORT: `${BASE}/api/AdminUI/AvailabilityReport`,
 };
 
 export const accountEndpoints = {
@@ -39,6 +43,8 @@ export const accountEndpoints = {
 export const bookingsEndpoints = {
 	GET_CARD_BOOKINGS: `${BASE}/api/AdminUI/CardBookings`,
 	CANCEL_BOOKING_DATE_RANGE: `${BASE}/api/AdminUI/CancelBookingsInRange`,
+	SEND_REMINDER_CARD_PAYMENT: `${BASE}/api/AdminUI/SendCardPaymentReminder`,
+	BOOKING_AUDIT: (id) => `${BASE}/api/AdminUI/BookingAudit?bookingId=${id}`,
 };
 
 export const gpsEndpoints = {
