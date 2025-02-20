@@ -1,116 +1,286 @@
 /** @format */
-import { useState } from 'react';
-import { IoChevronUpSharp } from 'react-icons/io5';
-import { IoChevronDownSharp } from 'react-icons/io5';
+import { Fragment, useMemo, useState } from 'react';
+import {
+	Toolbar,
+	ToolbarDescription,
+	ToolbarHeading,
+	ToolbarPageTitle,
+} from '@/partials/toolbar';
+import {
+	DataGrid,
+	DataGridColumnHeader,
+	// useDataGrid,
+	// DataGridRowSelectAll,
+	// DataGridRowSelect,
+} from '@/components';
 import {
 	Popover,
 	PopoverContent,
 	PopoverTrigger,
 } from '@/components/ui/popover';
 import { Calendar } from '@/components/ui/calendar';
+import { Input } from '@/components/ui/input';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { KeenIcon } from '@/components';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+	refreshAvailabilityLog,
+	setAvailabilityLog,
+} from '../../../slices/availabilitySlice';
+import toast from 'react-hot-toast';
 
 const AvailabilityLogs = () => {
+	const dispatch = useDispatch();
+	const { availabilityLog, loading } = useSelector(
+		(state) => state.availability
+	);
 	const [driverNumber, setDriverNumber] = useState(0);
 	const [date, setDate] = useState(new Date());
 
+	const handleSearch = async () => {
+		if (!driverNumber.trim()) {
+			toast.error('Please enter a booking ID');
+			dispatch(setAvailabilityLog([])); // Reset table if input is empty
+			return;
+		}
+		console.log(new Date(date));
+		dispatch(
+			refreshAvailabilityLog(driverNumber, format(new Date(date), 'yyyy-MM-dd'))
+		);
+	};
+
+	const ColumnInputFilter = ({ column }) => {
+		return (
+			<Input
+				placeholder='Filter...'
+				value={column.getFilterValue() ?? ''}
+				onChange={(event) => column.setFilterValue(event.target.value)}
+				className='h-9 w-full max-w-40'
+			/>
+		);
+	};
+
+	const columns = useMemo(
+		() => [
+			{
+				accessorKey: 'date',
+				header: ({ column }) => (
+					<DataGridColumnHeader
+						title='Date'
+						filter={<ColumnInputFilter column={column} />}
+						column={column}
+					/>
+				),
+				enableSorting: true,
+				cell: ({ row }) => (
+					<span className={`font-medium ${row.original.color}`}>
+						{row.original.timeStamp
+							? format(new Date(row.original.timeStamp), 'dd/MM/yyyy HH:mm')
+							: '-'}
+					</span>
+				),
+				meta: { headerClassName: 'min-w-[120px]' },
+			},
+			{
+				accessorKey: 'theChange',
+				header: ({ column }) => (
+					<DataGridColumnHeader
+						title='The Change'
+						filter={<ColumnInputFilter column={column} />}
+						column={column}
+					/>
+				),
+				enableSorting: true,
+				cell: ({ row }) => (
+					<span className={`font-medium ${row.original.color}`}>
+						{row.original.propertyName ? row.original.propertyName : '-'}
+					</span>
+				),
+				meta: { headerClassName: 'min-w-[200px]' },
+			},
+			{
+				accessorKey: 'changedOn',
+				header: ({ column }) => (
+					<DataGridColumnHeader
+						title='Changed On'
+						filter={<ColumnInputFilter column={column} />}
+						column={column}
+					/>
+				),
+				enableSorting: true,
+				cell: ({ row }) => (
+					<span className={`font-medium ${row.original.color}`}>
+						{row.original.oldValue ? row?.original?.oldValue : '-'}
+					</span>
+				),
+				meta: { headerClassName: 'min-w-[200px]' },
+			},
+			{
+				accessorKey: 'Changed by User',
+				header: ({ column }) => (
+					<DataGridColumnHeader
+						title='Changed by User'
+						filter={<ColumnInputFilter column={column} />}
+						column={column}
+					/>
+				),
+				enableSorting: true,
+				cell: ({ row }) => (
+					<span className={`font-medium ${row.original.color}`}>
+						{row.original.userFullName ? row.original.userFullName : '-'}
+					</span>
+				),
+				meta: { headerClassName: 'min-w-[80px]' },
+			},
+
+			{
+				accessorKey: 'driver',
+				header: ({ column }) => (
+					<DataGridColumnHeader
+						title='Driver #'
+						column={column}
+					/>
+				),
+				enableSorting: true,
+				cell: ({ row }) => (
+					<span className={row.original.color}>
+						{row.original.newValue ? row.original.newValue : '-'}
+					</span>
+				),
+				meta: { headerClassName: 'min-w-[80px]' },
+			},
+		],
+		[]
+	);
+
+	const handleRowSelection = (state) => {
+		const selectedRowIds = Object.keys(state);
+		if (selectedRowIds.length > 0) {
+			alert(`Selected Drivers: ${selectedRowIds.join(', ')}`);
+		}
+	};
+
 	return (
-		<div className='pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1580px] w-full'>
-			{/* Header Section */}
-			<h2 className='text-xl leading-none font-medium text-gray-900'>
-				Change Log of Availability #: {driverNumber}
-			</h2>
+		<Fragment>
+			<div className='pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1580px] w-full'>
+				<Toolbar>
+					<ToolbarHeading>
+						<ToolbarPageTitle />
+						<ToolbarDescription>
+							{availabilityLog.length > 0
+								? `Showing ${availabilityLog.length} Availability Logs for Driver #: ${driverNumber}`
+								: 'Search for Availability Log'}
+						</ToolbarDescription>
+					</ToolbarHeading>
+				</Toolbar>
+			</div>
+			<div className='pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1580px] w-full'>
+				<div className='flex flex-col items-stretch gap-5 lg:gap-7.5'>
+					<div className='flex flex-wrap items-center gap-5 justify-between'>
+						<div className='card card-grid min-w-full'>
+							<div className='card-header flex-wrap gap-2'>
+								<div className='flex flex-wrap gap-2 lg:gap-5'>
+									<div className='flex gap-2'>
+										<label
+											className='input input-sm'
+											style={{ height: '40px' }}
+										>
+											<KeenIcon icon='magnifier' />
+											<input
+												type='number'
+												placeholder='Search Driver Id'
+												value={driverNumber}
+												onChange={(e) => setDriverNumber(e.target.value)}
+											/>
+										</label>
 
-			{/* Filter Inputs */}
-			<div className='flex flex-wrap items-center gap-4 mt-4'>
-				{/* Driver Number Selection */}
-				<div className='flex flex-col gap-1'>
-					{/* Improved Label Styling */}
-					<label className='form-label text-gray-900'>Driver Number</label>
+										<Popover>
+											<PopoverTrigger asChild>
+												<div className='relative'>
+													<button
+														id='date'
+														className={cn(
+															'input data-[state=open]:border-primary',
+															!date && 'text-muted-foreground'
+														)}
+														style={{ width: '13rem' }}
+													>
+														<KeenIcon
+															icon='calendar'
+															className='-ms-0.5'
+														/>
+														{date ? (
+															format(date, 'LLL dd, y')
+														) : (
+															<span>Pick a date</span>
+														)}
+													</button>
+													{date && (
+														<button
+															onClick={(e) => {
+																e.stopPropagation(); // Prevent closing popover
+																setDate(undefined); // Clear date
+															}}
+															className='absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700'
+														>
+															<KeenIcon
+																icon='cross-circle'
+																className=''
+															/>
+														</button>
+													)}
+												</div>
+											</PopoverTrigger>
+											<PopoverContent
+												className='w-auto p-0'
+												align='start'
+											>
+												<Calendar
+													initialFocus
+													mode='single' // Single date selection
+													defaultMonth={date}
+													selected={date}
+													onSelect={setDate}
+													numberOfMonths={1}
+												/>
+											</PopoverContent>
+										</Popover>
 
-					<div className='flex items-center border rounded-md px-2 py-1 dark:bg-[#1F212A] border-gray-300 dark:border-gray-300 hover:shadow-md'>
-						<span className='px-4 text-xs font-medium'>{driverNumber}</span>
-
-						{/* Buttons placed vertically */}
-						<div className='flex flex-col'>
-							<button
-								className='px-2 dark:text-white rounded-t-md hover:bg-gray-300 transition-all'
-								onClick={() => setDriverNumber(driverNumber + 1)}
-							>
-								<IoChevronUpSharp
-									fontSize='14'
-									className='dark:text-[#9A9CAE]'
-								/>
-							</button>
-							<button
-								className='px-2  dark:text-white rounded-b-md hover:bg-gray-300 transition-all'
-								onClick={() => setDriverNumber(Math.max(0, driverNumber - 1))}
-							>
-								<IoChevronDownSharp
-									fontSize='14'
-									className='dark:text-[#9A9CAE]'
-								/>
-							</button>
+										<button
+											className='btn btn-sm btn-outline btn-primary'
+											style={{ height: '40px' }}
+											onClick={handleSearch}
+											disabled={loading}
+										>
+											<KeenIcon icon='magnifier' />{' '}
+											{loading ? 'Searching...' : 'Search'}
+										</button>
+									</div>
+								</div>
+							</div>
+							<div className='card-body'>
+								{availabilityLog.length > 0 ? (
+									<DataGrid
+										columns={columns}
+										data={availabilityLog}
+										rowSelection={true}
+										onRowSelectionChange={handleRowSelection}
+										pagination={{ size: 10 }}
+										sorting={[{ id: 'driver', desc: false }]}
+										layout={{ card: true }}
+									/>
+								) : (
+									<div className='text-center py-10 text-gray-500'>
+										No data found
+									</div>
+								)}
+							</div>
 						</div>
 					</div>
 				</div>
-
-				{/* Date Picker */}
-				<div className='flex flex-col gap-1'>
-					{/* Added Label for Date Picker */}
-					<label
-						htmlFor='date'
-						className='form-label text-gray-900'
-					>
-						Date
-					</label>
-
-					<div className='flex items-center gap-2 relative'>
-						<Popover>
-							<PopoverTrigger
-								asChild
-								className='h-[2.27rem]'
-							>
-								<button
-									id='date'
-									className={cn(
-										'input data-[state=open]:border-primary',
-										!date && 'text-muted-foreground'
-									)}
-									style={{ width: '13rem' }}
-								>
-									<KeenIcon
-										icon='calendar'
-										className='-ms-0.5'
-									/>
-									{date ? format(date, 'LLL dd, y') : <span>Pick a date</span>}
-								</button>
-							</PopoverTrigger>
-							<PopoverContent
-								className='w-auto p-0'
-								align='start'
-							>
-								<Calendar
-									initialFocus
-									mode='single' // Single date selection
-									defaultMonth={date}
-									selected={date}
-									onSelect={setDate}
-									numberOfMonths={1}
-								/>
-							</PopoverContent>
-						</Popover>
-					</div>
-				</div>
 			</div>
-
-			{/* No Availability Message */}
-			<div className='mt-4 p-4 bg-blue-100 dark:bg-blue-600 text-blue-800 dark:text-blue-200 rounded-md text-center text-sm font-medium'>
-				ℹ️ No Availability
-			</div>
-		</div>
+		</Fragment>
 	);
 };
 

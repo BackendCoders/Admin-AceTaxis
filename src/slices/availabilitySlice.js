@@ -1,11 +1,22 @@
 /** @format */
 
 import { createSlice } from '@reduxjs/toolkit';
-import { getAvailability } from '../service/operations/availabilityApi';
+import {
+	availabilityReport,
+	getAvailability,
+	getAvailabilityLog,
+} from '../service/operations/availabilityApi';
 
 const initialState = {
 	loading: false,
 	availability: [],
+	availabilityLog: [],
+	availabilityReportData: {},
+	availableHoursByDay: [],
+	weekDay: [],
+	weekEnd: [],
+	week: [],
+	month: [],
 };
 
 const availabilitySlice = createSlice({
@@ -16,9 +27,28 @@ const availabilitySlice = createSlice({
 			state.loading = action.payload;
 		},
 		setAvailability: (state, action) => {
-			state.loading = true;
 			state.availability = action.payload;
-			state.loading = false;
+		},
+		setAvailabilityLog: (state, action) => {
+			state.availabilityLog = action.payload;
+		},
+		setAvailabilityReportData: (state, action) => {
+			state.availabilityReportData = action.payload;
+		},
+		setAvailableHoursByDay: (state, action) => {
+			state.availableHoursByDay = action.payload;
+		},
+		setWeekDay: (state, action) => {
+			state.weekDay = action.payload;
+		},
+		setWeekEnd: (state, action) => {
+			state.weekEnd = action.payload;
+		},
+		setWeek: (state, action) => {
+			state.week = action.payload;
+		},
+		setMonth: (state, action) => {
+			state.month = action.payload;
 		},
 	},
 });
@@ -42,6 +72,60 @@ export function refreshAvailability(userId, date) {
 	};
 }
 
-export const { setAvailability, setLoading } = availabilitySlice.actions;
+export function refreshAvailabilityLog(userId, date) {
+	return async (dispatch) => {
+		try {
+			dispatch(setLoading(true));
+			const response = await getAvailabilityLog(userId, date);
+			console.log(response.data);
+
+			if (response.status === 'success') {
+				const availabilityArray = Object.keys(response)
+					.filter((key) => key !== 'status') // Exclude 'status' field
+					.map((key) => response[key]);
+
+				dispatch(setAvailabilityLog(availabilityArray));
+			}
+		} catch (error) {
+			console.error('Failed to refresh availability:', error);
+		} finally {
+			dispatch(setLoading(false));
+		}
+	};
+}
+
+export function refreshAvailabilityReport(payload) {
+	return async (dispatch) => {
+		try {
+			dispatch(setLoading(true));
+			const response = await availabilityReport(payload);
+
+			if (response.status === 'success') {
+				dispatch(setAvailabilityReportData(response));
+				dispatch(setAvailableHoursByDay(response?.availableHoursByDay));
+				dispatch(setWeekDay(response?.weekDay));
+				dispatch(setWeekEnd(response?.weekEnd));
+				dispatch(setWeek(response?.week));
+				dispatch(setMonth(response?.month));
+			}
+		} catch (error) {
+			console.error('Failed to refresh availability report data:', error);
+		} finally {
+			dispatch(setLoading(false));
+		}
+	};
+}
+
+export const {
+	setAvailability,
+	setLoading,
+	setAvailabilityLog,
+	setAvailabilityReportData,
+	setAvailableHoursByDay,
+	setWeekDay,
+	setWeekEnd,
+	setWeek,
+	setMonth,
+} = availabilitySlice.actions;
 
 export default availabilitySlice.reducer;
