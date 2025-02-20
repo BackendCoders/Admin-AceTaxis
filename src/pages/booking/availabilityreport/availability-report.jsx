@@ -63,7 +63,30 @@ const AvailabilityReport = () => {
 		return dataset[selectedTab] || [];
 	}, [month, selectedTab, week, weekDay, weekEnd, availableHoursByDay]);
 
-	console.log('data set', dataByTab);
+	const monthNames = [
+		'January',
+		'February',
+		'March',
+		'April',
+		'May',
+		'June',
+		'July',
+		'August',
+		'September',
+		'October',
+		'November',
+		'December',
+	];
+
+	const weekDayNames = [
+		'Sunday',
+		'Monday',
+		'Tuesday',
+		'Wednesday',
+		'Thursday',
+		'Friday',
+		'Saturday',
+	];
 
 	// ✅ Dynamic column headers based on selected tab
 	const columns = useMemo(() => {
@@ -111,7 +134,7 @@ const AvailabilityReport = () => {
 		} else if (selectedTab === 'monthHours') {
 			return dataByTab.map((item) => ({
 				userId: item.userId,
-				month: item.month,
+				month: monthNames[item.month],
 				totalHours: item.totalHours,
 			}));
 		} else if (selectedTab === 'weekHours') {
@@ -123,13 +146,13 @@ const AvailabilityReport = () => {
 		} else if (selectedTab === 'weekdayHours') {
 			return dataByTab.map((item) => ({
 				userId: item.userId,
-				day: item.day,
+				day: weekDayNames[item.day],
 				totalHours: item.totalHours,
 			}));
 		} else if (selectedTab === 'weekendHours') {
 			return dataByTab.map((item) => ({
 				userId: item.userId,
-				weekendDay: item.weekendDay,
+				weekendDay: weekDayNames[item.weekendDay],
 				totalHours: item.totalHours,
 			}));
 		}
@@ -274,7 +297,7 @@ const AvailabilityReport = () => {
 										<DataGrid
 											columns={columns}
 											data={formattedDataByTab}
-											pagination={{ size: 5 }}
+											pagination={{ size: 10 }}
 											sorting={[{ id: 'driver', desc: false }]}
 											layout={{ card: true }}
 										/>
