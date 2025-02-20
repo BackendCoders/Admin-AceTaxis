@@ -75,8 +75,10 @@ const AvailabilityLogs = () => {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={`font-medium ${row.original.color}`}>
-						{row.original.timeStamp
-							? format(new Date(row.original.timeStamp), 'dd/MM/yyyy HH:mm')
+						{row.original.forDate
+							? new Date(row.original.forDate).toLocaleDateString('en-GB') +
+								' ' +
+								row.original.forDate.split('T')[1]?.split('.')[0]?.slice(0, 5)
 							: '-'}
 					</span>
 				),
@@ -94,7 +96,7 @@ const AvailabilityLogs = () => {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={`font-medium ${row.original.color}`}>
-						{row.original.propertyName ? row.original.propertyName : '-'}
+						{row.original.theChange ? row.original.theChange : '-'}
 					</span>
 				),
 				meta: { headerClassName: 'min-w-[200px]' },
@@ -111,7 +113,11 @@ const AvailabilityLogs = () => {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={`font-medium ${row.original.color}`}>
-						{row.original.oldValue ? row?.original?.oldValue : '-'}
+						{row.original.changedOn
+							? new Date(row.original.changedOn).toLocaleDateString('en-GB') +
+								' ' +
+								row.original.changedOn.split('T')[1]?.split('.')[0]?.slice(0, 5)
+							: '-'}
 					</span>
 				),
 				meta: { headerClassName: 'min-w-[200px]' },
@@ -128,7 +134,7 @@ const AvailabilityLogs = () => {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={`font-medium ${row.original.color}`}>
-						{row.original.userFullName ? row.original.userFullName : '-'}
+						{row.original.changeBy ? row.original.changeBy : '-'}
 					</span>
 				),
 				meta: { headerClassName: 'min-w-[80px]' },
@@ -145,7 +151,7 @@ const AvailabilityLogs = () => {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={row.original.color}>
-						{row.original.newValue ? row.original.newValue : '-'}
+						{row.original.userId ? row.original.userId : '-'}
 					</span>
 				),
 				meta: { headerClassName: 'min-w-[80px]' },
