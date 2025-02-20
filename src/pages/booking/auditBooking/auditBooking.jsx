@@ -9,22 +9,6 @@ import {
 } from '@/partials/toolbar';
 import { KeenIcon } from '@/components';
 import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from '@/components/ui/select';
-// import { Container } from '@/components/container';
-import {
-	Popover,
-	PopoverContent,
-	PopoverTrigger,
-} from '@/components/ui/popover';
-import { Calendar } from '@/components/ui/calendar';
-import { format } from 'date-fns';
-import { cn } from '@/lib/utils';
-import {
 	DataGrid,
 	DataGridColumnHeader,
 	// useDataGrid,
@@ -32,110 +16,25 @@ import {
 	// DataGridRowSelect,
 } from '@/components';
 import { Input } from '@/components/ui/input';
+import toast from 'react-hot-toast';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+	refreshAuditBookings,
+	setAuditBookings,
+} from '../../../slices/bookingSlice';
 function AuditBooking() {
+	const dispatch = useDispatch();
+	const { auditBookings, loading } = useSelector((state) => state.booking);
 	const [searchInput, setSearchInput] = useState('');
-	const [date, setDate] = useState(new Date());
-	const driversData = useMemo(
-		() => [
-			{
-				driver: 10,
-				name: 'Alan Waistell',
-				details: '00:00 - 23:59',
-				color: 'bg-yellow-500',
-			},
-			{
-				driver: 13,
-				name: 'Lee Harrison',
-				details: '00:00 - 23:59',
-				color: 'bg-blue-300',
-			},
-			{
-				driver: 30,
-				name: 'Richard Elgar',
-				details: '07:30 - 17:30',
-				color: 'bg-red-400',
-			},
-			{
-				driver: 16,
-				name: 'James Owen',
-				details: '07:00 - 17:00 (+/-)',
-				color: 'bg-gray-700 text-white font-bold',
-			},
-			{
-				driver: 14,
-				name: 'Andrew James',
-				details: '07:30 - 17:30',
-				color: 'bg-green-500',
-			},
-			{
-				driver: 4,
-				name: 'Paul Barber',
-				details: '07:00 - 18:00',
-				color: 'bg-green-400',
-			},
-			{
-				driver: 12,
-				name: 'Chris Gray',
-				details: '07:00 - 16:00',
-				color: 'bg-blue-700 text-white font-bold',
-			},
-			{
-				driver: 5,
-				name: 'Mark Phillips',
-				details: '07:00 - 16:30',
-				color: 'bg-pink-500',
-			},
-			{
-				driver: 11,
-				name: 'Nigel Reynolds',
-				details: '07:00 - 17:00',
-				color: 'bg-gray-400',
-			},
-			{
-				driver: 2,
-				name: 'Kate Hall',
-				details: '07:00 - 22:30',
-				color: 'bg-purple-400',
-			},
-			{
-				driver: 8,
-				name: 'Peter Farrell',
-				details: '08:20 - 10:00',
-				color: 'bg-purple-200',
-			},
-			{
-				driver: 7,
-				name: 'Caroline Stimson',
-				details: '11:00 - 17:00',
-				color: 'bg-red-200',
-			},
-			{
-				driver: 6,
-				name: 'Rob Holton',
-				details: '07:00 - 22:00',
-				color: 'bg-blue-400',
-			},
-			{
-				driver: 31,
-				name: 'Bill Wood',
-				details: '16:00 - 17:00',
-				color: 'bg-red-300',
-			},
-			{
-				driver: 26,
-				name: 'Charles Farnham',
-				details: '07:00 - 17:00 (all routes)',
-				color: 'bg-blue-800 text-white font-bold',
-			},
-			{
-				driver: 18,
-				name: 'Jean Williams',
-				details: '07:30 - 09:15 (AM SR)',
-				color: 'bg-yellow-400',
-			},
-		],
-		[]
-	);
+
+	const handleSearch = async () => {
+		if (!searchInput.trim()) {
+			toast.error('Please enter a booking ID');
+			dispatch(setAuditBookings([])); // Reset table if input is empty
+			return;
+		}
+		dispatch(refreshAuditBookings(searchInput));
+	};
 
 	const ColumnInputFilter = ({ column }) => {
 		return (
@@ -162,7 +61,10 @@ function AuditBooking() {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={`font-medium ${row.original.color}`}>
-						{row.original.date}
+						{new Date(
+							row.original.timeStamp?.split('T')[0]
+						)?.toLocaleDateString('en-GB')}{' '}
+						{row.original.timeStamp?.split('T')[1].split('.')[0]?.slice(0, 5)}
 					</span>
 				),
 				meta: { headerClassName: 'min-w-[120px]' },
@@ -179,7 +81,7 @@ function AuditBooking() {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={`font-medium ${row.original.color}`}>
-						{row.original.driverId}
+						{row.original.userFullName ? row.original.userFullName : '-'}
 					</span>
 				),
 				meta: { headerClassName: 'min-w-[80px]' },
@@ -196,7 +98,7 @@ function AuditBooking() {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={`font-medium ${row.original.color}`}>
-						{row.original.pickUp}
+						{row.original.propertyName ? row.original.propertyName : '-'}
 					</span>
 				),
 				meta: { headerClassName: 'min-w-[200px]' },
@@ -213,7 +115,7 @@ function AuditBooking() {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={`font-medium ${row.original.color}`}>
-						{row.original.destination}
+						{row.original.oldValue ? row?.original?.oldValue : '-'}
 					</span>
 				),
 				meta: { headerClassName: 'min-w-[200px]' },
@@ -228,7 +130,9 @@ function AuditBooking() {
 				),
 				enableSorting: true,
 				cell: ({ row }) => (
-					<span className={row.original.color}>{row.original.passenger}</span>
+					<span className={row.original.color}>
+						{row.original.newValue ? row.original.newValue : '-'}
+					</span>
 				),
 				meta: { headerClassName: 'min-w-[80px]' },
 			},
@@ -249,7 +153,9 @@ function AuditBooking() {
 					<ToolbarHeading>
 						<ToolbarPageTitle />
 						<ToolbarDescription>
-							Showing {'23'} Audit Booking Jobs{' '}
+							{auditBookings.length > 0
+								? `Showing ${auditBookings.length} Audit Results for Booking #: ${searchInput}`
+								: 'Search for booking details'}
 						</ToolbarDescription>
 					</ToolbarHeading>
 				</Toolbar>
@@ -260,7 +166,7 @@ function AuditBooking() {
 						<div className='card card-grid min-w-full'>
 							<div className='card-header flex-wrap gap-2'>
 								<div className='flex flex-wrap gap-2 lg:gap-5'>
-									<div className='flex'>
+									<div className='flex gap-2'>
 										<label
 											className='input input-sm'
 											style={{ height: '40px' }}
@@ -273,80 +179,34 @@ function AuditBooking() {
 												onChange={(e) => setSearchInput(e.target.value)}
 											/>
 										</label>
-									</div>
-									<div className='flex flex-wrap items-center gap-2.5'>
-										<Popover>
-											<PopoverTrigger asChild>
-												<button
-													id='date'
-													className={cn(
-														'input data-[state=open]:border-primary',
-														!date && 'text-muted-foreground'
-													)}
-													style={{ width: '13rem' }}
-												>
-													<KeenIcon
-														icon='calendar'
-														className='-ms-0.5'
-													/>
-													{date ? (
-														format(date, 'LLL dd, y')
-													) : (
-														<span>Pick a date</span>
-													)}
-												</button>
-											</PopoverTrigger>
-											<PopoverContent
-												className='w-auto p-0'
-												align='start'
-											>
-												<Calendar
-													initialFocus
-													mode='single' // Single date selection
-													defaultMonth={date}
-													selected={date}
-													onSelect={setDate}
-													numberOfMonths={1}
-												/>
-											</PopoverContent>
-										</Popover>
-
-										<Select defaultValue='all'>
-											<SelectTrigger
-												className='w-28'
-												size='sm'
-												style={{ height: '40px' }}
-											>
-												<SelectValue placeholder='Select' />
-											</SelectTrigger>
-											<SelectContent className='w-32'>
-												<SelectItem value='all'>All</SelectItem>
-												<SelectItem value='cash'>Cash</SelectItem>
-												<SelectItem value='card'>Card</SelectItem>
-												<SelectItem value='account'>Account</SelectItem>
-												<SelectItem value='rank'>Rank</SelectItem>
-											</SelectContent>
-										</Select>
-
 										<button
 											className='btn btn-sm btn-outline btn-primary'
 											style={{ height: '40px' }}
+											onClick={handleSearch}
+											disabled={loading}
 										>
-											<KeenIcon icon='magnifier' /> Search
+											<KeenIcon icon='magnifier' />{' '}
+											{loading ? 'Searching...' : 'Search'}
 										</button>
 									</div>
 								</div>
 							</div>
 							<div className='card-body'>
-								<DataGrid
-									columns={columns}
-									data={driversData}
-									rowSelection={true}
-									onRowSelectionChange={handleRowSelection}
-									pagination={{ size: 10 }}
-									sorting={[{ id: 'driver', desc: false }]}
-									layout={{ card: true }}
-								/>
+								{auditBookings.length > 0 ? (
+									<DataGrid
+										columns={columns}
+										data={auditBookings}
+										rowSelection={true}
+										onRowSelectionChange={handleRowSelection}
+										pagination={{ size: 10 }}
+										sorting={[{ id: 'driver', desc: false }]}
+										layout={{ card: true }}
+									/>
+								) : (
+									<div className='text-center py-10 text-gray-500'>
+										No data found
+									</div>
+								)}
 							</div>
 						</div>
 					</div>
