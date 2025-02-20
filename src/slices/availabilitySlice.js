@@ -1,6 +1,7 @@
 /** @format */
 
 import { createSlice } from '@reduxjs/toolkit';
+import { getAvailability } from '../service/operations/availabilityApi';
 
 const initialState = {
 	loading: false,
@@ -21,6 +22,25 @@ const availabilitySlice = createSlice({
 		},
 	},
 });
+
+export function refreshAvailability(userId, date) {
+	return async (dispatch) => {
+		try {
+			const response = await getAvailability(userId, date);
+			console.log(response.data);
+
+			if (response.status === 'success') {
+				const availabilityArray = Object.keys(response)
+					.filter((key) => key !== 'status') // Exclude 'status' field
+					.map((key) => response[key]);
+
+				dispatch(setAvailability(availabilityArray));
+			}
+		} catch (error) {
+			console.error('Failed to refresh availability:', error);
+		}
+	};
+}
 
 export const { setAvailability, setLoading } = availabilitySlice.actions;
 

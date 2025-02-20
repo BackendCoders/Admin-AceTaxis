@@ -17,10 +17,10 @@ const bookingSlice = createSlice({
 			state.loading = action.payload;
 		},
 		setCardBookings: (state, action) => {
-			state.bookings = action.payload;
+			state.cardBookings = action.payload;
 		},
 		setCardBooking: (state, action) => {
-			state.booking = action.payload;
+			state.cardBooking = action.payload;
 		},
 	},
 });
@@ -29,8 +29,7 @@ export function refreshAllCardBookings() {
 	return async (dispatch) => {
 		try {
 			const response = await getAllCardBookings();
-			console.log(response.data);
-
+			console.log(response);
 			if (response.status === 'success') {
 				const cardBookingsArray = Object.keys(response)
 					.filter((key) => key !== 'status') // Exclude 'status' field

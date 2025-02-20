@@ -86,4 +86,5 @@ export async function sendReminderCardPayment(data) {
 		// );
 		return response;
 	}
+	return response;
 }

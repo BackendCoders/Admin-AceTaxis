@@ -11,7 +11,7 @@ const {
 	SET_AVAILABILITY,
 	AVAILABILITY_REPORT,
 } = availabilityEndpoints;
-export async function gstAvailability(userId, date) {
+export async function getAvailability(userId, date) {
 	// Fetch current user details using token
 	const response = await handleGetReq(GET_AVAILABILITY(userId, date));
 

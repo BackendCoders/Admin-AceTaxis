@@ -19,14 +19,6 @@ import {
 	EmailOutlined,
 } from '@mui/icons-material';
 import { format } from 'date-fns';
-// import { Container } from '@/components/container';
-// import {
-// 	Select,
-// 	SelectTrigger,
-// 	SelectContent,
-// 	SelectItem,
-// 	SelectValue,
-// } from '@/components/ui/select';
 import { Calendar } from '@/components/ui/calendar';
 import {
 	Popover,
@@ -34,81 +26,30 @@ import {
 	PopoverContent,
 } from '@/components/ui/popover';
 import { KeenIcon } from '@/components';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { refreshAllCardBookings } from '../../../slices/bookingSlice';
 import { sendReminderCardPayment } from '../../../service/operations/bookingApi';
 import toast from 'react-hot-toast';
+import { cn } from '@/lib/utils';
 
-// Function to create booking data
-function createBooking(id, date, driver, pickup, passenger, status, payment) {
-	return {
-		id,
-		date,
-		driver,
-		pickup,
-		passenger,
-		status,
-		payment,
-		details: {
-			bookedBy: 'ACE TAXIS',
-			details: 'x 3 trips, pos 18 people. Should be about an hour',
-			lastUpdatedBy: 'ACE TAXIS',
-			lastUpdatedOn: '',
-			scope: 'Card',
-			mileage: 0,
-			duration: 26,
-			chargeFromBase: true,
-		},
-	};
-}
-
-// Sample Data
-const bookings = [
-	createBooking(
-		82685,
-		'08/08/2025 23:30:00',
-		5,
-		'Pythouse Kitchen Gardens',
-		'Sophie Price',
-		'Pending',
-		'677ba9e8-14e0-aca1-894f-d5f37640191b'
-	),
-	createBooking(
-		88451,
-		'29/01/2025 13:00:00',
-		2,
-		'6 Barrowlea, Stalbridge. Sturminster Newton, Dorset',
-		'Olly',
-		'Pending',
-		'6799fcfd-c1fc-a15b-8be2-250fe9b3a14f'
-	),
-	createBooking(
-		88203,
-		'26/01/2025 00:03:00',
-		18,
-		'Red Lion',
-		'Ashley',
-		'Pending',
-		'67957c40-e62a-aad9-a10b-b08331d9933c'
-	),
-];
-
-// Collapsible Row Component
 function Row({ row }) {
 	const [open, setOpen] = useState(false);
 
 	const handleSendReminder = async () => {
 		try {
-			console.log(row);
+			// console.log(row);
 			const response = await sendReminderCardPayment({
-				bookingId: row?.bookingId || 0,
-				phone: row?.phone || '',
+				bookingId: row?.id || 0,
+				phone: row?.phoneNumber || '',
 			});
-			if (response.status === 'success') {
+			if (response?.status === 'success') {
 				toast.success('Reminder send Successfully');
+			} else {
+				// console.log('error response', response);
+				toast.error(response.data);
 			}
 		} catch (error) {
-			console.log(error);
+			console.log('send reminder error', error);
 		}
 	};
 
@@ -186,6 +127,9 @@ function Row({ row }) {
 							>
 								<Box>
 									<Typography variant='body2'>
+										<strong>Vias:</strong> {row.details?.vias}
+									</Typography>
+									<Typography variant='body2'>
 										<strong>Booked By:</strong> {row.details.bookedBy}
 									</Typography>
 									<Typography variant='body2'>
@@ -227,32 +171,66 @@ function Row({ row }) {
 // Main Component
 function CardBookings() {
 	const dispatch = useDispatch();
-	// const { cardBookings } = useSelector((state) => state.booking);
+	const { cardBookings } = useSelector((state) => state.booking);
 	const [search, setSearch] = useState('');
 	const [date, setDate] = useState(new Date());
-	// const filterDriver = '';
 
-	const filteredBookings = bookings.filter((booking) => booking.id);
+	console.log('card bookings', cardBookings);
 
-	// const filteredBookings = (cardBookings || []).map((booking) => ({
-	// 	id: booking.id,
-	// 	date: booking.date, // Ensure correct date format
-	// 	driver: booking.driverNumber || 'N/A',
-	// 	pickup: booking.pickupLocation || 'Unknown',
-	// 	passenger: booking.passengerName || 'Unknown',
-	// 	status: booking.status || 'Pending',
-	// 	payment: booking.paymentId || 'N/A',
-	// 	details: {
-	// 		bookedBy: booking.bookedBy || 'Unknown',
-	// 		details: booking.tripDetails || '',
-	// 		lastUpdatedBy: booking.lastUpdatedBy || 'N/A',
-	// 		lastUpdatedOn: booking.lastUpdatedOn || '',
-	// 		scope: booking.scope || 'Card',
-	// 		mileage: booking.mileage || 0,
-	// 		duration: booking.duration || 0,
-	// 		chargeFromBase: booking.chargeFromBase || false,
-	// 	},
-	// }));
+	const formattedBookings = (cardBookings || []).map((booking) => ({
+		id: booking?.id,
+		date: booking?.pickupDateTime
+			? new Date(booking?.pickupDateTime).toLocaleDateString('en-GB') +
+				' ' +
+				booking?.pickupDateTime?.split('T')[1]?.split('.')[0]?.slice(0, 5)
+			: '-', // Ensure correct date format
+		driver: booking?.userId || '-',
+		pickup: `${booking?.pickupAddress}, ${booking?.pickupPostCode}`,
+		passenger: booking?.passengerName || 'Unknown',
+		phoneNumber: booking?.phoneNumber || '',
+		status:
+			booking?.paymentStatus === 0
+				? 'Unpaid'
+				: booking?.paymentStatus === 1
+					? 'Paid'
+					: 'Waiting',
+		payment: booking?.paymentOrderId || '-',
+		details: {
+			bookedBy: booking?.bookedByName || '',
+			details: booking?.details || '',
+			vias: booking?.vias?.length
+				? booking.vias
+						.map((via) => `${via.address} (${via.postcode})`)
+						.join(' → ')
+				: '',
+			lastUpdatedBy: booking?.updatedByName,
+			lastUpdatedOn: booking?.dateUpdated
+				? new Date(booking.dateUpdated).toLocaleDateString('en-GB') +
+					' ' +
+					booking.dateUpdated.split('T')[1]?.split('.')[0]?.slice(0, 5)
+				: '',
+			scope: booking?.scope === 4 ? 'Card' : 'Cash',
+			mileage: booking.mileageText || '',
+			duration: booking.durationMinutes || '',
+			chargeFromBase: booking.chargeFromBase || false,
+		},
+	}));
+
+	const filteredBookings = formattedBookings?.filter((booking) => {
+		if (!search?.trim() && !date) return true;
+
+		const isMatch =
+			booking?.pickup?.toLowerCase().includes(search?.toLowerCase()) ||
+			booking?.passenger?.toLowerCase().includes(search?.toLowerCase());
+		const bookingDateParts = booking.date.split(' ')[0].split('/'); // ['DD', 'MM', 'YYYY']
+		const formattedBookingDate = `${bookingDateParts[2]}-${bookingDateParts[1]}-${bookingDateParts[0]}`; // YYYY-MM-DD
+
+		const isDateMatch = date
+			? formattedBookingDate === format(date, 'yyyy-MM-dd') // Compare in correct format
+			: true;
+
+		return isMatch && isDateMatch;
+	});
 
 	useEffect(() => {
 		dispatch(refreshAllCardBookings());
@@ -290,21 +268,44 @@ function CardBookings() {
 
 					<Popover>
 						<PopoverTrigger asChild>
-							<button className='input border-gray-300 bg-transparent w-48 py-2 px-3 rounded-md'>
-								<KeenIcon
-									icon='calendar'
-									className='mr-2'
-								/>
-								{date ? format(date, 'LLL dd, y') : <span>Pick a date</span>}
-							</button>
+							<div className='relative'>
+								<button
+									id='date'
+									className={cn(
+										'input data-[state=open]:border-primary',
+										!date && 'text-muted-foreground'
+									)}
+									style={{ width: '13rem' }}
+								>
+									<KeenIcon
+										icon='calendar'
+										className='-ms-0.5'
+									/>
+									{date ? format(date, 'LLL dd, y') : <span>Pick a date</span>}
+								</button>
+								{date && (
+									<button
+										onClick={(e) => {
+											e.stopPropagation(); // Prevent closing popover
+											setDate(null); // Clear date
+										}}
+										className='absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700'
+									>
+										<KeenIcon
+											icon='cross-circle'
+											className=''
+										/>
+									</button>
+								)}
+							</div>
 						</PopoverTrigger>
 						<PopoverContent
-							className='w-auto p-0 shadow-md'
+							className='w-auto p-0'
 							align='start'
 						>
 							<Calendar
 								initialFocus
-								mode='single'
+								mode='single' // Single date selection
 								defaultMonth={date}
 								selected={date}
 								onSelect={setDate}
