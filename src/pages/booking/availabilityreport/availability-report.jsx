@@ -157,7 +157,7 @@ const AvailabilityReport = () => {
 			}));
 		}
 		return [];
-	}, [dataByTab, selectedTab]);
+	}, [dataByTab, monthNames, selectedTab, weekDayNames]);
 
 	return (
 		<Fragment>
