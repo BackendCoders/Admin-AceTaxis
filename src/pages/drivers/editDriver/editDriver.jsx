@@ -14,33 +14,28 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
-import { KeenIcon } from '@/components';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import clsx from 'clsx';
-import { useState } from 'react';
 import { updateDriver } from '../../../service/operations/driverApi';
+import { useSelector } from 'react-redux';
 function EditDriver({ open, onOpenChange }) {
-	const [showPassword, setShowPassword] = useState(false);
-	const addLocalSchema = Yup.object().shape({
-		username: Yup.string().required('User Name is required'),
-	});
+	const { driver } = useSelector((state) => state.driver);
+	const addLocalSchema = Yup.object().shape({});
 
 	const initialValues = {
-		username: '',
-		password: '',
-		registrationNo: '',
-		fullname: '',
-		email: '',
-		phoneNumber: '',
-		vehicleMake: '',
-		vehicleModel: '',
-		vehicleColor: '',
-		role: 0,
-		colorCode: 0,
-		vehicleType: 0,
-		showAllBookings: false,
-		nonAce: false,
+		regNo: driver?.regNo || '',
+		fullName: driver?.fullName || '',
+		email: driver?.email || '',
+		phoneNumber: driver?.phoneNumber || '',
+		vehicleMake: driver?.vehicleMake || '',
+		vehicleModel: driver?.vehicleModel || '',
+		vehicleColour: driver?.vehicleColour || '',
+		role: driver?.role || 0,
+		colorCode: driver?.colorCode || 0,
+		vehicleType: driver?.vehicleType || 0,
+		showAllBookings: driver?.showAllBookings || false,
+		nonAce: driver?.nonAce || false,
 	};
 
 	const formik = useFormik({
@@ -62,10 +57,6 @@ function EditDriver({ open, onOpenChange }) {
 		},
 	});
 
-	const togglePassword = (event) => {
-		event.preventDefault();
-		setShowPassword(!showPassword);
-	};
 	return (
 		<Dialog
 			open={open}
@@ -78,85 +69,13 @@ function EditDriver({ open, onOpenChange }) {
 				</DialogHeader>
 				<DialogBody className='flex flex-col items-center pt-0 pb-4'>
 					<h3 className='text-lg font-medium text-gray-900 text-center mb-3'>
-						Register Driver
+						Edit Driver
 					</h3>
 
 					<form
 						onSubmit={formik.handleSubmit}
 						className='w-full'
 					>
-						<div className='w-full flex justify-center items-center gap-2'>
-							<div className='flex flex-col gap-1 pb-2 w-[50%]'>
-								<label className='form-label text-gray-900'>User Name</label>
-								<label className='input'>
-									<input
-										placeholder='Enter user name'
-										autoComplete='off'
-										{...formik.getFieldProps('username')}
-										className={clsx('form-control', {
-											'is-invalid':
-												formik.touched.username && formik.errors.username,
-										})}
-									/>
-								</label>
-								{formik.touched.username && formik.errors.username && (
-									<span
-										role='alert'
-										className='text-danger text-xs mt-1'
-									>
-										{formik.errors.username}
-									</span>
-								)}
-							</div>
-							<div className='flex flex-col gap-1 pb-2 w-[50%]'>
-								<label className='form-label text-gray-900'>Password</label>
-								<label className='input'>
-									<input
-										type={showPassword ? 'text' : 'password'}
-										placeholder='Enter Password'
-										autoComplete='off'
-										{...formik.getFieldProps('password')}
-										className={clsx(
-											'form-control bg-transparent',
-											{
-												'is-invalid':
-													formik.touched.password && formik.errors.password,
-											},
-											{
-												'is-valid':
-													formik.touched.password && !formik.errors.password,
-											}
-										)}
-									/>
-									<button
-										className='btn btn-icon'
-										onClick={togglePassword}
-									>
-										<KeenIcon
-											icon='eye'
-											className={clsx('text-gray-500', {
-												hidden: showPassword,
-											})}
-										/>
-										<KeenIcon
-											icon='eye-slash'
-											className={clsx('text-gray-500', {
-												hidden: !showPassword,
-											})}
-										/>
-									</button>
-								</label>
-								{formik.touched.password && formik.errors.password && (
-									<span
-										role='alert'
-										className='text-danger text-xs mt-1'
-									>
-										{formik.errors.password}
-									</span>
-								)}
-							</div>
-						</div>
-
 						<div className='w-full flex justify-center items-center gap-2'>
 							<div className='flex flex-col gap-1 pb-2 w-full'>
 								<label className='form-label text-gray-900'>
@@ -166,23 +85,20 @@ function EditDriver({ open, onOpenChange }) {
 									<input
 										placeholder='Enter registration Number'
 										autoComplete='off'
-										{...formik.getFieldProps('registrationNo')}
+										{...formik.getFieldProps('regNo')}
 										className={clsx('form-control', {
-											'is-invalid':
-												formik.touched.registrationNo &&
-												formik.errors.registrationNo,
+											'is-invalid': formik.touched.regNo && formik.errors.regNo,
 										})}
 									/>
 								</label>
-								{formik.touched.registrationNo &&
-									formik.errors.registrationNo && (
-										<span
-											role='alert'
-											className='text-danger text-xs mt-1'
-										>
-											{formik.errors.registrationNo}
-										</span>
-									)}
+								{formik.touched.regNo && formik.errors.regNo && (
+									<span
+										role='alert'
+										className='text-danger text-xs mt-1'
+									>
+										{formik.errors.regNo}
+									</span>
+								)}
 							</div>
 							<div className='flex flex-col gap-1 pb-2 w-full'>
 								<label className='form-label text-gray-900'>Full Name</label>
@@ -190,19 +106,19 @@ function EditDriver({ open, onOpenChange }) {
 									<input
 										placeholder='Enter fullname'
 										autoComplete='off'
-										{...formik.getFieldProps('fullname')}
+										{...formik.getFieldProps('fullName')}
 										className={clsx('form-control', {
 											'is-invalid':
-												formik.touched.fullname && formik.errors.fullname,
+												formik.touched.fullName && formik.errors.fullName,
 										})}
 									/>
 								</label>
-								{formik.touched.fullname && formik.errors.fullname && (
+								{formik.touched.fullName && formik.errors.fullName && (
 									<span
 										role='alert'
 										className='text-danger text-xs mt-1'
 									>
-										{formik.errors.fullname}
+										{formik.errors.fullName}
 									</span>
 								)}
 							</div>
@@ -259,9 +175,10 @@ function EditDriver({ open, onOpenChange }) {
 							<div className='flex flex-col gap-1 pb-2 w-[50%]'>
 								<label className='form-label text-gray-900'>Role</label>
 								<Select
-									defaultValue='0'
-									value={formik.values.role}
-									onValueChange={(value) => formik.setFieldValue('role', value)}
+									value={formik.values.role.toString()} // Ensure value is string
+									onValueChange={(value) =>
+										formik.setFieldValue('role', Number(value))
+									}
 								>
 									<SelectTrigger className='w-full'>
 										<SelectValue placeholder='Select' />
@@ -286,10 +203,9 @@ function EditDriver({ open, onOpenChange }) {
 							<div className='flex flex-col gap-1 pb-2 w-[50%]'>
 								<label className='form-label text-gray-900'>Color</label>
 								<Select
-									defaultValue='0'
-									value={formik.values.colorCode}
+									value={formik.values.colorCode.toString()}
 									onValueChange={(value) =>
-										formik.setFieldValue('colorCode', value)
+										formik.setFieldValue('colorCode', Number(value))
 									}
 								>
 									<SelectTrigger className=' w-full'>
@@ -373,31 +289,32 @@ function EditDriver({ open, onOpenChange }) {
 									<input
 										placeholder='Enter vehicle color'
 										autoComplete='off'
-										{...formik.getFieldProps('vehicleColor')}
+										{...formik.getFieldProps('vehicleColour')}
 										className={clsx('form-control', {
 											'is-invalid':
-												formik.touched.vehicleColor &&
-												formik.errors.vehicleColor,
+												formik.touched.vehicleColour &&
+												formik.errors.vehicleColour,
 										})}
 									/>
 								</label>
 
-								{formik.touched.vehicleColor && formik.errors.vehicleColor && (
-									<span
-										role='alert'
-										className='text-danger text-xs mt-1'
-									>
-										{formik.errors.vehicleColor}
-									</span>
-								)}
+								{formik.touched.vehicleColour &&
+									formik.errors.vehicleColour && (
+										<span
+											role='alert'
+											className='text-danger text-xs mt-1'
+										>
+											{formik.errors.vehicleColour}
+										</span>
+									)}
 							</div>
 							<div className='flex flex-col gap-1 pb-2 w-[50%]'>
 								<label className='form-label text-gray-900'>Vehicle Type</label>
 								<Select
 									defaultValue='0'
-									value={formik.values.vehicleType}
+									value={formik.values.vehicleType.toString()}
 									onValueChange={(value) =>
-										formik.setFieldValue('vehicleType', value)
+										formik.setFieldValue('vehicleType', Number(value))
 									}
 								>
 									<SelectTrigger className='w-full'>

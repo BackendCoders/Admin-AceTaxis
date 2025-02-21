@@ -259,18 +259,20 @@ function RegisterDriver({ open, onOpenChange }) {
 							<div className='flex flex-col gap-1 pb-2 w-[50%]'>
 								<label className='form-label text-gray-900'>Role</label>
 								<Select
-									value={formik.values.role}
-									onValueChange={(value) => formik.setFieldValue('role', value)}
+									value={formik.values.role.toString()} // Ensure value is string
+									onValueChange={(value) =>
+										formik.setFieldValue('role', Number(value))
+									}
 								>
 									<SelectTrigger className='w-full'>
 										<SelectValue placeholder='Select' />
 									</SelectTrigger>
 									<SelectContent>
-										<SelectItem value={0}>Choose Role</SelectItem>
-										<SelectItem value={1}>Admin</SelectItem>
-										<SelectItem value={2}>User</SelectItem>
-										<SelectItem value={3}>Driver</SelectItem>
-										<SelectItem value={4}>Account</SelectItem>
+										<SelectItem value='0'>Choose Role</SelectItem>
+										<SelectItem value='1'>Admin</SelectItem>
+										<SelectItem value='2'>User</SelectItem>
+										<SelectItem value='3'>Driver</SelectItem>
+										<SelectItem value='4'>Account</SelectItem>
 									</SelectContent>
 								</Select>
 								{formik.touched.role && formik.errors.role && (
@@ -285,20 +287,20 @@ function RegisterDriver({ open, onOpenChange }) {
 							<div className='flex flex-col gap-1 pb-2 w-[50%]'>
 								<label className='form-label text-gray-900'>Color</label>
 								<Select
-									value={formik.values.colorCode}
+									value={formik.values.colorCode.toString()} // Ensure value is string
 									onValueChange={(value) =>
-										formik.setFieldValue('colorCode', value)
+										formik.setFieldValue('colorCode', Number(value))
 									}
 								>
 									<SelectTrigger className=' w-full'>
 										<SelectValue placeholder='Select' />
 									</SelectTrigger>
 									<SelectContent>
-										<SelectItem value={0}>Choose Color</SelectItem>
-										<SelectItem value={1}>Admin</SelectItem>
-										<SelectItem value={2}>User</SelectItem>
-										<SelectItem value={3}>Driver</SelectItem>
-										<SelectItem value={4}>Account</SelectItem>
+										<SelectItem value='0'>Choose Color</SelectItem>
+										<SelectItem value='1'>Admin</SelectItem>
+										<SelectItem value='2'>User</SelectItem>
+										<SelectItem value='3'>Driver</SelectItem>
+										<SelectItem value='4'>Account</SelectItem>
 									</SelectContent>
 								</Select>
 								{formik.touched.colorCode && formik.errors.colorCode && (
@@ -392,21 +394,21 @@ function RegisterDriver({ open, onOpenChange }) {
 							<div className='flex flex-col gap-1 pb-2 w-[50%]'>
 								<label className='form-label text-gray-900'>Vehicle Type</label>
 								<Select
-									value={formik.values.vehicleType}
+									value={formik.values.vehicleType.toString()}
 									onValueChange={(value) =>
-										formik.setFieldValue('vehicleType', value)
+										formik.setFieldValue('vehicleType', Number(value))
 									}
 								>
 									<SelectTrigger className='w-full'>
 										<SelectValue placeholder='Select' />
 									</SelectTrigger>
 									<SelectContent>
-										<SelectItem value={0}>Unknown</SelectItem>
-										<SelectItem value={1}>Saloon</SelectItem>
-										<SelectItem value={2}>Estate</SelectItem>
-										<SelectItem value={3}>MPV</SelectItem>
-										<SelectItem value={4}>MPVPlus</SelectItem>
-										<SelectItem value={5}>SUV</SelectItem>
+										<SelectItem value='0'>Unknown</SelectItem>
+										<SelectItem value='1'>Saloon</SelectItem>
+										<SelectItem value='2'>Estate</SelectItem>
+										<SelectItem value='3'>MPV</SelectItem>
+										<SelectItem value='4'>MPVPlus</SelectItem>
+										<SelectItem value='5'>SUV</SelectItem>
 									</SelectContent>
 								</Select>
 								{formik.touched.vehicleType && formik.errors.vehicleType && (
