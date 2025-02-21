@@ -3,7 +3,7 @@
  *
  * @format
  */
-
+import { KeenIcon } from '@/components';
 import { useMemo, useState } from 'react';
 import {
 	DataGrid,
@@ -20,12 +20,35 @@ import {
 	SelectValue,
 } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteAvailability } from '../../../service/operations/availabilityApi';
+import toast from 'react-hot-toast';
+import { refreshAvailability } from '../../../slices/availabilitySlice';
+import { format } from 'date-fns';
 
-const AvailabilityTable = () => {
+const SelectedAvailabilityTable = ({ selectedDriver, selectedDate }) => {
+	const dispatch = useDispatch();
 	const { availability } = useSelector((state) => state.availability);
 
-	console.log('availability', availability);
+	const handleDelete = async (driver) => {
+		try {
+			const response = await deleteAvailability(driver?.userId);
+			if (response.status === 'success') {
+				toast.success('Driver Availability deleted successfully');
+				dispatch(
+					refreshAvailability(
+						selectedDriver,
+						format(new Date(selectedDate), "yyyy-MM-dd'T'00:00:00'Z'")
+					)
+				);
+			} else {
+				toast.error('Failed to delete driver Availability');
+			}
+		} catch (error) {
+			console.error('Error deleting driver Availability:', error);
+			toast.error('Error deleting driver Availability');
+		}
+	};
 
 	const ColumnInputFilter = ({ column }) => {
 		return (
@@ -41,10 +64,10 @@ const AvailabilityTable = () => {
 	const columns = useMemo(
 		() => [
 			{
-				accessorKey: 'driver',
+				accessorKey: 'type',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Driver #'
+						title='Type'
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 						className={` justify-center`}
@@ -52,19 +75,17 @@ const AvailabilityTable = () => {
 				),
 				enableSorting: true,
 				cell: ({ row }) => (
-					<div
-						className={`p-2 rounded-md text-center text-white ${row.original.color}`}
-					>
+					<div className={`p-2 rounded-md text-center text-white `}>
 						{row.original.driver}
 					</div>
 				),
 				meta: { headerClassName: 'w-20 text-center' },
 			},
 			{
-				accessorKey: 'name',
+				accessorKey: 'driver',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Full Name'
+						title='Driver '
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 						className={` justify-center`}
@@ -94,6 +115,30 @@ const AvailabilityTable = () => {
 					</div>
 				),
 				meta: { headerClassName: 'min-w-[180px] text-center' },
+			},
+			{
+				accessorKey: 'action',
+				header: ({ column }) => (
+					<DataGridColumnHeader
+						title='Actions'
+						column={column}
+					/>
+				),
+				enableSorting: true,
+				cell: ({ row }) => (
+					<div className='w-full flex justify-start items-center gap-2'>
+						<button
+							className='rounded-full px-2 py-2  w-8 h-8 flex justify-center items-center hover:bg-red-100 group'
+							onClick={() => handleDelete(row?.original)}
+						>
+							<KeenIcon
+								icon='trash'
+								className='group-hover:text-red-600'
+							/>
+						</button>
+					</div>
+				),
+				meta: { headerClassName: 'min-w-[80px]' },
 			},
 		],
 		[]
@@ -155,4 +200,4 @@ const AvailabilityTable = () => {
 	);
 };
 
-export { AvailabilityTable };
+export { SelectedAvailabilityTable };

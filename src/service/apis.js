@@ -23,6 +23,8 @@ export const availabilityEndpoints = {
 		`${BASE}/api/AdminUI/AvailabilityLog?userid=${userId}&date=${date}`,
 	GET_AVAILABILITY: (userId, date) =>
 		`${BASE}/api/AdminUI/GetAvailability?userid=${userId}&date=${date}`,
+	GET_ALL_AVAILABILITY: (userId) =>
+		`${BASE}/api/AdminUI/GetAvailability?userid=${userId}`,
 	DELETE_AVAILABILITY: (id) =>
 		`${BASE}/api/AdminUI/DeleteAvailability?availabilityId=${id}`,
 	SET_AVAILABILITY: `${BASE}/api/AdminUI/SetAvailability`,

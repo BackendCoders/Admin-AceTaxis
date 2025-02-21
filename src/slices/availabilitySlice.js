@@ -3,6 +3,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import {
 	availabilityReport,
+	getALLAvailability,
 	getAvailability,
 	getAvailabilityLog,
 } from '../service/operations/availabilityApi';
@@ -56,7 +57,12 @@ const availabilitySlice = createSlice({
 export function refreshAvailability(userId, date) {
 	return async (dispatch) => {
 		try {
-			const response = await getAvailability(userId, date);
+			let response;
+			if (userId === 0) {
+				response = await getALLAvailability(userId);
+			} else {
+				response = await getAvailability(userId, date);
+			}
 			console.log(response.data);
 
 			if (response.status === 'success') {
