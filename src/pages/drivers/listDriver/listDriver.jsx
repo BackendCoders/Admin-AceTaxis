@@ -241,7 +241,7 @@ function ListDriver() {
 						>
 							<KeenIcon
 								icon='sms'
-								className='group-hover:text-red-600'
+								className='group-hover:text-red-600 text-cyan-400'
 							/>
 						</button>
 					</div>
@@ -265,7 +265,7 @@ function ListDriver() {
 						>
 							<PersonOffOutlinedIcon
 								sx={{ fontSize: 14 }}
-								className='group-hover:text-red-600'
+								className={`${row.original.isLockedOut ? 'text-green-600' : 'text-red-600'} group-hover:text-red-600`}
 							/>
 						</button>
 					</div>
@@ -289,7 +289,7 @@ function ListDriver() {
 						>
 							<KeenIcon
 								icon='briefcase'
-								className='group-hover:text-red-600'
+								className={`${row.original.showAllBookings ? 'text-green-600' : 'text-red-600'} group-hover:text-red-600`}
 							/>
 						</button>
 					</div>
@@ -313,7 +313,7 @@ function ListDriver() {
 						>
 							<KeenIcon
 								icon='teacher'
-								className='group-hover:text-red-600'
+								className={`${row.original.showHVSBookings ? 'text-green-600' : 'text-red-600'} group-hover:text-red-600`}
 							/>
 						</button>
 					</div>
@@ -375,13 +375,13 @@ function ListDriver() {
 		dispatch(handleSendJobs(driver?.id));
 	};
 	const handleShow = (driver) => {
-		dispatch(handleShowAllJobs(driver?.id, 0));
+		dispatch(handleShowAllJobs(driver?.id, !driver?.showAllBookings));
 	};
 	const handleHvs = (driver) => {
-		dispatch(handleShowHvsJobs(driver?.id, 0));
+		dispatch(handleShowHvsJobs(driver?.id, !driver?.showHVSBookings));
 	};
 	const handleLock = (driver) => {
-		dispatch(handleLockJobs(driver?.id, 0));
+		dispatch(handleLockJobs(driver?.id, !driver?.isLockedOut));
 	};
 
 	const handleClose = () => {

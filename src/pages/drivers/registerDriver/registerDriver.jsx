@@ -20,7 +20,10 @@ import * as Yup from 'yup';
 import clsx from 'clsx';
 import { useState } from 'react';
 import { createDriver } from '../../../service/operations/driverApi';
+import { useDispatch } from 'react-redux';
+import { refreshAllDrivers } from '../../../slices/driverSlice';
 function RegisterDriver({ open, onOpenChange }) {
+	const dispatch = useDispatch();
 	const [showPassword, setShowPassword] = useState(false);
 	const addLocalSchema = Yup.object().shape({
 		username: Yup.string().required('User Name is required'),
@@ -37,7 +40,7 @@ function RegisterDriver({ open, onOpenChange }) {
 		vehicleModel: '',
 		vehicleColor: '',
 		role: 0,
-		colorCode: 0,
+		colorCode: '#000000',
 		vehicleType: 0,
 		showAllBookings: false,
 	};
@@ -50,6 +53,7 @@ function RegisterDriver({ open, onOpenChange }) {
 			try {
 				const response = await createDriver(values);
 				if (response.status === 'success') {
+					dispatch(refreshAllDrivers());
 					console.log('Driver registered successfully');
 					setSubmitting(false);
 					onOpenChange(); // Reset Formik's submitting state
@@ -286,23 +290,33 @@ function RegisterDriver({ open, onOpenChange }) {
 							</div>
 							<div className='flex flex-col gap-1 pb-2 w-[50%]'>
 								<label className='form-label text-gray-900'>Color</label>
-								<Select
-									value={formik.values.colorCode.toString()} // Ensure value is string
-									onValueChange={(value) =>
-										formik.setFieldValue('colorCode', Number(value))
-									}
-								>
-									<SelectTrigger className=' w-full'>
-										<SelectValue placeholder='Select' />
-									</SelectTrigger>
-									<SelectContent>
-										<SelectItem value='0'>Choose Color</SelectItem>
-										<SelectItem value='1'>Admin</SelectItem>
-										<SelectItem value='2'>User</SelectItem>
-										<SelectItem value='3'>Driver</SelectItem>
-										<SelectItem value='4'>Account</SelectItem>
-									</SelectContent>
-								</Select>
+								<label className='input'>
+									<input
+										type='color'
+										value={
+											formik.values.colorCode?.length === 7
+												? formik.values.colorCode
+												: formik.values.colorCode?.slice(0, 7)
+										}
+										onChange={(e) =>
+											formik.setFieldValue('colorCode', e.target.value)
+										}
+										className='w-10 h-10 rounded cursor-pointer border border-gray-400'
+									/>
+
+									{/* Show HEX Color Code Input */}
+									<input
+										type='text'
+										value={formik.values.colorCode || ''}
+										onChange={(e) =>
+											formik.setFieldValue('colorCode', e.target.value)
+										}
+										className={clsx('form-control flex-grow', {
+											'is-invalid':
+												formik.touched.colorCode && formik.errors.colorCode,
+										})}
+									/>
+								</label>
 								{formik.touched.colorCode && formik.errors.colorCode && (
 									<span
 										color='alert'

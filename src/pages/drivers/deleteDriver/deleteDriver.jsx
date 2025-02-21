@@ -7,16 +7,19 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from '@/components/ui/dialog';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { deleteDriver } from '../../../service/operations/driverApi';
 import toast from 'react-hot-toast';
+import { refreshAllDrivers } from '../../../slices/driverSlice';
 function DeleteDriver({ open, onOpenChange }) {
+	const dispatch = useDispatch();
 	const { driver } = useSelector((state) => state.driver);
 	const handleDelete = async () => {
 		try {
 			const response = await deleteDriver(driver?.id);
 			if (response.status === 'success') {
 				toast.success('Driver Deleted Successfully');
+				dispatch(refreshAllDrivers());
 				onOpenChange(); // Close the modal after deletion
 			} else {
 				console.error('Failed to delete driver', response.error);
