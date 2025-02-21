@@ -52,7 +52,7 @@ function CustomModal({ open, onOpenChange, selectedDate, selectedDriver }) {
 					from: values.from,
 					to: values.to,
 					giveOrTake: values.giveOrTake, // Checkbox value
-					type: 1, // Default Type 1 (Available)
+					type: 0, // Default Type 1 (Available)
 					note: values.note || '', // Optional note
 				};
 
@@ -230,14 +230,14 @@ function CustomModal({ open, onOpenChange, selectedDate, selectedDriver }) {
 							<button
 								type='button'
 								className='btn btn-primary bg-green-600 hover:bg-green-500'
-								onClick={() => handleAvailabilitySubmit(1)}
+								onClick={() => handleAvailabilitySubmit(0)}
 							>
 								Add Available Hours
 							</button>
 							<button
 								type='button'
 								className='btn btn-danger ml-2'
-								onClick={() => handleAvailabilitySubmit(2)}
+								onClick={() => handleAvailabilitySubmit(1)}
 							>
 								Add Unavailable Hours
 							</button>

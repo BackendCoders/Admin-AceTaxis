@@ -63,10 +63,17 @@ const Availability = () => {
 			const srPmRequest = { ...payload, from: '14:30', to: '16:15' };
 
 			try {
-				await Promise.all([
+				const [amResponse, pmResponse] = await Promise.all([
 					updateAvailability(srAmRequest), // Send SR AM request
 					updateAvailability(srPmRequest), // Send SR PM request
 				]);
+				if (
+					amResponse?.status !== 'success' ||
+					pmResponse?.status !== 'success'
+				) {
+					throw new Error('One or more requests failed');
+				}
+
 				dispatch(
 					refreshAvailability(
 						selectedDriver,
@@ -79,14 +86,17 @@ const Availability = () => {
 				console.error(error);
 			}
 			return;
+		} else if (type === 'unavailableAllDay') {
+			payload.from = '00:00';
+			payload.to = '23:59';
+			payload.type = 1; // Unavailable All Day
+			payload.note = 'Unavailable All Day';
 		}
 
 		try {
 			const response = await updateAvailability(payload);
 			if (response.status === 'success') {
-				toast.success(
-					`Availability updated for ${selectedDriver} successfully`
-				);
+				toast.success(`Availability updated for Driver #${selectedDriver}`);
 				dispatch(
 					refreshAvailability(
 						selectedDriver,
@@ -199,7 +209,11 @@ const Availability = () => {
 				>
 					SR Only
 				</button>
-				<button className='bg-red-700 text-white px-6 py-2 rounded-md text-sm font-medium tracking-wide hover:bg-red-600 transition-all duration-300'>
+				<button
+					className='btn btn-danger'
+					onClick={() => handleClick('unavailableAllDay')}
+					disabled={selectedDriver === 0}
+				>
 					UNAVAILABLE (ALL DAY)
 				</button>
 			</div>
