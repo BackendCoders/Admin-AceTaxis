@@ -19,24 +19,25 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import clsx from 'clsx';
 import { useState } from 'react';
+import { updateDriver } from '../../../service/operations/driverApi';
 function EditDriver({ open, onOpenChange }) {
 	const [showPassword, setShowPassword] = useState(false);
 	const addLocalSchema = Yup.object().shape({
-		userName: Yup.string().required('User Name is required'),
+		username: Yup.string().required('User Name is required'),
 	});
 
 	const initialValues = {
-		userName: '',
+		username: '',
 		password: '',
-		registrationNumber: '',
-		fullName: '',
+		registrationNo: '',
+		fullname: '',
 		email: '',
-		phone: '',
+		phoneNumber: '',
 		vehicleMake: '',
 		vehicleModel: '',
 		vehicleColor: '',
 		role: 0,
-		color: 0,
+		colorCode: 0,
 		vehicleType: 0,
 		showAllBookings: false,
 		nonAce: false,
@@ -46,9 +47,18 @@ function EditDriver({ open, onOpenChange }) {
 		initialValues,
 		validationSchema: addLocalSchema,
 		onSubmit: async (values, { setSubmitting }) => {
-			console.log('Submitted Values:', values);
-			setSubmitting(false);
-			onOpenChange(); // Reset Formik's submitting state
+			try {
+				const response = await updateDriver(values);
+				if (response.status === 'success') {
+					console.log('Driver updated successfully');
+					setSubmitting(false);
+					onOpenChange(); // Reset Formik's submitting state
+				} else {
+					console.error('Failed to update driver', response.error);
+				}
+			} catch (error) {
+				console.error('Error updating driver', error);
+			}
 		},
 	});
 
@@ -82,19 +92,19 @@ function EditDriver({ open, onOpenChange }) {
 									<input
 										placeholder='Enter user name'
 										autoComplete='off'
-										{...formik.getFieldProps('userName')}
+										{...formik.getFieldProps('username')}
 										className={clsx('form-control', {
 											'is-invalid':
-												formik.touched.userName && formik.errors.userName,
+												formik.touched.username && formik.errors.username,
 										})}
 									/>
 								</label>
-								{formik.touched.userName && formik.errors.userName && (
+								{formik.touched.username && formik.errors.username && (
 									<span
 										role='alert'
 										className='text-danger text-xs mt-1'
 									>
-										{formik.errors.userName}
+										{formik.errors.username}
 									</span>
 								)}
 							</div>
@@ -156,21 +166,21 @@ function EditDriver({ open, onOpenChange }) {
 									<input
 										placeholder='Enter registration Number'
 										autoComplete='off'
-										{...formik.getFieldProps('registrationNumber')}
+										{...formik.getFieldProps('registrationNo')}
 										className={clsx('form-control', {
 											'is-invalid':
-												formik.touched.registrationNumber &&
-												formik.errors.registrationNumber,
+												formik.touched.registrationNo &&
+												formik.errors.registrationNo,
 										})}
 									/>
 								</label>
-								{formik.touched.registrationNumber &&
-									formik.errors.registrationNumber && (
+								{formik.touched.registrationNo &&
+									formik.errors.registrationNo && (
 										<span
 											role='alert'
 											className='text-danger text-xs mt-1'
 										>
-											{formik.errors.registrationNumber}
+											{formik.errors.registrationNo}
 										</span>
 									)}
 							</div>
@@ -178,21 +188,21 @@ function EditDriver({ open, onOpenChange }) {
 								<label className='form-label text-gray-900'>Full Name</label>
 								<label className='input'>
 									<input
-										placeholder='Enter fullName'
+										placeholder='Enter fullname'
 										autoComplete='off'
-										{...formik.getFieldProps('fullName')}
+										{...formik.getFieldProps('fullname')}
 										className={clsx('form-control', {
 											'is-invalid':
-												formik.touched.fullName && formik.errors.fullName,
+												formik.touched.fullname && formik.errors.fullname,
 										})}
 									/>
 								</label>
-								{formik.touched.fullName && formik.errors.fullName && (
+								{formik.touched.fullname && formik.errors.fullname && (
 									<span
 										role='alert'
 										className='text-danger text-xs mt-1'
 									>
-										{formik.errors.fullName}
+										{formik.errors.fullname}
 									</span>
 								)}
 							</div>
@@ -221,24 +231,25 @@ function EditDriver({ open, onOpenChange }) {
 								)}
 							</div>
 							<div className='flex flex-col gap-1 pb-2 w-full'>
-								<label className='form-label text-gray-900'>Phone</label>
+								<label className='form-label text-gray-900'>Phone Number</label>
 								<label className='input'>
 									<input
-										placeholder='Enter phone'
+										placeholder='Enter phone number'
 										autoComplete='off'
-										{...formik.getFieldProps('phone')}
+										{...formik.getFieldProps('phoneNumber')}
 										className={clsx('form-control', {
-											'is-invalid': formik.touched.phone && formik.errors.phone,
+											'is-invalid':
+												formik.touched.phoneNumber && formik.errors.phoneNumber,
 										})}
 									/>
 								</label>
 
-								{formik.touched.phone && formik.errors.phone && (
+								{formik.touched.phoneNumber && formik.errors.phoneNumber && (
 									<span
 										role='alert'
 										className='text-danger text-xs mt-1'
 									>
-										{formik.errors.phone}
+										{formik.errors.phoneNumber}
 									</span>
 								)}
 							</div>
@@ -276,9 +287,9 @@ function EditDriver({ open, onOpenChange }) {
 								<label className='form-label text-gray-900'>Color</label>
 								<Select
 									defaultValue='0'
-									value={formik.values.color}
+									value={formik.values.colorCode}
 									onValueChange={(value) =>
-										formik.setFieldValue('color', value)
+										formik.setFieldValue('colorCode', value)
 									}
 								>
 									<SelectTrigger className=' w-full'>
@@ -292,12 +303,12 @@ function EditDriver({ open, onOpenChange }) {
 										<SelectItem value='4'>Account</SelectItem>
 									</SelectContent>
 								</Select>
-								{formik.touched.color && formik.errors.color && (
+								{formik.touched.colorCode && formik.errors.colorCode && (
 									<span
 										color='alert'
 										className='text-danger text-xs mt-1'
 									>
-										{formik.errors.color}
+										{formik.errors.colorCode}
 									</span>
 								)}
 							</div>

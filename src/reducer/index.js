@@ -10,6 +10,7 @@ import availabilityReducer from '../slices/availabilitySlice';
 import dashboardReducer from '../slices/dashboardSlice';
 import webBookingReducer from '../slices/webBookingSlice';
 import notificationReducer from '../slices/notificationSlice';
+import driverReducer from '../slices/driverSlice';
 
 const rootReducer = combineReducers({
 	auth: authReducer,
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
 	webBooking: webBookingReducer,
 	localPoi: localPoiReducer,
 	notification: notificationReducer,
+	driver: driverReducer,
 });
 
 export default rootReducer;

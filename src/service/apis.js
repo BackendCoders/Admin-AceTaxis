@@ -82,6 +82,8 @@ export const billingAndPaymentEndpoints = {
 export const webBookingEndpoints = {
 	GET_WEB_BOOKINGS: `${BASE}/api/WeBooking/GetWebBookings`,
 	GET_WEB_CHANGE_REQUEST: `${BASE}/api/AdminUI/GetWebChangeRequests`,
+	UPDATE_WEB_CHANGE_REQUEST: (id) =>
+		`${BASE}/api/AdminUI/UpdateWebChangeRequest?reqId=${id}`,
 	ACCEPT_WEB_BOOKING: `${BASE}/api/WeBooking/Accept`,
 	REJECT_WEB_BOOKING: `${BASE}/api/WeBooking/Reject`,
 	GET_DURATION: (id) => `${BASE}/api/WeBooking/GetDuration?wid=${id}`,
@@ -94,4 +96,21 @@ export const notificationEndpoints = {
 	CLEAR_ALL_NOTIFICATIONS: (type) =>
 		`${BASE}/api/AdminUI/ClearAllNotifications?type=${type}`,
 	CLEAR_ALL_NOTIFICATIONS_WITHOUT_TYPE: `${BASE}/api/AdminUI/ClearAllNotifications`,
+};
+
+export const driverEndpoints = {
+	DRIVER_EXPENSES: `${BASE}/api/AdminUI/DriverExpenses`,
+	GET_DRIVER_LIST: `${BASE}/api/AdminUI/DriversList`,
+	ADD_DRIVER: `${BASE}/api/AdminUI/DriverAdd`,
+	UPDATE_DRIVER: `${BASE}/api/AdminUI/DriverUpdate`,
+	DELETE_DRIVER: (userId) =>
+		`${BASE}/api/AdminUI/DriverDelete?userId=${userId}`,
+	GET_DRIVER_RESEND_LOGIN: (userId) =>
+		`${BASE}/api/AdminUI/DriverResendLogin?userId=${userId}`,
+	GET_DRIVER_SHOW_ALL_JOBS: (userId, turnOn) =>
+		`${BASE}/api/AdminUI/DriverShowAllJobs?userId=${userId}&turnOn=${turnOn}`,
+	GET_DRIVER_SHOW_HVS_JOBS: (userId, turnOn) =>
+		`${BASE}/api/AdminUI/DriverShowHVSJobs?userId=${userId}&turnOn=${turnOn}`,
+	GET_DRIVER_LOCKOUT: (userId, lockout) =>
+		`${BASE}/api/AdminUI/DriverShowHVSJobs?userId=${userId}&lockout=${lockout}`,
 };

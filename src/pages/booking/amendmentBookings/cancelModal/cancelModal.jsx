@@ -8,7 +8,10 @@ import {
 	DialogTitle,
 } from '@/components/ui/dialog';
 import { useDispatch, useSelector } from 'react-redux';
-import { cancelBooking } from '../../../../service/operations/webBookingsApi';
+import {
+	cancelBooking,
+	updateAmendRequest,
+} from '../../../../service/operations/webBookingsApi';
 import toast from 'react-hot-toast';
 import { refreshAmendWebBookings } from '../../../../slices/webBookingSlice';
 function CancelModal({ open, onOpenChange }) {
@@ -29,6 +32,7 @@ function CancelModal({ open, onOpenChange }) {
 
 			if (response.status === 'success') {
 				toast.success('Booking cancelled successfully');
+				await updateAmendRequest(amendRequest?.id);
 				await dispatch(refreshAmendWebBookings());
 				// Close the modal after deletion
 			} else {

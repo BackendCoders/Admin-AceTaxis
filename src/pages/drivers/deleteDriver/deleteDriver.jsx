@@ -8,12 +8,23 @@ import {
 	DialogTitle,
 } from '@/components/ui/dialog';
 import { useSelector } from 'react-redux';
+import { deleteDriver } from '../../../service/operations/driverApi';
+import toast from 'react-hot-toast';
 function DeleteDriver({ open, onOpenChange }) {
-	const { localPOI } = useSelector((state) => state.localPoi);
-	const handleDelete = () => {
-		console.log('loacal Poi deleted', localPOI);
-		// Delete local POI logic goes here
-		onOpenChange(); // Close the modal after deletion
+	const { driver } = useSelector((state) => state.driver);
+	const handleDelete = async () => {
+		try {
+			const response = await deleteDriver(driver?.id);
+			if (response.status === 'success') {
+				toast.success('Driver Deleted Successfully');
+				onOpenChange(); // Close the modal after deletion
+			} else {
+				console.error('Failed to delete driver', response.error);
+				toast.error('Failed to delete driver');
+			}
+		} catch (error) {
+			console.error('Failed to delete driver', error);
+		}
 	};
 	return (
 		<Dialog

@@ -8,6 +8,7 @@ import { webBookingEndpoints } from '../apis';
 const {
 	GET_WEB_BOOKINGS,
 	GET_WEB_CHANGE_REQUEST,
+	UPDATE_WEB_CHANGE_REQUEST,
 	ACCEPT_WEB_BOOKING,
 	REJECT_WEB_BOOKING,
 	GET_DURATION,
@@ -41,6 +42,26 @@ export async function getAmendRequests() {
 	const response = await handleGetReq(GET_WEB_CHANGE_REQUEST);
 
 	console.log('GET AMEND WEB REQUESTS API RESPONSE.........', response);
+
+	if (response.status === 'success') {
+		// sendLogs(
+		// 	{
+		// 		url: GET_WEB_BOOKINGS,
+		// 		reqBody: null,
+		// 		headers: setHeaders(),
+		// 		response: response,
+		// 	},
+		// 	'info'
+		// );
+		return response;
+	}
+	return response;
+}
+
+export async function updateAmendRequest(id) {
+	const response = await handleGetReq(UPDATE_WEB_CHANGE_REQUEST(id));
+
+	console.log('Update AMEND WEB REQUESTS API RESPONSE.........', response);
 
 	if (response.status === 'success') {
 		// sendLogs(

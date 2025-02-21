@@ -1,6 +1,6 @@
 /** @format */
 
-import { Fragment, useMemo, useState } from 'react';
+import { Fragment, useEffect, useMemo, useState } from 'react';
 import {
 	Toolbar,
 	ToolbarDescription,
@@ -33,118 +33,31 @@ import {
 	// DataGridRowSelect,
 } from '@/components';
 import { Input } from '@/components/ui/input';
-import { useDispatch } from 'react-redux';
-import { setLocalPOI } from '../../../slices/localPOISlice';
+import { useDispatch, useSelector } from 'react-redux';
 import { RegisterDriver } from '../registerDriver';
 import { EditDriver } from '../editDriver';
 import { DeleteDriver } from '../deleteDriver';
+import {
+	handleLockJobs,
+	handleSendJobs,
+	handleShowAllJobs,
+	handleShowHvsJobs,
+	refreshAllDrivers,
+	setDriver,
+} from '../../../slices/driverSlice';
+import isLightColor from '../../../utils/isLight';
+import PersonOffOutlinedIcon from '@mui/icons-material/PersonOffOutlined';
 function ListDriver() {
 	const dispatch = useDispatch();
+	const { drivers } = useSelector((state) => state.driver);
 	const [searchInput, setSearchInput] = useState('');
 	const [registerDriverModal, setRegisterDriverModal] = useState(false);
 	const [editDriverModal, setEditDriverModal] = useState(false);
 	const [deleteDriverModal, setDeleteDriverModal] = useState(false);
 	// const [date, setDate] = useState(new Date());
-	const driversData = useMemo(
-		() => [
-			{
-				driver: 10,
-				name: 'Alan Waistell',
-				details: '00:00 - 23:59',
-				color: 'bg-yellow-500',
-			},
-			{
-				driver: 13,
-				name: 'Lee Harrison',
-				details: '00:00 - 23:59',
-				color: 'bg-blue-300',
-			},
-			{
-				driver: 30,
-				name: 'Richard Elgar',
-				details: '07:30 - 17:30',
-				color: 'bg-red-400',
-			},
-			{
-				driver: 16,
-				name: 'James Owen',
-				details: '07:00 - 17:00 (+/-)',
-				color: 'bg-gray-700 text-white font-bold',
-			},
-			{
-				driver: 14,
-				name: 'Andrew James',
-				details: '07:30 - 17:30',
-				color: 'bg-green-500',
-			},
-			{
-				driver: 4,
-				name: 'Paul Barber',
-				details: '07:00 - 18:00',
-				color: 'bg-green-400',
-			},
-			{
-				driver: 12,
-				name: 'Chris Gray',
-				details: '07:00 - 16:00',
-				color: 'bg-blue-700 text-white font-bold',
-			},
-			{
-				driver: 5,
-				name: 'Mark Phillips',
-				details: '07:00 - 16:30',
-				color: 'bg-pink-500',
-			},
-			{
-				driver: 11,
-				name: 'Nigel Reynolds',
-				details: '07:00 - 17:00',
-				color: 'bg-gray-400',
-			},
-			{
-				driver: 2,
-				name: 'Kate Hall',
-				details: '07:00 - 22:30',
-				color: 'bg-purple-400',
-			},
-			{
-				driver: 8,
-				name: 'Peter Farrell',
-				details: '08:20 - 10:00',
-				color: 'bg-purple-200',
-			},
-			{
-				driver: 7,
-				name: 'Caroline Stimson',
-				details: '11:00 - 17:00',
-				color: 'bg-red-200',
-			},
-			{
-				driver: 6,
-				name: 'Rob Holton',
-				details: '07:00 - 22:00',
-				color: 'bg-blue-400',
-			},
-			{
-				driver: 31,
-				name: 'Bill Wood',
-				details: '16:00 - 17:00',
-				color: 'bg-red-300',
-			},
-			{
-				driver: 26,
-				name: 'Charles Farnham',
-				details: '07:00 - 17:00 (all routes)',
-				color: 'bg-blue-800 text-white font-bold',
-			},
-			{
-				driver: 18,
-				name: 'Jean Williams',
-				details: '07:30 - 09:15 (AM SR)',
-				color: 'bg-yellow-400',
-			},
-		],
-		[]
+
+	const filteredDriver = drivers.filter((driver) =>
+		driver?.fullName?.toLowerCase().includes(searchInput.toLowerCase())
 	);
 
 	const ColumnInputFilter = ({ column }) => {
@@ -156,6 +69,15 @@ function ListDriver() {
 				className='h-9 w-full max-w-40'
 			/>
 		);
+	};
+
+	const vehicleTypeName = {
+		0: '',
+		1: 'Saloon',
+		2: 'Estate',
+		3: 'MPV',
+		4: 'MPVPlus',
+		5: 'SUV',
 	};
 
 	const columns = useMemo(
@@ -186,7 +108,12 @@ function ListDriver() {
 				),
 				enableSorting: true,
 				cell: ({ row }) => (
-					<span className={`p-2 rounded-md`}>{row.original.lastLogin}</span>
+					<span className={`p-2 rounded-md`}>
+						{new Date(
+							row.original.lastLogin?.split('T')[0]
+						)?.toLocaleDateString('en-GB')}{' '}
+						{row.original.lastLogin?.split('T')[1].split('.')[0]?.slice(0, 5)}
+					</span>
 				),
 				meta: { headerClassName: 'w-25' },
 			},
@@ -217,10 +144,12 @@ function ListDriver() {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={`font-medium ${row.original.color}`}>
-						{row.original.type}
+						{row.original.vehicleType
+							? vehicleTypeName[row.original.vehicleType]
+							: '-'}
 					</span>
 				),
-				meta: { headerClassName: 'w-25' },
+				meta: { headerClassName: 'w-20' },
 			},
 			{
 				accessorKey: 'color',
@@ -233,8 +162,11 @@ function ListDriver() {
 				),
 				enableSorting: true,
 				cell: ({ row }) => (
-					<span className={`font-medium ${row.original.color}`}>
-						{row.original.bgcolor}
+					<span
+						className={`font-medium p-2 rounded-md ${isLightColor(row.original.colorRGB) ? 'text-black' : 'text-white'}`}
+						style={{ backgroundColor: row.original.colorRGB }}
+					>
+						{row.original.colorRGB}
 					</span>
 				),
 				meta: { headerClassName: 'w-20' },
@@ -269,7 +201,7 @@ function ListDriver() {
 						{row.original.phoneNumber}
 					</span>
 				),
-				meta: { headerClassName: 'w-25' },
+				meta: { headerClassName: 'w-20' },
 			},
 			{
 				accessorKey: 'role',
@@ -283,10 +215,110 @@ function ListDriver() {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={`font-medium ${row.original.color}`}>
-						{row.original.role}
+						{row.original.role === 1
+							? 'Admin'
+							: row.original.role === 2
+								? 'User'
+								: 'Driver'}
 					</span>
 				),
 				meta: { headerClassName: 'w-20' },
+			},
+			{
+				accessorKey: 'send',
+				header: ({ column }) => (
+					<DataGridColumnHeader
+						title='Send'
+						column={column}
+					/>
+				),
+				enableSorting: true,
+				cell: ({ row }) => (
+					<div className='w-full flex justify-start items-center gap-2'>
+						<button
+							className='rounded-full px-2 py-2  w-8 h-8 flex justify-center items-center hover:bg-red-100 group'
+							onClick={() => handleSend(row.original)}
+						>
+							<KeenIcon
+								icon='sms'
+								className='group-hover:text-red-600'
+							/>
+						</button>
+					</div>
+				),
+				meta: { headerClassName: 'min-w-[80px]' },
+			},
+			{
+				accessorKey: 'lock',
+				header: ({ column }) => (
+					<DataGridColumnHeader
+						title='Lock'
+						column={column}
+					/>
+				),
+				enableSorting: true,
+				cell: ({ row }) => (
+					<div className='w-full flex justify-start items-center gap-2'>
+						<button
+							className='rounded-full px-2 py-2  w-8 h-8 flex justify-center items-center hover:bg-red-100 group'
+							onClick={() => handleLock(row.original)}
+						>
+							<PersonOffOutlinedIcon
+								sx={{ fontSize: 14 }}
+								className='group-hover:text-red-600'
+							/>
+						</button>
+					</div>
+				),
+				meta: { headerClassName: 'min-w-[80px]' },
+			},
+			{
+				accessorKey: 'show',
+				header: ({ column }) => (
+					<DataGridColumnHeader
+						title='Show'
+						column={column}
+					/>
+				),
+				enableSorting: true,
+				cell: ({ row }) => (
+					<div className='w-full flex justify-start items-center gap-2'>
+						<button
+							className='rounded-full px-2 py-2  w-8 h-8 flex justify-center items-center hover:bg-red-100 group'
+							onClick={() => handleShow(row.original)}
+						>
+							<KeenIcon
+								icon='briefcase'
+								className='group-hover:text-red-600'
+							/>
+						</button>
+					</div>
+				),
+				meta: { headerClassName: 'min-w-[80px]' },
+			},
+			{
+				accessorKey: 'hvs',
+				header: ({ column }) => (
+					<DataGridColumnHeader
+						title='HVS'
+						column={column}
+					/>
+				),
+				enableSorting: true,
+				cell: ({ row }) => (
+					<div className='w-full flex justify-start items-center gap-2'>
+						<button
+							className='rounded-full px-2 py-2  w-8 h-8 flex justify-center items-center hover:bg-red-100 group'
+							onClick={() => handleHvs(row.original)}
+						>
+							<KeenIcon
+								icon='teacher'
+								className='group-hover:text-red-600'
+							/>
+						</button>
+					</div>
+				),
+				meta: { headerClassName: 'min-w-[80px]' },
 			},
 
 			{
@@ -303,7 +335,7 @@ function ListDriver() {
 						<button
 							className='rounded-full px-2 py-2  w-8 h-8 flex justify-center items-center hover:bg-red-100 group'
 							onClick={() => {
-								dispatch(setLocalPOI(row));
+								dispatch(setDriver(row.original));
 								setEditDriverModal(true);
 							}}
 						>
@@ -315,7 +347,7 @@ function ListDriver() {
 						<button
 							className='rounded-full px-2 py-2  w-8 h-8 flex justify-center items-center hover:bg-red-100 group'
 							onClick={() => {
-								dispatch(setLocalPOI(row));
+								dispatch(setDriver(row.original));
 								setDeleteDriverModal(true);
 							}}
 						>
@@ -339,6 +371,19 @@ function ListDriver() {
 		}
 	};
 
+	const handleSend = (driver) => {
+		dispatch(handleSendJobs(driver?.id));
+	};
+	const handleShow = (driver) => {
+		dispatch(handleShowAllJobs(driver?.id, 0));
+	};
+	const handleHvs = (driver) => {
+		dispatch(handleShowHvsJobs(driver?.id, 0));
+	};
+	const handleLock = (driver) => {
+		dispatch(handleLockJobs(driver?.id, 0));
+	};
+
 	const handleClose = () => {
 		if (registerDriverModal) {
 			setRegisterDriverModal(false);
@@ -354,6 +399,10 @@ function ListDriver() {
 			return;
 		}
 	};
+
+	useEffect(() => {
+		dispatch(refreshAllDrivers());
+	}, [dispatch]);
 
 	return (
 		<Fragment>
@@ -459,7 +508,7 @@ function ListDriver() {
 							<div className='card-body'>
 								<DataGrid
 									columns={columns}
-									data={driversData}
+									data={filteredDriver}
 									rowSelection={true}
 									onRowSelectionChange={handleRowSelection}
 									pagination={{ size: 10 }}
