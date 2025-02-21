@@ -43,7 +43,6 @@ export function refreshNotifications() {
 	return async (dispatch) => {
 		try {
 			const response = await getNotifications();
-			console.log(response);
 
 			if (response.status === 'success') {
 				const resultArray = Object.keys(response)
@@ -51,7 +50,7 @@ export function refreshNotifications() {
 					.map((key) => response[key]);
 
 				const webNotificationsArray = resultArray.filter(
-					(data) => data?.event === 3
+					(data) => data?.event === 3 || data?.event === 4 || data?.event === 5
 				);
 				dispatch(setALLNotifications(resultArray));
 				dispatch(setWebNotifications(webNotificationsArray));

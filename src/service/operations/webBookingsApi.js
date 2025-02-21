@@ -2,14 +2,16 @@
 
 // import { sendLogs } from '../../utils/getLogs';
 import axios from 'axios';
-import { handlePostReq, setHeaders } from '../apiRequestHandler';
+import { handleGetReq, handlePostReq, setHeaders } from '../apiRequestHandler';
 import { webBookingEndpoints } from '../apis';
 
 const {
 	GET_WEB_BOOKINGS,
+	GET_WEB_CHANGE_REQUEST,
 	ACCEPT_WEB_BOOKING,
 	REJECT_WEB_BOOKING,
 	GET_DURATION,
+	CANCEL_BOOKING,
 } = webBookingEndpoints;
 export async function getWebBookings() {
 	// Fetch current user details using token
@@ -34,7 +36,26 @@ export async function getWebBookings() {
 		return response;
 	}
 }
+export async function getAmendRequests() {
+	// Fetch current user details using token
+	const response = await handleGetReq(GET_WEB_CHANGE_REQUEST);
 
+	console.log('GET AMEND WEB REQUESTS API RESPONSE.........', response);
+
+	if (response.status === 'success') {
+		// sendLogs(
+		// 	{
+		// 		url: GET_WEB_BOOKINGS,
+		// 		reqBody: null,
+		// 		headers: setHeaders(),
+		// 		response: response,
+		// 	},
+		// 	'info'
+		// );
+		return response;
+	}
+	return response;
+}
 export async function getRejectedWebBookings() {
 	// Fetch current user details using token
 	const response = await handlePostReq(GET_WEB_BOOKINGS, {
@@ -141,4 +162,25 @@ export async function getDurationWebBookings(id) {
 		// );
 		return { data: response.data, status: 'success' };
 	}
+}
+
+export async function cancelBooking(data) {
+	// Fetch current user details using token
+	const response = await handlePostReq(CANCEL_BOOKING, data);
+
+	console.log('CANCEL BOOKING API RESPONSE.........', response);
+
+	if (response.status === 'success') {
+		// sendLogs(
+		//     {
+		//         url: CANCEL_BOOKING,
+		//         reqBody: data,
+		//         headers: setHeaders(),
+		//         response: response,
+		//     },
+		//     'info'
+		// );
+		return response;
+	}
+	return response;
 }

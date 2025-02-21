@@ -1,8 +1,9 @@
 /** @format */
 
 export * from './new-booking';
-export * from "./rejectedBookings";
-export * from "./acceptedBookings";
+export * from './rejectedBookings';
+export * from './acceptedBookings';
+export * from './amendmentBookings';
 export * from './airportRuns';
 export * from './auditBooking';
 export * from './searchBooking';

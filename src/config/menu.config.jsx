@@ -552,6 +552,10 @@ export const MENU_SIDEBAR = [
 						path: '/bookings/web-booking',
 					},
 					{
+						title: 'Amendment Requests',
+						path: '/bookings/amend-booking',
+					},
+					{
 						title: 'Accepted Requests',
 						path: '/bookings/accept-booking',
 					},

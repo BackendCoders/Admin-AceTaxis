@@ -81,9 +81,11 @@ export const billingAndPaymentEndpoints = {
 
 export const webBookingEndpoints = {
 	GET_WEB_BOOKINGS: `${BASE}/api/WeBooking/GetWebBookings`,
+	GET_WEB_CHANGE_REQUEST: `${BASE}/api/AdminUI/GetWebChangeRequests`,
 	ACCEPT_WEB_BOOKING: `${BASE}/api/WeBooking/Accept`,
 	REJECT_WEB_BOOKING: `${BASE}/api/WeBooking/Reject`,
 	GET_DURATION: (id) => `${BASE}/api/WeBooking/GetDuration?wid=${id}`,
+	CANCEL_BOOKING: `${BASE}/api/Bookings/Cancel`,
 };
 
 export const notificationEndpoints = {

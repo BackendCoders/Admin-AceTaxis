@@ -8,7 +8,7 @@ const DropdownNotificationsItem = ({ notification, markAsRead }) => {
 
 	// Extract user and document type from the message
 	const extractDetails = (msg) => {
-		if (event === 3)
+		if (event === 3 || event === 4 || event === 5)
 			return {
 				userName: 'Web Booking',
 				docType: '',
@@ -48,14 +48,16 @@ const DropdownNotificationsItem = ({ notification, markAsRead }) => {
 					>
 						{userName}
 					</Link>{' '}
-					{event === 3 ? '' : 'uploaded a new document: '}
+					{event === 3 || event === 4 || event === 5
+						? ''
+						: 'uploaded a new document: '}
 					<span className='text-primary'>{docType}</span>
 				</div>
 				<div className='text-xs text-gray-500'>
 					{new Date(dateTimeStamp).toLocaleString()}
 				</div>
 				<div className='text-xs text-gray-600'>
-					{event === 3 && <span>{msg}</span>}
+					{(event === 3 || event === 4 || event === 5) && <span>{msg}</span>}
 				</div>
 
 				{/* Extract and render document link */}
@@ -72,8 +74,10 @@ const DropdownNotificationsItem = ({ notification, markAsRead }) => {
 						</a>
 					)}
 
-					{event === 3 && (
-						<Link to='/bookings/web-booking'>
+					{(event === 3 || event === 4 || event === 5) && (
+						<Link
+							to={`${event === 3 ? '/bookings/web-booking' : '/bookings/amend-booking'}`}
+						>
 							<button className='btn btn-sm btn-primary'>View Bookings</button>
 						</Link>
 					)}
