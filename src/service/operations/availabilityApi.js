@@ -7,32 +7,11 @@ import { availabilityEndpoints } from '../apis';
 const {
 	GET_AVAILABILITY,
 	GET_AVAILABILITY_LOG,
-	GET_ALL_AVAILABILITY,
 	DELETE_AVAILABILITY,
 	SET_AVAILABILITY,
 	AVAILABILITY_REPORT,
 } = availabilityEndpoints;
 
-export async function getALLAvailability(userId) {
-	// Fetch current user details using token
-	const response = await handleGetReq(GET_ALL_AVAILABILITY(userId));
-
-	console.log('Get Availability API RESPONSE.........', response);
-
-	if (response.status === 'success') {
-		// sendLogs(
-		// 	{
-		// 		url: GET_AVAILABILITY,
-		// 		reqBody: null,
-		// 		headers: setHeaders(),
-		// 		response: response,
-		// 	},
-		// 	'info'
-		// );
-		return response;
-	}
-	return response;
-}
 export async function getAvailability(userId, date) {
 	// Fetch current user details using token
 	const response = await handleGetReq(GET_AVAILABILITY(userId, date));

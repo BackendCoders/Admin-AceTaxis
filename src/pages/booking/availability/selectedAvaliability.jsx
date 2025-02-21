@@ -76,7 +76,7 @@ const SelectedAvailabilityTable = ({ selectedDriver, selectedDate }) => {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<div className={`p-2 rounded-md text-center text-white `}>
-						{row.original.driver}
+						{row.original.availabilityType ? 'Unavailable' : 'Available'}
 					</div>
 				),
 				meta: { headerClassName: 'w-20 text-center' },
@@ -94,7 +94,7 @@ const SelectedAvailabilityTable = ({ selectedDriver, selectedDate }) => {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<div className={`p-2 rounded-md text-center text-gray-700`}>
-						{row.original.name}
+						{row.original.userId} - {row.original.fullName}
 					</div>
 				),
 				meta: { headerClassName: 'min-w-[200px] text-center' },
@@ -111,7 +111,7 @@ const SelectedAvailabilityTable = ({ selectedDriver, selectedDate }) => {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<div className={`p-2 rounded-md text-center text-gray-700`}>
-						{row.original.details}
+						{row.original.availableHours}
 					</div>
 				),
 				meta: { headerClassName: 'min-w-[180px] text-center' },
@@ -189,7 +189,7 @@ const SelectedAvailabilityTable = ({ selectedDriver, selectedDate }) => {
 	return (
 		<DataGrid
 			columns={columns}
-			data={availability}
+			data={availability[0]}
 			rowSelection={true}
 			onRowSelectionChange={handleRowSelection}
 			pagination={{ size: 5 }}

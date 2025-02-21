@@ -21,6 +21,7 @@ import {
 } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { useSelector } from 'react-redux';
+import isLightColor from '../../../utils/isLight';
 
 const AvailabilityTable = () => {
 	const { availability } = useSelector((state) => state.availability);
@@ -53,9 +54,13 @@ const AvailabilityTable = () => {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<div
-						className={`p-2 rounded-md text-center text-white ${row.original.color}`}
+						className={`p-2 rounded-md text-center`}
+						style={{
+							backgroundColor: row.original?.colorCode,
+							color: isLightColor(row.original?.colorCode) ? 'black' : 'white',
+						}}
 					>
-						{row.original.driver}
+						{row.original.userId}
 					</div>
 				),
 				meta: { headerClassName: 'w-20 text-center' },
@@ -73,7 +78,7 @@ const AvailabilityTable = () => {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<div className={`p-2 rounded-md text-center text-gray-700`}>
-						{row.original.name}
+						{row.original.fullName}
 					</div>
 				),
 				meta: { headerClassName: 'min-w-[200px] text-center' },
@@ -90,7 +95,7 @@ const AvailabilityTable = () => {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<div className={`p-2 rounded-md text-center text-gray-700`}>
-						{row.original.details}
+						{row.original.availableHours}
 					</div>
 				),
 				meta: { headerClassName: 'min-w-[180px] text-center' },
@@ -144,7 +149,7 @@ const AvailabilityTable = () => {
 	return (
 		<DataGrid
 			columns={columns}
-			data={availability}
+			data={availability[0]}
 			rowSelection={true}
 			onRowSelectionChange={handleRowSelection}
 			pagination={{ size: 5 }}
