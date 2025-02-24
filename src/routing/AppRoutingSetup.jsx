@@ -90,7 +90,7 @@ import {
 	CancelByRange,
 	Tariff,
 } from '@/pages/booking';
-import { UnAllocated, Allocated, Completed, Cancelled } from '@/pages/dispatch';
+import { UnAllocated } from '@/pages/dispatch';
 import { AuthPage } from '@/auth';
 import { Demo1Layout } from '@/layouts/demo1';
 import { ErrorsRouting } from '@/errors';
@@ -185,21 +185,21 @@ const AppRoutingSetup = () => {
 						element={<CardBookings />}
 					/>
 					<Route
-						path='/dispatch/unallocated-jobs'
+						path='/bookings/global-search'
 						element={<UnAllocated />}
 					/>
-					<Route
+					{/* <Route
 						path='/dispatch/allocated-jobs'
 						element={<Allocated />}
-					/>
-					<Route
+					/> */}
+					{/* <Route
 						path='/dispatch/cancelled-jobs'
 						element={<Cancelled />}
-					/>
-					<Route
+					/> */}
+					{/* <Route
 						path='/dispatch/completed-jobs'
 						element={<Completed />}
-					/>
+					/> */}
 					<Route
 						path='/localPOIs/list-local-Poi'
 						element={<ListLocalPoi />}

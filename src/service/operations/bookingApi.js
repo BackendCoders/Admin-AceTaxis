@@ -8,7 +8,9 @@ const {
 	CANCEL_BOOKING_DATE_RANGE,
 	GET_CARD_BOOKINGS,
 	SEND_REMINDER_CARD_PAYMENT,
+	ALLOCATE_BOOKING,
 	BOOKING_AUDIT,
+	BOOKING_STATUS,
 } = bookingsEndpoints;
 export async function cancelBookingByDateRange(data) {
 	// Fetch current user details using token
@@ -73,6 +75,46 @@ export async function sendReminderCardPayment(data) {
 	const response = await handlePostReq(SEND_REMINDER_CARD_PAYMENT, data);
 
 	console.log('SEND REMINDER BOOKING API RESPONSE.........', response);
+
+	if (response.status === 'success') {
+		// sendLogs(
+		// 	{
+		// 		url: GET_ALL_GPS,
+		// 		reqBody: null,
+		// 		headers: setHeaders(),
+		// 		response: response,
+		// 	},
+		// 	'info'
+		// );
+		return response;
+	}
+	return response;
+}
+
+export async function getBookingByStatus(date, scope, status) {
+	const response = await handlePostReq(BOOKING_STATUS(date, scope, status), {});
+	console.log('get booking by status response ---', response);
+
+	if (response.status === 'success') {
+		// sendLogs(
+		// 	{
+		// 		url: GET_LOCAL_POI2,
+		// 		reqBody: searchTerm,
+		// 		headers: setHeaders(),
+		// 		response: response,
+		// 	},
+		// 	'info'
+		// );
+		return response;
+	}
+	return response;
+}
+
+export async function allocateBooking(data) {
+	// Fetch current user details using token
+	const response = await handlePostReq(ALLOCATE_BOOKING, data);
+
+	console.log('ALLOCATE BOOKING API RESPONSE.........', response);
 
 	if (response.status === 'success') {
 		// sendLogs(

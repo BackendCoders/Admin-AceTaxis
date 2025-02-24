@@ -45,6 +45,9 @@ export const bookingsEndpoints = {
 	CANCEL_BOOKING_DATE_RANGE: `${BASE}/api/AdminUI/CancelBookingsInRange`,
 	SEND_REMINDER_CARD_PAYMENT: `${BASE}/api/AdminUI/SendCardPaymentReminder`,
 	BOOKING_AUDIT: (id) => `${BASE}/api/AdminUI/BookingAudit?bookingId=${id}`,
+	BOOKING_STATUS: (date, scope, status) =>
+		`${BASE}/api/AdminUI/BookingsByStatus?date=${date}&scope=${scope}${status ? `&status=${status}` : ''}`,
+	ALLOCATE_BOOKING: `${BASE}/api/Bookings/Allocate`,
 };
 
 export const gpsEndpoints = {

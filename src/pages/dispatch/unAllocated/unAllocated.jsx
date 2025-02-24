@@ -1,6 +1,6 @@
 /** @format */
 
-import { Fragment, useMemo, useState } from 'react';
+import { Fragment, useEffect, useMemo, useState } from 'react';
 import {
 	Toolbar,
 	ToolbarDescription,
@@ -32,110 +32,48 @@ import {
 	// DataGridRowSelect,
 } from '@/components';
 import { Input } from '@/components/ui/input';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+	refreshBookingsByStatus,
+	setBooking,
+	setBookingsByStatus,
+} from '../../../slices/bookingSlice';
+import RestoreOutlinedIcon from '@mui/icons-material/RestoreOutlined';
+import { AllocateBookingModal } from './allocateBookingModal';
 function UnAllocated() {
+	const dispatch = useDispatch();
+	const { bookingsByStatus } = useSelector((state) => state.booking);
 	const [searchInput, setSearchInput] = useState('');
 	const [date, setDate] = useState(new Date());
-	const driversData = useMemo(
-		() => [
-			{
-				driver: 10,
-				name: 'Alan Waistell',
-				details: '00:00 - 23:59',
-				color: 'bg-yellow-500',
-			},
-			{
-				driver: 13,
-				name: 'Lee Harrison',
-				details: '00:00 - 23:59',
-				color: 'bg-blue-300',
-			},
-			{
-				driver: 30,
-				name: 'Richard Elgar',
-				details: '07:30 - 17:30',
-				color: 'bg-red-400',
-			},
-			{
-				driver: 16,
-				name: 'James Owen',
-				details: '07:00 - 17:00 (+/-)',
-				color: 'bg-gray-700 text-white font-bold',
-			},
-			{
-				driver: 14,
-				name: 'Andrew James',
-				details: '07:30 - 17:30',
-				color: 'bg-green-500',
-			},
-			{
-				driver: 4,
-				name: 'Paul Barber',
-				details: '07:00 - 18:00',
-				color: 'bg-green-400',
-			},
-			{
-				driver: 12,
-				name: 'Chris Gray',
-				details: '07:00 - 16:00',
-				color: 'bg-blue-700 text-white font-bold',
-			},
-			{
-				driver: 5,
-				name: 'Mark Phillips',
-				details: '07:00 - 16:30',
-				color: 'bg-pink-500',
-			},
-			{
-				driver: 11,
-				name: 'Nigel Reynolds',
-				details: '07:00 - 17:00',
-				color: 'bg-gray-400',
-			},
-			{
-				driver: 2,
-				name: 'Kate Hall',
-				details: '07:00 - 22:30',
-				color: 'bg-purple-400',
-			},
-			{
-				driver: 8,
-				name: 'Peter Farrell',
-				details: '08:20 - 10:00',
-				color: 'bg-purple-200',
-			},
-			{
-				driver: 7,
-				name: 'Caroline Stimson',
-				details: '11:00 - 17:00',
-				color: 'bg-red-200',
-			},
-			{
-				driver: 6,
-				name: 'Rob Holton',
-				details: '07:00 - 22:00',
-				color: 'bg-blue-400',
-			},
-			{
-				driver: 31,
-				name: 'Bill Wood',
-				details: '16:00 - 17:00',
-				color: 'bg-red-300',
-			},
-			{
-				driver: 26,
-				name: 'Charles Farnham',
-				details: '07:00 - 17:00 (all routes)',
-				color: 'bg-blue-800 text-white font-bold',
-			},
-			{
-				driver: 18,
-				name: 'Jean Williams',
-				details: '07:30 - 09:15 (AM SR)',
-				color: 'bg-yellow-400',
-			},
-		],
-		[]
-	);
+	const [scope, setScope] = useState(3);
+	const [status, setStatus] = useState();
+	const [allocatedModal, setAllocatedModal] = useState(false);
+	console.log(bookingsByStatus);
+
+	// const handleClick = () => {
+	// 	dispatch(
+	// 		refreshBookingsByStatus(
+	// 			format(new Date(date), "yyyy-MM-dd'T'00:00:00'Z'"),
+	// 			scope,
+	// 			status || ''
+	// 		)
+	// 	);
+	// };
+
+	const handleClose = () => {
+		setAllocatedModal(false);
+	};
+
+	useEffect(() => {
+		// Agar status, scope ya date change hota hai to API call karega
+		dispatch(
+			refreshBookingsByStatus(
+				format(new Date(date), "yyyy-MM-dd'T'00:00:00'Z'"),
+				scope,
+				status || ''
+			)
+		);
+	}, [date, scope, status, dispatch]);
 
 	const ColumnInputFilter = ({ column }) => {
 		return (
@@ -148,8 +86,8 @@ function UnAllocated() {
 		);
 	};
 
-	const columns = useMemo(
-		() => [
+	const columns = useMemo(() => {
+		let baseColumns = [
 			{
 				accessorKey: 'bookingId',
 				header: ({ column }) => (
@@ -161,7 +99,7 @@ function UnAllocated() {
 				),
 				enableSorting: true,
 				cell: ({ row }) => (
-					<span className={`p-2 rounded-md`}>{row.original.bookingId}</span>
+					<span className={`p-2 rounded-md`}>{row.original.id}</span>
 				),
 				meta: { headerClassName: 'w-20' },
 			},
@@ -177,7 +115,16 @@ function UnAllocated() {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={`font-medium ${row.original.color}`}>
-						{row.original.date}
+						{row.original.pickupDateTime
+							? new Date(row.original.pickupDateTime).toLocaleDateString(
+									'en-GB'
+								) +
+								' ' +
+								row.original.pickupDateTime
+									.split('T')[1]
+									?.split('.')[0]
+									?.slice(0, 5)
+							: '-'}
 					</span>
 				),
 				meta: { headerClassName: 'min-w-[120px]' },
@@ -194,7 +141,7 @@ function UnAllocated() {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={`font-medium ${row.original.color}`}>
-						{row.original.pickUp}
+						{row.original.pickupAddress}, {row.original.pickupPostCode}
 					</span>
 				),
 				meta: { headerClassName: 'min-w-[200px]' },
@@ -211,7 +158,8 @@ function UnAllocated() {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={`font-medium ${row.original.color}`}>
-						{row.original.destination}
+						{row.original.destinationAddress},{' '}
+						{row.original.destinationPostCode}
 					</span>
 				),
 				meta: { headerClassName: 'min-w-[200px]' },
@@ -226,7 +174,9 @@ function UnAllocated() {
 				),
 				enableSorting: true,
 				cell: ({ row }) => (
-					<span className={row.original.color}>{row.original.passenger}</span>
+					<span className={row.original.color}>
+						{row.original.passengerName}
+					</span>
 				),
 				meta: { headerClassName: 'min-w-[80px]' },
 			},
@@ -240,12 +190,15 @@ function UnAllocated() {
 				),
 				enableSorting: true,
 				cell: ({ row }) => (
-					<span className={row.original.color}>{row.original.pax}</span>
+					<span className={row.original.color}>{row.original.passengers}</span>
 				),
 				meta: { headerClassName: 'min-w-[80px]' },
 			},
+		];
 
-			{
+		if (status === 0) {
+			// **Unallocated Jobs** ➝ Show "Allocate" Column
+			baseColumns.push({
 				accessorKey: 'allocate',
 				header: ({ column }) => (
 					<DataGridColumnHeader
@@ -254,8 +207,14 @@ function UnAllocated() {
 					/>
 				),
 				enableSorting: true,
-				cell: () => (
-					<button className='rounded-full px-2 py-2  w-8 h-8 flex justify-center items-center hover:bg-red-100 group'>
+				cell: ({ row }) => (
+					<button
+						className='rounded-full px-2 py-2  w-8 h-8 flex justify-center items-center hover:bg-red-100 group'
+						onClick={() => {
+							dispatch(setBooking(row.original));
+							setAllocatedModal(true);
+						}}
+					>
 						<KeenIcon
 							icon='plus'
 							className='group-hover:text-red-600'
@@ -263,10 +222,110 @@ function UnAllocated() {
 					</button>
 				),
 				meta: { headerClassName: 'min-w-[80px]' },
-			},
-		],
-		[]
-	);
+			});
+		} else if (status === 1 || status === 3) {
+			baseColumns.push({
+				accessorKey: 'driver',
+				header: ({ column }) => (
+					<DataGridColumnHeader
+						title='Driver #'
+						column={column}
+					/>
+				),
+				enableSorting: true,
+				cell: ({ row }) => (
+					<span className={`font-medium ${row.original.color}`}>
+						{row.original.userId ? row.original.userId : '-'}
+					</span>
+				),
+				meta: { headerClassName: 'min-w-[150px]' },
+			});
+			// **Allocated & Completed Jobs** ➝ Show "Last Updated" Column
+			baseColumns.push({
+				accessorKey: 'lastUpdated',
+				header: ({ column }) => (
+					<DataGridColumnHeader
+						title='Last Updated'
+						column={column}
+					/>
+				),
+				enableSorting: true,
+				cell: ({ row }) => (
+					<span className={`font-medium ${row.original.color}`}>
+						{row.original.dateUpdated
+							? new Date(row.original.dateUpdated).toLocaleDateString('en-GB') +
+								' ' +
+								new Date(row.original.dateUpdated).toLocaleTimeString('en-GB')
+							: '-'}
+					</span>
+				),
+				meta: { headerClassName: 'min-w-[150px]' },
+			});
+		} else if (status === 2) {
+			baseColumns.push({
+				accessorKey: 'cancelled',
+				header: ({ column }) => (
+					<DataGridColumnHeader
+						title='Cancelled By'
+						column={column}
+					/>
+				),
+				enableSorting: true,
+				cell: ({ row }) => (
+					<span className={`font-medium ${row.original.color}`}>
+						{row.original.cancelledByName ? row.original.cancelledByName : '-'}
+					</span>
+				),
+				meta: { headerClassName: 'min-w-[150px]' },
+			});
+			baseColumns.push({
+				accessorKey: 'lastUpdated',
+				header: ({ column }) => (
+					<DataGridColumnHeader
+						title='Last Updated'
+						column={column}
+					/>
+				),
+				enableSorting: true,
+				cell: ({ row }) => (
+					<span className={`font-medium ${row.original.color}`}>
+						{row.original.dateUpdated
+							? new Date(row.original.dateUpdated).toLocaleDateString('en-GB') +
+								' ' +
+								new Date(row.original.dateUpdated).toLocaleTimeString('en-GB')
+							: '-'}
+					</span>
+				),
+				meta: { headerClassName: 'min-w-[150px]' },
+			});
+			// **Cancelled Jobs** ➝ Show "Restore" Column
+			baseColumns.push({
+				accessorKey: 'restore',
+				header: ({ column }) => (
+					<DataGridColumnHeader
+						title='Restore'
+						column={column}
+					/>
+				),
+				enableSorting: false,
+				cell: () => (
+					<button className='rounded-full px-2 py-2  w-8 h-8 flex justify-center items-center hover:bg-red-100 group'>
+						{/* <KeenIcon
+							icon='plus'
+							className='group-hover:text-red-600'
+						/> */}
+						<RestoreOutlinedIcon
+							className='group-hover:text-red-600'
+							sx={{ fontSize: '14px' }}
+						/>
+					</button>
+				),
+				meta: { headerClassName: 'min-w-[120px]' },
+			});
+		}
+
+		return baseColumns;
+	}, [status]);
 
 	const handleRowSelection = (state) => {
 		const selectedRowIds = Object.keys(state);
@@ -274,6 +333,25 @@ function UnAllocated() {
 			alert(`Selected Drivers: ${selectedRowIds.join(', ')}`);
 		}
 	};
+
+	const filteredBookings = useMemo(() => {
+		return bookingsByStatus.filter((booking) => {
+			const search = searchInput.toLowerCase();
+			return (
+				booking.id?.toString().includes(search) || // Search by Booking ID
+				booking.passengerName?.toLowerCase().includes(search) || // Search by Passenger Name
+				booking.pickupAddress?.toLowerCase().includes(search) || // Search by Pickup Address
+				booking.destinationAddress?.toLowerCase().includes(search) // Search by Destination
+			);
+		});
+	}, [bookingsByStatus, searchInput]);
+
+	useEffect(() => {
+		return () => {
+			dispatch(setBookingsByStatus([])); // Clear table data
+		};
+	}, [dispatch]);
+
 	return (
 		<Fragment>
 			<div className='pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1580px] w-full'>
@@ -281,7 +359,17 @@ function UnAllocated() {
 					<ToolbarHeading>
 						<ToolbarPageTitle />
 						<ToolbarDescription>
-							Showing {'23'} Unallocated Jobs{' '}
+							Showing {bookingsByStatus?.length}{' '}
+							{status === 0
+								? 'Unallocated'
+								: status === 1
+									? 'Allocated'
+									: status === 2
+										? 'Cancelled'
+										: status === 3
+											? 'Completed'
+											: ''}{' '}
+							Jobs{' '}
 						</ToolbarDescription>
 					</ToolbarHeading>
 				</Toolbar>
@@ -343,7 +431,10 @@ function UnAllocated() {
 											</PopoverContent>
 										</Popover>
 
-										<Select defaultValue='all'>
+										<Select
+											value={scope}
+											onValueChange={(value) => setScope(value)}
+										>
 											<SelectTrigger
 												className='w-28'
 												size='sm'
@@ -352,34 +443,72 @@ function UnAllocated() {
 												<SelectValue placeholder='Select' />
 											</SelectTrigger>
 											<SelectContent className='w-32'>
-												<SelectItem value='all'>All</SelectItem>
-												<SelectItem value='cash'>Cash</SelectItem>
-												<SelectItem value='card'>Card</SelectItem>
-												<SelectItem value='account'>Account</SelectItem>
-												<SelectItem value='rank'>Rank</SelectItem>
+												<SelectItem value={3}>All</SelectItem>
+												<SelectItem value={0}>Cash</SelectItem>
+												<SelectItem value={4}>Card</SelectItem>
+												<SelectItem value={1}>Account</SelectItem>
+												<SelectItem value={2}>Rank</SelectItem>
 											</SelectContent>
 										</Select>
 
-										<button
+										<Select
+											value={status}
+											onValueChange={(value) => setStatus(value)}
+										>
+											<SelectTrigger
+												className='w-28'
+												size='sm'
+												style={{ height: '40px' }}
+											>
+												<SelectValue placeholder='Select' />
+											</SelectTrigger>
+											<SelectContent className='w-32'>
+												<SelectItem value={0}>Unallocated</SelectItem>
+												<SelectItem value={1}>Allocated</SelectItem>
+												<SelectItem value={2}>Cancelled</SelectItem>
+												<SelectItem value={3}>Completed</SelectItem>
+											</SelectContent>
+										</Select>
+
+										{/* <button
 											className='btn btn-sm btn-outline btn-primary'
 											style={{ height: '40px' }}
+											onClick={handleClick}
+											disabled={loading}
 										>
-											<KeenIcon icon='magnifier' /> Search
-										</button>
+											<KeenIcon icon='magnifier' />{' '}
+											{loading ? 'Searching...' : 'Search'}
+										</button> */}
 									</div>
 								</div>
 							</div>
 							<div className='card-body'>
-								<DataGrid
-									columns={columns}
-									data={driversData}
-									rowSelection={true}
-									onRowSelectionChange={handleRowSelection}
-									pagination={{ size: 10 }}
-									sorting={[{ id: 'driver', desc: false }]}
-									layout={{ card: true }}
-								/>
+								{filteredBookings.length ? (
+									<DataGrid
+										columns={columns}
+										data={filteredBookings}
+										rowSelection={true}
+										onRowSelectionChange={handleRowSelection}
+										pagination={{ size: 10 }}
+										sorting={[{ id: 'bookingId', desc: false }]}
+										layout={{ card: true }}
+									/>
+								) : (
+									<div className='text-center py-10 text-gray-500'>
+										No data found
+									</div>
+								)}
 							</div>
+
+							{allocatedModal && (
+								<AllocateBookingModal
+									open={allocatedModal}
+									onOpenChange={handleClose}
+									date={date}
+									scope={scope}
+									status={status}
+								/>
+							)}
 						</div>
 					</div>
 				</div>
