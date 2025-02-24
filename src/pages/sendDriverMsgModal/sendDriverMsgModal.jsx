@@ -15,19 +15,20 @@ import clsx from 'clsx';
 import { useDispatch, useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
 import { useEffect, useState } from 'react';
-import { refreshDrivers } from '../../slices/dashboardSlice';
 import isLightColor from '../../utils/isLight';
 import { KeenIcon } from '@/components';
 import {
 	sendDirectMsgToDriver,
 	sendGlobalMsgToDriver,
 } from '../../service/operations/dashboardApi';
+import { refreshAllDrivers } from '../../slices/driverSlice';
 
 function SendDriverMsgModal({ open, onOpenChange }) {
 	const dispatch = useDispatch();
-	const { isDirectMsgModal, isGlobalMsgModal, drivers } = useSelector(
+	const { isDirectMsgModal, isGlobalMsgModal } = useSelector(
 		(state) => state.dashboard
 	);
+	const { drivers } = useSelector((state) => state.driver);
 	const [searchInput, setSearchInput] = useState('');
 	const [selectedDrivers, setSelectedDrivers] = useState([]);
 	console.log('drivers', drivers);
@@ -88,7 +89,7 @@ function SendDriverMsgModal({ open, onOpenChange }) {
 
 	useEffect(() => {
 		if (isDirectMsgModal) {
-			dispatch(refreshDrivers());
+			dispatch(refreshAllDrivers());
 		}
 	}, [dispatch, isDirectMsgModal]);
 

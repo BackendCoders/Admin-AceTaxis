@@ -63,7 +63,6 @@ export const dashBoardEndpoints = {
 };
 
 export const driverEarningEndpoints = {
-	GET_ALL_DRIVERS: `${BASE}/api/UserProfile/ListUsers`,
 	GET_DRIVER_EARNINGS_REPORT: `${BASE}/api/AdminUI/DriverEarningsReport`,
 };
 

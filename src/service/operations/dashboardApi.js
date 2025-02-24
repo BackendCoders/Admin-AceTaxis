@@ -6,31 +6,12 @@ import { dashBoardEndpoints, driverEarningEndpoints } from '../apis';
 
 const { GET_DASHBOARD, SEND_DIRECT_MSG_TO_DRIVER, SEND_GLOBAL_MSG_TO_DRIVER } =
 	dashBoardEndpoints;
-const { GET_DRIVER_EARNINGS_REPORT, GET_ALL_DRIVERS } = driverEarningEndpoints;
+const { GET_DRIVER_EARNINGS_REPORT } = driverEarningEndpoints;
 
 export async function dashboard() {
 	const response = await handleGetReq(GET_DASHBOARD);
 
 	console.log('GET DASHBOARD API RESPONSE.........', response);
-
-	if (response.status === 'success') {
-		// sendLogs(
-		// 	{
-		// 		url: GET_DASHBOARD,
-		// 		reqBody: null,
-		// 		headers: setHeaders(),
-		// 		response: response,
-		// 	},
-		// 	'info'
-		// );
-		return response;
-	}
-}
-
-export async function getAllDrivers() {
-	const response = await handleGetReq(GET_ALL_DRIVERS);
-
-	console.log('GET ALL DRIVERS API RESPONSE.........', response);
 
 	if (response.status === 'success') {
 		// sendLogs(

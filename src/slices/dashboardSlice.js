@@ -1,12 +1,11 @@
 /** @format */
 
 import { createSlice } from '@reduxjs/toolkit';
-import { dashboard, getAllDrivers } from '../service/operations/dashboardApi';
+import { dashboard } from '../service/operations/dashboardApi';
 
 const initialState = {
 	loading: false,
 	data: null,
-	drivers: [],
 	driverWeeksEarnings: [],
 	driverDaysEarnings: [],
 	jobsBookedToday: [],
@@ -26,9 +25,6 @@ const dashboardSlice = createSlice({
 		},
 		setData(state, action) {
 			state.data = action.payload;
-		},
-		setDrivers(state, action) {
-			state.drivers = action.payload;
 		},
 		setDriverWeeksEarnings(state, action) {
 			state.driverWeeksEarnings = action.payload;
@@ -78,21 +74,6 @@ export function refreshDashboard() {
 	};
 }
 
-export function refreshDrivers() {
-	return async (dispatch) => {
-		try {
-			const response = await getAllDrivers();
-			console.log(response);
-
-			if (response.status === 'success') {
-				dispatch(setDrivers(response?.users));
-			}
-		} catch (error) {
-			console.error('Failed to refresh drivers:', error);
-		}
-	};
-}
-
 export const {
 	setToken,
 	setData,
@@ -104,6 +85,5 @@ export const {
 	setSmsHeartBeat,
 	setIsDirectMsgModal,
 	setIsGlobalMsgModal,
-	setDrivers,
 } = dashboardSlice.actions;
 export default dashboardSlice.reducer;
