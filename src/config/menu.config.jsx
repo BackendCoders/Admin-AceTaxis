@@ -763,6 +763,11 @@ export const MENU_SIDEBAR = [
 		// 	disabled: true,
 		// },
 	},
+	{
+		title: 'Drivers Expenses',
+		icon: 'two-credit-cart',
+		path: '/driver-expenses',
+	},
 
 	{
 		title: 'Tariffs',

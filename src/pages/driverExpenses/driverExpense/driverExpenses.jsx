@@ -24,35 +24,41 @@ import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { KeenIcon } from '@/components';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-	refreshAvailabilityLog,
-	setAvailabilityLog,
-} from '../../../slices/availabilitySlice';
 import toast from 'react-hot-toast';
+import {
+	refreshDriversExpenses,
+	setDriverExpenses,
+} from '../../../slices/driverSlice';
 
-const AvailabilityLogs = () => {
+const DriverExpenses = () => {
 	const dispatch = useDispatch();
-	const { availabilityLog, loading } = useSelector(
-		(state) => state.availability
-	);
-	const [driverNumber, setDriverNumber] = useState();
-	const [date, setDate] = useState(new Date());
+	const {
+		driverExpenses: { data, total },
+		loading,
+	} = useSelector((state) => state.driver);
+	const [driverNumber, setDriverNumber] = useState(0);
+	const [dateRange, setDateRange] = useState({
+		from: new Date(), // December 28, 2024
+		to: new Date(), // January 28, 2025
+	});
 
 	const handleSearch = async () => {
 		if (!driverNumber?.trim()) {
-			toast.error('Please enter a driver ID');
-			dispatch(setAvailabilityLog([])); // Reset table if input is empty
+			toast.error('Please enter a Driver Id');
+			dispatch(setDriverExpenses({})); // Reset table if input is empty
 			return;
 		}
-		console.log(new Date(date));
-		dispatch(
-			refreshAvailabilityLog(driverNumber, format(new Date(date), 'yyyy-MM-dd'))
-		);
+		const payload = {
+			userId: Number(driverNumber),
+			from: format(new Date(dateRange?.from), 'yyyy-MM-dd'),
+			to: format(new Date(dateRange?.to), 'yyyy-MM-dd'),
+		};
+		dispatch(refreshDriversExpenses(payload));
 	};
 
 	useEffect(() => {
 		return () => {
-			dispatch(setAvailabilityLog([])); // Clear table data
+			dispatch(setDriverExpenses({})); // Clear table data
 		};
 	}, [dispatch]);
 
@@ -81,20 +87,20 @@ const AvailabilityLogs = () => {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={`font-medium ${row.original.color}`}>
-						{row.original.forDate
-							? new Date(row.original.forDate).toLocaleDateString('en-GB') +
+						{row.original.date
+							? new Date(row.original.date).toLocaleDateString('en-GB') +
 								' ' +
-								row.original.forDate.split('T')[1]?.split('.')[0]?.slice(0, 5)
+								row.original.date.split('T')[1]?.split('.')[0]?.slice(0, 5)
 							: '-'}
 					</span>
 				),
 				meta: { headerClassName: 'min-w-[120px]' },
 			},
 			{
-				accessorKey: 'theChange',
+				accessorKey: 'description',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='The Change'
+						title='Description'
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -102,16 +108,16 @@ const AvailabilityLogs = () => {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={`font-medium ${row.original.color}`}>
-						{row.original.theChange ? row.original.theChange : '-'}
+						{row.original.description ? row.original.description : '-'}
 					</span>
 				),
 				meta: { headerClassName: 'min-w-[200px]' },
 			},
 			{
-				accessorKey: 'changedOn',
+				accessorKey: 'category',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Changed On'
+						title='Category'
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -119,20 +125,16 @@ const AvailabilityLogs = () => {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={`font-medium ${row.original.color}`}>
-						{row.original.changedOn
-							? new Date(row.original.changedOn).toLocaleDateString('en-GB') +
-								' ' +
-								row.original.changedOn.split('T')[1]?.split('.')[0]?.slice(0, 5)
-							: '-'}
+						{row.original.category ? row.original.category : '-'}
 					</span>
 				),
 				meta: { headerClassName: 'min-w-[200px]' },
 			},
 			{
-				accessorKey: 'Changed by User',
+				accessorKey: 'amount',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Changed by User'
+						title='Amount'
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -140,7 +142,7 @@ const AvailabilityLogs = () => {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={`font-medium ${row.original.color}`}>
-						{row.original.changeBy ? row.original.changeBy : '-'}
+						{row.original.amount ? row.original.amount : '-'}
 					</span>
 				),
 				meta: { headerClassName: 'min-w-[80px]' },
@@ -180,9 +182,9 @@ const AvailabilityLogs = () => {
 					<ToolbarHeading>
 						<ToolbarPageTitle />
 						<ToolbarDescription>
-							{availabilityLog.length > 0
-								? `Showing ${availabilityLog.length} Availability Logs for Driver #: ${driverNumber}`
-								: 'Search for Availability Log'}
+							{data?.length > 0
+								? `Showing £ ${total?.toFixed(2)} Total Driver Expense for Driver #: ${driverNumber}`
+								: 'Search for Driver Expense'}
 						</ToolbarDescription>
 					</ToolbarHeading>
 				</Toolbar>
@@ -195,7 +197,7 @@ const AvailabilityLogs = () => {
 								<div className='flex flex-wrap gap-2 lg:gap-5'>
 									<div className='flex gap-2'>
 										<label
-											className='input input-sm'
+											className='input input-sm w-36'
 											style={{ height: '40px' }}
 										>
 											<KeenIcon icon='magnifier' />
@@ -208,53 +210,44 @@ const AvailabilityLogs = () => {
 										</label>
 
 										<Popover>
-											<PopoverTrigger asChild>
-												<div className='relative'>
-													<button
-														id='date'
-														className={cn(
-															'input data-[state=open]:border-primary',
-															!date && 'text-muted-foreground'
-														)}
-														style={{ width: '13rem' }}
-													>
-														<KeenIcon
-															icon='calendar'
-															className='-ms-0.5'
-														/>
-														{date ? (
-															format(date, 'LLL dd, y')
-														) : (
-															<span>Pick a date</span>
-														)}
-													</button>
-													{date && (
-														<button
-															onClick={(e) => {
-																e.stopPropagation(); // Prevent closing popover
-																setDate(undefined); // Clear date
-															}}
-															className='absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700'
-														>
-															<KeenIcon
-																icon='cross-circle'
-																className=''
-															/>
-														</button>
+											<PopoverTrigger
+												asChild
+												className='h-10'
+											>
+												<button
+													className={cn(
+														'btn btn-sm btn-light data-[state=open]:bg-light-active',
+														!dateRange && 'text-gray-400'
 													)}
-												</div>
+												>
+													<KeenIcon
+														icon='calendar'
+														className='me-0.5'
+													/>
+													{dateRange?.from ? (
+														dateRange.to ? (
+															<>
+																{format(dateRange.from, 'dd/MM/yyyy')} →{' '}
+																{format(dateRange.to, 'dd/MM/yyyy')}
+															</>
+														) : (
+															format(dateRange.from, 'dd/MM/yyyy')
+														)
+													) : (
+														<span>Pick a date range</span>
+													)}
+												</button>
 											</PopoverTrigger>
 											<PopoverContent
 												className='w-auto p-0'
-												align='start'
+												align='end'
 											>
 												<Calendar
+													mode='range'
+													selected={dateRange}
+													onSelect={setDateRange}
+													numberOfMonths={2}
 													initialFocus
-													mode='single' // Single date selection
-													defaultMonth={date}
-													selected={date}
-													onSelect={setDate}
-													numberOfMonths={1}
 												/>
 											</PopoverContent>
 										</Popover>
@@ -272,10 +265,10 @@ const AvailabilityLogs = () => {
 								</div>
 							</div>
 							<div className='card-body'>
-								{availabilityLog.length > 0 ? (
+								{data?.length > 0 ? (
 									<DataGrid
 										columns={columns}
-										data={availabilityLog}
+										data={data}
 										rowSelection={true}
 										onRowSelectionChange={handleRowSelection}
 										pagination={{ size: 10 }}
@@ -296,4 +289,4 @@ const AvailabilityLogs = () => {
 	);
 };
 
-export { AvailabilityLogs };
+export { DriverExpenses };

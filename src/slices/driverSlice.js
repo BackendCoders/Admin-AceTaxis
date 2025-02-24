@@ -2,6 +2,7 @@
 
 import { createSlice } from '@reduxjs/toolkit';
 import {
+	driverExpenses,
 	driverLockout,
 	driverResendLogin,
 	driverShowAllJobs,
@@ -14,6 +15,7 @@ const initialState = {
 	loading: false,
 	drivers: [],
 	driver: null,
+	driverExpenses: {},
 };
 
 const driverSlice = createSlice({
@@ -28,6 +30,9 @@ const driverSlice = createSlice({
 		},
 		setDriver(state, action) {
 			state.driver = action.payload;
+		},
+		setDriverExpenses(state, action) {
+			state.driverExpenses = action.payload;
 		},
 	},
 });
@@ -111,6 +116,27 @@ export function handleSendJobs(id) {
 	};
 }
 
-export const { setLoading, setDrivers, setDriver } = driverSlice.actions;
+export function refreshDriversExpenses(data) {
+	return async (dispatch) => {
+		try {
+			const response = await driverExpenses(data);
+			console.log(response);
+
+			if (response.status === 'success') {
+				dispatch(
+					setDriverExpenses({
+						data: response.data || [],
+						total: response.total || 0,
+					})
+				);
+			}
+		} catch (error) {
+			console.error('Failed to refresh drivers Expense:', error);
+		}
+	};
+}
+
+export const { setLoading, setDrivers, setDriver, setDriverExpenses } =
+	driverSlice.actions;
 
 export default driverSlice.reducer;

@@ -410,7 +410,9 @@ function ListDriver() {
 				<Toolbar>
 					<ToolbarHeading>
 						<ToolbarPageTitle />
-						<ToolbarDescription>Showing {'23'} Drivers </ToolbarDescription>
+						<ToolbarDescription>
+							Showing {drivers?.length} Drivers{' '}
+						</ToolbarDescription>
 					</ToolbarHeading>
 					<ToolbarActions>
 						<button
@@ -512,7 +514,7 @@ function ListDriver() {
 									rowSelection={true}
 									onRowSelectionChange={handleRowSelection}
 									pagination={{ size: 10 }}
-									sorting={[{ id: 'driver', desc: false }]}
+									sorting={[{ id: 'id', desc: false }]}
 									layout={{ card: true }}
 								/>
 							</div>

@@ -351,7 +351,7 @@ function AmendmentBookings() {
 									rowSelection={true}
 									onRowSelectionChange={handleRowSelection}
 									pagination={{ size: 10 }}
-									sorting={[{ id: 'driver', desc: false }]}
+									sorting={[{ id: 'bookingId', desc: false }]}
 									layout={{ card: true }}
 								/>
 							</div>

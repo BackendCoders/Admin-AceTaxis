@@ -315,7 +315,7 @@ const AvailabilityReport = () => {
 											columns={columns}
 											data={formattedDataByTab}
 											pagination={{ size: 10 }}
-											sorting={[{ id: 'driver', desc: false }]}
+											sorting={[{ id: 'userId', desc: false }]}
 											layout={{ card: true }}
 										/>
 									</div>

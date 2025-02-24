@@ -85,7 +85,7 @@ const SelectedAvailabilityTable = ({ selectedDriver, selectedDate }) => {
 				accessorKey: 'driver',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Driver '
+						title='Driver'
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 						className={` justify-center`}

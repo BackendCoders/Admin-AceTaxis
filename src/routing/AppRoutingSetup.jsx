@@ -113,6 +113,7 @@ import {
 } from '@/pages/billing&Payments';
 import { DriverEarningReport } from '@/pages/driverEarningReport';
 import { CompanySetting, MsgSettings } from '@/pages/bookingSettings';
+import { DriverExpenses } from '@/pages/driverExpenses';
 const AppRoutingSetup = () => {
 	return (
 		<Routes>
@@ -211,6 +212,10 @@ const AppRoutingSetup = () => {
 					<Route
 						path='/drivers/list-driver'
 						element={<ListDriver />}
+					/>
+					<Route
+						path='/driver-expenses'
+						element={<DriverExpenses />}
 					/>
 
 					<Route
