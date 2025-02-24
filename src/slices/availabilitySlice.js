@@ -9,6 +9,7 @@ import {
 
 const initialState = {
 	loading: false,
+	allAvailability: [],
 	availability: [],
 	availabilityLog: [],
 	availabilityReportData: {},
@@ -25,6 +26,9 @@ const availabilitySlice = createSlice({
 	reducers: {
 		setLoading: (state, action) => {
 			state.loading = action.payload;
+		},
+		setALLAvailability: (state, action) => {
+			state.allAvailability = action.payload;
 		},
 		setAvailability: (state, action) => {
 			state.availability = action.payload;
@@ -64,7 +68,11 @@ export function refreshAvailability(userId, date) {
 					.filter((key) => key !== 'status') // Exclude 'status' field
 					.map((key) => response[key]);
 
-				dispatch(setAvailability(availabilityArray));
+				if (userId === 0) {
+					dispatch(setALLAvailability(availabilityArray));
+				} else {
+					dispatch(setAvailability(availabilityArray));
+				}
 			}
 		} catch (error) {
 			console.error('Failed to refresh availability:', error);
@@ -118,6 +126,7 @@ export function refreshAvailabilityReport(payload) {
 
 export const {
 	setAvailability,
+	setALLAvailability,
 	setLoading,
 	setAvailabilityLog,
 	setAvailabilityReportData,

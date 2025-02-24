@@ -24,9 +24,9 @@ import { useSelector } from 'react-redux';
 import isLightColor from '../../../utils/isLight';
 
 const AvailabilityTable = () => {
-	const { availability } = useSelector((state) => state.availability);
+	const { allAvailability } = useSelector((state) => state.availability);
 
-	console.log('availability', availability);
+	console.log('availability', allAvailability);
 
 	const ColumnInputFilter = ({ column }) => {
 		return (
@@ -149,7 +149,7 @@ const AvailabilityTable = () => {
 	return (
 		<DataGrid
 			columns={columns}
-			data={availability[0]}
+			data={allAvailability[0]}
 			rowSelection={true}
 			onRowSelectionChange={handleRowSelection}
 			pagination={{ size: 5 }}
