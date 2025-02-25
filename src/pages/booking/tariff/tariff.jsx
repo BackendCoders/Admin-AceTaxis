@@ -4,43 +4,21 @@
  * @format
  */
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
 	DataGrid,
 	DataGridColumnHeader,
 	// useDataGrid,
 } from '@/components';
 import { Input } from '@/components/ui/input';
+import {
+	getTariffConfig,
+	setTariffConfig,
+} from '../../../service/operations/settingsApi';
+import toast from 'react-hot-toast';
 
 const Tariff = () => {
-	const [tariffData, setTariffData] = useState([
-		{
-			id: 1,
-			name: 'Tariff 1 : Day Rate',
-			description: 'Chargeable from 7am until 10pm.',
-			initialCharge: 0,
-			firstMileCharge: 4.4,
-			additionalMileCharge: 2.8,
-		},
-		{
-			id: 2,
-			name: 'Tariff 2 : Day Rate',
-			description:
-				'Chargeable from 10pm until 7am and on Sundays and Bank Holidays except where tariff 3 applies.',
-			initialCharge: 0,
-			firstMileCharge: 6.6,
-			additionalMileCharge: 4.2,
-		},
-		{
-			id: 3,
-			name: 'Tariff 3 : Day Rate',
-			description:
-				"Chargeable on Christmas Day, Boxing Day, New Year's Day. Plus from 6pm on Christmas Eve and New Year's Eve.",
-			initialCharge: 0,
-			firstMileCharge: 8.8,
-			additionalMileCharge: 5.6,
-		},
-	]);
+	const [tariffData, setTariffData] = useState([]);
 
 	const handleInputChange = (id, field, value) => {
 		const updatedTariffs = tariffData.map((tariff) =>
@@ -173,9 +151,43 @@ const Tariff = () => {
 		[tariffData]
 	);
 
-	const handleUpdateTariffs = () => {
-		alert('Tariff updated successfully!');
+	const handleUpdateTariffs = async () => {
+		try {
+			console.log('updated tariff data', tariffData);
+			const response = await setTariffConfig(tariffData);
+			if (response.status === 'success') {
+				toast.success('Tariff Updated Successfully');
+			} else {
+				toast.error('Unable to update Tariff');
+				console.error('Failed to update Tariff Data:', response.message);
+			}
+		} catch (error) {
+			console.log(error);
+			toast.error('Unable to update Tariff');
+			console.error('Failed to update Tariff Data:', error.message);
+		}
 	};
+
+	useEffect(() => {
+		async function getTariff() {
+			try {
+				const response = await getTariffConfig();
+				if (response.status === 'success') {
+					const tariffArray = Object.keys(response)
+						.filter((key) => key !== 'status')
+						.map((key) => response[key]);
+					setTariffData(tariffArray);
+				} else {
+					toast.error('Unable to fetch Tariff Data');
+					console.error('Failed to fetch Tariff Data:', response.message);
+				}
+			} catch (error) {
+				console.log(error);
+			}
+		}
+
+		getTariff();
+	}, []);
 
 	return (
 		<div className='pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1580px] w-full'>
