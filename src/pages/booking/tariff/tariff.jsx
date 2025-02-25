@@ -19,12 +19,14 @@ import toast from 'react-hot-toast';
 
 const Tariff = () => {
 	const [tariffData, setTariffData] = useState([]);
-
+	const [lastUpdatedTariff, setLastUpdatedTariff] = useState(null);
 	const handleInputChange = (id, field, value) => {
 		const updatedTariffs = tariffData.map((tariff) =>
 			tariff.id === id ? { ...tariff, [field]: parseFloat(value) || 0 } : tariff
 		);
 		setTariffData(updatedTariffs);
+		const updatedTariff = updatedTariffs.find((tariff) => tariff.id === id);
+		setLastUpdatedTariff(updatedTariff);
 	};
 
 	const ColumnInputFilter = ({ column }) => {
@@ -152,9 +154,13 @@ const Tariff = () => {
 	);
 
 	const handleUpdateTariffs = async () => {
+		if (!lastUpdatedTariff) {
+			toast.error('No changes detected.');
+			return;
+		}
 		try {
-			console.log('updated tariff data', tariffData);
-			const response = await setTariffConfig(tariffData);
+			console.log('updated tariff data', lastUpdatedTariff);
+			const response = await setTariffConfig(lastUpdatedTariff);
 			if (response.status === 'success') {
 				toast.success('Tariff Updated Successfully');
 			} else {
