@@ -116,10 +116,33 @@ function NewBooking() {
 				meta: { headerClassName: 'w-20' },
 			},
 			{
-				accessorKey: 'pickUpDateTime',
+				accessorKey: 'arriveBy',
 				header: ({ column }) => (
 					<DataGridColumnHeader
 						title='Arrive By'
+						filter={<ColumnInputFilter column={column} />}
+						column={column}
+					/>
+				),
+				enableSorting: true,
+				cell: ({ row }) => (
+					<span className={`font-medium ${row.original.color}`}>
+						<label className='switch'>
+							<input
+								type='checkbox'
+								name='arriveBy'
+								checked={row.original.arriveBy}
+							/>
+						</label>
+					</span>
+				),
+				meta: { headerClassName: 'w-10' },
+			},
+			{
+				accessorKey: 'pickUpDateTime',
+				header: ({ column }) => (
+					<DataGridColumnHeader
+						title='Date/Time'
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
