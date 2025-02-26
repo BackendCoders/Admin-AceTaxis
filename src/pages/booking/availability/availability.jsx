@@ -23,11 +23,13 @@ import { CustomModal } from './customModal';
 import { SelectedAvailabilityTable } from './selectedAvaliability';
 import toast from 'react-hot-toast';
 import { updateAvailability } from '../../../service/operations/availabilityApi';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { refreshAvailability } from '../../../slices/availabilitySlice';
+import { refreshAllDrivers } from '../../../slices/driverSlice';
 
 const Availability = () => {
 	const dispatch = useDispatch();
+	const { drivers } = useSelector((state) => state.driver);
 	const [selectedDriver, setSelectedDriver] = useState(0);
 	const [isCustomModal, setIsCustomModal] = useState(false);
 	const [date, setDate] = useState(new Date());
@@ -113,6 +115,10 @@ const Availability = () => {
 	};
 
 	useEffect(() => {
+		dispatch(refreshAllDrivers());
+	}, [dispatch]);
+
+	useEffect(() => {
 		dispatch(
 			refreshAvailability(
 				selectedDriver,
@@ -168,16 +174,20 @@ const Availability = () => {
 					onValueChange={(value) => setSelectedDriver(value)}
 				>
 					<SelectTrigger
-						className='w-28 hover:shadow-lg'
+						className=' w-32 hover:shadow-lg'
 						size='sm'
 						style={{ height: '40px' }}
 					>
 						<SelectValue placeholder='Select' />
 					</SelectTrigger>
-					<SelectContent className='w-32'>
+					<SelectContent className='w-36'>
 						<SelectItem value={0}>All</SelectItem>
-						<SelectItem value={8}>Peter</SelectItem>
-						<SelectItem value={15}>Cymen</SelectItem>
+						{drivers?.length > 0 &&
+							drivers?.map((driver) => (
+								<>
+									<SelectItem value={driver?.id}>{driver?.fullName}</SelectItem>
+								</>
+							))}
 					</SelectContent>
 				</Select>
 

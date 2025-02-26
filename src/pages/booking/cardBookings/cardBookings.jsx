@@ -200,7 +200,7 @@ function CardBookings() {
 			details: booking?.details || '',
 			vias: booking?.vias?.length
 				? booking.vias
-						.map((via) => `${via.address} (${via.postcode})`)
+						.map((via) => `${via.address}, ${via.postCode}`)
 						.join(' → ')
 				: '',
 			lastUpdatedBy: booking?.updatedByName,

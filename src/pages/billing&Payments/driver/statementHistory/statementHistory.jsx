@@ -1,6 +1,6 @@
 /** @format */
 
-import { Fragment, useMemo, useState } from 'react';
+import { Fragment, useEffect, useMemo, useState } from 'react';
 import {
 	Toolbar,
 	ToolbarDescription,
@@ -32,7 +32,12 @@ import {
 	// DataGridRowSelect,
 } from '@/components';
 import { Input } from '@/components/ui/input';
+import { refreshAllDrivers } from '../../../../slices/driverSlice';
+import { useDispatch, useSelector } from 'react-redux';
 function StatementHistory() {
+	const dispatch = useDispatch();
+	const { drivers } = useSelector((state) => state.driver);
+	const [selectedDriver, setSelectedDriver] = useState(0);
 	const [searchInput, setSearchInput] = useState('');
 	const [date, setDate] = useState({
 		from: new Date(),
@@ -279,15 +284,17 @@ function StatementHistory() {
 		}
 	};
 
+	useEffect(() => {
+		dispatch(refreshAllDrivers());
+	}, [dispatch]);
+
 	return (
 		<Fragment>
 			<div className='pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1580px] w-full'>
 				<Toolbar>
 					<ToolbarHeading>
 						<ToolbarPageTitle />
-						<ToolbarDescription>
-							Showing {'16'} History{' '}
-						</ToolbarDescription>
+						<ToolbarDescription>Showing {'16'} History </ToolbarDescription>
 					</ToolbarHeading>
 				</Toolbar>
 			</div>
@@ -355,20 +362,27 @@ function StatementHistory() {
 											</PopoverContent>
 										</Popover>
 
-										<Select defaultValue='all'>
+										<Select
+											value={selectedDriver}
+											onValueChange={(value) => setSelectedDriver(value)}
+										>
 											<SelectTrigger
-												className='w-28 hover:shadow-lg'
+												className=' w-32 hover:shadow-lg'
 												size='sm'
 												style={{ height: '40px' }}
 											>
 												<SelectValue placeholder='Select' />
 											</SelectTrigger>
-											<SelectContent className='w-32'>
-												<SelectItem value='all'>All</SelectItem>
-												<SelectItem value='peter'>Peter</SelectItem>
-												<SelectItem value='cymen'>Cymen</SelectItem>
-												<SelectItem value='andrew'>Andrew</SelectItem>
-												<SelectItem value='louis'>Louis</SelectItem>
+											<SelectContent className='w-36'>
+												<SelectItem value={0}>All</SelectItem>
+												{drivers?.length > 0 &&
+													drivers?.map((driver) => (
+														<>
+															<SelectItem value={driver?.id}>
+																{driver?.fullName}
+															</SelectItem>
+														</>
+													))}
 											</SelectContent>
 										</Select>
 
@@ -388,7 +402,7 @@ function StatementHistory() {
 									rowSelection={true}
 									onRowSelectionChange={handleRowSelection}
 									pagination={{ size: 10 }}
-									sorting={[{ id: 'driver', desc: false }]}
+									sorting={[{ id: 'userId', desc: false }]}
 									layout={{ card: true }}
 								/>
 							</div>

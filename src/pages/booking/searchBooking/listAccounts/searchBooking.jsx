@@ -1,6 +1,6 @@
 /** @format */
 
-import { Fragment, useMemo, useState } from 'react';
+import { Fragment, useEffect, useMemo, useState } from 'react';
 import {
 	Toolbar,
 	ToolbarDescription,
@@ -34,14 +34,17 @@ import {
 } from '@/components';
 import { addDays } from 'date-fns';
 import { Input } from '@/components/ui/input';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { AddAccounts } from '../addAccounts';
 import { EditAccounts } from '../editAccounts';
 import { DeleteAccounts } from '../deleteAccounts';
 import { setAccount } from '../../../../slices/accountSlice';
 import { Link } from 'react-router-dom';
+import { refreshAllDrivers } from '../../../../slices/driverSlice';
 function SearchBooking() {
 	const dispatch = useDispatch();
+	const { drivers } = useSelector((state) => state.driver);
+	const [selectedDriver, setSelectedDriver] = useState(0);
 	const [searchInput, setSearchInput] = useState('');
 	const [createAccountModal, setAccountModal] = useState(false);
 	const [editAccountModal, setEditAccountModal] = useState(false);
@@ -397,6 +400,10 @@ function SearchBooking() {
 		}
 	};
 
+	useEffect(() => {
+		dispatch(refreshAllDrivers());
+	}, [dispatch]);
+
 	return (
 		<Fragment>
 			<div className='pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1580px] w-full'>
@@ -481,20 +488,27 @@ function SearchBooking() {
 											</PopoverContent>
 										</Popover>
 									</div>
-									<Select defaultValue='all'>
+									<Select
+										value={selectedDriver}
+										onValueChange={(value) => setSelectedDriver(value)}
+									>
 										<SelectTrigger
-											className='w-28'
+											className='w-28 hover:shadow-lg'
 											size='sm'
 											style={{ height: '40px' }}
 										>
-											<SelectValue placeholder='Select Driver' />
+											<SelectValue placeholder='Select' />
 										</SelectTrigger>
 										<SelectContent className='w-32'>
-											<SelectItem value='all'>All</SelectItem>
-											<SelectItem value='cash'>Unallocated</SelectItem>
-											<SelectItem value='card'>kate hall</SelectItem>
-											<SelectItem value='account'>Peter</SelectItem>
-											<SelectItem value='rank'>Cymon</SelectItem>
+											<SelectItem value={0}>All</SelectItem>
+											{drivers?.length > 0 &&
+												drivers?.map((driver) => (
+													<>
+														<SelectItem value={driver?.id}>
+															{driver?.fullName}
+														</SelectItem>
+													</>
+												))}
 										</SelectContent>
 									</Select>
 

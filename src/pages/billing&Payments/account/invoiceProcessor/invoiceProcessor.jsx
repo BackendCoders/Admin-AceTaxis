@@ -1,5 +1,5 @@
 /** @format */
-import { useState, Fragment } from 'react';
+import { useState, Fragment, useEffect } from 'react';
 import {
 	Box,
 	// Collapse,
@@ -42,6 +42,8 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
+import { useDispatch, useSelector } from 'react-redux';
+import { refreshAllDrivers } from '../../../../slices/driverSlice';
 
 // Function to create booking data
 function createBooking(
@@ -189,6 +191,9 @@ function Row({ row }) {
 
 // Main Component
 function InvoiceProcessor() {
+	const dispatch = useDispatch();
+	const { drivers } = useSelector((state) => state.driver);
+	const [selectedDriver, setSelectedDriver] = useState(0);
 	const [search, setSearch] = useState('');
 	// const [date, setDate] = useState(new Date());
 	const filterDriver = '';
@@ -259,6 +264,10 @@ function InvoiceProcessor() {
 		);
 	});
 
+	useEffect(() => {
+		dispatch(refreshAllDrivers());
+	}, [dispatch]);
+
 	return (
 		<Fragment>
 			<div className='pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1580px] w-full'>
@@ -288,20 +297,27 @@ function InvoiceProcessor() {
 						/>
 					</div>
 
-					<Select defaultValue='all'>
+					<Select
+						value={selectedDriver}
+						onValueChange={(value) => setSelectedDriver(value)}
+					>
 						<SelectTrigger
-							className='w-28 hover:shadow-lg'
+							className=' w-32 hover:shadow-lg'
 							size='sm'
 							style={{ height: '40px' }}
 						>
 							<SelectValue placeholder='Select' />
 						</SelectTrigger>
-						<SelectContent className='w-32'>
-							<SelectItem value='all'>All</SelectItem>
-							<SelectItem value='peter'>Peter</SelectItem>
-							<SelectItem value='cymen'>Cymen</SelectItem>
-							<SelectItem value='andrew'>Andrew</SelectItem>
-							<SelectItem value='louis'>Louis</SelectItem>
+						<SelectContent className='w-36'>
+							<SelectItem value={0}>All</SelectItem>
+							{drivers?.length > 0 &&
+								drivers?.map((driver) => (
+									<>
+										<SelectItem value={driver?.id}>
+											{driver?.fullName}
+										</SelectItem>
+									</>
+								))}
 						</SelectContent>
 					</Select>
 
