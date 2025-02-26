@@ -69,8 +69,6 @@ const DropdownNotificationsInbox = () => {
         <div className="border-b border-b-gray-200"></div>
 
         <DropdownNotificationsItem5 userName="Isaac Morgan" avatar="300-24.png" badgeColor="badge-success" description="mentioned you in" link="Data Transmission" day="topic" date="6 days ago" info="Dev Team" /> */}
-
-				<div className='border-b border-b-gray-200'></div>
 			</div>
 		);
 	};

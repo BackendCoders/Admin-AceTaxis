@@ -61,7 +61,7 @@ const DropdownNotificationsItem = ({ notification, markAsRead }) => {
 					<span className='text-primary'>{docType}</span>
 				</div>
 				<div className='text-xs text-gray-500'>
-					{new Date(dateTimeStamp).toLocaleString()}
+					{new Date(dateTimeStamp).toLocaleString("en-gb")}
 				</div>
 				<div className='text-xs text-gray-600'>
 					{(event === 3 || event === 4 || event === 5) && <span>{msg}</span>}
