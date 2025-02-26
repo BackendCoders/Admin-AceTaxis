@@ -8,13 +8,13 @@ import {
 	ToolbarPageTitle,
 } from '@/partials/toolbar';
 import { KeenIcon } from '@/components';
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from '@/components/ui/select';
+// import {
+// 	Select,
+// 	SelectContent,
+// 	SelectItem,
+// 	SelectTrigger,
+// 	SelectValue,
+// } from '@/components/ui/select';
 // import { Container } from '@/components/container';
 import {
 	Popover,
@@ -33,115 +33,37 @@ import {
 } from '@/components';
 import { Input } from '@/components/ui/input';
 import { driverEarningsReport } from '../../../service/operations/dashboardApi';
+import toast from 'react-hot-toast';
 function DriverEarningReport() {
-	const [searchInput, setSearchInput] = useState('');
+	const [driverNumber, setDriverNumber] = useState();
 	const [data, setData] = useState([]);
 	const [date, setDate] = useState({
 		from: new Date(),
 		to: addDays(new Date(), 20),
 	});
-	const driversData = useMemo(
-		() => [
-			...data,
-			{
-				driver: 10,
-				name: 'Alan',
-				details: '00:00 - 23:59',
-				color: 'bg-yellow-500',
-			},
-			{
-				driver: 13,
-				name: 'Lee Harrison',
-				details: '00:00 - 23:59',
-				color: 'bg-blue-300',
-			},
-			{
-				driver: 30,
-				name: 'Richard Elgar',
-				details: '07:30 - 17:30',
-				color: 'bg-red-400',
-			},
-			{
-				driver: 16,
-				name: 'James Owen',
-				details: '07:00 - 17:00 (+/-)',
-				color: 'bg-gray-700 text-white font-bold',
-			},
-			{
-				driver: 14,
-				name: 'Andrew James',
-				details: '07:30 - 17:30',
-				color: 'bg-green-500',
-			},
-			{
-				driver: 4,
-				name: 'Paul Barber',
-				details: '07:00 - 18:00',
-				color: 'bg-green-400',
-			},
-			{
-				driver: 12,
-				name: 'Chris Gray',
-				details: '07:00 - 16:00',
-				color: 'bg-blue-700 text-white font-bold',
-			},
-			{
-				driver: 5,
-				name: 'Mark Phillips',
-				details: '07:00 - 16:30',
-				color: 'bg-pink-500',
-			},
-			{
-				driver: 11,
-				name: 'Nigel Reynolds',
-				details: '07:00 - 17:00',
-				color: 'bg-gray-400',
-			},
-			{
-				driver: 2,
-				name: 'Kate Hall',
-				details: '07:00 - 22:30',
-				color: 'bg-purple-400',
-			},
-			{
-				driver: 8,
-				name: 'Peter Farrell',
-				details: '08:20 - 10:00',
-				color: 'bg-purple-200',
-			},
-			{
-				driver: 7,
-				name: 'Caroline Stimson',
-				details: '11:00 - 17:00',
-				color: 'bg-red-200',
-			},
-			{
-				driver: 6,
-				name: 'Rob Holton',
-				details: '07:00 - 22:00',
-				color: 'bg-blue-400',
-			},
-			{
-				driver: 31,
-				name: 'Bill Wood',
-				details: '16:00 - 17:00',
-				color: 'bg-red-300',
-			},
-			{
-				driver: 26,
-				name: 'Charles',
-				details: '07:00 - 17:00 (all routes)',
-				color: 'bg-blue-800 text-white font-bold',
-			},
-			{
-				driver: 18,
-				name: 'Jean Williams',
-				details: '07:30 - 09:15 (AM SR)',
-				color: 'bg-yellow-400',
-			},
-		],
-		[]
-	);
+
+	const handleSearch = async () => {
+		if (!driverNumber?.trim()) {
+			toast.error('Please enter a driver ID');
+			setData([]); // Reset table if input is empty
+			return;
+		}
+		try {
+			const payload = {
+				userId: Number(driverNumber),
+				from: format(new Date(date?.from), 'yyyy-MM-dd'),
+				to: format(new Date(date?.to), 'yyyy-MM-dd'),
+			};
+
+			const response = await driverEarningsReport(payload);
+			if (response.status === 'success') {
+				console.log(response);
+				setData(response?.data);
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	};
 
 	const ColumnInputFilter = ({ column }) => {
 		return (
@@ -283,13 +205,9 @@ function DriverEarningReport() {
 	};
 
 	useEffect(() => {
-		async function fetchDriverEarningsReport() {
-			const response = await driverEarningsReport();
-			if (response.status === 'success') {
-				setData(response?.data);
-			}
-		}
-		fetchDriverEarningsReport();
+		return () => {
+			setData([]); // Clear table data
+		};
 	}, []);
 
 	return (
@@ -298,7 +216,9 @@ function DriverEarningReport() {
 				<Toolbar>
 					<ToolbarHeading>
 						<ToolbarPageTitle />
-						<ToolbarDescription>Showing {'23'} Local POIs </ToolbarDescription>
+						<ToolbarDescription>
+							Showing {data?.length} Earning Reports{' '}
+						</ToolbarDescription>
 					</ToolbarHeading>
 				</Toolbar>
 			</div>
@@ -315,10 +235,10 @@ function DriverEarningReport() {
 										>
 											<KeenIcon icon='magnifier' />
 											<input
-												type='text'
-												placeholder='Search Earnings'
-												value={searchInput}
-												onChange={(e) => setSearchInput(e.target.value)}
+												type='number'
+												placeholder='Search Driver Id'
+												value={driverNumber}
+												onChange={(e) => setDriverNumber(e.target.value)}
 											/>
 										</label>
 									</div>
@@ -366,26 +286,10 @@ function DriverEarningReport() {
 											</PopoverContent>
 										</Popover>
 
-										<Select defaultValue='all'>
-											<SelectTrigger
-												className='w-28 hover:shadow-lg'
-												size='sm'
-												style={{ height: '40px' }}
-											>
-												<SelectValue placeholder='Select' />
-											</SelectTrigger>
-											<SelectContent className='w-32'>
-												<SelectItem value='all'>All</SelectItem>
-												<SelectItem value='peter'>Peter</SelectItem>
-												<SelectItem value='cymen'>Cymen</SelectItem>
-												<SelectItem value='andrew'>Andrew</SelectItem>
-												<SelectItem value='louis'>Louis</SelectItem>
-											</SelectContent>
-										</Select>
-
 										<button
 											className='btn btn-sm btn-outline btn-primary'
 											style={{ height: '40px' }}
+											onClick={handleSearch}
 										>
 											<KeenIcon icon='magnifier' /> Search
 										</button>
@@ -393,15 +297,21 @@ function DriverEarningReport() {
 								</div>
 							</div>
 							<div className='card-body'>
-								<DataGrid
-									columns={columns}
-									data={driversData}
-									rowSelection={true}
-									onRowSelectionChange={handleRowSelection}
-									pagination={{ size: 10 }}
-									sorting={[{ id: 'userId', desc: false }]}
-									layout={{ card: true }}
-								/>
+								{data?.length > 0 ? (
+									<DataGrid
+										columns={columns}
+										data={data}
+										rowSelection={true}
+										onRowSelectionChange={handleRowSelection}
+										pagination={{ size: 10 }}
+										sorting={[{ id: 'userId', desc: false }]}
+										layout={{ card: true }}
+									/>
+								) : (
+									<div className='text-center py-10 text-gray-500'>
+										No data found
+									</div>
+								)}
 							</div>
 						</div>
 					</div>

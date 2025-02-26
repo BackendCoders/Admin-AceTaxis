@@ -1,7 +1,7 @@
 /** @format */
 
-import { sendLogs } from '../../utils/getLogs';
-import { handleGetReq, handlePostReq, setHeaders } from '../apiRequestHandler';
+// import { sendLogs } from '../../utils/getLogs';
+import { handleGetReq, handlePostReq } from '../apiRequestHandler';
 import { dashBoardEndpoints, driverEarningEndpoints } from '../apis';
 
 const { GET_DASHBOARD, SEND_DIRECT_MSG_TO_DRIVER, SEND_GLOBAL_MSG_TO_DRIVER } =
@@ -68,21 +68,21 @@ export async function sendGlobalMsgToDriver(msg) {
 	}
 }
 
-export async function driverEarningsReport() {
-	const response = await handleGetReq(GET_DRIVER_EARNINGS_REPORT);
+export async function driverEarningsReport(data) {
+	const response = await handlePostReq(GET_DRIVER_EARNINGS_REPORT, data);
 
 	console.log('GET DRIVER EARNINGS REPORT API RESPONSE.........', response);
 
 	if (response.status === 'success') {
-		sendLogs(
-			{
-				url: GET_DRIVER_EARNINGS_REPORT,
-				reqBody: null,
-				headers: setHeaders(),
-				response: response,
-			},
-			'info'
-		);
+		// sendLogs(
+		// 	{
+		// 		url: GET_DRIVER_EARNINGS_REPORT,
+		// 		reqBody: null,
+		// 		headers: setHeaders(),
+		// 		response: response,
+		// 	},
+		// 	'info'
+		// );
 		return response;
 	}
 }
