@@ -10,10 +10,17 @@ const DropdownNotificationsItem = ({ notification, markAsRead }) => {
 	const extractDetails = (msg) => {
 		if (event === 3 || event === 4 || event === 5)
 			return {
-				userName: 'Web Booking',
+				userName:
+					event === 3
+						? 'New booking Request'
+						: event === 4
+							? 'Amendment Request'
+							: event === 5
+								? 'Cancellation Request'
+								: '',
 				docType: '',
 				docPath: '',
-				msg: message,
+				msg: `${event === 3 ? 'New Booking' : event === 4 ? 'Amend Request' : event === 5 ? 'Cancel Request' : ''}: ${message}`,
 			};
 		const regex =
 			/New Document Upload From '(.+?)'\s+Doc Type: (.+?)\s+Path: <a href="(.+?)"/;
