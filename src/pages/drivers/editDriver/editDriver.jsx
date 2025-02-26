@@ -27,15 +27,15 @@ function EditDriver({ open, onOpenChange }) {
 	const addLocalSchema = Yup.object().shape({});
 
 	const initialValues = {
-		regNo: driver?.regNo || '',
+		RegistrationNo: driver?.regNo || '',
 		fullName: driver?.fullName || '',
 		email: driver?.email || '',
 		phoneNumber: driver?.phoneNumber || '',
 		vehicleMake: driver?.vehicleMake || '',
 		vehicleModel: driver?.vehicleModel || '',
-		vehicleColour: driver?.vehicleColour || '',
+		vehicleColor: driver?.vehicleColour || '',
 		role: driver?.role || 0,
-		colorRGB: driver?.colorRGB || '#000000',
+		colorCode: driver?.colorRGB || '#000000',
 		vehicleType: driver?.vehicleType || 0,
 		showAllBookings: driver?.showAllBookings || false,
 		nonAce: driver?.nonAce || false,
@@ -46,7 +46,11 @@ function EditDriver({ open, onOpenChange }) {
 		validationSchema: addLocalSchema,
 		onSubmit: async (values, { setSubmitting }) => {
 			try {
-				const response = await updateDriver(values);
+				const payload = {
+					...values,
+					userId: driver?.id || 0,
+				};
+				const response = await updateDriver(payload);
 				if (response.status === 'success') {
 					console.log('Driver updated successfully');
 					toast.success('Driver updated successfully');
@@ -74,7 +78,7 @@ function EditDriver({ open, onOpenChange }) {
 				</DialogHeader>
 				<DialogBody className='flex flex-col items-center pt-0 pb-4'>
 					<h3 className='text-lg font-medium text-gray-900 text-center mb-3'>
-						Edit Driver
+						Edit Driver #{driver?.id}
 					</h3>
 
 					<form
@@ -90,20 +94,23 @@ function EditDriver({ open, onOpenChange }) {
 									<input
 										placeholder='Enter registration Number'
 										autoComplete='off'
-										{...formik.getFieldProps('regNo')}
+										{...formik.getFieldProps('RegistrationNo')}
 										className={clsx('form-control', {
-											'is-invalid': formik.touched.regNo && formik.errors.regNo,
+											'is-invalid':
+												formik.touched.RegistrationNo &&
+												formik.errors.RegistrationNo,
 										})}
 									/>
 								</label>
-								{formik.touched.regNo && formik.errors.regNo && (
-									<span
-										role='alert'
-										className='text-danger text-xs mt-1'
-									>
-										{formik.errors.regNo}
-									</span>
-								)}
+								{formik.touched.RegistrationNo &&
+									formik.errors.RegistrationNo && (
+										<span
+											role='alert'
+											className='text-danger text-xs mt-1'
+										>
+											{formik.errors.RegistrationNo}
+										</span>
+									)}
 							</div>
 							<div className='flex flex-col gap-1 pb-2 w-full'>
 								<label className='form-label text-gray-900'>Full Name</label>
@@ -211,12 +218,12 @@ function EditDriver({ open, onOpenChange }) {
 									<input
 										type='color'
 										value={
-											formik.values.colorRGB?.length === 7
-												? formik.values.colorRGB
-												: formik.values.colorRGB?.slice(0, 7)
+											formik.values.colorCode?.length === 7
+												? formik.values.colorCode
+												: formik.values.colorCode?.slice(0, 7)
 										}
 										onChange={(e) =>
-											formik.setFieldValue('colorRGB', e.target.value)
+											formik.setFieldValue('colorCode', e.target.value)
 										}
 										className='w-10 h-10 rounded cursor-pointer border border-gray-400'
 									/>
@@ -224,22 +231,22 @@ function EditDriver({ open, onOpenChange }) {
 									{/* Show HEX Color Code Input */}
 									<input
 										type='text'
-										value={formik.values.colorRGB || ''}
+										value={formik.values.colorCode || ''}
 										onChange={(e) =>
-											formik.setFieldValue('colorRGB', e.target.value)
+											formik.setFieldValue('colorCode', e.target.value)
 										}
 										className={clsx('form-control flex-grow', {
 											'is-invalid':
-												formik.touched.colorRGB && formik.errors.colorRGB,
+												formik.touched.colorCode && formik.errors.colorCode,
 										})}
 									/>
 								</label>
-								{formik.touched.colorRGB && formik.errors.colorRGB && (
+								{formik.touched.colorCode && formik.errors.colorCode && (
 									<span
 										color='alert'
 										className='text-danger text-xs mt-1'
 									>
-										{formik.errors.colorRGB}
+										{formik.errors.colorCode}
 									</span>
 								)}
 							</div>
@@ -304,24 +311,23 @@ function EditDriver({ open, onOpenChange }) {
 									<input
 										placeholder='Enter vehicle color'
 										autoComplete='off'
-										{...formik.getFieldProps('vehicleColour')}
+										{...formik.getFieldProps('vehicleColor')}
 										className={clsx('form-control', {
 											'is-invalid':
-												formik.touched.vehicleColour &&
-												formik.errors.vehicleColour,
+												formik.touched.vehicleColor &&
+												formik.errors.vehicleColor,
 										})}
 									/>
 								</label>
 
-								{formik.touched.vehicleColour &&
-									formik.errors.vehicleColour && (
-										<span
-											role='alert'
-											className='text-danger text-xs mt-1'
-										>
-											{formik.errors.vehicleColour}
-										</span>
-									)}
+								{formik.touched.vehicleColor && formik.errors.vehicleColor && (
+									<span
+										role='alert'
+										className='text-danger text-xs mt-1'
+									>
+										{formik.errors.vehicleColor}
+									</span>
+								)}
 							</div>
 							<div className='flex flex-col gap-1 pb-2 w-[50%]'>
 								<label className='form-label text-gray-900'>Vehicle Type</label>
