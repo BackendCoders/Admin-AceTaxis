@@ -2,6 +2,7 @@
 
 import { createSlice } from '@reduxjs/toolkit';
 import {
+	getAirportRuns,
 	getAllCardBookings,
 	getBookingAudit,
 	getBookingByStatus,
@@ -12,6 +13,8 @@ const initialState = {
 	cardBookings: [],
 	auditBookings: [],
 	bookingsByStatus: [],
+	airportRuns: [],
+	lastJourney: [],
 	booking: null,
 };
 
@@ -33,6 +36,12 @@ const bookingSlice = createSlice({
 		},
 		setBooking: (state, action) => {
 			state.booking = action.payload;
+		},
+		setAirportRuns: (state, action) => {
+			state.airportRuns = action.payload;
+		},
+		setLastJourney: (state, action) => {
+			state.lastJourney = action.payload;
 		},
 	},
 });
@@ -97,11 +106,31 @@ export function refreshBookingsByStatus(date, scope, status) {
 	};
 }
 
+export function refreshAirportRuns(month) {
+	return async (dispatch) => {
+		try {
+			dispatch(setLoading(true));
+			const response = await getAirportRuns(month);
+			console.log(response);
+			if (response.status === 'success') {
+				dispatch(setAirportRuns(response.data.lastAirports));
+				dispatch(setLastJourney(response.lastJourneys));
+			}
+		} catch (error) {
+			console.error('Failed to refresh airport runs:', error);
+		} finally {
+			dispatch(setLoading(false));
+		}
+	};
+}
+
 export const {
 	setLoading,
 	setCardBookings,
 	setAuditBookings,
 	setBookingsByStatus,
 	setBooking,
+	setAirportRuns,
+	setLastJourney,
 } = bookingSlice.actions;
 export default bookingSlice.reducer;

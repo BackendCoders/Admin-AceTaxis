@@ -1,16 +1,26 @@
 /** @format */
 
-import { useState } from 'react';
-import {
-	Popover,
-	PopoverContent,
-	PopoverTrigger,
-} from '@/components/ui/popover';
-import { Calendar } from '@/components/ui/calendar';
-import { format } from 'date-fns';
+import { useEffect, useMemo, useState } from 'react';
+// import {
+// 	Popover,
+// 	PopoverContent,
+// 	PopoverTrigger,
+// } from '@/components/ui/popover';
+// import { Calendar } from '@/components/ui/calendar';
+// import { format } from 'date-fns';
 // import { cn } from '@/lib/utils';
-import { KeenIcon } from '@/components';
+// import { KeenIcon } from '@/components';
 import { Tablejourney } from './tablejourney';
+import { useDispatch, useSelector } from 'react-redux';
+import { refreshAirportRuns } from '../../../slices/bookingSlice';
+import {
+	DataGrid,
+	DataGridColumnHeader,
+	// useDataGrid,
+	// DataGridRowSelectAll,
+	// DataGridRowSelect,
+} from '@/components';
+import { Input } from '@/components/ui/input';
 
 const airportData = {
 	'Last 1 Month': [
@@ -101,8 +111,158 @@ const airportData = {
 };
 
 const AirportRuns = () => {
+	const dispatch = useDispatch();
+	const { airportRuns } = useSelector((state) => state.booking);
 	const [selectedOption, setSelectedOption] = useState('Last 1 Month');
-	const [date, setDate] = useState(new Date());
+	// const [date, setDate] = useState(new Date());
+
+	console.log(airportRuns);
+
+	const month =
+		selectedOption === 'Last 1 Month'
+			? 1
+			: selectedOption === 'Last 3 Months'
+				? 3
+				: selectedOption === 'Last 6 Months'
+					? 6
+					: selectedOption === 'Last 12 Months'
+						? 12
+						: 0;
+
+	const handleRowSelection = (state) => {
+		const selectedRowIds = Object.keys(state);
+		if (selectedRowIds.length > 0) {
+			alert(`Selected Drivers: ${selectedRowIds.join(', ')}`);
+		}
+	};
+
+	const ColumnInputFilter = ({ column }) => {
+		return (
+			<Input
+				placeholder='Filter...'
+				value={column.getFilterValue() ?? ''}
+				onChange={(event) => column.setFilterValue(event.target.value)}
+				className='h-9 w-full max-w-40'
+			/>
+		);
+	};
+
+	const columns = useMemo(
+		() => [
+			{
+				accessorKey: 'bookingId',
+				header: ({ column }) => (
+					<DataGridColumnHeader
+						title='# id'
+						filter={<ColumnInputFilter column={column} />}
+						column={column}
+					/>
+				),
+				enableSorting: true,
+				cell: ({ row }) => (
+					<span className={`p-2 rounded-md`}>{row?.original?.id}</span>
+				),
+				meta: { headerClassName: 'w-20' },
+			},
+			{
+				accessorKey: 'pickUpDateTime',
+				header: ({ column }) => (
+					<DataGridColumnHeader
+						title='Pickup Date/Time'
+						filter={<ColumnInputFilter column={column} />}
+						column={column}
+					/>
+				),
+				enableSorting: true,
+				cell: ({ row }) => (
+					<span className={`font-medium ${row.original.color}`}></span>
+				),
+				meta: { headerClassName: 'min-w-[80px]' },
+			},
+
+			{
+				accessorKey: 'pickupAddress',
+				header: ({ column }) => (
+					<DataGridColumnHeader
+						title='Pickup Address'
+						filter={<ColumnInputFilter column={column} />}
+						column={column}
+					/>
+				),
+				enableSorting: true,
+				cell: ({ row }) => (
+					<span className={`font-medium ${row.original.color}`}></span>
+				),
+				meta: { headerClassName: 'min-w-[120px]' },
+			},
+			{
+				accessorKey: 'destinationAddress',
+				header: ({ column }) => (
+					<DataGridColumnHeader
+						title='Destination Address'
+						filter={<ColumnInputFilter column={column} />}
+						column={column}
+					/>
+				),
+				enableSorting: true,
+				cell: ({ row }) => (
+					<span className={`font-medium ${row.original.color}`}></span>
+				),
+				meta: { headerClassName: 'min-w-[120px]' },
+			},
+			{
+				accessorKey: 'passengerName',
+				header: ({ column }) => (
+					<DataGridColumnHeader
+						title='Passenger Name'
+						column={column}
+					/>
+				),
+				enableSorting: true,
+				cell: ({ row }) => (
+					<span className={row.original.color}>
+						{row?.original?.passengerName}
+					</span>
+				),
+				meta: { headerClassName: 'w-18' },
+			},
+			{
+				accessorKey: 'passenger',
+				header: ({ column }) => (
+					<DataGridColumnHeader
+						title='Passenger'
+						column={column}
+					/>
+				),
+				enableSorting: true,
+				cell: ({ row }) => (
+					<span className={row.original.color}>
+						{row?.original?.passengers}
+					</span>
+				),
+				meta: { headerClassName: 'w-18' },
+			},
+			// {
+			// 	accessorKey: 'phoneNumber',
+			// 	header: ({ column }) => (
+			// 		<DataGridColumnHeader
+			// 			title='Phone Number'
+			// 			column={column}
+			// 		/>
+			// 	),
+			// 	enableSorting: true,
+			// 	cell: ({ row }) => (
+			// 		<span className={row.original.color}>{row.original.phoneNumber}</span>
+			// 	),
+			// 	meta: { headerClassName: 'w-18' },
+			// },
+		],
+		[]
+	);
+
+	useEffect(() => {
+		dispatch(refreshAirportRuns(month));
+	}, [dispatch, month]);
 
 	return (
 		<div className='max-w-[1580px] w-full mx-auto px-6 py-4'>
@@ -115,7 +275,7 @@ const AirportRuns = () => {
 			</div>
 
 			{/* Date Picker */}
-			<div className='flex justify-between items-center mb-4'>
+			{/* <div className='flex justify-between items-center mb-4'>
 				<Popover>
 					<PopoverTrigger asChild>
 						<button className='input border-gray-300 bg-transparent w-48 py-2 px-3 rounded-md'>
@@ -140,7 +300,7 @@ const AirportRuns = () => {
 						/>
 					</PopoverContent>
 				</Popover>
-			</div>
+			</div> */}
 
 			{/* Tab Navigation */}
 			<div className='flex border border-gray-300 dark:border-gray-300 rounded-md overflow-hidden'>
@@ -161,52 +321,26 @@ const AirportRuns = () => {
 
 			{/* Table Section */}
 			<div className='overflow-x-auto mt-6 border border-gray-200 dark:border-gray-200 rounded-md'>
-				<table className='w-full border-collapse'>
-					<thead className=' text-gray-700 dark:text-gray-700'>
-						<tr>
-							<th className='p-3 border text-left'>Driver</th>
-							<th className='p-3 border text-left'>Date</th>
-							<th className='p-3 border text-left'>Pickup</th>
-							<th className='p-3 border text-left'>Drop</th>
-							<th className='p-3 border text-left'>Price</th>
-						</tr>
-					</thead>
-					<tbody>
-						{airportData[selectedOption]?.length > 0 ? (
-							airportData[selectedOption].map((journey, index) => (
-								<tr
-									key={index}
-									className='border-b hover:bg-gray-100 dark:hover:bg-gray-100 transition-all'
-								>
-									<td className='p-3 border text-gray-700 dark:text-gray-600'>
-										{journey.driver}
-									</td>
-									<td className='p-3 border text-gray-700 dark:text-gray-600'>
-										{journey.date}
-									</td>
-									<td className='p-3 border text-gray-700 dark:text-gray-600'>
-										{journey.pickup}
-									</td>
-									<td className='p-3 border text-gray-700 dark:text-gray-600'>
-										{journey.drop}
-									</td>
-									<td className='p-3 border text-gray-700 dark:text-gray-600 font-semibold'>
-										{journey.price}
-									</td>
-								</tr>
-							))
-						) : (
-							<tr>
-								<td
-									colSpan='5'
-									className='p-3 text-center text-gray-500 dark:text-gray-400'
-								>
-									No data available
-								</td>
-							</tr>
-						)}
-					</tbody>
-				</table>
+				{airportData[selectedOption]?.length > 0 ? (
+					<DataGrid
+						columns={columns}
+						data={airportData[selectedOption]}
+						rowSelection={true}
+						onRowSelectionChange={handleRowSelection}
+						pagination={{ size: 10 }}
+						sorting={[{ id: 'bookingId', desc: false }]}
+						layout={{ card: true }}
+					/>
+				) : (
+					<tr>
+						<td
+							colSpan='5'
+							className='p-3 text-center text-gray-500 dark:text-gray-400'
+						>
+							No data available
+						</td>
+					</tr>
+				)}
 			</div>
 
 			<Tablejourney />

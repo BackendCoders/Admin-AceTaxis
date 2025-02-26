@@ -11,6 +11,7 @@ const {
 	ALLOCATE_BOOKING,
 	BOOKING_AUDIT,
 	BOOKING_STATUS,
+	AIRPORT_RUNS,
 } = bookingsEndpoints;
 export async function cancelBookingByDateRange(data) {
 	// Fetch current user details using token
@@ -121,6 +122,25 @@ export async function allocateBooking(data) {
 		// 	{
 		// 		url: GET_ALL_GPS,
 		// 		reqBody: null,
+		// 		headers: setHeaders(),
+		// 		response: response,
+		// 	},
+		// 	'info'
+		// );
+		return response;
+	}
+	return response;
+}
+
+export async function getAirportRuns(month) {
+	const response = await handleGetReq(AIRPORT_RUNS(month));
+	console.log('get airport runs response ---', response);
+
+	if (response.status === 'success') {
+		// sendLogs(
+		// 	{
+		// 		url: GET_LOCAL_POI2,
+		// 		reqBody: searchTerm,
 		// 		headers: setHeaders(),
 		// 		response: response,
 		// 	},

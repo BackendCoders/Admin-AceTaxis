@@ -24,7 +24,7 @@ function CancelModal({ open, onOpenChange }) {
 			const payload = {
 				bookingId: amendRequest?.bookingId,
 				cancelledByName: user?.fullName,
-				cancelBlock: false,
+				cancelBlock: amendRequest?.applyToBlock ? true : false,
 				cancelledOnArrival: false,
 				actionByUserId: user?.userId,
 			};
