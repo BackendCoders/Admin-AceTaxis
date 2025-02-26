@@ -1,5 +1,5 @@
 /** @format */
-
+import ApexChart from 'react-apexcharts';
 import { Fragment, useEffect, useMemo, useState } from 'react';
 import {
 	Toolbar,
@@ -35,8 +35,15 @@ import { Input } from '@/components/ui/input';
 import { driverEarningsReport } from '../../../service/operations/dashboardApi';
 import toast from 'react-hot-toast';
 function DriverEarningReport() {
+	const [loading, setLoading] = useState(false); // ✅ Track loading state
+	const [chartData, setChartData] = useState({
+		data: [],
+		labels: [],
+	});
+
+	const colors = ['var(--tw-primary)', 'var(--tw-success)', 'var(--tw-info)'];
 	const [driverNumber, setDriverNumber] = useState();
-	const [data, setData] = useState([]);
+	const [earningData, setEarningData] = useState([]);
 	const [date, setDate] = useState({
 		from: new Date(),
 		to: addDays(new Date(), 20),
@@ -45,9 +52,10 @@ function DriverEarningReport() {
 	const handleSearch = async () => {
 		if (!driverNumber?.trim()) {
 			toast.error('Please enter a driver ID');
-			setData([]); // Reset table if input is empty
+			setEarningData([]); // Reset table if input is empty
 			return;
 		}
+		setLoading(true);
 		try {
 			const payload = {
 				userId: Number(driverNumber),
@@ -58,10 +66,16 @@ function DriverEarningReport() {
 			const response = await driverEarningsReport(payload);
 			if (response.status === 'success') {
 				console.log(response);
-				setData(response?.data);
+				setEarningData(response?.earnings);
+				setChartData({
+					data: response?.jobCountDateRangeValues || [],
+					labels: response?.jobCountDateRangeLabels || [],
+				});
 			}
 		} catch (error) {
 			console.log(error);
+		} finally {
+			setLoading(false); // ✅ Reset loading after API call
 		}
 	};
 
@@ -104,7 +118,9 @@ function DriverEarningReport() {
 				),
 				enableSorting: true,
 				cell: ({ row }) => (
-					<span className={`p-2 rounded-md`}>{row.original.cash}</span>
+					<span className={`p-2 rounded-md`}>
+						{row.original.cashTotal?.toFixed(2)}
+					</span>
 				),
 				meta: { headerClassName: 'w-20' },
 			},
@@ -120,7 +136,7 @@ function DriverEarningReport() {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={`font-medium ${row.original.color}`}>
-						{row.original.account}
+						{row.original.accTotal?.toFixed(2)}
 					</span>
 				),
 				meta: { headerClassName: 'min-w-[120px]' },
@@ -137,7 +153,7 @@ function DriverEarningReport() {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={`font-medium ${row.original.color}`}>
-						{row.original.rank}
+						{row.original.rankTotal?.toFixed(2)}
 					</span>
 				),
 				meta: { headerClassName: 'min-w-[120px]' },
@@ -154,7 +170,7 @@ function DriverEarningReport() {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={`font-medium ${row.original.color}`}>
-						{row.original.comms}
+						{row.original.commsTotal?.toFixed(2)}
 					</span>
 				),
 				meta: { headerClassName: 'min-w-[120px]' },
@@ -171,7 +187,7 @@ function DriverEarningReport() {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={`font-medium ${row.original.color}`}>
-						{row.original.grossTotal}
+						{row.original.grossTotal?.toFixed(2)}
 					</span>
 				),
 				meta: { headerClassName: 'min-w-[120px]' },
@@ -188,7 +204,7 @@ function DriverEarningReport() {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={`font-medium ${row.original.color}`}>
-						{row.original.netTotal}
+						{row.original.netTotal?.toFixed(2)}
 					</span>
 				),
 				meta: { headerClassName: 'min-w-[120px]' },
@@ -204,9 +220,86 @@ function DriverEarningReport() {
 		}
 	};
 
+	const options = {
+		series: chartData.data,
+		labels: chartData.labels,
+		colors: colors,
+		fill: {
+			colors: colors,
+		},
+		chart: {
+			type: 'donut',
+			height: 400,
+		},
+		stroke: {
+			show: true,
+			width: 2,
+		},
+		dataLabels: {
+			enabled: false,
+		},
+		plotOptions: {
+			pie: {
+				expandOnClick: false,
+			},
+		},
+		legend: {
+			offsetY: -10,
+			offsetX: -10,
+			fontSize: '13px',
+			fontWeight: '500',
+			itemMargin: {
+				vertical: 1,
+			},
+			labels: {
+				colors: 'var(--tw-gray-700)',
+				useSeriesColors: false,
+			},
+		},
+		responsive: [
+			{
+				breakpoint: 480,
+				options: {
+					chart: {
+						width: 200,
+					},
+					legend: {
+						position: 'bottom',
+					},
+				},
+			},
+		],
+	};
+
+	const columnTotals = useMemo(() => {
+		return earningData.reduce(
+			(totals, item) => {
+				totals.cashTotal += item.cashTotal || 0;
+				totals.accTotal += item.accTotal || 0;
+				totals.rankTotal += item.rankTotal || 0;
+				totals.commsTotal += item.commsTotal || 0;
+				totals.grossTotal += item.grossTotal || 0;
+				totals.netTotal += item.netTotal || 0;
+				return totals;
+			},
+			{
+				cashTotal: 0,
+				accTotal: 0,
+				rankTotal: 0,
+				commsTotal: 0,
+				grossTotal: 0,
+				netTotal: 0,
+			}
+		);
+	}, [earningData]);
+
 	useEffect(() => {
 		return () => {
-			setData([]); // Clear table data
+			setEarningData([]); // Clear table data
+			setChartData({
+				data: [],
+				labels: [],
+			});
 		};
 	}, []);
 
@@ -217,7 +310,7 @@ function DriverEarningReport() {
 					<ToolbarHeading>
 						<ToolbarPageTitle />
 						<ToolbarDescription>
-							Showing {data?.length} Earning Reports{' '}
+							Showing {earningData?.length} Earning Reports{' '}
 						</ToolbarDescription>
 					</ToolbarHeading>
 				</Toolbar>
@@ -290,23 +383,58 @@ function DriverEarningReport() {
 											className='btn btn-sm btn-outline btn-primary'
 											style={{ height: '40px' }}
 											onClick={handleSearch}
+											disabled={loading}
 										>
-											<KeenIcon icon='magnifier' /> Search
+											<KeenIcon icon='magnifier' />{' '}
+											{loading ? 'Searching...' : 'Search'}
 										</button>
 									</div>
 								</div>
 							</div>
-							<div className='card-body'>
-								{data?.length > 0 ? (
-									<DataGrid
-										columns={columns}
-										data={data}
-										rowSelection={true}
-										onRowSelectionChange={handleRowSelection}
-										pagination={{ size: 10 }}
-										sorting={[{ id: 'userId', desc: false }]}
-										layout={{ card: true }}
+							{chartData && (
+								<div className='mt-4 flex justify-center items-center px-3 py-1 mb-2'>
+									<ApexChart
+										options={options}
+										series={options.series}
+										type='donut'
+										width='100%'
+										height='100%'
 									/>
+								</div>
+							)}
+							<div className='card-body'>
+								{earningData?.length > 0 ? (
+									<>
+										<DataGrid
+											columns={columns}
+											data={earningData}
+											rowSelection={true}
+											onRowSelectionChange={handleRowSelection}
+											pagination={{ size: 10 }}
+											sorting={[{ id: 'userId', desc: false }]}
+											layout={{ card: true }}
+										/>
+										<div className='flex justify-end gap-6 bg-[#14151A] font-semibold p-3 mt-2'>
+											<span className=''>
+												Total Cash: {columnTotals.cashTotal}
+											</span>
+											<span className=''>
+												Total Account: {columnTotals.accTotal}
+											</span>
+											<span className=''>
+												Total Rank: {columnTotals.rankTotal}
+											</span>
+											<span className=''>
+												Total Comms: {columnTotals.commsTotal}
+											</span>
+											<span className=''>
+												Gross Total: {columnTotals.grossTotal}
+											</span>
+											<span className=''>
+												Net Total: {columnTotals.netTotal}
+											</span>
+										</div>
+									</>
 								) : (
 									<div className='text-center py-10 text-gray-500'>
 										No data found
