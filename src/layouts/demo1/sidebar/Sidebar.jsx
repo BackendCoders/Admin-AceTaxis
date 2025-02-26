@@ -42,7 +42,7 @@ export const Sidebar = () => {
 	// 	layout.options.sidebar.theme === 'dark' || pathname === '/dark-sidebar'
 	// 		? 'dark [&.dark]:bg-coal-600'
 	// 		: 'dark:bg-coal-600';
-	const themeClass = 'dark bg-coal-600';
+	const themeClass = 'dark [&.dark]:bg-coal-600';
 	const handleMobileSidebarClose = () => {
 		setMobileSidebarOpen(false);
 	};
