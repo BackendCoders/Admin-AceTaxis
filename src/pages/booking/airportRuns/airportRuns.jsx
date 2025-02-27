@@ -22,94 +22,6 @@ import {
 } from '@/components';
 import { Input } from '@/components/ui/input';
 
-const airportData = {
-	'Last 1 Month': [
-		{
-			driver: '1 - ACE TAXIS',
-			date: '18/01/25',
-			pickup: 'Heathrow Airport Terminal 2',
-			drop: 'Langham Oak Ltd, Langham House, Langham, Gillingham, Dorset',
-			price: '£245.00',
-		},
-		{
-			driver: '2 - Kate Hall',
-			date: '13/12/24',
-			pickup: 'The Clock House, Compton Abbas, Shaftesbury, Dorset',
-			drop: 'Heathrow Airport Terminal 3',
-			price: '£285.00',
-		},
-		{
-			driver: '3 - Bex Sims',
-			date: '13/10/24',
-			pickup: '15 Stourcastle, Sturminster Newton, Dorset',
-			drop: 'Bristol Airport',
-			price: '£146.00',
-		},
-	],
-	'Last 3 Months': [
-		{
-			driver: '4 - Paul Barber',
-			date: '12/01/25',
-			pickup: 'Holland Farm, South Brewham, Bruton, Somerset',
-			drop: 'Heathrow Airport Terminal 5',
-			price: '£215.00',
-		},
-		{
-			driver: '5 - Mark Phillips',
-			date: '23/01/25',
-			pickup: 'Heathrow Airport Terminal 5',
-			drop: '26 Barnaby Mead, Gillingham, Dorset',
-			price: '£225.00',
-		},
-		{
-			driver: '6 - Rob Holton',
-			date: '22/01/25',
-			pickup: '20 Bayfields, Gillingham, Dorset',
-			drop: 'Heathrow Airport Terminal 3',
-			price: '£215.00',
-		},
-	],
-	'Last 6 Months': [
-		{
-			driver: '7 - Caroline Stimson',
-			date: '09/12/24',
-			pickup: 'Blackberry Farm, Hartgrove, Shaftesbury, Dorset',
-			drop: 'Heathrow Airport Terminal 5',
-			price: '£245.00',
-		},
-		{
-			driver: '8 - Peter Farrell',
-			date: '13/09/24',
-			pickup: 'Heathrow Airport Terminal 5',
-			drop: 'Langham House, Langham, Gillingham, Dorset',
-			price: '£245.00',
-		},
-		{
-			driver: '9 - Alan Waistell',
-			date: '04/01/25',
-			pickup: 'Bristol Airport',
-			drop: 'Peakes Farm, Sedgehill, Shaftesbury, Dorset',
-			price: '£155.00',
-		},
-	],
-	'Last 12 Months': [
-		{
-			driver: '10 - James Owen',
-			date: '26/01/25',
-			pickup: 'Heathrow Airport Terminal 4',
-			drop: 'Port Regis',
-			price: '£200.00',
-		},
-		{
-			driver: '11 - Richard Elgar',
-			date: '09/01/25',
-			pickup: 'Gatwick Airport South Terminal',
-			drop: 'The Bridge House, Little Stream, Child Okeford, Blandford Forum, Dorset',
-			price: '£325.00',
-		},
-	],
-};
-
 const AirportRuns = () => {
 	const dispatch = useDispatch();
 	const { airportRuns } = useSelector((state) => state.booking);
@@ -117,6 +29,10 @@ const AirportRuns = () => {
 	// const [date, setDate] = useState(new Date());
 
 	console.log(airportRuns);
+
+	const filteredData = useMemo(() => {
+		return airportRuns?.data?.lastAirports || [];
+	}, [airportRuns]);
 
 	const month =
 		selectedOption === 'Last 1 Month'
@@ -150,10 +66,10 @@ const AirportRuns = () => {
 	const columns = useMemo(
 		() => [
 			{
-				accessorKey: 'bookingId',
+				accessorKey: 'driver',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='# id'
+						title='Driver'
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -165,10 +81,10 @@ const AirportRuns = () => {
 				meta: { headerClassName: 'w-20' },
 			},
 			{
-				accessorKey: 'pickUpDateTime',
+				accessorKey: 'date',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Pickup Date/Time'
+						title='Date'
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -181,10 +97,10 @@ const AirportRuns = () => {
 			},
 
 			{
-				accessorKey: 'pickupAddress',
+				accessorKey: 'pickup',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Pickup Address'
+						title='Pickup'
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -196,10 +112,10 @@ const AirportRuns = () => {
 				meta: { headerClassName: 'min-w-[120px]' },
 			},
 			{
-				accessorKey: 'destinationAddress',
+				accessorKey: 'destination',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Destination Address'
+						title='Destination'
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -211,10 +127,10 @@ const AirportRuns = () => {
 				meta: { headerClassName: 'min-w-[120px]' },
 			},
 			{
-				accessorKey: 'passengerName',
+				accessorKey: 'price',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Passenger Name'
+						title='Price'
 						column={column}
 					/>
 				),
@@ -226,22 +142,22 @@ const AirportRuns = () => {
 				),
 				meta: { headerClassName: 'w-18' },
 			},
-			{
-				accessorKey: 'passenger',
-				header: ({ column }) => (
-					<DataGridColumnHeader
-						title='Passenger'
-						column={column}
-					/>
-				),
-				enableSorting: true,
-				cell: ({ row }) => (
-					<span className={row.original.color}>
-						{row?.original?.passengers}
-					</span>
-				),
-				meta: { headerClassName: 'w-18' },
-			},
+			// {
+			// 	accessorKey: 'passenger',
+			// 	header: ({ column }) => (
+			// 		<DataGridColumnHeader
+			// 			title='Passenger'
+			// 			column={column}
+			// 		/>
+			// 	),
+			// 	enableSorting: true,
+			// 	cell: ({ row }) => (
+			// 		<span className={row.original.color}>
+			// 			{row?.original?.passengers}
+			// 		</span>
+			// 	),
+			// 	meta: { headerClassName: 'w-18' },
+			// },
 			// {
 			// 	accessorKey: 'phoneNumber',
 			// 	header: ({ column }) => (
@@ -304,7 +220,12 @@ const AirportRuns = () => {
 
 			{/* Tab Navigation */}
 			<div className='flex border border-gray-300 dark:border-gray-300 rounded-md overflow-hidden'>
-				{Object.keys(airportData).map((option) => (
+				{[
+					'Last 1 Month',
+					'Last 3 Months',
+					'Last 6 Months',
+					'Last 12 Months',
+				].map((option) => (
 					<button
 						key={option}
 						onClick={() => setSelectedOption(option)}
@@ -321,10 +242,10 @@ const AirportRuns = () => {
 
 			{/* Table Section */}
 			<div className='overflow-x-auto mt-6 border border-gray-200 dark:border-gray-200 rounded-md'>
-				{airportData[selectedOption]?.length > 0 ? (
+				{filteredData?.length > 0 ? (
 					<DataGrid
 						columns={columns}
-						data={airportData[selectedOption]}
+						data={filteredData}
 						rowSelection={true}
 						onRowSelectionChange={handleRowSelection}
 						pagination={{ size: 10 }}
@@ -332,14 +253,9 @@ const AirportRuns = () => {
 						layout={{ card: true }}
 					/>
 				) : (
-					<tr>
-						<td
-							colSpan='5'
-							className='p-3 text-center text-gray-500 dark:text-gray-400'
-						>
-							No data available
-						</td>
-					</tr>
+					<div className='p-3 text-center text-gray-500 dark:text-gray-400'>
+						No data available
+					</div>
 				)}
 			</div>
 
