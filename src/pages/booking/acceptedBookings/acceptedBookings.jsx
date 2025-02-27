@@ -36,6 +36,8 @@ import { Input } from '@/components/ui/input';
 import { useDispatch, useSelector } from 'react-redux';
 import { refreshAcceptedWebBookings } from '../../../slices/webBookingSlice';
 import { Link } from 'react-router-dom';
+import RefreshIcon from '@mui/icons-material/Refresh';
+
 function AcceptedBookings() {
 	const dispatch = useDispatch();
 	const { acceptedWebBookings } = useSelector((state) => state.webBooking);
@@ -335,12 +337,13 @@ function AcceptedBookings() {
 											</SelectContent>
 										</Select>
 
-										{/* <button
+										<button
 											className='btn btn-sm btn-outline btn-primary'
 											style={{ height: '40px' }}
+											onClick={() => dispatch(refreshAcceptedWebBookings())}
 										>
-											<KeenIcon icon='magnifier' /> Search
-										</button> */}
+											<RefreshIcon sx={{ fontSize: '12px' }} /> Refresh
+										</button>
 									</div>
 								</div>
 							</div>

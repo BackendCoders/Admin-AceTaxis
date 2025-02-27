@@ -36,6 +36,8 @@ import { Input } from '@/components/ui/input';
 import { useDispatch, useSelector } from 'react-redux';
 import { refreshRejectedWebBookings } from '../../../slices/webBookingSlice';
 import { Link } from 'react-router-dom';
+import RefreshIcon from '@mui/icons-material/Refresh';
+
 function RejectedBookings() {
 	const dispatch = useDispatch();
 	const { rejectedWebBookings } = useSelector((state) => state.webBooking);
@@ -389,12 +391,13 @@ function RejectedBookings() {
 											</SelectContent>
 										</Select>
 
-										{/* <button
+										<button
 											className='btn btn-sm btn-outline btn-primary'
 											style={{ height: '40px' }}
+											onClick={() => dispatch(refreshRejectedWebBookings())}
 										>
-											<KeenIcon icon='magnifier' /> Search
-										</button> */}
+											<RefreshIcon sx={{ fontSize: '12px' }} /> Refresh
+										</button>
 									</div>
 								</div>
 							</div>

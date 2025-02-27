@@ -26,6 +26,8 @@ function AcceptWebBooking({ open, onOpenChange }) {
 	const { webBooking } = useSelector((state) => state.webBooking);
 	const [journeyTime, setJourneyTime] = useState(null);
 
+	console.log(webBooking);
+
 	const addLocalSchema = Yup.object().shape({
 		byName: Yup.string().required('Name is required'), // Changed from email to username
 	});
@@ -190,6 +192,19 @@ function AcceptWebBooking({ open, onOpenChange }) {
 									</span>
 								)}
 							</div>
+						</div>
+						<div className='flex gap-1 pb-2'>
+							<label className='switch'>
+								<span className='switch-label'>Arrive BY</span>
+								<input
+									type='checkbox'
+									name='arriveBy'
+									checked={webBooking?.arriveBy}
+									// onChange={(e) =>
+									// 	formik.setFieldValue('showAllBookings', e.target.checked)
+									// }
+								/>
+							</label>
 						</div>
 
 						<div className='flex justify-end mb-2 mt-2'>

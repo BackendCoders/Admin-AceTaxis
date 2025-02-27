@@ -41,6 +41,7 @@ import {
 import { AcceptWebBooking } from './acceptWebBooking';
 import { RejectWebBooking } from './rejectWebBooking';
 import { Link } from 'react-router-dom';
+import RefreshIcon from '@mui/icons-material/Refresh';
 function NewBooking() {
 	const dispatch = useDispatch();
 	const [acceptModal, setAcceptModal] = useState(false);
@@ -411,12 +412,13 @@ function NewBooking() {
 											</SelectContent>
 										</Select>
 
-										{/* <button
+										<button
 											className='btn btn-sm btn-outline btn-primary'
 											style={{ height: '40px' }}
+											onClick={() => dispatch(refreshWebBookings())}
 										>
-											<KeenIcon icon='magnifier' /> Search
-										</button> */}
+											<RefreshIcon sx={{ fontSize: '12px' }} /> Refresh
+										</button>
 									</div>
 								</div>
 							</div>

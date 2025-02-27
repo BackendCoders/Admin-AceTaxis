@@ -34,6 +34,8 @@ import {
 } from '../../../slices/webBookingSlice';
 import { Link, useNavigate } from 'react-router-dom';
 import { CancelModal } from './cancelModal';
+import RefreshIcon from '@mui/icons-material/Refresh';
+
 function AmendmentBookings() {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
@@ -335,12 +337,13 @@ function AmendmentBookings() {
 											</PopoverContent>
 										</Popover>
 
-										{/* <button
+										<button
 											className='btn btn-sm btn-outline btn-primary'
 											style={{ height: '40px' }}
+											onClick={() => dispatch(refreshAmendWebBookings())}
 										>
-											<KeenIcon icon='magnifier' /> Search
-										</button> */}
+											<RefreshIcon sx={{ fontSize: '12px' }} /> Refresh
+										</button>
 									</div>
 								</div>
 							</div>
