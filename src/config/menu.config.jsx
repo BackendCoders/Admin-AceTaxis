@@ -570,10 +570,10 @@ export const MENU_SIDEBAR = [
 				path: '/bookings/global-search',
 			},
 
-			{
-				title: 'Search Booking',
-				path: '/bookings/search-booking',
-			},
+			// {
+			// 	title: 'Search Booking',
+			// 	path: '/bookings/search-booking',
+			// },
 			{
 				title: 'Audit View',
 				path: '/bookings/audit-view',

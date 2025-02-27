@@ -53,78 +53,7 @@ import {
 	ToolbarHeading,
 	ToolbarPageTitle,
 } from '@/partials/toolbar';
-
-// Function to create booking data
-function createBooking(
-	id,
-	date,
-	accNumber,
-	driverNumber,
-	pickup,
-	destination,
-	passenger,
-	hasVias,
-	waiting,
-	waitingCharge,
-	actualMiles,
-	driverPrice,
-	parking,
-	total
-) {
-	return {
-		id,
-		date,
-		accNumber,
-		driverNumber,
-		pickup,
-		destination,
-		passenger,
-		hasVias,
-		waiting,
-		waitingCharge,
-		actualMiles,
-		driverPrice,
-		parking,
-		total,
-	};
-}
-
-// Sample Data (Fully Matches Image)
-const bookings = [
-	createBooking(
-		82629,
-		'14/03/2024 15:10:00',
-		10001,
-		1,
-		'Co-Operative Retail Services Ltd. Westbridge Park. Sherborne. Dorset, DT9 6AW',
-		'Horizons, Sturminster, DT10 1DR',
-		'Tomas Francis',
-		false,
-		0,
-		'£0.00',
-		0.0,
-		41,
-		0,
-		'£41.00'
-	),
-	createBooking(
-		82630,
-		'14/03/2024 17:45:00',
-		10001,
-		1,
-		'Horizons, Sturminster, DT10 1DR',
-		'Co-Operative Retail Services Ltd. Westbridge Park. Sherborne. Dorset, DT9 6AW',
-		'Tomas Francis',
-		false,
-		0,
-		'£0.00',
-		0.0,
-		41,
-		0,
-		'£41.00'
-	),
-];
-
+import { refreshDriverChargeableJobs } from '../../../../slices/billingSlice';
 // Collapsible Row Component
 function Row({ row, setPriceBaseModal }) {
 	const [open, setOpen] = useState(false);
@@ -154,7 +83,7 @@ function Row({ row, setPriceBaseModal }) {
 					{row.accNumber}
 				</TableCell>
 				<TableCell className='text-gray-900 dark:text-gray-700'>
-					{row.driverNumber}
+					{row.driver}
 				</TableCell>
 				<TableCell className='text-gray-900 dark:text-gray-700'>
 					{row.pickup}
@@ -169,22 +98,55 @@ function Row({ row, setPriceBaseModal }) {
 					{row.hasVias ? 'Yes' : 'No'}
 				</TableCell>
 				<TableCell className='text-gray-900 dark:text-gray-700'>
-					{row.waiting}
+					<input
+						type='number'
+						className='w-16 text-center border rounded p-1 dark:bg-inherit dark:ring-inherit'
+						value={row.waiting}
+						// onChange={(e) =>
+						// 	handleInputChange(
+						// 		row.original.id,
+						// 		'initialCharge',
+						// 		e.target.value
+						// 	)
+						// }
+					/>
 				</TableCell>
 				<TableCell className='text-gray-900 dark:text-gray-700'>
-					{row.waitingCharge}
+					£{row.waitingCharge?.toFixed(2)}
 				</TableCell>
 				<TableCell className='text-gray-900 dark:text-gray-700'>
 					{row.actualMiles}
 				</TableCell>
 				<TableCell className='text-gray-900 dark:text-gray-700'>
-					{row.driverPrice}
+					<input
+						type='number'
+						className='w-16 text-center border rounded p-1 dark:bg-inherit dark:ring-inherit'
+						value={row.driverFare}
+						// onChange={(e) =>
+						// 	handleInputChange(
+						// 		row.original.id,
+						// 		'initialCharge',
+						// 		e.target.value
+						// 	)
+						// }
+					/>
 				</TableCell>
 				<TableCell className='text-gray-900 dark:text-gray-700'>
-					{row.parking}
+					<input
+						type='number'
+						className='w-16 text-center border rounded p-1 dark:bg-inherit dark:ring-inherit'
+						value={row.parking}
+						// onChange={(e) =>
+						// 	handleInputChange(
+						// 		row.original.id,
+						// 		'initialCharge',
+						// 		e.target.value
+						// 	)
+						// }
+					/>
 				</TableCell>
 				<TableCell className='text-gray-900 dark:text-gray-700 font-semibold'>
-					{row.total}
+					£{row.total.toFixed(2)}
 				</TableCell>
 				<TableCell>
 					<IconButton
@@ -229,34 +191,16 @@ function Row({ row, setPriceBaseModal }) {
 							>
 								<Box>
 									<Typography variant='body2'>
-										<strong>Booked By:</strong> {row.details?.bookedBy ?? 'N/A'}
+										<strong>Vias:</strong> {row.details?.vias ?? 'N/A'}
 									</Typography>
+
 									<Typography variant='body2'>
 										<strong>Details:</strong> {row.details?.details ?? 'N/A'}
-									</Typography>
-									<Typography variant='body2'>
-										<strong>Last Updated By:</strong>{' '}
-										{row.details?.lastUpdatedBy ?? 'N/A'}
-									</Typography>
-									<Typography variant='body2'>
-										<strong>Last Updated On:</strong>{' '}
-										{row.details?.lastUpdatedOn ?? 'N/A'}
 									</Typography>
 								</Box>
 								<Box>
 									<Typography variant='body2'>
 										<strong>Scope:</strong> {row.details?.scope ?? 'N/A'}
-									</Typography>
-									<Typography variant='body2'>
-										<strong>Mileage:</strong> {row.details?.mileage ?? '0'}
-									</Typography>
-									<Typography variant='body2'>
-										<strong>Duration:</strong> {row.details?.duration ?? '0'}{' '}
-										mins
-									</Typography>
-									<Typography variant='body2'>
-										<strong>Charge From Base:</strong>{' '}
-										{row.details?.chargeFromBase ? 'Yes' : 'No'}
 									</Typography>
 								</Box>
 							</Box>
@@ -272,30 +216,60 @@ function Row({ row, setPriceBaseModal }) {
 function StateProcessing() {
 	const dispatch = useDispatch();
 	const { drivers } = useSelector((state) => state.driver);
+	const { driverChargeableJobs } = useSelector((state) => state.billing);
 	const [selectedDriver, setSelectedDriver] = useState(0);
-	const [search, setSearch] = useState('');
+	const [selectedScope, setSelectedScope] = useState('3');
 	const [priceBaseModal, setPriceBaseModal] = useState(false);
 	const [date, setDate] = useState(new Date());
-	const filterDriver = '';
 
-	const filteredBookings = bookings.filter((b) => {
-		const passengerMatch =
-			b.passenger && typeof b.passenger === 'string'
-				? b.passenger.toLowerCase().includes(search.toLowerCase())
-				: false;
+	console.log(driverChargeableJobs);
 
-		const driverMatch =
-			b.driverNumber !== undefined && b.driverNumber !== null
-				? String(b.driverNumber) === filterDriver
-				: false;
+	const formattedBookings = (driverChargeableJobs?.notPriced || []).map(
+		(booking) => ({
+			id: booking?.bookingId,
+			date: booking?.date
+				? new Date(booking?.date).toLocaleDateString('en-GB') +
+					' ' +
+					booking?.date?.split('T')[1]?.split('.')[0]?.slice(0, 5)
+				: '-', // Ensure correct date format
+			accNumber: booking?.accNo,
+			driver: booking?.userId || '-',
+			pickup: `${booking?.pickup}`,
+			destination: `${booking?.destination}`,
+			passenger: booking?.passenger || 'Unknown',
+			hasVias: booking?.hasVias,
+			waiting: booking?.waitingMinutes || 0,
+			waitingCharge: booking?.waitingPriceDriver || 0,
+			phoneNumber: booking?.phoneNumber || '',
+			actualMiles: booking?.miles,
+			driverFare: booking?.price || 0,
+			parking: booking?.parkingCharge || 0,
+			total: booking?.totalCost || 0,
+			details: {
+				details: booking?.details || '',
+				vias: booking?.vias?.length
+					? booking.vias
+							.map((via) => `${via.address}, ${via.postCode}`)
+							.join(' → ')
+					: '',
 
-		return (
-			(passengerMatch || search === '') && (driverMatch || filterDriver === '')
-		);
-	});
+				scope: booking?.scope === 4 ? 'Card' : 'Cash',
+			},
+		})
+	);
 
 	const handleClose = () => {
 		if (priceBaseModal) setPriceBaseModal(false);
+	};
+
+	const handleShow = () => {
+		dispatch(
+			refreshDriverChargeableJobs(
+				selectedDriver,
+				selectedScope,
+				format(new Date(date), 'yyyy-MM-dd')
+			)
+		);
 	};
 
 	useEffect(() => {
@@ -318,7 +292,7 @@ function StateProcessing() {
 							<div className='card card-grid min-w-full'>
 								<div className='card-header flex-wrap gap-2'>
 									<div className='flex flex-wrap gap-2 lg:gap-5'>
-										<div className='flex'>
+										{/* <div className='flex'>
 											<label
 												className='input input-sm hover:shadow-lg'
 												style={{ height: '40px' }}
@@ -331,7 +305,7 @@ function StateProcessing() {
 													onChange={(e) => setSearch(e.target.value)}
 												/>
 											</label>
-										</div>
+										</div> */}
 										<div className='flex flex-wrap items-center gap-2.5'>
 											<Popover>
 												<PopoverTrigger asChild>
@@ -386,16 +360,45 @@ function StateProcessing() {
 												</SelectContent>
 											</Select>
 
-											<button className='btn btn-primary flex justify-center'>
-												SHOW JOBS
+											<Select
+												value={selectedScope}
+												onValueChange={setSelectedScope}
+											>
+												<SelectTrigger
+													className='w-28'
+													size='sm'
+													style={{ height: '40px' }}
+												>
+													<SelectValue placeholder='Select' />
+												</SelectTrigger>
+												<SelectContent className='w-32'>
+													<SelectItem value='3'>All</SelectItem>
+													<SelectItem value='0'>Cash</SelectItem>
+													<SelectItem value='4'>Card</SelectItem>
+													<SelectItem value='1'>Account</SelectItem>
+													<SelectItem value='2'>Rank</SelectItem>
+												</SelectContent>
+											</Select>
+
+											<button
+												className='btn btn-primary flex justify-center'
+												onClick={handleShow}
+											>
+												Show Jobs
 											</button>
 										</div>
 									</div>
 								</div>
 								<div className='card-body'>
+									<div className='flex justify-start items-center gap-4 ml-4 mt-2 mb-2'>
+										Awaiting Pricing - {driverChargeableJobs?.notPriced?.length}
+										<button className='btn btn-primary flex justify-center'>
+											Post All Priced
+										</button>
+									</div>
 									<TableContainer
 										component={Paper}
-										className='shadow-none bg-white dark:bg-[#14151A]'
+										className='shadow-none bg-white dark:bg-[#14151A] overflow-x-auto'
 									>
 										<Table className='text-[#14151A] dark:text-gray-100'>
 											<TableHead
@@ -468,7 +471,7 @@ function StateProcessing() {
 													},
 												}}
 											>
-												{filteredBookings.map((row) => (
+												{formattedBookings.map((row) => (
 													<Row
 														key={row.id}
 														row={row}

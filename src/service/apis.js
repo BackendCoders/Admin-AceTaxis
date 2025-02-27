@@ -80,10 +80,12 @@ export const billingAndPaymentEndpoints = {
 	GET_VATOUTPUTS: `${BASE}/api/Accounts/VATOutputs`,
 	DRIVER_PRICE_JOB_BY_MILEAGE: `${BASE}`,
 	DRIVER_POST_OR_UNPOST_JOBS: `${BASE}`,
-	DRIVER_GET_CHARGEABLE_JOBS: `${BASE}`,
+	DRIVER_GET_CHARGEABLE_JOBS: (userId, scope, lastDate) =>
+		`${BASE}/api/Accounts/DriverGetChargableJobs?scope=${scope}${userId ? `&userId=${userId}` : ''}&lastDate=${lastDate}`,
 	DRIVER_UPDATE_CHARGES_DATA: `${BASE}`,
 	DRIVER_CREATE_STATEMENTS: `${BASE}`,
-	DRIVER_GET_STATEMENTS: `${BASE}`,
+	DRIVER_GET_STATEMENTS: (from, to, userId) =>
+		`${BASE}/api/Accounts/DriverGetStatments?from=${from}&to=${to}${userId ? `&userId=${userId}` : ''}`,
 	MARK_STATEMENT_AS_PAID: `${BASE}`,
 	ACCOUNT_PRICE_MANUALLY: `${BASE}`,
 	ACCOUNT_PRICE_JOB_BY_MILEAGE: `${BASE}`,

@@ -1,6 +1,6 @@
 /** @format */
 
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useEffect } from 'react';
 // import { Container } from '@/components/container';
 import {
 	Toolbar,
@@ -8,23 +8,23 @@ import {
 	ToolbarHeading,
 } from '@/layouts/demo1/toolbar';
 import { Demo1LightSidebarContent } from './';
-import {
-	Popover,
-	PopoverContent,
-	PopoverTrigger,
-} from '@/components/ui/popover';
-import { Calendar } from '@/components/ui/calendar';
-import { addDays, format } from 'date-fns';
-import { cn } from '@/lib/utils';
-import { KeenIcon } from '@/components/keenicons';
+// import {
+// 	Popover,
+// 	PopoverContent,
+// 	PopoverTrigger,
+// } from '@/components/ui/popover';
+// import { Calendar } from '@/components/ui/calendar';
+// import { addDays, format } from 'date-fns';
+// import { cn } from '@/lib/utils';
+// import { KeenIcon } from '@/components/keenicons';
 import { useDispatch } from 'react-redux';
 import { refreshDashboard } from '../../../../slices/dashboardSlice';
 const Demo1LightSidebarPage = () => {
 	const dispatch = useDispatch();
-	const [date, setDate] = useState({
-		from: new Date(2025, 0, 20),
-		to: addDays(new Date(2025, 0, 20), 20),
-	});
+	// const [date, setDate] = useState({
+	// 	from: new Date(2025, 0, 20),
+	// 	to: addDays(new Date(2025, 0, 20), 20),
+	// });
 
 	useEffect(() => {
 		dispatch(refreshDashboard());
@@ -39,7 +39,7 @@ const Demo1LightSidebarPage = () => {
 						description=''
 					/>
 					<ToolbarActions>
-						<Popover>
+						{/* <Popover>
 							<PopoverTrigger asChild>
 								<button
 									id='date'
@@ -79,7 +79,7 @@ const Demo1LightSidebarPage = () => {
 									numberOfMonths={2}
 								/>
 							</PopoverContent>
-						</Popover>
+						</Popover> */}
 					</ToolbarActions>
 				</Toolbar>
 			</div>

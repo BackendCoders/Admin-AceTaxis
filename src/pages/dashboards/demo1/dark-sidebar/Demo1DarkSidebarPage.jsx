@@ -1,6 +1,6 @@
 /** @format */
 
-import { Fragment, useState } from 'react';
+import { Fragment, } from 'react';
 // import { Container } from '@/components/container';
 import {
 	Toolbar,
@@ -8,20 +8,20 @@ import {
 	ToolbarHeading,
 } from '@/layouts/demo1/toolbar';
 import { Demo1LightSidebarContent } from '../light-sidebar';
-import {
-	Popover,
-	PopoverContent,
-	PopoverTrigger,
-} from '@/components/ui/popover';
-import { Calendar } from '@/components/ui/calendar';
-import { addDays, format } from 'date-fns';
-import { cn } from '@/lib/utils';
-import { KeenIcon } from '@/components/keenicons';
+// import {
+// 	Popover,
+// 	PopoverContent,
+// 	PopoverTrigger,
+// } from '@/components/ui/popover';
+// import { Calendar } from '@/components/ui/calendar';
+// import { addDays, format } from 'date-fns';
+// import { cn } from '@/lib/utils';
+// import { KeenIcon } from '@/components/keenicons';
 const Demo1DarkSidebarPage = () => {
-	const [date, setDate] = useState({
-		from: new Date(2025, 0, 20),
-		to: addDays(new Date(2025, 0, 20), 20),
-	});
+	// const [date, setDate] = useState({
+	// 	from: new Date(2025, 0, 20),
+	// 	to: addDays(new Date(2025, 0, 20), 20),
+	// });
 	return (
 		<Fragment>
 			<div className=' pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1580px] w-full'>
@@ -31,7 +31,7 @@ const Demo1DarkSidebarPage = () => {
 						description=''
 					/>
 					<ToolbarActions>
-						<Popover>
+						{/* <Popover>
 							<PopoverTrigger asChild>
 								<button
 									id='date'
@@ -71,7 +71,7 @@ const Demo1DarkSidebarPage = () => {
 									numberOfMonths={2}
 								/>
 							</PopoverContent>
-						</Popover>
+						</Popover> */}
 					</ToolbarActions>
 				</Toolbar>
 			</div>

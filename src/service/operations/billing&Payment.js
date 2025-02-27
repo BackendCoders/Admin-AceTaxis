@@ -248,7 +248,9 @@ export async function accountPriceJobHVS(data) {
 }
 
 export async function accountPostOrUnpostJobs(postJob) {
-	const response = await handleGetReq(ACCOUNT_POST_OR_UNPOST_JOBS(postJob));
+	const response = await handlePostReq(ACCOUNT_POST_OR_UNPOST_JOBS(postJob), [
+		0,
+	]);
 
 	console.log(
 		'GET ACCOUNT_POST_OR_UNPOST_JOBS API RESPONSE.........',

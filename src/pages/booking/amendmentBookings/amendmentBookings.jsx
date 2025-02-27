@@ -41,7 +41,7 @@ function AmendmentBookings() {
 	const dispatch = useDispatch();
 	const { amendRequests } = useSelector((state) => state.webBooking);
 	const [searchInput, setSearchInput] = useState('');
-	const [date, setDate] = useState(new Date());
+	const [date, setDate] = useState();
 	const [cancelModal, setCancelModal] = useState(false);
 
 	useEffect(() => {

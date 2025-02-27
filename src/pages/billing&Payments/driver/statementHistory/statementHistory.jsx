@@ -34,116 +34,17 @@ import {
 import { Input } from '@/components/ui/input';
 import { refreshAllDrivers } from '../../../../slices/driverSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import { refreshStatementHistory } from '../../../../slices/billingSlice';
 function StatementHistory() {
 	const dispatch = useDispatch();
 	const { drivers } = useSelector((state) => state.driver);
+	const { statementHistory, loading } = useSelector((state) => state.billing);
 	const [selectedDriver, setSelectedDriver] = useState(0);
 	const [searchInput, setSearchInput] = useState('');
 	const [date, setDate] = useState({
 		from: new Date(),
 		to: addDays(new Date(), 20),
 	});
-	const driversData = useMemo(
-		() => [
-			{
-				driver: 10,
-				name: 'Alan Waistell',
-				details: '00:00 - 23:59',
-				color: 'bg-yellow-500',
-			},
-			{
-				driver: 13,
-				name: 'Lee Harrison',
-				details: '00:00 - 23:59',
-				color: 'bg-blue-300',
-			},
-			{
-				driver: 30,
-				name: 'Richard Elgar',
-				details: '07:30 - 17:30',
-				color: 'bg-red-400',
-			},
-			{
-				driver: 16,
-				name: 'James Owen',
-				details: '07:00 - 17:00 (+/-)',
-				color: 'bg-gray-700 text-white font-bold',
-			},
-			{
-				driver: 14,
-				name: 'Andrew James',
-				details: '07:30 - 17:30',
-				color: 'bg-green-500',
-			},
-			{
-				driver: 4,
-				name: 'Paul Barber',
-				details: '07:00 - 18:00',
-				color: 'bg-green-400',
-			},
-			{
-				driver: 12,
-				name: 'Chris Gray',
-				details: '07:00 - 16:00',
-				color: 'bg-blue-700 text-white font-bold',
-			},
-			{
-				driver: 5,
-				name: 'Mark Phillips',
-				details: '07:00 - 16:30',
-				color: 'bg-pink-500',
-			},
-			{
-				driver: 11,
-				name: 'Nigel Reynolds',
-				details: '07:00 - 17:00',
-				color: 'bg-gray-400',
-			},
-			{
-				driver: 2,
-				name: 'Kate Hall',
-				details: '07:00 - 22:30',
-				color: 'bg-purple-400',
-			},
-			{
-				driver: 8,
-				name: 'Peter Farrell',
-				details: '08:20 - 10:00',
-				color: 'bg-purple-200',
-			},
-			{
-				driver: 7,
-				name: 'Caroline Stimson',
-				details: '11:00 - 17:00',
-				color: 'bg-red-200',
-			},
-			{
-				driver: 6,
-				name: 'Rob Holton',
-				details: '07:00 - 22:00',
-				color: 'bg-blue-400',
-			},
-			{
-				driver: 31,
-				name: 'Bill Wood',
-				details: '16:00 - 17:00',
-				color: 'bg-red-300',
-			},
-			{
-				driver: 26,
-				name: 'Charles Farnham',
-				details: '07:00 - 17:00 (all routes)',
-				color: 'bg-blue-800 text-white font-bold',
-			},
-			{
-				driver: 18,
-				name: 'Jean Williams',
-				details: '07:30 - 09:15 (AM SR)',
-				color: 'bg-yellow-400',
-			},
-		],
-		[]
-	);
 
 	const ColumnInputFilter = ({ column }) => {
 		return (
@@ -284,6 +185,16 @@ function StatementHistory() {
 		}
 	};
 
+	const handleSearch = async () => {
+		dispatch(
+			refreshStatementHistory(
+				format(new Date(date?.from), 'yyyy-MM-dd'),
+				format(new Date(date?.to), 'yyyy-MM-dd'),
+				selectedDriver
+			)
+		);
+	};
+
 	useEffect(() => {
 		dispatch(refreshAllDrivers());
 	}, [dispatch]);
@@ -294,7 +205,9 @@ function StatementHistory() {
 				<Toolbar>
 					<ToolbarHeading>
 						<ToolbarPageTitle />
-						<ToolbarDescription>Showing {'16'} History </ToolbarDescription>
+						<ToolbarDescription>
+							Showing {statementHistory?.length} History{' '}
+						</ToolbarDescription>
 					</ToolbarHeading>
 				</Toolbar>
 			</div>
@@ -389,22 +302,31 @@ function StatementHistory() {
 										<button
 											className='btn btn-sm btn-outline btn-primary'
 											style={{ height: '40px' }}
+											onClick={handleSearch}
+											disabled={loading}
 										>
-											<KeenIcon icon='magnifier' /> Search
+											<KeenIcon icon='magnifier' />{' '}
+											{loading ? 'Searching...' : 'Search'}
 										</button>
 									</div>
 								</div>
 							</div>
 							<div className='card-body'>
-								<DataGrid
-									columns={columns}
-									data={driversData}
-									rowSelection={true}
-									onRowSelectionChange={handleRowSelection}
-									pagination={{ size: 10 }}
-									sorting={[{ id: 'userId', desc: false }]}
-									layout={{ card: true }}
-								/>
+								{statementHistory.length > 0 ? (
+									<DataGrid
+										columns={columns}
+										data={statementHistory}
+										rowSelection={true}
+										onRowSelectionChange={handleRowSelection}
+										pagination={{ size: 10 }}
+										sorting={[{ id: 'userId', desc: false }]}
+										layout={{ card: true }}
+									/>
+								) : (
+									<div className='text-center py-10 text-gray-500'>
+										No data found
+									</div>
+								)}
 							</div>
 						</div>
 					</div>

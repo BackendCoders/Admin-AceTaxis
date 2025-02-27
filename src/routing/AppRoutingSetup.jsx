@@ -80,7 +80,7 @@ import {
 	Availability,
 	AvailabilityLogs,
 	AvailabilityReport,
-	SearchBooking,
+	// SearchBooking,
 	AirportRuns,
 	CardBookings,
 	RejectedBookings,
@@ -164,10 +164,10 @@ const AppRoutingSetup = () => {
 						element={<AvailabilityReport />}
 					/>
 
-					<Route
+					{/* <Route
 						path='/bookings/search-booking'
 						element={<SearchBooking />}
-					/>
+					/> */}
 					<Route
 						path='/bookings/audit-view'
 						element={<AuditBooking />}
