@@ -1,7 +1,6 @@
 /** @format */
 import { useState, Fragment, useEffect } from 'react';
 import {
-	Box,
 	// Collapse,
 	IconButton,
 	Table,
@@ -11,13 +10,15 @@ import {
 	TableHead,
 	TableRow,
 	Paper,
-	Typography,
 } from '@mui/material';
 import {
 	KeyboardArrowDown,
 	KeyboardArrowUp,
-	// EmailOutlined,
+	EmailOutlined,
 } from '@mui/icons-material';
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
+import MoneyIcon from '@mui/icons-material/Money';
+
 import { format } from 'date-fns';
 // import { Container } from '@/components/container';
 // import {
@@ -43,7 +44,15 @@ import {
 	SelectValue,
 } from '@/components/ui/select';
 import { useDispatch, useSelector } from 'react-redux';
-import { refreshAllDrivers } from '../../../../slices/driverSlice';
+import { refreshAllAccounts } from '../../../../slices/accountSlice';
+import { clearInvoice } from '../../../../service/operations/billing&Payment';
+import toast from 'react-hot-toast';
+import {
+	Toolbar,
+	ToolbarDescription,
+	ToolbarHeading,
+	ToolbarPageTitle,
+} from '@/partials/toolbar';
 
 // Function to create booking data
 function createBooking(
@@ -124,6 +133,18 @@ const bookings = [
 function Row({ row }) {
 	const [open, setOpen] = useState(false);
 
+	const handleCancel = async () => {
+		try {
+			const response = await clearInvoice(row?.id);
+			if (response?.status === 'success') {
+				toast.success('Invoice Cancellation Successful');
+			}
+		} catch (error) {
+			console.error('Failed to cancel invoice:', error);
+			toast.error('Failed to cancel invoice');
+		}
+	};
+
 	return (
 		<>
 			<TableRow className='bg-white dark:bg-[#14151A] hover:bg-gray-100'>
@@ -164,7 +185,18 @@ function Row({ row }) {
 					{row.hasVias ? 'True' : 'False'}
 				</TableCell>
 				<TableCell className='text-[#14151A] dark:text-gray-700'>
-					{row.waiting}
+					<input
+						type='number'
+						className='w-16 text-center border rounded p-1 dark:bg-inherit dark:ring-inherit'
+						value={row.waiting}
+						// onChange={(e) =>
+						// 	handleInputChange(
+						// 		row.original.id,
+						// 		'initialCharge',
+						// 		e.target.value
+						// 	)
+						// }
+					/>
 				</TableCell>
 				<TableCell className='text-[#14151A] dark:text-gray-700'>
 					{row.waitingCharge}
@@ -173,16 +205,72 @@ function Row({ row }) {
 					{row.actualMiles}
 				</TableCell>
 				<TableCell className='text-[#14151A] dark:text-gray-700'>
-					{row.driverFare}
+					<input
+						type='number'
+						className='w-16 text-center border rounded p-1 dark:bg-inherit dark:ring-inherit'
+						value={row.driverFare}
+						// onChange={(e) =>
+						// 	handleInputChange(
+						// 		row.original.id,
+						// 		'initialCharge',
+						// 		e.target.value
+						// 	)
+						// }
+					/>
 				</TableCell>
 				<TableCell className='text-[#14151A] dark:text-gray-700'>
-					{row.journeyCharge}
+					<input
+						type='number'
+						className='w-16 text-center border rounded p-1 dark:bg-inherit dark:ring-inherit'
+						value={row.journeyCharge}
+						// onChange={(e) =>
+						// 	handleInputChange(
+						// 		row.original.id,
+						// 		'initialCharge',
+						// 		e.target.value
+						// 	)
+						// }
+					/>
 				</TableCell>
 				<TableCell className='text-[#14151A] dark:text-gray-700'>
-					{row.parking}
+					<input
+						type='number'
+						className='w-16 text-center border rounded p-1 dark:bg-inherit dark:ring-inherit'
+						value={row.parking}
+						// onChange={(e) =>
+						// 	handleInputChange(
+						// 		row.original.id,
+						// 		'initialCharge',
+						// 		e.target.value
+						// 	)
+						// }
+					/>
 				</TableCell>
 				<TableCell className='text-[#14151A] dark:text-gray-700 font-semibold'>
 					{row.total}
+				</TableCell>
+				<TableCell>
+					<IconButton
+						size='small'
+						// onClick={() => setPriceBaseModal(true)}
+					>
+						<MoneyIcon className='text-blue-500 dark:text-cyan-400' />
+					</IconButton>
+				</TableCell>
+
+				<TableCell>
+					<IconButton size='small'>
+						<EmailOutlined className='text-blue-500 dark:text-cyan-400' />
+					</IconButton>
+				</TableCell>
+
+				<TableCell>
+					<IconButton
+						size='small'
+						onClick={handleCancel}
+					>
+						<DeleteOutlinedIcon className='text-red-500 dark:text-red-600' />
+					</IconButton>
 				</TableCell>
 			</TableRow>
 		</>
@@ -192,8 +280,8 @@ function Row({ row }) {
 // Main Component
 function InvoiceProcessor() {
 	const dispatch = useDispatch();
-	const { drivers } = useSelector((state) => state.driver);
-	const [selectedDriver, setSelectedDriver] = useState(0);
+	const { accounts } = useSelector((state) => state.account);
+	const [selectedAccount, setSelectedAccount] = useState(0);
 	const [search, setSearch] = useState('');
 	// const [date, setDate] = useState(new Date());
 	const filterDriver = '';
@@ -265,167 +353,186 @@ function InvoiceProcessor() {
 	});
 
 	useEffect(() => {
-		dispatch(refreshAllDrivers());
+		dispatch(refreshAllAccounts());
 	}, [dispatch]);
 
 	return (
 		<Fragment>
 			<div className='pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1580px] w-full'>
-				<Typography
-					variant='h5'
-					fontWeight='medium'
-					mb={2}
-					className='text-xl leading-none text-gray-900'
-				>
-					Account Job Processor
-				</Typography>
+				<Toolbar>
+					<ToolbarHeading>
+						<ToolbarPageTitle />
+						<ToolbarDescription>Account Job Processor </ToolbarDescription>
+					</ToolbarHeading>
+				</Toolbar>
 
-				{/* Filters */}
-				<Box
-					display='flex'
-					gap={2}
-					alignItems='center'
-					mb={2}
-				>
-					<div className='input input-sm max-w-48 h-10'>
-						<KeenIcon icon='magnifier' />
-						<input
-							type='text'
-							placeholder='Search Invoice'
-							value={search}
-							onChange={(e) => setSearch(e.target.value)}
-						/>
+				<div className='ms-auto me-auto max-w-[1580px] w-full'>
+					<div className='flex flex-col items-stretch gap-5 lg:gap-7.5'>
+						<div className='flex flex-wrap items-center gap-5 justify-between'>
+							<div className='card card-grid min-w-full'>
+								<div className='card-header flex-wrap gap-2'>
+									<div className='flex flex-wrap gap-2 lg:gap-5'>
+										<div className='flex'>
+											<label
+												className='input input-sm hover:shadow-lg'
+												style={{ height: '40px' }}
+											>
+												<KeenIcon icon='magnifier' />
+												<input
+													type='text'
+													placeholder='Search Invoice'
+													value={search}
+													onChange={(e) => setSearch(e.target.value)}
+												/>
+											</label>
+										</div>
+										<div className='flex flex-wrap items-center gap-2.5'>
+											<Select
+												value={selectedAccount}
+												onValueChange={(value) => setSelectedAccount(value)}
+											>
+												<SelectTrigger
+													className='w-40 hover:shadow-lg'
+													size='sm'
+													style={{ height: '40px' }}
+												>
+													<SelectValue placeholder='Select' />
+												</SelectTrigger>
+												<SelectContent className='w-40'>
+													<SelectItem value={0}>All</SelectItem>
+													{accounts?.length > 0 &&
+														accounts?.map((acc) => (
+															<>
+																<SelectItem value={acc?.accNo}>
+																	{acc?.accNo} - {acc?.businessName}
+																</SelectItem>
+															</>
+														))}
+												</SelectContent>
+											</Select>
+
+											<div className='flex flex-col'>
+												<DateRangePicker
+													dateRange={dateRange}
+													setDateRange={setDateRange}
+												/>
+											</div>
+
+											<div className='flex items-center gap-2'>
+												<label className='switch switch-sm flex-1 sm:flex-none'>
+													<span className='switch-label'>
+														Auto Email Invoices
+													</span>
+													<input
+														type='checkbox'
+														value='1'
+														name='check'
+														defaultChecked
+														readOnly
+													/>
+												</label>
+											</div>
+
+											<button className='btn btn-primary flex justify-center'>
+												SHOW JOBS
+											</button>
+										</div>
+									</div>
+								</div>
+								<div className='card-body'>
+									<TableContainer
+										component={Paper}
+										className='shadow-none bg-white dark:bg-[#14151A] overflow-x-auto'
+									>
+										<Table className='text-[#14151A] dark:text-gray-100'>
+											<TableHead
+												className='bg-gray-100 dark:bg-[#14151A]'
+												sx={{
+													'& .MuiTableCell-root': {
+														borderBottom: '1px solid #464852',
+													},
+												}}
+											>
+												<TableRow>
+													<TableCell />
+													<TableCell className='text-[#14151A] dark:text-gray-700'>
+														#
+													</TableCell>
+													<TableCell className='text-[#14151A] dark:text-gray-700'>
+														Date
+													</TableCell>
+													<TableCell className='text-[#14151A] dark:text-gray-700'>
+														Acc #
+													</TableCell>
+													<TableCell className='text-[#14151A] dark:text-gray-700'>
+														Driver #
+													</TableCell>
+													<TableCell className='text-[#14151A] dark:text-gray-700'>
+														Pickup
+													</TableCell>
+													<TableCell className='text-[#14151A] dark:text-gray-700'>
+														Destination
+													</TableCell>
+													<TableCell className='text-[#14151A] dark:text-gray-700'>
+														Passenger
+													</TableCell>
+													<TableCell className='text-[#14151A] dark:text-gray-700'>
+														Has Vias
+													</TableCell>
+													<TableCell className='text-[#14151A] dark:text-gray-700'>
+														Waiting
+													</TableCell>
+													<TableCell className='text-[#14151A] dark:text-gray-700'>
+														Waiting Charge
+													</TableCell>
+													<TableCell className='text-[#14151A] dark:text-gray-700'>
+														Actual Miles
+													</TableCell>
+													<TableCell className='text-[#14151A] dark:text-gray-700'>
+														Driver £
+													</TableCell>
+													<TableCell className='text-[#14151A] dark:text-gray-700'>
+														Journey Charge
+													</TableCell>
+													<TableCell className='text-[#14151A] dark:text-gray-700'>
+														Parking
+													</TableCell>
+													<TableCell className='text-[#14151A] dark:text-gray-700 font-semibold'>
+														Total
+													</TableCell>
+													<TableCell className='text-gray-900 dark:text-gray-700'>
+														Price
+													</TableCell>
+													<TableCell className='text-gray-900 dark:text-gray-700'>
+														Post
+													</TableCell>
+													<TableCell className='text-gray-900 dark:text-gray-700'>
+														Cancel
+													</TableCell>
+												</TableRow>
+											</TableHead>
+
+											<TableBody
+												sx={{
+													'& .MuiTableCell-root': {
+														borderBottom: '1px solid #464852',
+													},
+												}}
+											>
+												{filteredBookings.map((row) => (
+													<Row
+														key={row.id}
+														row={row}
+													/>
+												))}
+											</TableBody>
+										</Table>
+									</TableContainer>
+								</div>
+							</div>
+						</div>
 					</div>
-
-					<Select
-						value={selectedDriver}
-						onValueChange={(value) => setSelectedDriver(value)}
-					>
-						<SelectTrigger
-							className=' w-32 hover:shadow-lg'
-							size='sm'
-							style={{ height: '40px' }}
-						>
-							<SelectValue placeholder='Select' />
-						</SelectTrigger>
-						<SelectContent className='w-36'>
-							<SelectItem value={0}>All</SelectItem>
-							{drivers?.length > 0 &&
-								drivers?.map((driver) => (
-									<>
-										<SelectItem value={driver?.id}>
-											{driver?.fullName}
-										</SelectItem>
-									</>
-								))}
-						</SelectContent>
-					</Select>
-
-					<div className='flex flex-col'>
-						<DateRangePicker
-							dateRange={dateRange}
-							setDateRange={setDateRange}
-						/>
-					</div>
-
-					<div className='flex items-center gap-2'>
-						<label className='switch switch-sm'>
-							<span className='switch-label'>Auto Email Invoices</span>
-							<input
-								type='checkbox'
-								value='1'
-								name='check'
-								defaultChecked
-								readOnly
-							/>
-						</label>
-					</div>
-
-					<button className='btn btn-primary flex justify-center'>
-						SHOW JOBS
-					</button>
-				</Box>
-
-				{/* Table */}
-				<TableContainer
-					component={Paper}
-					className='shadow-none bg-white dark:bg-[#14151A]'
-				>
-					<Table className='text-[#14151A] dark:text-gray-100'>
-						<TableHead
-							className='bg-gray-100 dark:bg-[#14151A]'
-							sx={{
-								'& .MuiTableCell-root': {
-									borderBottom: '1px solid #464852',
-								},
-							}}
-						>
-							<TableRow>
-								<TableCell />
-								<TableCell className='text-[#14151A] dark:text-gray-700'>
-									#
-								</TableCell>
-								<TableCell className='text-[#14151A] dark:text-gray-700'>
-									Date
-								</TableCell>
-								<TableCell className='text-[#14151A] dark:text-gray-700'>
-									Acc #
-								</TableCell>
-								<TableCell className='text-[#14151A] dark:text-gray-700'>
-									Driver #
-								</TableCell>
-								<TableCell className='text-[#14151A] dark:text-gray-700'>
-									Pickup
-								</TableCell>
-								<TableCell className='text-[#14151A] dark:text-gray-700'>
-									Destination
-								</TableCell>
-								<TableCell className='text-[#14151A] dark:text-gray-700'>
-									Passenger
-								</TableCell>
-								<TableCell className='text-[#14151A] dark:text-gray-700'>
-									Has Vias
-								</TableCell>
-								<TableCell className='text-[#14151A] dark:text-gray-700'>
-									Waiting
-								</TableCell>
-								<TableCell className='text-[#14151A] dark:text-gray-700'>
-									Waiting Charge
-								</TableCell>
-								<TableCell className='text-[#14151A] dark:text-gray-700'>
-									Actual Miles
-								</TableCell>
-								<TableCell className='text-[#14151A] dark:text-gray-700'>
-									Driver £
-								</TableCell>
-								<TableCell className='text-[#14151A] dark:text-gray-700'>
-									Journey Charge
-								</TableCell>
-								<TableCell className='text-[#14151A] dark:text-gray-700'>
-									Parking
-								</TableCell>
-								<TableCell className='text-[#14151A] dark:text-gray-700 font-semibold'>
-									Total
-								</TableCell>
-							</TableRow>
-						</TableHead>
-
-						<TableBody
-							sx={{
-								'& .MuiTableCell-root': {
-									borderBottom: '1px solid #464852',
-								},
-							}}
-						>
-							{filteredBookings.map((row) => (
-								<Row
-									key={row.id}
-									row={row}
-								/>
-							))}
-						</TableBody>
-					</Table>
-				</TableContainer>
+				</div>
 			</div>
 		</Fragment>
 	);

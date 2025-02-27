@@ -47,6 +47,12 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { refreshAllDrivers } from '../../../../slices/driverSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import {
+	Toolbar,
+	ToolbarDescription,
+	ToolbarHeading,
+	ToolbarPageTitle,
+} from '@/partials/toolbar';
 
 // Function to create booking data
 function createBooking(
@@ -299,179 +305,191 @@ function StateProcessing() {
 	return (
 		<Fragment>
 			<div className='pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1580px] w-full'>
-				<Typography
-					variant='h5'
-					fontWeight='medium'
-					mb={2}
-					className='text-xl leading-none text-gray-900 '
-				>
-					Driver Job Processor
-				</Typography>
+				<Toolbar>
+					<ToolbarHeading>
+						<ToolbarPageTitle />
+						<ToolbarDescription>Driver Job Processor</ToolbarDescription>
+					</ToolbarHeading>
+				</Toolbar>
 
-				{/* Filters */}
-				<Box
-					display='flex'
-					gap={2}
-					alignItems='center'
-					mb={2}
-				>
-					<div className='input input-sm max-w-48 h-10'>
-						<KeenIcon icon='magnifier' />
-						<input
-							type='text'
-							placeholder='Search Statements'
-							value={search}
-							onChange={(e) => setSearch(e.target.value)}
-						/>
+				<div className='ms-auto me-auto max-w-[1580px] w-full'>
+					<div className='flex flex-col items-stretch gap-5 lg:gap-7.5'>
+						<div className='flex flex-wrap items-center gap-5 justify-between'>
+							<div className='card card-grid min-w-full'>
+								<div className='card-header flex-wrap gap-2'>
+									<div className='flex flex-wrap gap-2 lg:gap-5'>
+										<div className='flex'>
+											<label
+												className='input input-sm hover:shadow-lg'
+												style={{ height: '40px' }}
+											>
+												<KeenIcon icon='magnifier' />
+												<input
+													type='text'
+													placeholder='Search Statements'
+													value={search}
+													onChange={(e) => setSearch(e.target.value)}
+												/>
+											</label>
+										</div>
+										<div className='flex flex-wrap items-center gap-2.5'>
+											<Popover>
+												<PopoverTrigger asChild>
+													<button className='input border-gray-300 bg-transparent w-48 py-2 px-3 rounded-md'>
+														<KeenIcon
+															icon='calendar'
+															className='mr-2'
+														/>
+														{date ? (
+															format(date, 'LLL dd, y')
+														) : (
+															<span>Pick a date</span>
+														)}
+													</button>
+												</PopoverTrigger>
+												<PopoverContent
+													className='w-auto p-0 shadow-md'
+													align='start'
+												>
+													<Calendar
+														initialFocus
+														mode='single'
+														defaultMonth={date}
+														selected={date}
+														onSelect={setDate}
+														numberOfMonths={1}
+													/>
+												</PopoverContent>
+											</Popover>
+
+											<Select
+												value={selectedDriver}
+												onValueChange={(value) => setSelectedDriver(value)}
+											>
+												<SelectTrigger
+													className=' w-32 hover:shadow-lg'
+													size='sm'
+													style={{ height: '40px' }}
+												>
+													<SelectValue placeholder='Select' />
+												</SelectTrigger>
+												<SelectContent className='w-36'>
+													<SelectItem value={0}>All</SelectItem>
+													{drivers?.length > 0 &&
+														drivers?.map((driver) => (
+															<>
+																<SelectItem value={driver?.id}>
+																	{driver?.fullName}
+																</SelectItem>
+															</>
+														))}
+												</SelectContent>
+											</Select>
+
+											<button className='btn btn-primary flex justify-center'>
+												SHOW JOBS
+											</button>
+										</div>
+									</div>
+								</div>
+								<div className='card-body'>
+									<TableContainer
+										component={Paper}
+										className='shadow-none bg-white dark:bg-[#14151A]'
+									>
+										<Table className='text-[#14151A] dark:text-gray-100'>
+											<TableHead
+												className='bg-gray-100 dark:bg-[#14151A]'
+												sx={{
+													'& .MuiTableCell-root': {
+														borderBottom: '1px solid #464852',
+														fontWeight: 'bold', // Ensures header text stands out
+													},
+												}}
+											>
+												<TableRow>
+													<TableCell className='w-8' />{' '}
+													{/* Empty Cell for Expand Button */}
+													<TableCell className='text-gray-900 dark:text-gray-700'>
+														#
+													</TableCell>
+													<TableCell className='text-gray-900 dark:text-gray-700'>
+														Date
+													</TableCell>
+													<TableCell className='text-gray-900 dark:text-gray-700'>
+														Acc #
+													</TableCell>
+													<TableCell className='text-gray-900 dark:text-gray-700'>
+														Driver
+													</TableCell>
+													<TableCell className='text-gray-900 dark:text-gray-700'>
+														Pickup
+													</TableCell>
+													<TableCell className='text-gray-900 dark:text-gray-700'>
+														Destination
+													</TableCell>
+													<TableCell className='text-gray-900 dark:text-gray-700'>
+														Passenger
+													</TableCell>
+													<TableCell className='text-gray-900 dark:text-gray-700'>
+														Has Vias
+													</TableCell>
+													<TableCell className='text-gray-900 dark:text-gray-700'>
+														Waiting
+													</TableCell>
+													<TableCell className='text-gray-900 dark:text-gray-700'>
+														Waiting Charge
+													</TableCell>
+													<TableCell className='text-gray-900 dark:text-gray-700'>
+														Actual Miles
+													</TableCell>
+													<TableCell className='text-gray-900 dark:text-gray-700'>
+														Driver Price
+													</TableCell>
+													<TableCell className='text-gray-900 dark:text-gray-700'>
+														Parking
+													</TableCell>
+													<TableCell className='text-gray-900 dark:text-gray-700'>
+														Total
+													</TableCell>
+													<TableCell className='text-gray-900 dark:text-gray-700'>
+														£
+													</TableCell>
+													<TableCell className='text-gray-900 dark:text-gray-700'>
+														Post
+													</TableCell>
+												</TableRow>
+											</TableHead>
+
+											<TableBody
+												sx={{
+													'& .MuiTableCell-root': {
+														borderBottom: '1px solid #464852',
+													},
+												}}
+											>
+												{filteredBookings.map((row) => (
+													<Row
+														key={row.id}
+														row={row}
+														setPriceBaseModal={setPriceBaseModal}
+													/>
+												))}
+											</TableBody>
+										</Table>
+									</TableContainer>
+								</div>
+							</div>
+						</div>
 					</div>
-
-					<Popover>
-						<PopoverTrigger asChild>
-							<button className='input border-gray-300 bg-transparent w-48 py-2 px-3 rounded-md'>
-								<KeenIcon
-									icon='calendar'
-									className='mr-2'
-								/>
-								{date ? format(date, 'LLL dd, y') : <span>Pick a date</span>}
-							</button>
-						</PopoverTrigger>
-						<PopoverContent
-							className='w-auto p-0 shadow-md'
-							align='start'
-						>
-							<Calendar
-								initialFocus
-								mode='single'
-								defaultMonth={date}
-								selected={date}
-								onSelect={setDate}
-								numberOfMonths={1}
-							/>
-						</PopoverContent>
-					</Popover>
-
-					<Select
-						value={selectedDriver}
-						onValueChange={(value) => setSelectedDriver(value)}
-					>
-						<SelectTrigger
-							className=' w-32 hover:shadow-lg'
-							size='sm'
-							style={{ height: '40px' }}
-						>
-							<SelectValue placeholder='Select' />
-						</SelectTrigger>
-						<SelectContent className='w-36'>
-							<SelectItem value={0}>All</SelectItem>
-							{drivers?.length > 0 &&
-								drivers?.map((driver) => (
-									<>
-										<SelectItem value={driver?.id}>
-											{driver?.fullName}
-										</SelectItem>
-									</>
-								))}
-						</SelectContent>
-					</Select>
-
-					<button className='btn btn-primary flex justify-center'>
-						SHOW JOBS
-					</button>
-				</Box>
-
-				{/* Table */}
-				<TableContainer
-					component={Paper}
-					className='shadow-none bg-white dark:bg-[#14151A]'
-				>
-					<Table className='text-[#14151A] dark:text-gray-100'>
-						<TableHead
-							className='bg-gray-100 dark:bg-[#14151A]'
-							sx={{
-								'& .MuiTableCell-root': {
-									borderBottom: '1px solid #464852',
-									fontWeight: 'bold', // Ensures header text stands out
-								},
-							}}
-						>
-							<TableRow>
-								<TableCell className='w-8' />{' '}
-								{/* Empty Cell for Expand Button */}
-								<TableCell className='text-gray-900 dark:text-gray-700'>
-									#
-								</TableCell>
-								<TableCell className='text-gray-900 dark:text-gray-700'>
-									Date
-								</TableCell>
-								<TableCell className='text-gray-900 dark:text-gray-700'>
-									Acc #
-								</TableCell>
-								<TableCell className='text-gray-900 dark:text-gray-700'>
-									Driver
-								</TableCell>
-								<TableCell className='text-gray-900 dark:text-gray-700'>
-									Pickup
-								</TableCell>
-								<TableCell className='text-gray-900 dark:text-gray-700'>
-									Destination
-								</TableCell>
-								<TableCell className='text-gray-900 dark:text-gray-700'>
-									Passenger
-								</TableCell>
-								<TableCell className='text-gray-900 dark:text-gray-700'>
-									Has Vias
-								</TableCell>
-								<TableCell className='text-gray-900 dark:text-gray-700'>
-									Waiting
-								</TableCell>
-								<TableCell className='text-gray-900 dark:text-gray-700'>
-									Waiting Charge
-								</TableCell>
-								<TableCell className='text-gray-900 dark:text-gray-700'>
-									Actual Miles
-								</TableCell>
-								<TableCell className='text-gray-900 dark:text-gray-700'>
-									Driver Price
-								</TableCell>
-								<TableCell className='text-gray-900 dark:text-gray-700'>
-									Parking
-								</TableCell>
-								<TableCell className='text-gray-900 dark:text-gray-700'>
-									Total
-								</TableCell>
-								<TableCell className='text-gray-900 dark:text-gray-700'>
-									£
-								</TableCell>
-								<TableCell className='text-gray-900 dark:text-gray-700'>
-									Post
-								</TableCell>
-							</TableRow>
-						</TableHead>
-
-						<TableBody
-							sx={{
-								'& .MuiTableCell-root': {
-									borderBottom: '1px solid #464852',
-								},
-							}}
-						>
-							{filteredBookings.map((row) => (
-								<Row
-									key={row.id}
-									row={row}
-									setPriceBaseModal={setPriceBaseModal}
-								/>
-							))}
-						</TableBody>
-					</Table>
-				</TableContainer>
+				</div>
+				{priceBaseModal && (
+					<PriceBase
+						open={priceBaseModal}
+						onOpenChange={handleClose}
+					/>
+				)}
 			</div>
-			{priceBaseModal && (
-				<PriceBase
-					open={priceBaseModal}
-					onOpenChange={handleClose}
-				/>
-			)}
 		</Fragment>
 	);
 }

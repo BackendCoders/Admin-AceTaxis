@@ -93,7 +93,8 @@ export const billingAndPaymentEndpoints = {
 	ACCOUNT_UPDATE_CHARGES_DATA: `${BASE}`,
 	ACCOUNT_CREATE_INVOICE: `${BASE}`,
 	MARK_INVOICE_AS_PAID: `${BASE}`,
-	DELETE_INVOICE: `${BASE}`,
+	DELETE_INVOICE: (invoiceNo) =>
+		`${BASE}/api/Accounts/DeleteInvoice?invoiceNo=${invoiceNo}`,
 	CLEAR_INVOICE: `${BASE}`,
 	GET_INVOICES: `${BASE}`,
 };
