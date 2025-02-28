@@ -84,7 +84,7 @@ const Teams = () => {
 					<KeenIcon icon='magnifier' />
 					<input
 						type='text'
-						placeholder='Search Teams'
+						placeholder='Search name'
 						value={inputValue}
 						onChange={handleChange}
 						onKeyDown={handleKeyDown}

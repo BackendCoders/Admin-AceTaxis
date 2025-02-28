@@ -171,7 +171,7 @@ const EntryCallout = () => {
 					<KeenIcon icon='magnifier' />
 					<input
 						type='text'
-						placeholder='Search Teams'
+						placeholder='Search Driver'
 						value={inputValue}
 						onChange={handleChange}
 						onKeyDown={handleKeyDown}
