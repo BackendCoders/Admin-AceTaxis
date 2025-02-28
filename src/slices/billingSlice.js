@@ -2,6 +2,7 @@
 
 import { createSlice } from '@reduxjs/toolkit';
 import {
+	accountGetChargeableJobs,
 	driverGetChargeableJobs,
 	driverGetStatements,
 	getInvoices,
@@ -12,6 +13,7 @@ const initialState = {
 	allInvoicesData: [],
 	statementHistory: [],
 	driverChargeableJobs: { priced: [], notPriced: [] },
+	accountChargeableJObs: { priced: [], notPriced: [] },
 };
 
 const billingSlice = createSlice({
@@ -29,6 +31,9 @@ const billingSlice = createSlice({
 		},
 		setDriverChargeableJobs(state, action) {
 			state.driverChargeableJobs = action.payload;
+		},
+		setAccountChargeableJobs(state, action) {
+			state.accountChargeableJobs = action.payload;
 		},
 	},
 });
@@ -97,11 +102,35 @@ export function refreshDriverChargeableJobs(userId, scope, lastDate) {
 	};
 }
 
+export function refreshAccountChargeableJobs(accno, from, to) {
+	return async (dispatch) => {
+		dispatch(setLoading(true));
+		try {
+			const response = await accountGetChargeableJobs(accno, from, to);
+			console.log(response);
+
+			if (response.status === 'success') {
+				dispatch(
+					setAccountChargeableJobs({
+						priced: response.priced || [],
+						notPriced: response.notPriced || [],
+					})
+				);
+			}
+		} catch (error) {
+			console.error('Failed to refresh:', error);
+		} finally {
+			dispatch(setLoading(false));
+		}
+	};
+}
+
 export const {
 	setLoading,
 	setAllInvoicesData,
 	setStatementHistory,
 	setDriverChargeableJobs,
+	setAccountChargeableJobs,
 } = billingSlice.actions;
 
 export default billingSlice.reducer;

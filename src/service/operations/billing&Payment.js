@@ -273,7 +273,7 @@ export async function accountPostOrUnpostJobs(postJob, id) {
 }
 
 export async function accountGetChargeableJobs(accNo, from, to) {
-	const response = await handleGetReq(
+	const response = await handlePostReq(
 		ACCOUNT_GET_CHARGEABLE_JOBS(accNo, from, to)
 	);
 
