@@ -87,19 +87,26 @@ export const billingAndPaymentEndpoints = {
 	DRIVER_CREATE_STATEMENTS: `${BASE}/api/Accounts/DriverCreateStatments`,
 	DRIVER_GET_STATEMENTS: (from, to, userId) =>
 		`${BASE}/api/Accounts/DriverGetStatments?from=${from}&to=${to}${userId ? `&userId=${userId}` : ''}`,
-	MARK_STATEMENT_AS_PAID: `${BASE}`,
-	ACCOUNT_PRICE_MANUALLY: `${BASE}`,
-	ACCOUNT_PRICE_JOB_BY_MILEAGE: `${BASE}`,
-	ACCOUNT_PRICE_JOB_HVS: `${BASE}`,
-	ACCOUNT_POST_OR_UNPOST_JOBS: `${BASE}`,
-	ACCOUNT_GET_CHARGEABLE_JOBS: `${BASE}`,
-	ACCOUNT_UPDATE_CHARGES_DATA: `${BASE}`,
-	ACCOUNT_CREATE_INVOICE: `${BASE}`,
-	MARK_INVOICE_AS_PAID: `${BASE}`,
+	MARK_STATEMENT_AS_PAID: (statementNo) =>
+		`${BASE}/api/Accounts/MarkStatementAsPaid?statementNo=${statementNo}`,
+	ACCOUNT_PRICE_MANUALLY: `${BASE}/api/Accounts/AccountPriceManually`,
+	ACCOUNT_PRICE_JOB_BY_MILEAGE: `${BASE}/api/Accounts/AccountPriceJobByMileage`,
+	ACCOUNT_PRICE_JOB_HVS: `${BASE}/api/Accounts/AccountPriceJobHVS`,
+	ACCOUNT_POST_OR_UNPOST_JOBS: (postJob) =>
+		`${BASE}/api/Accounts/AccountPostOrUnPostJobs?postJob=${postJob}`,
+	ACCOUNT_GET_CHARGEABLE_JOBS: (accno, from, to) =>
+		`${BASE}/api/Accounts/AccountGetChargableJobs?from=${from}&to=${to}${accno ? `&accno=${accno}` : ''}`,
+	ACCOUNT_UPDATE_CHARGES_DATA: `${BASE}/api/Accounts/AccountUpdateChargesData`,
+	ACCOUNT_CREATE_INVOICE: (emailInvoices) =>
+		`${BASE}/api/Accounts/AccountCreateInvoice?emailInvoices=${emailInvoices}`,
+	MARK_INVOICE_AS_PAID: (invoiceNo) =>
+		`${BASE}/api/Accounts/MarkInvoiceAsPaid?invoiceNo=${invoiceNo}`,
 	DELETE_INVOICE: (invoiceNo) =>
 		`${BASE}/api/Accounts/DeleteInvoice?invoiceNo=${invoiceNo}`,
-	CLEAR_INVOICE: `${BASE}`,
-	GET_INVOICES: `${BASE}`,
+	CLEAR_INVOICE: (invoiceNo) =>
+		`${BASE}/api/Accounts/ClearInvoice?invoiceNo=${invoiceNo}`,
+	GET_INVOICES: (from, to, userId) =>
+		`${BASE}/api/Accounts/GetInvoices?from=${from}&to=${to}${userId ? `&userId=${userId}` : ''}`,
 };
 
 export const webBookingEndpoints = {
