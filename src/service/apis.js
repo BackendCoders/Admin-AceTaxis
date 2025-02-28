@@ -78,12 +78,13 @@ export const settingsEndpoints = {
 
 export const billingAndPaymentEndpoints = {
 	GET_VATOUTPUTS: `${BASE}/api/Accounts/VATOutputs`,
-	DRIVER_PRICE_JOB_BY_MILEAGE: `${BASE}`,
-	DRIVER_POST_OR_UNPOST_JOBS: `${BASE}`,
+	DRIVER_PRICE_JOB_BY_MILEAGE: `${BASE}/api/Accounts/DriverPriceJobByMileage`,
+	DRIVER_POST_OR_UNPOST_JOBS: (postJob) =>
+		`${BASE}/api/Accounts/DriverPostOrUnPostJobs?postJob=${postJob}`,
 	DRIVER_GET_CHARGEABLE_JOBS: (userId, scope, lastDate) =>
 		`${BASE}/api/Accounts/DriverGetChargableJobs?scope=${scope}${userId ? `&userId=${userId}` : ''}&lastDate=${lastDate}`,
-	DRIVER_UPDATE_CHARGES_DATA: `${BASE}`,
-	DRIVER_CREATE_STATEMENTS: `${BASE}`,
+	DRIVER_UPDATE_CHARGES_DATA: `${BASE}/api/Accounts/DriverUpdateChargesData`,
+	DRIVER_CREATE_STATEMENTS: `${BASE}/api/Accounts/DriverCreateStatments`,
 	DRIVER_GET_STATEMENTS: (from, to, userId) =>
 		`${BASE}/api/Accounts/DriverGetStatments?from=${from}&to=${to}${userId ? `&userId=${userId}` : ''}`,
 	MARK_STATEMENT_AS_PAID: `${BASE}`,

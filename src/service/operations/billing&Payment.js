@@ -66,11 +66,10 @@ export async function driverPriceJobByMileage(data) {
 		return response;
 	}
 }
-export async function driverPostOrUnpostJobs(postJob) {
-	const response = await handlePostReq(
-		DRIVER_POST_OR_UNPOST_JOBS(postJob),
-		null
-	);
+export async function driverPostOrUnpostJobs(postJob, id) {
+	const response = await handlePostReq(DRIVER_POST_OR_UNPOST_JOBS(postJob), [
+		id,
+	]);
 
 	console.log('GET DRIVER_POST_OR_UNPOST_JOBS API RESPONSE.........', response);
 
@@ -86,6 +85,7 @@ export async function driverPostOrUnpostJobs(postJob) {
 		// );
 		return response;
 	}
+	return response;
 }
 export async function driverGetChargeableJobs(userId, scope, lastDate) {
 	const response = await handlePostReq(
