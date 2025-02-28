@@ -61,12 +61,35 @@ import {
 	driverUpdateChargesData,
 } from '../../../../service/operations/billing&Payment';
 import toast from 'react-hot-toast';
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
+import { cancelBooking } from '../../../../service/operations/webBookingsApi';
+
 // Collapsible Row Component
 function RowNotPriced({ row, setPriceBaseModal, handlePostButton }) {
 	const [open, setOpen] = useState(false);
 	const [waiting, setWaiting] = useState(row.waiting);
 	const [driverFare, setDriverFare] = useState(row.driverFare);
 	const [parking, setParking] = useState(row.parking);
+	const user = JSON.parse(localStorage.getItem('userData'));
+
+	const handleCancel = async () => {
+		try {
+			const payload = {
+				bookingId: row?.bookingId,
+				cancelledByName: user?.fullName,
+				cancelBlock: false,
+				cancelledOnArrival: false,
+				actionByUserId: user?.userId,
+			};
+			const response = await cancelBooking(payload);
+			if (response?.status === 'success') {
+				toast.success('Invoice Cancellation Successful');
+			}
+		} catch (error) {
+			console.error('Failed to cancel invoice:', error);
+			toast.error('Failed to cancel invoice');
+		}
+	};
 
 	const handleInputChange = async (field, value) => {
 		const newValue = value < 0 ? 0 : value;
@@ -238,6 +261,14 @@ function RowNotPriced({ row, setPriceBaseModal, handlePostButton }) {
 						<EmailOutlined
 							className={`${row?.coa ? `${row.postedForStatement ? 'text-red-500 dark:text-red-900' : 'text-blue-500 dark:text-white'}` : `${row.postedForStatement ? 'text-red-500 dark:text-red-600' : 'text-blue-500 dark:text-cyan-400'}`}  `}
 						/>
+					</IconButton>
+				</TableCell>
+				<TableCell>
+					<IconButton
+						size='small'
+						onClick={handleCancel}
+					>
+						<DeleteOutlinedIcon className='text-red-500 dark:text-red-600' />
 					</IconButton>
 				</TableCell>
 			</TableRow>
@@ -612,25 +643,59 @@ function StateProcessing() {
 
 	const handleProcessDriver = async () => {
 		try {
-			if (formattedPricedBookings.length === 0) {
+			if (
+				!driverChargeableJobs?.priced ||
+				driverChargeableJobs.priced.length === 0
+			) {
 				toast.info('No jobs available to post.');
 				return;
 			}
 
-			// Create an array of API call promises
-			const postRequests = formattedPricedBookings.map((job) =>
-				driverCreateStatements(job)
-			);
+			console.log(driverChargeableJobs.priced);
 
-			// Execute all API calls concurrently
-			const responses = await Promise.all(postRequests);
+			// API expects { jobs: [...] }, so we wrap the array inside an object
+			const payload = driverChargeableJobs.priced.map((job) => ({
+				accNo: job.accNo || 0,
+				bookingId: job.bookingId || 0,
+				userId: job.userId || 0,
+				date: job.date || new Date().toISOString(),
+				passengers: job.passengers || 0,
+				pickup: job.pickup || '',
+				pickupPostcode: job.pickupPostcode || '',
+				destination: job.destination || '',
+				destinationPostcode: job.destinationPostcode || '',
+				vias: job.vias || [], // Ensure vias is an array
+				hasVias: job.hasVias || false,
+				passenger: job.passenger || 'string',
+				price: job.price || 0,
+				scope: job.scope || 0,
+				cancelled: job.cancelled || false,
+				coa: job.coa || false,
+				vehicleType: job.vehicleType || 0,
+				priceAccount: job.priceAccount || 0,
+				details: job?.details || '',
+				hasDetails: job?.hasDetails || false,
+				waitingMinutes: job.waitingMinutes || 0,
+				paymentStatus: job.paymentStatus || 0,
+				waitingTime: job.waitingTime || '',
+				waitingPriceDriver: job.waitingPriceDriver || 0,
+				waitingPriceAccount: job.waitingPriceAccount || 0,
+				parkingCharge: job.parkingCharge || 0,
+				totalCharge: job.totalCharge || 0,
+				totalCost: job.totalCost || 0,
+				postedForInvoicing: job.postedForInvoicing || false,
+				postedForStatement: job.postedForStatement || false,
+				miles: job.miles || 0,
+			}));
 
-			// Check responses for success/failure
-			const allSuccessful = responses.every((res) => res?.status === 'success');
+			console.log('Sending Payload:', payload); // Debugging
 
-			if (allSuccessful) {
+			// Call API with the wrapped payload
+			const response = await driverCreateStatements(payload);
+
+			if (response?.status === 'success') {
 				toast.success(
-					`${formattedPricedBookings.length} jobs processed successfully!`
+					`${driverChargeableJobs?.priced?.length} jobs processed successfully!`
 				);
 				handleShow();
 			} else {
@@ -833,6 +898,9 @@ function StateProcessing() {
 													</TableCell>
 													<TableCell className='text-gray-900 dark:text-gray-700'>
 														Post
+													</TableCell>
+													<TableCell className='text-gray-900 dark:text-gray-700'>
+														Cancel
 													</TableCell>
 												</TableRow>
 											</TableHead>
