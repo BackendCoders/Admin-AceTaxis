@@ -25,7 +25,13 @@ import toast from 'react-hot-toast';
 import { refreshAvailability } from '../../../slices/availabilitySlice';
 import { useDispatch } from 'react-redux';
 
-function CustomModal({ open, onOpenChange, selectedDate, selectedDriver }) {
+function CustomModal({
+	open,
+	onOpenChange,
+	selectedDate,
+	selectedDriver,
+	checkExistingAvailability,
+}) {
 	const dispatch = useDispatch();
 	const [date, setDate] = useState(new Date(selectedDate));
 
@@ -46,6 +52,12 @@ function CustomModal({ open, onOpenChange, selectedDate, selectedDriver }) {
 		validationSchema,
 		onSubmit: async (values, { setSubmitting, resetForm }) => {
 			try {
+				const hasExist = checkExistingAvailability(values.from, values.to);
+
+				if (hasExist) {
+					toast.error('This time slot is already exist. Choose another slot');
+					return;
+				}
 				const payload = {
 					userId: selectedDriver, // Driver ID
 					date: format(new Date(date), "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"), // Formatted Date

@@ -30,12 +30,71 @@ import { refreshAllDrivers } from '../../../slices/driverSlice';
 const Availability = () => {
 	const dispatch = useDispatch();
 	const { drivers } = useSelector((state) => state.driver);
+	const { availability } = useSelector((state) => state.availability);
 	const [selectedDriver, setSelectedDriver] = useState(0);
 	const [isCustomModal, setIsCustomModal] = useState(false);
 	const [date, setDate] = useState(new Date());
 
 	const handleClose = () => {
 		setIsCustomModal(false);
+	};
+
+	const checkExistingAvailability = (from, to) => {
+		console.log(from, to, availability);
+		if (!availability || !selectedDriver) return false;
+
+		const selectedDateKey = format(new Date(date), 'yyyy-MM-dd'); // Format date to match stored keys
+		const timeToMinutes = (timeStr) => {
+			if (!timeStr || typeof timeStr !== 'string') return null; // Ensure time is valid
+			const [hours, minutes] = timeStr.split(':').map(Number);
+			return hours * 60 + minutes;
+		};
+
+		const selectedStart = timeToMinutes(from);
+		const selectedEnd = timeToMinutes(to);
+
+		const isOverlapping = availability[0]?.some((entry) => {
+			console.log('-----', entry);
+			if (!entry?.date) {
+				console.warn('⚠️ Skipping entry with missing date:', entry);
+				return false; // Skip this entry
+			}
+			let parsedDate;
+			try {
+				parsedDate = new Date(entry.date);
+				if (isNaN(parsedDate.getTime())) {
+					throw new Error('Invalid date format');
+				}
+			} catch (error) {
+				console.error('❌ Invalid date in entry:', entry.date, error);
+				return false; // Skip this entry
+			}
+			const entryDate = format(parsedDate, 'yyyy-MM-dd'); // Convert to proper format
+			console.log(
+				'✅ Checking against existing:',
+				entryDate,
+				entry.from,
+				entry.to
+			);
+
+			const existingStart = timeToMinutes(entry.from);
+			const existingEnd = timeToMinutes(entry.to);
+
+			return (
+				entryDate === selectedDateKey && // Ensure same date
+				((selectedStart >= existingStart && selectedStart < existingEnd) || // Starts inside existing slot
+					(selectedEnd > existingStart && selectedEnd <= existingEnd) || // Ends inside existing slot
+					(selectedStart <= existingStart && selectedEnd >= existingEnd)) // Fully covers existing slot
+			);
+		});
+		if (isOverlapping) {
+			console.warn(
+				`❌ Availability conflict detected for ${from} - ${to}. Blocking API call.`
+			);
+			return true; // Prevents API call
+		}
+
+		return false; // No conflicts, proceed with API call
 	};
 
 	const handleClick = async (type) => {
@@ -54,45 +113,64 @@ const Availability = () => {
 		};
 
 		if (type === 'srAmOnly') {
-			payload.from = '07:30';
-			payload.to = '09:15';
+			payload.from = '07:30:00';
+			payload.to = '09:15:00';
 		} else if (type === 'srPmOnly') {
-			payload.from = '14:30';
-			payload.to = '16:15';
+			payload.from = '14:30:00';
+			payload.to = '16:15:00';
 		} else if (type === 'srOnly') {
-			// Send both AM and PM requests
-			const srAmRequest = { ...payload, from: '07:30', to: '09:15' };
-			const srPmRequest = { ...payload, from: '14:30', to: '16:15' };
+			const amExists = checkExistingAvailability('07:30:00', '09:15:00');
+			const pmExists = checkExistingAvailability('14:30:00', '16:15:00');
+
+			if (amExists && pmExists) {
+				toast.error('SR AM & PM Availability already exists!');
+				return;
+			}
+
+			const requests = [];
+			if (!amExists) {
+				requests.push(
+					updateAvailability({ ...payload, from: '07:30:00', to: '09:15:00' })
+				);
+			}
+			if (!pmExists) {
+				requests.push(
+					updateAvailability({ ...payload, from: '14:30:00', to: '16:15:00' })
+				);
+			}
+
+			if (requests.length === 0) return; // If both exist, stop execution
 
 			try {
-				const [amResponse, pmResponse] = await Promise.all([
-					updateAvailability(srAmRequest), // Send SR AM request
-					updateAvailability(srPmRequest), // Send SR PM request
-				]);
-				if (
-					amResponse?.status !== 'success' ||
-					pmResponse?.status !== 'success'
-				) {
+				const responses = await Promise.all(requests);
+				if (responses.every((res) => res?.status === 'success')) {
+					dispatch(
+						refreshAvailability(
+							selectedDriver,
+							format(new Date(date), "yyyy-MM-dd'T'00:00:00'Z'")
+						)
+					);
+					toast.success('SR Availability updated successfully!');
+				} else {
 					throw new Error('One or more requests failed');
 				}
-
-				dispatch(
-					refreshAvailability(
-						selectedDriver,
-						format(new Date(date), "yyyy-MM-dd'T'00:00:00'Z'")
-					)
-				);
-				toast.success('SR AM & PM Availability Set Successfully');
 			} catch (error) {
 				toast.error('Failed to update SR availability');
 				console.error(error);
 			}
 			return;
 		} else if (type === 'unavailableAllDay') {
-			payload.from = '00:00';
-			payload.to = '23:59';
+			payload.from = '00:00:00';
+			payload.to = '23:59:59';
 			payload.type = 1; // Unavailable All Day
 			payload.note = 'Unavailable All Day';
+		}
+
+		if (checkExistingAvailability(payload.from, payload.to)) {
+			toast.error(
+				`Availability for this time (${payload.from} - ${payload.to}) already exists!`
+			);
+			return;
 		}
 
 		try {
@@ -256,6 +334,7 @@ const Availability = () => {
 					onOpenChange={handleClose}
 					selectedDate={date}
 					selectedDriver={selectedDriver}
+					checkExistingAvailability={checkExistingAvailability}
 				/>
 			)}
 		</div>
