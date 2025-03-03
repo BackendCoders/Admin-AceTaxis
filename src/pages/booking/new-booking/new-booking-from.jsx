@@ -240,7 +240,25 @@ function NewBooking() {
 				),
 				enableSorting: true,
 				cell: ({ row }) => (
-					<span className={row.original.color}>{row.original.phoneNumber}</span>
+					<span className={row.original.color}>
+						{row.original.phoneNumber ? row.original.phoneNumber : '-'}
+					</span>
+				),
+				meta: { headerClassName: 'min-w-[80px]' },
+			},
+			{
+				accessorKey: 'block',
+				header: ({ column }) => (
+					<DataGridColumnHeader
+						title='Days and Ends on Date'
+						column={column}
+					/>
+				),
+				enableSorting: true,
+				cell: ({ row }) => (
+					<span className={row.original.color}>
+						{row.original.repeatText ? row.original.repeatText : '-'}
+					</span>
 				),
 				meta: { headerClassName: 'min-w-[80px]' },
 			},

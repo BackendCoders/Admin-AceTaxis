@@ -193,19 +193,19 @@ function AcceptWebBooking({ open, onOpenChange }) {
 								)}
 							</div>
 						</div>
-						<div className='flex gap-1 pb-2'>
-							<label className='switch'>
-								<span className='switch-label'>Arrive BY</span>
-								<input
-									type='checkbox'
-									name='arriveBy'
-									checked={webBooking?.arriveBy}
-									// onChange={(e) =>
-									// 	formik.setFieldValue('showAllBookings', e.target.checked)
-									// }
-								/>
-							</label>
-						</div>
+						{webBooking?.arriveBy && (
+							<div className='flex gap-1 pb-2'>
+								<label className='switch'>
+									<span className='switch-label'>
+										Arrive BY :{' '}
+										{webBooking?.pickupDateTime
+											.split('T')[1]
+											.split('.')[0]
+											?.slice(0, 5)}
+									</span>
+								</label>
+							</div>
+						)}
 
 						<div className='flex justify-end mb-2 mt-2'>
 							<button
