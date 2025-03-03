@@ -206,7 +206,7 @@ function RowNotPriced({ row, setPriceBaseModal, handlePostButton }) {
 				<TableCell
 					className={`${row?.coa ? 'dark:text-white' : 'dark:text-gray-700'} text-gray-900`}
 				>
-					{row.waitingCharge}
+					£{row.waitingCharge.toFixed(2)}
 				</TableCell>
 				<TableCell
 					className={`${row?.coa ? 'dark:text-white' : 'dark:text-gray-700'} text-gray-900`}
@@ -248,7 +248,7 @@ function RowNotPriced({ row, setPriceBaseModal, handlePostButton }) {
 				<TableCell
 					className={`${row?.coa ? 'dark:text-white' : 'dark:text-gray-700'} text-gray-900 font-semibold`}
 				>
-					{row.total}
+					£{row.total.toFixed(2)}
 				</TableCell>
 				<TableCell>
 					<IconButton
@@ -406,7 +406,7 @@ function RowPriced({ row, handleRevert }) {
 				<TableCell
 					className={`${row?.coa ? 'dark:text-white' : 'dark:text-gray-700'} text-gray-900`}
 				>
-					{row.waitingCharge}
+					£{row.waitingCharge.toFixed(2)}
 				</TableCell>
 				<TableCell
 					className={`${row?.coa ? 'dark:text-white' : 'dark:text-gray-700'} text-gray-900`}
@@ -416,13 +416,13 @@ function RowPriced({ row, handleRevert }) {
 				<TableCell
 					className={`${row?.coa ? 'dark:text-white' : 'dark:text-gray-700'} text-gray-900`}
 				>
-					{row.driverFare}
+					£{row.driverFare.toFixed(2)}
 				</TableCell>
 				<TableCell className='text-[#14151A] dark:text-gray-700'>
-					{row.journeyCharge}
+					£{row.journeyCharge.toFixed(2)}
 				</TableCell>
 				<TableCell className='text-[#14151A] dark:text-gray-700'>
-					{row.parking}
+					£{row.parking.toFixed(2)}
 				</TableCell>
 				<TableCell className='text-[#14151A] dark:text-gray-700 font-semibold'>
 					£{row.total.toFixed(2)}
