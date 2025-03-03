@@ -975,7 +975,7 @@ function InvoiceProcessor() {
 								</div>
 								<div className='card-body'>
 									<div className='flex justify-start items-center gap-4 ml-4 mt-2 mb-2'>
-										Ready for Processing -{' '}
+										Ready for Invoicing -{' '}
 										{accountChargeableJobs?.priced?.length}
 										<button
 											className='btn btn-success flex justify-center'

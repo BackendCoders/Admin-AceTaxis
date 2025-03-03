@@ -31,120 +31,34 @@ import {
 	// DataGridRowSelectAll,
 	// DataGridRowSelect,
 } from '@/components';
+import {
+	Box,
+	Collapse,
+	IconButton,
+	Table,
+	TableBody,
+	TableCell,
+	TableContainer,
+	TableHead,
+	TableRow,
+	Paper,
+} from '@mui/material';
 import { Input } from '@/components/ui/input';
-import { refreshAllDrivers } from '../../../../slices/driverSlice';
 import { useDispatch, useSelector } from 'react-redux';
-function InvoiceHistory() {
-	const dispatch = useDispatch();
-	const { drivers } = useSelector((state) => state.driver);
-	const [selectedDriver, setSelectedDriver] = useState(0);
-	const [searchInput, setSearchInput] = useState('');
-	const [date, setDate] = useState({
-		from: new Date(),
-		to: addDays(new Date(), 20),
-	});
-	const driversData = useMemo(
-		() => [
-			{
-				driver: 10,
-				name: 'Alan Waistell',
-				details: '00:00 - 23:59',
-				color: 'bg-yellow-500',
-			},
-			{
-				driver: 13,
-				name: 'Lee Harrison',
-				details: '00:00 - 23:59',
-				color: 'bg-blue-300',
-			},
-			{
-				driver: 30,
-				name: 'Richard Elgar',
-				details: '07:30 - 17:30',
-				color: 'bg-red-400',
-			},
-			{
-				driver: 16,
-				name: 'James Owen',
-				details: '07:00 - 17:00 (+/-)',
-				color: 'bg-gray-700 text-white font-bold',
-			},
-			{
-				driver: 14,
-				name: 'Andrew James',
-				details: '07:30 - 17:30',
-				color: 'bg-green-500',
-			},
-			{
-				driver: 4,
-				name: 'Paul Barber',
-				details: '07:00 - 18:00',
-				color: 'bg-green-400',
-			},
-			{
-				driver: 12,
-				name: 'Chris Gray',
-				details: '07:00 - 16:00',
-				color: 'bg-blue-700 text-white font-bold',
-			},
-			{
-				driver: 5,
-				name: 'Mark Phillips',
-				details: '07:00 - 16:30',
-				color: 'bg-pink-500',
-			},
-			{
-				driver: 11,
-				name: 'Nigel Reynolds',
-				details: '07:00 - 17:00',
-				color: 'bg-gray-400',
-			},
-			{
-				driver: 2,
-				name: 'Kate Hall',
-				details: '07:00 - 22:30',
-				color: 'bg-purple-400',
-			},
-			{
-				driver: 8,
-				name: 'Peter Farrell',
-				details: '08:20 - 10:00',
-				color: 'bg-purple-200',
-			},
-			{
-				driver: 7,
-				name: 'Caroline Stimson',
-				details: '11:00 - 17:00',
-				color: 'bg-red-200',
-			},
-			{
-				driver: 6,
-				name: 'Rob Holton',
-				details: '07:00 - 22:00',
-				color: 'bg-blue-400',
-			},
-			{
-				driver: 31,
-				name: 'Bill Wood',
-				details: '16:00 - 17:00',
-				color: 'bg-red-300',
-			},
-			{
-				driver: 26,
-				name: 'Charles Farnham',
-				details: '07:00 - 17:00 (all routes)',
-				color: 'bg-blue-800 text-white font-bold',
-			},
-			{
-				driver: 18,
-				name: 'Jean Williams',
-				details: '07:30 - 09:15 (AM SR)',
-				color: 'bg-yellow-400',
-			},
-		],
-		[]
-	);
+import { refreshAllAccounts } from '../../../../slices/accountSlice';
+// import { accountPostOrUnpostJobs } from '../../../../service/operations/billing&Payment';
+// import toast from 'react-hot-toast';
+import { refreshInvoiceHistory } from '../../../../slices/billingSlice';
+import MoneyIcon from '@mui/icons-material/Money';
+import {
+	Download,
+	KeyboardArrowDown,
+	KeyboardArrowUp,
+	// EmailOutlined,
+} from '@mui/icons-material';
 
+function RowNotPriced({ row, invoiceHistory }) {
+	const [open, setOpen] = useState(false);
 	const ColumnInputFilter = ({ column }) => {
 		return (
 			<Input
@@ -155,14 +69,13 @@ function InvoiceHistory() {
 			/>
 		);
 	};
-
 	const columns = useMemo(
 		() => [
 			{
-				accessorKey: 'userId',
+				accessorKey: 'bookingId',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='User Id'
+						title='#'
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -174,10 +87,10 @@ function InvoiceHistory() {
 				meta: { headerClassName: 'w-20' },
 			},
 			{
-				accessorKey: 'cash',
+				accessorKey: 'date',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Cash'
+						title='Date'
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -189,10 +102,10 @@ function InvoiceHistory() {
 				meta: { headerClassName: 'w-20' },
 			},
 			{
-				accessorKey: 'account',
+				accessorKey: 'pickup',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Account'
+						title='Pickup'
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -206,10 +119,10 @@ function InvoiceHistory() {
 				meta: { headerClassName: 'min-w-[120px]' },
 			},
 			{
-				accessorKey: 'rank',
+				accessorKey: 'destination',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Rank'
+						title='Destination'
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -223,10 +136,10 @@ function InvoiceHistory() {
 				meta: { headerClassName: 'min-w-[120px]' },
 			},
 			{
-				accessorKey: 'comms',
+				accessorKey: 'passenger',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Comms'
+						title='Passenger'
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -240,10 +153,10 @@ function InvoiceHistory() {
 				meta: { headerClassName: 'min-w-[120px]' },
 			},
 			{
-				accessorKey: 'grossTotal',
+				accessorKey: 'price',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Gross Total'
+						title='Price'
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -251,16 +164,16 @@ function InvoiceHistory() {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={`font-medium ${row.original.color}`}>
-						{row.original.grossTotal}
+						£{row.original.price.toFixed(2)}
 					</span>
 				),
 				meta: { headerClassName: 'min-w-[120px]' },
 			},
 			{
-				accessorKey: 'netTotal',
+				accessorKey: 'waiting',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Net Total'
+						title='Waiting'
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -268,7 +181,58 @@ function InvoiceHistory() {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={`font-medium ${row.original.color}`}>
-						{row.original.netTotal}
+						£{row.original.waiting.toFixed(2)}
+					</span>
+				),
+				meta: { headerClassName: 'min-w-[120px]' },
+			},
+			{
+				accessorKey: 'parking',
+				header: ({ column }) => (
+					<DataGridColumnHeader
+						title='Parking'
+						filter={<ColumnInputFilter column={column} />}
+						column={column}
+					/>
+				),
+				enableSorting: true,
+				cell: ({ row }) => (
+					<span className={`font-medium ${row.original.color}`}>
+						£{row.original.parking.toFixed(2)}
+					</span>
+				),
+				meta: { headerClassName: 'min-w-[120px]' },
+			},
+			{
+				accessorKey: 'total',
+				header: ({ column }) => (
+					<DataGridColumnHeader
+						title='Total Ex'
+						filter={<ColumnInputFilter column={column} />}
+						column={column}
+					/>
+				),
+				enableSorting: true,
+				cell: ({ row }) => (
+					<span className={`font-medium ${row.original.color}`}>
+						£{row.original.totalEx.toFixed(2)}
+					</span>
+				),
+				meta: { headerClassName: 'min-w-[120px]' },
+			},
+			{
+				accessorKey: 'totalIncome',
+				header: ({ column }) => (
+					<DataGridColumnHeader
+						title='Total Inc'
+						filter={<ColumnInputFilter column={column} />}
+						column={column}
+					/>
+				),
+				enableSorting: true,
+				cell: ({ row }) => (
+					<span className={`font-medium ${row.original.color}`}>
+						£{row.original.totalIncome.toFixed(2)}
 					</span>
 				),
 				meta: { headerClassName: 'min-w-[120px]' },
@@ -276,7 +240,6 @@ function InvoiceHistory() {
 		],
 		[]
 	);
-
 	const handleRowSelection = (state) => {
 		const selectedRowIds = Object.keys(state);
 		if (selectedRowIds.length > 0) {
@@ -284,8 +247,192 @@ function InvoiceHistory() {
 		}
 	};
 
+	return (
+		<>
+			{/* Main Table Row */}
+			<TableRow
+				className={`${row?.coa ? ' bg-orange-500 hover:bg-orange-400' : 'bg-white dark:bg-[#14151A] hover:bg-gray-100'} `}
+			>
+				<TableCell>
+					<IconButton
+						size='small'
+						onClick={() => setOpen(!open)}
+					>
+						{open ? (
+							<KeyboardArrowUp
+								className={`${row?.coa ? 'text-gray-800 dark:text-white' : 'text-gray-800 dark:text-gray-700'}`}
+							/>
+						) : (
+							<KeyboardArrowDown
+								className={`${row?.coa ? 'text-gray-800 dark:text-white' : 'text-gray-800 dark:text-gray-700'}`}
+							/>
+						)}
+					</IconButton>
+				</TableCell>
+				<TableCell
+					className={`${row?.coa ? 'text-blue-600 dark:text-white' : 'text-blue-500 dark:text-cyan-400'}  font-medium`}
+				>
+					{row.id}
+				</TableCell>
+				<TableCell
+					className={`${row?.coa ? 'dark:text-white' : 'dark:text-gray-700'} text-gray-900`}
+				>
+					{row.accNumber}
+				</TableCell>
+				<TableCell
+					className={`${row?.coa ? 'dark:text-white' : 'dark:text-gray-700'} text-gray-900`}
+				>
+					{row.date}
+				</TableCell>
+				<TableCell
+					className={`${row?.coa ? 'dark:text-white' : 'dark:text-gray-700'} text-gray-900`}
+				>
+					£{row.net.toFixed(2)}
+				</TableCell>
+				<TableCell
+					className={`${row?.coa ? 'dark:text-white' : 'dark:text-gray-700'} text-gray-900`}
+				>
+					£{row.vat.toFixed(2)}
+				</TableCell>
+				<TableCell
+					className={`${row?.coa ? 'dark:text-white' : 'dark:text-gray-700'} text-gray-900 font-semibold`}
+				>
+					£{row.total.toFixed(2)}
+				</TableCell>
+				<TableCell>
+					<IconButton
+						size='small'
+						// onClick={() => {
+						// 	if (row.driverFare === 0) {
+						// 		toast.error('Driver Price Should not be 0'); // Show error if price is 0
+						// 	} else {
+						// 		handlePostButton(row); // Post the job if valid
+						// 	}
+						// }}
+					>
+						<Download
+							className={`${row?.coa ? `${row.postedForStatement ? 'text-red-500 dark:text-red-900' : 'text-blue-500 dark:text-white'}` : `${row.postedForStatement ? 'text-red-500 dark:text-red-600' : 'text-blue-500 dark:text-cyan-400'}`}  `}
+						/>
+					</IconButton>
+				</TableCell>
+				<TableCell
+					className={`${row?.coa ? 'dark:text-white' : 'dark:text-gray-700'} text-gray-900 font-semibold`}
+				>
+					{row.paid}
+				</TableCell>
+				<TableCell>
+					<IconButton size='small'>
+						<MoneyIcon
+							className={`${row?.coa ? 'text-blue-600 dark:text-white' : 'text-blue-500 dark:text-cyan-400'}  `}
+						/>
+					</IconButton>
+				</TableCell>
+			</TableRow>
+
+			{/* Collapsible Booking Details Row */}
+			<TableRow>
+				<TableCell
+					colSpan={16}
+					style={{ paddingBottom: 0, paddingTop: 0 }}
+				>
+					<Collapse
+						in={open}
+						timeout='auto'
+						unmountOnExit
+					>
+						<Box
+							margin={1}
+							className='border border-gray-300 dark:border-gray-600 rounded-md p-4 bg-gray-100 dark:bg-[#232427] text-gray-900 dark:text-gray-700'
+						>
+							<DataGrid
+								columns={columns}
+								data={invoiceHistory}
+								rowSelection={true}
+								onRowSelectionChange={handleRowSelection}
+								pagination={{ size: 10 }}
+								sorting={[{ id: 'bookingId', desc: false }]}
+								layout={{ card: true }}
+							/>
+						</Box>
+					</Collapse>
+				</TableCell>
+			</TableRow>
+		</>
+	);
+}
+
+function InvoiceHistory() {
+	const dispatch = useDispatch();
+	const { accounts } = useSelector((state) => state.account);
+	const { invoiceHistory, loading } = useSelector((state) => state.billing);
+	const [selectedAccount, setSelectedAccount] = useState(0);
+	const [date, setDate] = useState({
+		from: new Date(),
+		to: addDays(new Date(), 20),
+	});
+
+	const formattedBookings = (invoiceHistory || []).map((booking) => ({
+		id: booking?.bookingId,
+		date: booking?.date
+			? new Date(booking?.date).toLocaleDateString('en-GB') +
+				' ' +
+				booking?.date?.split('T')[1]?.split('.')[0]?.slice(0, 5)
+			: '-', // Ensure correct date format
+		accNumber: booking?.accNo,
+		driver: booking?.userId || '-',
+		pickup: `${booking?.pickup}`,
+		destination: `${booking?.destination}`,
+		passenger: booking?.passenger || 'Unknown',
+		hasVias: booking?.hasVias,
+		coa: booking?.coa,
+		waiting: booking?.waitingMinutes || 0,
+		waitingCharge: booking?.waitingPriceDriver || 0,
+		phoneNumber: booking?.phoneNumber || '',
+		actualMiles: booking?.miles,
+		driverFare: booking?.price || 0,
+		parking: booking?.parkingCharge || 0,
+		total: booking?.totalCost || 0,
+		postedForStatement: booking?.postedForStatement,
+		details: {
+			details: booking?.details || '',
+			vias: booking?.vias?.length
+				? booking.vias
+						.map((via) => `${via.address}, ${via.postCode}`)
+						.join(' → ')
+				: '',
+
+			scope: booking?.scope === 4 ? 'Card' : 'Cash',
+		},
+	}));
+
+	// const handlePostButton = async (row) => {
+	// 	try {
+	// 		const postJob = row?.driverFare > 0 && true;
+	// 		const response = await accountPostOrUnpostJobs(postJob, row?.id);
+	// 		if (response?.status === 'success') {
+	// 			toast.success('Job posted successfully');
+	// 			handleSearch();
+	// 		} else {
+	// 			toast.error('Failed to post job');
+	// 		}
+	// 	} catch (error) {
+	// 		console.error('Failed to post job:', error);
+	// 		toast.error('Failed to post job');
+	// 	}
+	// };
+
+	const handleSearch = async () => {
+		dispatch(
+			refreshInvoiceHistory(
+				format(new Date(date?.from), 'yyyy-MM-dd'),
+				format(new Date(date?.to), 'yyyy-MM-dd'),
+				selectedAccount
+			)
+		);
+	};
+
 	useEffect(() => {
-		dispatch(refreshAllDrivers());
+		dispatch(refreshAllAccounts());
 	}, [dispatch]);
 
 	return (
@@ -294,7 +441,9 @@ function InvoiceHistory() {
 				<Toolbar>
 					<ToolbarHeading>
 						<ToolbarPageTitle />
-						<ToolbarDescription>Showing {'16'} Invoices </ToolbarDescription>
+						<ToolbarDescription>
+							Showing {invoiceHistory?.length} Invoices{' '}
+						</ToolbarDescription>
 					</ToolbarHeading>
 				</Toolbar>
 			</div>
@@ -304,7 +453,7 @@ function InvoiceHistory() {
 						<div className='card card-grid min-w-full'>
 							<div className='card-header flex-wrap gap-2'>
 								<div className='flex flex-wrap gap-2 lg:gap-5'>
-									<div className='flex'>
+									{/* <div className='flex'>
 										<label
 											className='input input-sm hover:shadow-lg'
 											style={{ height: '40px' }}
@@ -317,7 +466,7 @@ function InvoiceHistory() {
 												onChange={(e) => setSearchInput(e.target.value)}
 											/>
 										</label>
-									</div>
+									</div> */}
 									<div className='flex flex-wrap items-center gap-2.5'>
 										<Popover>
 											<PopoverTrigger asChild>
@@ -363,23 +512,23 @@ function InvoiceHistory() {
 										</Popover>
 
 										<Select
-											value={selectedDriver}
-											onValueChange={(value) => setSelectedDriver(value)}
+											value={selectedAccount}
+											onValueChange={(value) => setSelectedAccount(value)}
 										>
 											<SelectTrigger
-												className=' w-32 hover:shadow-lg'
+												className='w-40 hover:shadow-lg'
 												size='sm'
 												style={{ height: '40px' }}
 											>
 												<SelectValue placeholder='Select' />
 											</SelectTrigger>
-											<SelectContent className='w-36'>
+											<SelectContent className='w-40'>
 												<SelectItem value={0}>All</SelectItem>
-												{drivers?.length > 0 &&
-													drivers?.map((driver) => (
+												{accounts?.length > 0 &&
+													accounts?.map((acc) => (
 														<>
-															<SelectItem value={driver?.id}>
-																{driver?.fullName}
+															<SelectItem value={acc?.accNo}>
+																{acc?.accNo} - {acc?.businessName}
 															</SelectItem>
 														</>
 													))}
@@ -389,22 +538,82 @@ function InvoiceHistory() {
 										<button
 											className='btn btn-sm btn-outline btn-primary'
 											style={{ height: '40px' }}
+											onClick={handleSearch}
+											disabled={loading}
 										>
-											<KeenIcon icon='magnifier' /> Search
+											<KeenIcon icon='magnifier' />{' '}
+											{loading ? 'Searching...' : 'Search'}
 										</button>
 									</div>
 								</div>
 							</div>
 							<div className='card-body'>
-								<DataGrid
-									columns={columns}
-									data={driversData}
-									rowSelection={true}
-									onRowSelectionChange={handleRowSelection}
-									pagination={{ size: 10 }}
-									sorting={[{ id: 'userId', desc: false }]}
-									layout={{ card: true }}
-								/>
+								<TableContainer
+									component={Paper}
+									className='shadow-none bg-white dark:bg-[#14151A] overflow-x-auto'
+								>
+									<Table className='text-[#14151A] dark:text-gray-100'>
+										<TableHead
+											className='bg-gray-100 dark:bg-[#14151A]'
+											sx={{
+												'& .MuiTableCell-root': {
+													borderBottom: '1px solid #464852',
+													fontWeight: 'bold', // Ensures header text stands out
+												},
+											}}
+										>
+											<TableRow>
+												<TableCell className='w-8' />{' '}
+												{/* Empty Cell for Expand Button */}
+												<TableCell className='text-gray-900 dark:text-gray-700'>
+													Invoice #
+												</TableCell>
+												<TableCell className='text-gray-900 dark:text-gray-700'>
+													Acc No.
+												</TableCell>
+												<TableCell className='text-gray-900 dark:text-gray-700'>
+													Date
+												</TableCell>
+												<TableCell className='text-gray-900 dark:text-gray-700'>
+													NET
+												</TableCell>
+												<TableCell className='text-gray-900 dark:text-gray-700'>
+													VAT
+												</TableCell>
+												<TableCell className='text-gray-900 dark:text-gray-700'>
+													Total
+												</TableCell>
+												<TableCell className='text-gray-900 dark:text-gray-700'>
+													Download
+												</TableCell>
+												<TableCell className='text-gray-900 dark:text-gray-700'>
+													Paid
+												</TableCell>
+												<TableCell className='text-gray-900 dark:text-gray-700'>
+													Mark As Read
+												</TableCell>
+											</TableRow>
+										</TableHead>
+
+										<TableBody
+											sx={{
+												'& .MuiTableCell-root': {
+													borderBottom: '1px solid #464852',
+												},
+											}}
+										>
+											{formattedBookings.map((row) => (
+												<>
+													<RowNotPriced
+														key={row.id}
+														row={row}
+														invoiceHistory={invoiceHistory}
+													/>
+												</>
+											))}
+										</TableBody>
+									</Table>
+								</TableContainer>
 							</div>
 						</div>
 					</div>

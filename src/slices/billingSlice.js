@@ -12,6 +12,7 @@ const initialState = {
 	loading: false,
 	allInvoicesData: [],
 	statementHistory: [],
+	invoiceHistory: [],
 	driverChargeableJobs: { priced: [], notPriced: [] },
 	accountChargeableJObs: { priced: [], notPriced: [] },
 };
@@ -28,6 +29,9 @@ const billingSlice = createSlice({
 		},
 		setStatementHistory(state, action) {
 			state.statementHistory = action.payload;
+		},
+		setInvoiceHistory(state, action) {
+			state.invoiceHistory = action.payload;
 		},
 		setDriverChargeableJobs(state, action) {
 			state.driverChargeableJobs = action.payload;
@@ -57,6 +61,28 @@ export function refreshInvoiceProcessorData(from, to, userId) {
 	};
 }
 
+export function refreshInvoiceHistory(from, to, accno) {
+	return async (dispatch) => {
+		dispatch(setLoading(true));
+		try {
+			const response = await getInvoices(from, to, accno);
+			console.log(response);
+
+			if (response.status === 'success') {
+				const invoices = Object.keys(response)
+					.filter((key) => key !== 'status') // Exclude 'status' field
+					.map((key) => response[key]);
+
+				dispatch(setInvoiceHistory(invoices));
+			}
+		} catch (error) {
+			console.error('Failed to refresh:', error);
+		} finally {
+			dispatch(setLoading(false));
+		}
+	};
+}
+
 export function refreshStatementHistory(from, to, userId) {
 	return async (dispatch) => {
 		dispatch(setLoading(true));
@@ -69,7 +95,7 @@ export function refreshStatementHistory(from, to, userId) {
 					.filter((key) => key !== 'status') // Exclude 'status' field
 					.map((key) => response[key]);
 
-				dispatch(setAllInvoicesData(statements));
+				dispatch(setStatementHistory(statements));
 			}
 		} catch (error) {
 			console.error('Failed to refresh:', error);
@@ -129,6 +155,7 @@ export const {
 	setLoading,
 	setAllInvoicesData,
 	setStatementHistory,
+	setInvoiceHistory,
 	setDriverChargeableJobs,
 	setAccountChargeableJobs,
 } = billingSlice.actions;
