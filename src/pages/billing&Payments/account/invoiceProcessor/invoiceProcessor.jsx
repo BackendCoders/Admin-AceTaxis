@@ -1,7 +1,8 @@
 /** @format */
 import { useState, Fragment, useEffect } from 'react';
 import {
-	// Collapse,
+	Box,
+	Collapse,
 	IconButton,
 	Table,
 	TableBody,
@@ -9,6 +10,7 @@ import {
 	TableContainer,
 	TableHead,
 	TableRow,
+	Typography,
 	Paper,
 } from '@mui/material';
 import {
@@ -59,6 +61,7 @@ import {
 	accountCreateInvoice,
 	accountPostOrUnpostJobs,
 	accountPriceJobByMileage,
+	accountPriceJobHVS,
 	accountUpdateChargesData,
 	clearInvoice,
 } from '../../../../service/operations/billing&Payment';
@@ -168,7 +171,7 @@ function RowNotPriced({ row, setPriceBaseModal, handlePostButton }) {
 				<TableCell
 					className={`${row?.coa ? 'dark:text-white' : 'dark:text-gray-700'} text-gray-900`}
 				>
-					{row.driverNumber}
+					{row.driver}
 				</TableCell>
 				<TableCell
 					className={`${row?.coa ? 'dark:text-white' : 'dark:text-gray-700'} text-gray-900`}
@@ -270,7 +273,7 @@ function RowNotPriced({ row, setPriceBaseModal, handlePostButton }) {
 						}}
 					>
 						<EmailOutlined
-							className={`${row?.coa ? `${row.postedForStatement ? 'text-red-500 dark:text-red-900' : 'text-blue-500 dark:text-white'}` : `${row.postedForStatement ? 'text-red-500 dark:text-red-600' : 'text-blue-500 dark:text-cyan-400'}`}  `}
+							className={`${row?.coa ? `${row.postedForInvoicing ? 'text-red-500 dark:text-red-900' : 'text-blue-500 dark:text-white'}` : `${row.postedForInvoicing ? 'text-red-500 dark:text-red-600' : 'text-blue-500 dark:text-cyan-400'}`}  `}
 						/>
 					</IconButton>
 				</TableCell>
@@ -282,6 +285,49 @@ function RowNotPriced({ row, setPriceBaseModal, handlePostButton }) {
 					>
 						<DeleteOutlinedIcon className='text-red-500 dark:text-red-600' />
 					</IconButton>
+				</TableCell>
+			</TableRow>
+			<TableRow>
+				<TableCell
+					colSpan={16}
+					style={{ paddingBottom: 0, paddingTop: 0 }}
+				>
+					<Collapse
+						in={open}
+						timeout='auto'
+						unmountOnExit
+					>
+						<Box
+							margin={1}
+							className='border border-gray-300 dark:border-gray-600 rounded-md p-4 bg-gray-100 dark:bg-[#232427] text-gray-900 dark:text-gray-700'
+						>
+							<Typography
+								variant='h6'
+								className='text-blue-500 dark:text-cyan-400 font-semibold'
+							>
+								Booking #: {row.id}
+							</Typography>
+							<Box
+								display='flex'
+								justifyContent='space-between'
+							>
+								<Box>
+									<Typography variant='body2'>
+										<strong>Vias:</strong> {row.details?.vias ?? 'N/A'}
+									</Typography>
+
+									<Typography variant='body2'>
+										<strong>Details:</strong> {row.details?.details ?? 'N/A'}
+									</Typography>
+								</Box>
+								<Box>
+									<Typography variant='body2'>
+										<strong>Scope:</strong> {row.details?.scope ?? 'N/A'}
+									</Typography>
+								</Box>
+							</Box>
+						</Box>
+					</Collapse>
 				</TableCell>
 			</TableRow>
 		</>
@@ -330,7 +376,7 @@ function RowPriced({ row, handleRevert }) {
 				<TableCell
 					className={`${row?.coa ? 'dark:text-white' : 'dark:text-gray-700'} text-gray-900`}
 				>
-					{row.driverNumber}
+					{row.driver}
 				</TableCell>
 				<TableCell
 					className={`${row?.coa ? 'dark:text-white' : 'dark:text-gray-700'} text-gray-900`}
@@ -384,13 +430,56 @@ function RowPriced({ row, handleRevert }) {
 				<TableCell>
 					<IconButton
 						size='small'
-						className={`${row?.coa ? `${row.postedForStatement ? 'text-red-700 dark:text-red-900' : 'text-blue-500 dark:text-white'}` : `${row.postedForStatement ? 'text-red-500 dark:text-red-600' : 'text-blue-500 dark:text-cyan-400'}`}  `}
+						className={`${row?.coa ? `${row.postedForInvoicing ? 'text-red-700 dark:text-red-900' : 'text-blue-500 dark:text-white'}` : `${row.postedForInvoicing ? 'text-red-500 dark:text-red-600' : 'text-blue-500 dark:text-cyan-400'}`}  `}
 						onClick={() => handleRevert(row)}
 					>
 						<EmailOutlined
-							className={`${row?.coa ? `${row.postedForStatement ? 'text-red-500 dark:text-red-900' : 'text-blue-500 dark:text-white'}` : `${row.postedForStatement ? 'text-red-500 dark:text-red-600' : 'text-blue-500 dark:text-cyan-400'}`}  `}
+							className={`${row?.coa ? `${row.postedForInvoicing ? 'text-red-500 dark:text-red-900' : 'text-blue-500 dark:text-white'}` : `${row.postedForInvoicing ? 'text-red-500 dark:text-red-600' : 'text-blue-500 dark:text-cyan-400'}`}  `}
 						/>
 					</IconButton>
+				</TableCell>
+			</TableRow>
+			<TableRow>
+				<TableCell
+					colSpan={16}
+					style={{ paddingBottom: 0, paddingTop: 0 }}
+				>
+					<Collapse
+						in={open}
+						timeout='auto'
+						unmountOnExit
+					>
+						<Box
+							margin={1}
+							className='border border-gray-300 dark:border-gray-600 rounded-md p-4 bg-gray-100 dark:bg-[#232427] text-gray-900 dark:text-gray-700'
+						>
+							<Typography
+								variant='h6'
+								className='text-blue-500 dark:text-cyan-400 font-semibold'
+							>
+								Booking #: {row.id}
+							</Typography>
+							<Box
+								display='flex'
+								justifyContent='space-between'
+							>
+								<Box>
+									<Typography variant='body2'>
+										<strong>Vias:</strong> {row.details?.vias ?? 'N/A'}
+									</Typography>
+
+									<Typography variant='body2'>
+										<strong>Details:</strong> {row.details?.details ?? 'N/A'}
+									</Typography>
+								</Box>
+								<Box>
+									<Typography variant='body2'>
+										<strong>Scope:</strong> {row.details?.scope ?? 'N/A'}
+									</Typography>
+								</Box>
+							</Box>
+						</Box>
+					</Collapse>
 				</TableCell>
 			</TableRow>
 		</>
@@ -404,6 +493,7 @@ function InvoiceProcessor() {
 	const { accountChargeableJobs } = useSelector((state) => state.billing);
 	const [selectedAccount, setSelectedAccount] = useState(0);
 	const [priceBaseModal, setPriceBaseModal] = useState(false);
+	const [autoEmailInvoices, setAutoEmailInvoices] = useState(true);
 	const [dateRange, setDateRange] = useState({
 		from: new Date(), // January 31, 2025
 		to: new Date(), // Same default date
@@ -481,6 +571,7 @@ function InvoiceProcessor() {
 		parking: booking?.parkingCharge || 0,
 		total: booking?.totalCost || 0,
 		postedForStatement: booking?.postedForStatement,
+		postedForInvoicing: booking?.postedForInvoicing,
 		details: {
 			details: booking?.details || '',
 			vias: booking?.vias?.length
@@ -517,6 +608,7 @@ function InvoiceProcessor() {
 			parking: booking?.parkingCharge || 0,
 			total: booking?.totalCost || 0,
 			postedForStatement: booking?.postedForStatement,
+			postedForInvoicing: booking?.postedForInvoicing,
 			details: {
 				details: booking?.details || '',
 				vias: booking?.vias?.length
@@ -662,7 +754,7 @@ function InvoiceProcessor() {
 			console.log('Sending Payload:', payload); // Debugging
 
 			// Call API with the wrapped payload
-			const response = await accountCreateInvoice(payload);
+			const response = await accountCreateInvoice(autoEmailInvoices, payload);
 
 			if (response?.status === 'success') {
 				toast.success(
@@ -751,10 +843,11 @@ function InvoiceProcessor() {
 													</span>
 													<input
 														type='checkbox'
-														value='1'
 														name='check'
-														defaultChecked
-														readOnly
+														checked={autoEmailInvoices} // Controlled value
+														onChange={(e) =>
+															setAutoEmailInvoices(e.target.checked)
+														} // Update state on change
 													/>
 												</label>
 											</div>
@@ -952,13 +1045,7 @@ function InvoiceProcessor() {
 														Total
 													</TableCell>
 													<TableCell className='text-gray-900 dark:text-gray-700'>
-														Price
-													</TableCell>
-													<TableCell className='text-gray-900 dark:text-gray-700'>
-														Post
-													</TableCell>
-													<TableCell className='text-gray-900 dark:text-gray-700'>
-														Cancel
+														Revert
 													</TableCell>
 												</TableRow>
 											</TableHead>
@@ -1033,7 +1120,15 @@ function PriceBase({ open, onOpenChange, bookingId, handleShow }) {
 					mileageText: `${booking?.miles || 0} miles`, // Convert miles to string
 					durationText: '', // No duration available in provided object
 				};
-				const response = await accountPriceJobByMileage(payload);
+				let response;
+				if (
+					payload?.pickupPostcode?.includes('DT9 4DN') ||
+					payload?.destinationPostcode?.includes('DT9 4DN')
+				) {
+					response = await accountPriceJobHVS(payload);
+				} else {
+					response = await accountPriceJobByMileage(payload);
+				}
 				console.log('Response:', response);
 				if (response.status === 'success') {
 					toast.success('Charge From Base Updated Successfully');
