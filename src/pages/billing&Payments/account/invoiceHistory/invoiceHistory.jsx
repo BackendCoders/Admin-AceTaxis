@@ -53,13 +53,9 @@ import {
 	setInvoiceHistory,
 } from '../../../../slices/billingSlice';
 import MoneyIcon from '@mui/icons-material/Money';
-import {
-	Download,
-	KeyboardArrowDown,
-	KeyboardArrowUp,
-} from '@mui/icons-material';
+import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
 import { downloadInvoice } from './downloadInvoice';
-
+import DownloadOutlinedIcon from '@mui/icons-material/DownloadOutlined';
 function RowNotPriced({ row, handlePostButton }) {
 	const [open, setOpen] = useState(false);
 	const ColumnInputFilter = ({ column }) => {
@@ -311,7 +307,7 @@ function RowNotPriced({ row, handlePostButton }) {
 						size='small'
 						onClick={() => downloadInvoice(row)}
 					>
-						<Download
+						<DownloadOutlinedIcon
 							className={`${row?.coa ? `text-red-500 dark:text-red-900 ` : `text-red-500 dark:text-red-600`}`}
 						/>
 					</IconButton>

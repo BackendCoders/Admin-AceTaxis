@@ -11,12 +11,12 @@ export const downloadInvoice = (row) => {
 
 	// Invoice Header
 	doc.setFont('helvetica', 'bold');
-	doc.setFontSize(24);
-	doc.text('ACE TAXIS', 15, 20);
-	doc.setFontSize(12);
-	doc.text('www.acetaxisdorset.co.uk', 15, 30);
-	doc.text('bookings@acetaxisdorset.co.uk', 15, 35);
-	doc.text('01747 82 11 11', 15, 40);
+	doc.setFontSize(28);
+	doc.text('ACE TAXIS', 20, 30);
+	doc.setFontSize(14);
+	doc.text('www.acetaxisdorset.co.uk', 20, 40);
+	doc.text('bookings@acetaxisdorset.co.uk', 20, 50);
+	doc.text('01747 82 11 11', 20, 60);
 
 	// Invoice Details
 	doc.setFontSize(18);
@@ -56,7 +56,7 @@ export const downloadInvoice = (row) => {
 	]);
 
 	autoTable(doc, {
-		startY: 150,
+		startY: 160,
 		head: [
 			[
 				'JOB #',
