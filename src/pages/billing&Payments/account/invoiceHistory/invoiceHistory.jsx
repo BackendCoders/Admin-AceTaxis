@@ -58,6 +58,7 @@ import {
 	KeyboardArrowDown,
 	KeyboardArrowUp,
 } from '@mui/icons-material';
+import { downloadInvoice } from './downloadInvoice';
 
 function RowNotPriced({ row, handlePostButton }) {
 	const [open, setOpen] = useState(false);
@@ -306,7 +307,10 @@ function RowNotPriced({ row, handlePostButton }) {
 					£{row.total.toFixed(2)}
 				</TableCell>
 				<TableCell>
-					<IconButton size='small'>
+					<IconButton
+						size='small'
+						onClick={() => downloadInvoice(row)}
+					>
 						<Download
 							className={`${row?.coa ? `text-red-500 dark:text-red-900 ` : `text-red-500 dark:text-red-600`}`}
 						/>

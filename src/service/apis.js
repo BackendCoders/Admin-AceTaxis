@@ -105,8 +105,8 @@ export const billingAndPaymentEndpoints = {
 		`${BASE}/api/Accounts/DeleteInvoice?invoiceNo=${invoiceNo}`,
 	CLEAR_INVOICE: (invoiceNo) =>
 		`${BASE}/api/Accounts/ClearInvoice?invoiceNo=${invoiceNo}`,
-	GET_INVOICES: (from, to, userId) =>
-		`${BASE}/api/Accounts/GetInvoices?from=${from}&to=${to}${userId ? `&userId=${userId}` : ''}`,
+	GET_INVOICES: (from, to, accno) =>
+		`${BASE}/api/Accounts/GetInvoices?from=${from}&to=${to}${accno ? `&accno=${accno}` : ''}`,
 };
 
 export const webBookingEndpoints = {

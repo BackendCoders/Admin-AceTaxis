@@ -403,8 +403,8 @@ export async function clearInvoice(invoiceNo) {
 	return response;
 }
 
-export async function getInvoices(from, to, userId) {
-	const response = await handleGetReq(GET_INVOICES(from, to, userId));
+export async function getInvoices(from, to, accno) {
+	const response = await handleGetReq(GET_INVOICES(from, to, accno));
 
 	console.log('GET GET_INVOICES API RESPONSE.........', response);
 

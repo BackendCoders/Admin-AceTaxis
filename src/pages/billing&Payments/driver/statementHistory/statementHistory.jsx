@@ -56,6 +56,7 @@ import MoneyIcon from '@mui/icons-material/Money';
 import { refreshAllDrivers } from '../../../../slices/driverSlice';
 import { markStatementAsPaid } from '../../../../service/operations/billing&Payment';
 import toast from 'react-hot-toast';
+import isLightColor from '../../../../utils/isLight';
 // Collapsible Row Component
 function RowNotPriced({ row, handlePostButton }) {
 	const [open, setOpen] = useState(false);
@@ -82,7 +83,7 @@ function RowNotPriced({ row, handlePostButton }) {
 				),
 				enableSorting: true,
 				cell: ({ row }) => (
-					<span className={`p-2 rounded-md`}>{row.original.userId}</span>
+					<span className={`p-2 rounded-md`}>{row.original.bookingId}</span>
 				),
 				meta: { headerClassName: 'w-20' },
 			},
@@ -168,7 +169,15 @@ function RowNotPriced({ row, handlePostButton }) {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={`font-medium ${row.original.color}`}>
-						{row.original.scope}
+						{row.original.scope === 0
+							? 'Cash'
+							: row.original.scope === 1
+								? 'Account'
+								: row.original.scope === 2
+									? 'Rank'
+									: row.original.scope === 4
+										? 'Card'
+										: 'All'}
 					</span>
 				),
 				meta: { headerClassName: 'min-w-[120px]' },
@@ -185,7 +194,7 @@ function RowNotPriced({ row, handlePostButton }) {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={`font-medium ${row.original.color}`}>
-						{row.original.price}
+						£{row.original.price?.toFixed(2)}
 					</span>
 				),
 				meta: { headerClassName: 'min-w-[120px]' },
@@ -202,7 +211,7 @@ function RowNotPriced({ row, handlePostButton }) {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={`font-medium ${row.original.color}`}>
-						{row.original.waiting}
+						£{row.original.waitingPriceDriver?.toFixed(2)}
 					</span>
 				),
 				meta: { headerClassName: 'min-w-[120px]' },
@@ -219,7 +228,7 @@ function RowNotPriced({ row, handlePostButton }) {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={`font-medium ${row.original.color}`}>
-						{row.original.parking}
+						£{row.original.parkingCharge?.toFixed(2)}
 					</span>
 				),
 				meta: { headerClassName: 'min-w-[120px]' },
@@ -236,7 +245,7 @@ function RowNotPriced({ row, handlePostButton }) {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={`font-medium ${row.original.color}`}>
-						{row.original.total}
+						£{row.original.totalCost?.toFixed(2)}
 					</span>
 				),
 				meta: { headerClassName: 'min-w-[120px]' },
@@ -279,7 +288,11 @@ function RowNotPriced({ row, handlePostButton }) {
 					{row.id}
 				</TableCell>
 				<TableCell
-					className={`${row?.coa ? 'dark:text-white' : 'dark:text-gray-700'} text-gray-900`}
+					// className={`${row?.coa ? 'dark:text-white' : 'dark:text-gray-700'} text-gray-900`}
+					sx={{
+						backgroundColor: row.driverColor,
+						color: isLightColor(row.driverColor) ? 'black' : 'white', // ✅ Correct property
+					}}
 				>
 					{row.driver}
 				</TableCell>
@@ -312,7 +325,7 @@ function RowNotPriced({ row, handlePostButton }) {
 				<TableCell
 					className={`${row?.coa ? 'dark:text-white' : 'dark:text-gray-700'} text-gray-900`}
 				>
-					£{row.cardFees?.toFixed(2)}
+					£{row.cardFess?.toFixed(2)}
 				</TableCell>
 				<TableCell
 					className={`${row?.coa ? 'dark:text-white' : 'dark:text-gray-700'} text-gray-900`}
@@ -332,12 +345,12 @@ function RowNotPriced({ row, handlePostButton }) {
 				<TableCell
 					className={`${row?.coa ? 'dark:text-white' : 'dark:text-gray-700'} text-gray-900 font-semibold`}
 				>
-					{row.total.paid}
+					{row.paid ? 'Yes' : 'No'}
 				</TableCell>
 				<TableCell>
 					<IconButton
 						size='small'
-						disabled={row.paid}
+						disabled={row?.paid}
 					>
 						<MoneyIcon
 							className={`${
@@ -348,7 +361,7 @@ function RowNotPriced({ row, handlePostButton }) {
 										: 'text-blue-500 dark:text-cyan-400'
 							}`}
 							onClick={() => {
-								if (row.driverFare === 0 && !row.paid) {
+								if (row.driverFare === 0 && !row?.paid) {
 									toast.error('Driver Price Should not be 0'); // Show error if price is 0
 								} else {
 									handlePostButton(row); // Post the job if valid
@@ -407,23 +420,24 @@ function StatementHistory() {
 	});
 
 	const formattedBookings = (statementHistory || []).map((booking) => ({
-		id: booking?.bookingId,
-		date: booking?.date
-			? new Date(booking?.date).toLocaleDateString('en-GB') +
+		id: booking?.statementId,
+		date: booking?.dateCreated
+			? new Date(booking?.dateCreated).toLocaleDateString('en-GB') +
 				' ' +
-				booking?.date?.split('T')[1]?.split('.')[0]?.slice(0, 5)
+				booking?.dateCreated?.split('T')[1]?.split('.')[0]?.slice(0, 5)
 			: '-', // Ensure correct date format
-		account: booking?.account || 0,
-		driver: booking?.userId || '-',
-		cash: booking?.cash || 0,
-		card: booking?.card || 0,
-		rank: booking?.rank || 0,
+		account: booking?.earningsAccount || 0,
+		driver: booking?.identifier || '-',
+		driverColor: booking?.colorCode || '-',
+		cash: booking?.earningsCash || 0,
+		card: booking?.earningsCard || 0,
+		rank: booking?.earningsRank || 0,
 		cardFess: booking?.cardFees || 0,
 		totalEarned: booking?.totalEarned || 0,
-		totalComms: booking?.totalComms || 0,
+		totalComms: booking?.subTotal || 0,
 		paymentDue: booking?.paymentDue || 0,
-		paid: booking?.paid || false,
-		items: booking?.items || [],
+		paid: booking?.paidInFull || false,
+		items: booking?.jobs || [],
 	}));
 
 	const handlePostButton = async (row) => {
