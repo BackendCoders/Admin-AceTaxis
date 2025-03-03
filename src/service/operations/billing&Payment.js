@@ -404,7 +404,7 @@ export async function clearInvoice(invoiceNo) {
 }
 
 export async function getInvoices(from, to, userId) {
-	const response = await handlePostReq(GET_INVOICES(from, to, userId));
+	const response = await handleGetReq(GET_INVOICES(from, to, userId));
 
 	console.log('GET GET_INVOICES API RESPONSE.........', response);
 

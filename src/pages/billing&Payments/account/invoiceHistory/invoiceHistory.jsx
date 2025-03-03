@@ -46,18 +46,17 @@ import {
 import { Input } from '@/components/ui/input';
 import { useDispatch, useSelector } from 'react-redux';
 import { refreshAllAccounts } from '../../../../slices/accountSlice';
-// import { accountPostOrUnpostJobs } from '../../../../service/operations/billing&Payment';
-// import toast from 'react-hot-toast';
+import { markInvoiceAsPaid } from '../../../../service/operations/billing&Payment';
+import toast from 'react-hot-toast';
 import { refreshInvoiceHistory } from '../../../../slices/billingSlice';
 import MoneyIcon from '@mui/icons-material/Money';
 import {
 	Download,
 	KeyboardArrowDown,
 	KeyboardArrowUp,
-	// EmailOutlined,
 } from '@mui/icons-material';
 
-function RowNotPriced({ row, invoiceHistory }) {
+function RowNotPriced({ row, handlePostButton }) {
 	const [open, setOpen] = useState(false);
 	const ColumnInputFilter = ({ column }) => {
 		return (
@@ -82,7 +81,7 @@ function RowNotPriced({ row, invoiceHistory }) {
 				),
 				enableSorting: true,
 				cell: ({ row }) => (
-					<span className={`p-2 rounded-md`}>{row.original.userId}</span>
+					<span className={`p-2 rounded-md`}>{row.original.jobNo}</span>
 				),
 				meta: { headerClassName: 'w-20' },
 			},
@@ -97,7 +96,11 @@ function RowNotPriced({ row, invoiceHistory }) {
 				),
 				enableSorting: true,
 				cell: ({ row }) => (
-					<span className={`p-2 rounded-md`}>{row.original.cash}</span>
+					<span className={`p-2 rounded-md`}>
+						{new Date(row?.original?.date).toLocaleDateString('en-GB') +
+							' ' +
+							row.original.date?.split('T')[1]?.split('.')[0]?.slice(0, 5)}
+					</span>
 				),
 				meta: { headerClassName: 'w-20' },
 			},
@@ -113,7 +116,7 @@ function RowNotPriced({ row, invoiceHistory }) {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={`font-medium ${row.original.color}`}>
-						{row.original.account}
+						{row.original.pickup}
 					</span>
 				),
 				meta: { headerClassName: 'min-w-[120px]' },
@@ -130,7 +133,7 @@ function RowNotPriced({ row, invoiceHistory }) {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={`font-medium ${row.original.color}`}>
-						{row.original.rank}
+						{row.original.destination}
 					</span>
 				),
 				meta: { headerClassName: 'min-w-[120px]' },
@@ -147,7 +150,7 @@ function RowNotPriced({ row, invoiceHistory }) {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={`font-medium ${row.original.color}`}>
-						{row.original.comms}
+						{row.original.passenger}
 					</span>
 				),
 				meta: { headerClassName: 'min-w-[120px]' },
@@ -164,7 +167,7 @@ function RowNotPriced({ row, invoiceHistory }) {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={`font-medium ${row.original.color}`}>
-						£{row.original.price.toFixed(2)}
+						£{row.original.journey.toFixed(2)}
 					</span>
 				),
 				meta: { headerClassName: 'min-w-[120px]' },
@@ -215,7 +218,7 @@ function RowNotPriced({ row, invoiceHistory }) {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={`font-medium ${row.original.color}`}>
-						£{row.original.totalEx.toFixed(2)}
+						£{row.original.total.toFixed(2)}
 					</span>
 				),
 				meta: { headerClassName: 'min-w-[120px]' },
@@ -232,7 +235,7 @@ function RowNotPriced({ row, invoiceHistory }) {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={`font-medium ${row.original.color}`}>
-						£{row.original.totalIncome.toFixed(2)}
+						£{row.original.totalInc.toFixed(2)}
 					</span>
 				),
 				meta: { headerClassName: 'min-w-[120px]' },
@@ -300,30 +303,28 @@ function RowNotPriced({ row, invoiceHistory }) {
 					£{row.total.toFixed(2)}
 				</TableCell>
 				<TableCell>
-					<IconButton
-						size='small'
-						// onClick={() => {
-						// 	if (row.driverFare === 0) {
-						// 		toast.error('Driver Price Should not be 0'); // Show error if price is 0
-						// 	} else {
-						// 		handlePostButton(row); // Post the job if valid
-						// 	}
-						// }}
-					>
+					<IconButton size='small'>
 						<Download
-							className={`${row?.coa ? `${row.postedForStatement ? 'text-red-500 dark:text-red-900' : 'text-blue-500 dark:text-white'}` : `${row.postedForStatement ? 'text-red-500 dark:text-red-600' : 'text-blue-500 dark:text-cyan-400'}`}  `}
+							className={`${row?.coa ? `text-red-500 dark:text-red-900 ` : `text-red-500 dark:text-red-600`}`}
 						/>
 					</IconButton>
 				</TableCell>
 				<TableCell
 					className={`${row?.coa ? 'dark:text-white' : 'dark:text-gray-700'} text-gray-900 font-semibold`}
 				>
-					{row.paid}
+					{row.paid ? 'True' : 'False'}
 				</TableCell>
 				<TableCell>
 					<IconButton size='small'>
 						<MoneyIcon
 							className={`${row?.coa ? 'text-blue-600 dark:text-white' : 'text-blue-500 dark:text-cyan-400'}  `}
+							onClick={() => {
+								if (row.total === 0) {
+									toast.error('Driver Price Should not be 0'); // Show error if price is 0
+								} else {
+									handlePostButton(row); // Post the job if valid
+								}
+							}}
 						/>
 					</IconButton>
 				</TableCell>
@@ -342,11 +343,16 @@ function RowNotPriced({ row, invoiceHistory }) {
 					>
 						<Box
 							margin={1}
-							className='border border-gray-300 dark:border-gray-600 rounded-md p-4 bg-gray-100 dark:bg-[#232427] text-gray-900 dark:text-gray-700'
+							className='border border-gray-300 dark:border-gray-600 rounded-md p-2 bg-gray-100 dark:bg-[#232427] text-gray-900 dark:text-gray-700'
 						>
+							<div
+								className={`${row?.coa ? 'text-blue-600 dark:text-white' : 'text-blue-500 dark:text-cyan-400'}  font-medium text-lg`}
+							>
+								Invoice #: {row?.id}
+							</div>
 							<DataGrid
 								columns={columns}
-								data={invoiceHistory}
+								data={row.items}
 								rowSelection={true}
 								onRowSelectionChange={handleRowSelection}
 								pagination={{ size: 10 }}
@@ -371,55 +377,37 @@ function InvoiceHistory() {
 		to: addDays(new Date(), 20),
 	});
 
+	console.log(invoiceHistory);
+
 	const formattedBookings = (invoiceHistory || []).map((booking) => ({
-		id: booking?.bookingId,
-		date: booking?.date
-			? new Date(booking?.date).toLocaleDateString('en-GB') +
+		id: booking?.invoiceNumber,
+		date: booking?.invoiceDate
+			? new Date(booking?.invoiceDate).toLocaleDateString('en-GB') +
 				' ' +
-				booking?.date?.split('T')[1]?.split('.')[0]?.slice(0, 5)
+				booking?.invoiceDate?.split('T')[1]?.split('.')[0]?.slice(0, 5)
 			: '-', // Ensure correct date format
 		accNumber: booking?.accNo,
-		driver: booking?.userId || '-',
-		pickup: `${booking?.pickup}`,
-		destination: `${booking?.destination}`,
-		passenger: booking?.passenger || 'Unknown',
-		hasVias: booking?.hasVias,
-		coa: booking?.coa,
-		waiting: booking?.waitingMinutes || 0,
-		waitingCharge: booking?.waitingPriceDriver || 0,
-		phoneNumber: booking?.phoneNumber || '',
-		actualMiles: booking?.miles,
-		driverFare: booking?.price || 0,
-		parking: booking?.parkingCharge || 0,
-		total: booking?.totalCost || 0,
-		postedForStatement: booking?.postedForStatement,
-		details: {
-			details: booking?.details || '',
-			vias: booking?.vias?.length
-				? booking.vias
-						.map((via) => `${via.address}, ${via.postCode}`)
-						.join(' → ')
-				: '',
-
-			scope: booking?.scope === 4 ? 'Card' : 'Cash',
-		},
+		net: booking?.net || 0,
+		vat: booking?.vat || 0,
+		total: booking?.total || 0,
+		paid: booking?.paid || false,
+		items: booking?.items || [],
 	}));
 
-	// const handlePostButton = async (row) => {
-	// 	try {
-	// 		const postJob = row?.driverFare > 0 && true;
-	// 		const response = await accountPostOrUnpostJobs(postJob, row?.id);
-	// 		if (response?.status === 'success') {
-	// 			toast.success('Job posted successfully');
-	// 			handleSearch();
-	// 		} else {
-	// 			toast.error('Failed to post job');
-	// 		}
-	// 	} catch (error) {
-	// 		console.error('Failed to post job:', error);
-	// 		toast.error('Failed to post job');
-	// 	}
-	// };
+	const handlePostButton = async (row) => {
+		try {
+			const response = await markInvoiceAsPaid(row?.id);
+			if (response?.status === 'success') {
+				toast.success('Mark Invoice As Paid Successfully');
+				handleSearch();
+			} else {
+				toast.error('Failed to mark as paid invoice');
+			}
+		} catch (error) {
+			console.error('Failed to post job:', error);
+			toast.error('Failed to post job');
+		}
+	};
 
 	const handleSearch = async () => {
 		dispatch(
@@ -607,7 +595,7 @@ function InvoiceHistory() {
 													<RowNotPriced
 														key={row.id}
 														row={row}
-														invoiceHistory={invoiceHistory}
+														handlePostButton={handlePostButton}
 													/>
 												</>
 											))}
