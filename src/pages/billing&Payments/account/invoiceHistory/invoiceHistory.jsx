@@ -48,7 +48,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { refreshAllAccounts } from '../../../../slices/accountSlice';
 import { markInvoiceAsPaid } from '../../../../service/operations/billing&Payment';
 import toast from 'react-hot-toast';
-import { refreshInvoiceHistory } from '../../../../slices/billingSlice';
+import {
+	refreshInvoiceHistory,
+	setInvoiceHistory,
+} from '../../../../slices/billingSlice';
 import MoneyIcon from '@mui/icons-material/Money';
 import {
 	Download,
@@ -315,11 +318,20 @@ function RowNotPriced({ row, handlePostButton }) {
 					{row.paid ? 'True' : 'False'}
 				</TableCell>
 				<TableCell>
-					<IconButton size='small'>
+					<IconButton
+						size='small'
+						disabled={row.paid}
+					>
 						<MoneyIcon
-							className={`${row?.coa ? 'text-blue-600 dark:text-white' : 'text-blue-500 dark:text-cyan-400'}  `}
+							className={`${
+								row.paid
+									? 'text-gray-400 dark:text-gray-500' // Blur effect when disabled
+									: row?.coa
+										? 'text-blue-600 dark:text-white'
+										: 'text-blue-500 dark:text-cyan-400'
+							}`}
 							onClick={() => {
-								if (row.total === 0) {
+								if (row.total === 0 && !row.paid) {
 									toast.error('Driver Price Should not be 0'); // Show error if price is 0
 								} else {
 									handlePostButton(row); // Post the job if valid
@@ -420,6 +432,7 @@ function InvoiceHistory() {
 	};
 
 	useEffect(() => {
+		dispatch(setInvoiceHistory([]));
 		dispatch(refreshAllAccounts());
 	}, [dispatch]);
 
