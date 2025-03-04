@@ -569,11 +569,6 @@ export const MENU_SIDEBAR = [
 				title: 'Global Search',
 				path: '/bookings/global-search',
 			},
-
-			// {
-			// 	title: 'Search Booking',
-			// 	path: '/bookings/search-booking',
-			// },
 			{
 				title: 'Audit View',
 				path: '/bookings/audit-view',
