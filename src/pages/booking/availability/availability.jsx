@@ -40,7 +40,6 @@ const Availability = () => {
 	};
 
 	const checkExistingAvailability = (from, to) => {
-		console.log(from, to, availability);
 		if (!availability || !selectedDriver) return false;
 
 		const selectedDateKey = format(new Date(date), 'yyyy-MM-dd'); // Format date to match stored keys
@@ -54,7 +53,6 @@ const Availability = () => {
 		const selectedEnd = timeToMinutes(to);
 
 		const isOverlapping = availability[0]?.some((entry) => {
-			console.log('-----', entry);
 			if (!entry?.date) {
 				console.warn('⚠️ Skipping entry with missing date:', entry);
 				return false; // Skip this entry
@@ -70,13 +68,6 @@ const Availability = () => {
 				return false; // Skip this entry
 			}
 			const entryDate = format(parsedDate, 'yyyy-MM-dd'); // Convert to proper format
-			console.log(
-				'✅ Checking against existing:',
-				entryDate,
-				entry.from,
-				entry.to
-			);
-
 			const existingStart = timeToMinutes(entry.from);
 			const existingEnd = timeToMinutes(entry.to);
 

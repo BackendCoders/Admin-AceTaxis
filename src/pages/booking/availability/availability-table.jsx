@@ -5,13 +5,7 @@
  */
 
 import { useMemo, useState } from 'react';
-import {
-	DataGrid,
-	DataGridColumnHeader,
-	// useDataGrid,
-	// DataGridRowSelectAll,
-	// DataGridRowSelect,
-} from '@/components';
+import { DataGrid, DataGridColumnHeader } from '@/components';
 import {
 	Select,
 	SelectContent,

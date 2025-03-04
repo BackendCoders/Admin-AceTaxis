@@ -6,13 +6,7 @@ import {
 	ToolbarHeading,
 	ToolbarPageTitle,
 } from '@/partials/toolbar';
-import {
-	DataGrid,
-	DataGridColumnHeader,
-	// useDataGrid,
-	// DataGridRowSelectAll,
-	// DataGridRowSelect,
-} from '@/components';
+import { DataGrid, DataGridColumnHeader } from '@/components';
 import {
 	Popover,
 	PopoverContent,
