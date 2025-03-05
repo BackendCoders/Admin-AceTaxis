@@ -4,15 +4,15 @@
  * @format
  */
 import { KeenIcon } from '@/components';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { DataGrid, DataGridColumnHeader } from '@/components';
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from '@/components/ui/select';
+// import {
+// 	Select,
+// 	SelectContent,
+// 	SelectItem,
+// 	SelectTrigger,
+// 	SelectValue,
+// } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteAvailability } from '../../../service/operations/availabilityApi';
@@ -146,11 +146,11 @@ const SelectedAvailabilityTable = ({ selectedDriver, selectedDate }) => {
 	};
 
 	const Toolbar = () => {
-		const [searchInput, setSearchInput] = useState('');
+		// const [searchInput, setSearchInput] = useState('');
 		return (
 			<div className='card-header flex-wrap gap-2 border-b-0 px-5'>
 				<div className='flex flex-wrap gap-2 lg:gap-5'>
-					<div className='flex'>
+					{/* <div className='flex'>
 						<label className='input input-sm'>
 							<input
 								type='text'
@@ -159,8 +159,8 @@ const SelectedAvailabilityTable = ({ selectedDriver, selectedDate }) => {
 								onChange={(e) => setSearchInput(e.target.value)}
 							/>
 						</label>
-					</div>
-					<div className='flex flex-wrap gap-2.5'>
+					</div> */}
+					{/* <div className='flex flex-wrap gap-2.5'>
 						<Select defaultValue='all'>
 							<SelectTrigger
 								className='w-28'
@@ -174,7 +174,7 @@ const SelectedAvailabilityTable = ({ selectedDriver, selectedDate }) => {
 								<SelectItem value='evening'>Evening Shift</SelectItem>
 							</SelectContent>
 						</Select>
-					</div>
+					</div> */}
 				</div>
 			</div>
 		);

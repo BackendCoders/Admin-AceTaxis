@@ -12,6 +12,7 @@ import {
 	TableRow,
 	Paper,
 	Typography,
+	TableSortLabel,
 } from '@mui/material';
 import {
 	KeyboardArrowDown,
@@ -174,7 +175,8 @@ function CardBookings() {
 	const { cardBookings } = useSelector((state) => state.booking);
 	const [search, setSearch] = useState('');
 	const [date, setDate] = useState(new Date());
-
+	const [order, setOrder] = useState('asc'); // Sort order
+	const [orderBy, setOrderBy] = useState('date'); // Default sorted column
 	console.log('card bookings', cardBookings);
 
 	const formattedBookings = (cardBookings || []).map((booking) => ({
@@ -230,6 +232,20 @@ function CardBookings() {
 			: true;
 
 		return isMatch && isDateMatch;
+	});
+
+	const handleSort = (property) => {
+		const isAscending = orderBy === property && order === 'asc';
+		setOrder(isAscending ? 'desc' : 'asc');
+		setOrderBy(property);
+	};
+
+	const sortedBookings = [...filteredBookings].sort((a, b) => {
+		if (order === 'asc') {
+			return a[orderBy] > b[orderBy] ? 1 : -1;
+		} else {
+			return a[orderBy] < b[orderBy] ? 1 : -1;
+		}
 	});
 
 	useEffect(() => {
@@ -332,13 +348,52 @@ function CardBookings() {
 							<TableRow>
 								<TableCell />
 								<TableCell className='text-[#14151A] dark:text-gray-700'>
-									#
+									<TableSortLabel
+										active={orderBy === 'id'}
+										direction={order}
+										onClick={() => handleSort('id')}
+										sx={{
+											'&:hover': { color: '#9A9CAE' }, // Change color on hover
+											'&.Mui-active': { color: '#9A9CAE' },
+											'&.Mui-active .MuiTableSortLabel-icon': {
+												color: '#9A9CAE',
+											}, // Change to blue when active
+										}}
+									>
+										#
+									</TableSortLabel>
 								</TableCell>
 								<TableCell className='text-[#14151A] dark:text-gray-700'>
-									Date
+									<TableSortLabel
+										active={orderBy === 'date'}
+										direction={order}
+										onClick={() => handleSort('date')}
+										sx={{
+											'&:hover': { color: '#9A9CAE' }, // Change color on hover
+											'&.Mui-active': { color: '#9A9CAE' },
+											'&.Mui-active .MuiTableSortLabel-icon': {
+												color: '#9A9CAE',
+											}, // Change to blue when active
+										}}
+									>
+										Date
+									</TableSortLabel>
 								</TableCell>
 								<TableCell className='text-[#14151A] dark:text-gray-700'>
-									Driver #
+									<TableSortLabel
+										active={orderBy === 'driver'}
+										direction={order}
+										onClick={() => handleSort('driver')}
+										sx={{
+											'&:hover': { color: '#9A9CAE' }, // Change color on hover
+											'&.Mui-active': { color: '#9A9CAE' },
+											'&.Mui-active .MuiTableSortLabel-icon': {
+												color: '#9A9CAE',
+											}, // Change to blue when active
+										}}
+									>
+										Driver #
+									</TableSortLabel>
 								</TableCell>
 								<TableCell className='text-[#14151A] dark:text-gray-700'>
 									Pickup
@@ -347,7 +402,20 @@ function CardBookings() {
 									Passenger
 								</TableCell>
 								<TableCell className='text-[#14151A] dark:text-gray-700'>
-									Status
+									<TableSortLabel
+										active={orderBy === 'status'}
+										direction={order}
+										onClick={() => handleSort('status')}
+										sx={{
+											'&:hover': { color: '#9A9CAE' }, // Change color on hover
+											'&.Mui-active': { color: '#9A9CAE' },
+											'&.Mui-active .MuiTableSortLabel-icon': {
+												color: '#9A9CAE',
+											}, // Change to blue when active
+										}}
+									>
+										Status
+									</TableSortLabel>
 								</TableCell>
 								<TableCell className='text-[#14151A] dark:text-gray-700'>
 									Payment #
@@ -364,7 +432,7 @@ function CardBookings() {
 								},
 							}}
 						>
-							{filteredBookings.map((row) => (
+							{sortedBookings.map((row) => (
 								<Row
 									key={row.id}
 									row={row}
