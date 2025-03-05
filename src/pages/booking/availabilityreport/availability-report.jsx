@@ -1,7 +1,7 @@
 /** @format */
 
 import { useState, useMemo, Fragment, useEffect } from 'react';
-import { DataGrid } from '@/components';
+import { DataGrid, DataGridColumnHeader } from '@/components';
 import {
 	Toolbar,
 	ToolbarDescription,
@@ -109,33 +109,153 @@ const AvailabilityReport = () => {
 	const columns = useMemo(() => {
 		if (selectedTab === 'dayHours') {
 			return [
-				{ accessorKey: 'userId', header: 'USER ID' },
-				{ accessorKey: 'date', header: 'DATE' },
-				{ accessorKey: 'hoursAvailable', header: 'HOURS AVAILABLE' },
+				{
+					accessorKey: 'userId',
+					header: ({ column }) => (
+						<DataGridColumnHeader
+							title='USER ID'
+							column={column}
+						/>
+					),
+				},
+				{
+					accessorKey: 'date',
+					header: ({ column }) => (
+						<DataGridColumnHeader
+							title='DATE'
+							column={column}
+						/>
+					),
+				},
+				{
+					accessorKey: 'hoursAvailable',
+					header: ({ column }) => (
+						<DataGridColumnHeader
+							title='HOURS AVAILABLE'
+							column={column}
+						/>
+					),
+				},
 			];
 		} else if (selectedTab === 'monthHours') {
 			return [
-				{ accessorKey: 'userId', header: 'USER ID' },
-				{ accessorKey: 'month', header: 'MONTH' },
-				{ accessorKey: 'totalHours', header: 'TOTAL HOURS' },
+				{
+					accessorKey: 'userId',
+					header: ({ column }) => (
+						<DataGridColumnHeader
+							title='USER ID'
+							column={column}
+						/>
+					),
+				},
+				{
+					accessorKey: 'month',
+					header: ({ column }) => (
+						<DataGridColumnHeader
+							title='MONTH'
+							column={column}
+						/>
+					),
+				},
+				{
+					accessorKey: 'totalHours',
+					header: ({ column }) => (
+						<DataGridColumnHeader
+							title='TOTAL HOURS'
+							column={column}
+						/>
+					),
+				},
 			];
 		} else if (selectedTab === 'weekHours') {
 			return [
-				{ accessorKey: 'userId', header: 'USER ID' },
-				{ accessorKey: 'week', header: 'WEEK #' },
-				{ accessorKey: 'totalHours', header: 'TOTAL HOURS' },
+				{
+					accessorKey: 'userId',
+					header: ({ column }) => (
+						<DataGridColumnHeader
+							title='USER ID'
+							column={column}
+						/>
+					),
+				},
+				{
+					accessorKey: 'week',
+					header: ({ column }) => (
+						<DataGridColumnHeader
+							title='WEEK #'
+							column={column}
+						/>
+					),
+				},
+				{
+					accessorKey: 'totalHours',
+					header: ({ column }) => (
+						<DataGridColumnHeader
+							title='TOTAL HOURS'
+							column={column}
+						/>
+					),
+				},
 			];
 		} else if (selectedTab === 'weekdayHours') {
 			return [
-				{ accessorKey: 'userId', header: 'USER ID' },
-				{ accessorKey: 'day', header: 'WEEK DAY' },
-				{ accessorKey: 'totalHours', header: 'TOTAL HOURS' },
+				{
+					accessorKey: 'userId',
+					header: ({ column }) => (
+						<DataGridColumnHeader
+							title='USER ID'
+							column={column}
+						/>
+					),
+				},
+				{
+					accessorKey: 'day',
+					header: ({ column }) => (
+						<DataGridColumnHeader
+							title='WEEK DAY'
+							column={column}
+						/>
+					),
+				},
+				{
+					accessorKey: 'totalHours',
+					header: ({ column }) => (
+						<DataGridColumnHeader
+							title='TOTAL HOURS'
+							column={column}
+						/>
+					),
+				},
 			];
 		} else if (selectedTab === 'weekendHours') {
 			return [
-				{ accessorKey: 'userId', header: 'USER ID' },
-				{ accessorKey: 'weekendDay', header: 'WEEKEND DAY' },
-				{ accessorKey: 'totalHours', header: 'TOTAL HOURS' },
+				{
+					accessorKey: 'userId',
+					header: ({ column }) => (
+						<DataGridColumnHeader
+							title='USER ID'
+							column={column}
+						/>
+					),
+				},
+				{
+					accessorKey: 'weekendDay',
+					header: ({ column }) => (
+						<DataGridColumnHeader
+							title='WEEKEND DAY'
+							column={column}
+						/>
+					),
+				},
+				{
+					accessorKey: 'totalHours',
+					header: ({ column }) => (
+						<DataGridColumnHeader
+							title='TOTAL HOURS'
+							column={column}
+						/>
+					),
+				},
 			];
 		}
 		return [];

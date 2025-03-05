@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
-import { DataGrid, KeenIcon } from '@/components';
+import { DataGrid, DataGridColumnHeader, KeenIcon } from '@/components';
 import { useSelector } from 'react-redux';
 const Teams = () => {
 	const { jobsBookedToday } = useSelector((state) => state.dashboard);
@@ -19,31 +19,56 @@ const Teams = () => {
 		() => [
 			{
 				accessorKey: 'bookedBy',
-				header: 'Booked By',
+				header: ({ column }) => (
+					<DataGridColumnHeader
+						title='Booked By'
+						column={column}
+					/>
+				),
 				enableSorting: true,
 				meta: { headerClassName: 'w-20' },
 			},
 			{
 				accessorKey: 'cashJobs',
-				header: 'Cash Jobs Booked',
+				header: ({ column }) => (
+					<DataGridColumnHeader
+						title='Cash Jobs Booked'
+						column={column}
+					/>
+				),
 				enableSorting: true,
 				meta: { headerClassName: 'w-20' },
 			},
 			{
 				accessorKey: 'accountJobs',
-				header: 'Account Jobs Booked',
+				header: ({ column }) => (
+					<DataGridColumnHeader
+						title='Account Jobs Booked'
+						column={column}
+					/>
+				),
 				enableSorting: true,
 				meta: { headerClassName: 'w-20' },
 			},
 			{
 				accessorKey: 'rankJobs',
-				header: 'Rank Jobs Booked',
+				header: ({ column }) => (
+					<DataGridColumnHeader
+						title='Rank Jobs Booked'
+						column={column}
+					/>
+				),
 				enableSorting: true,
 				meta: { headerClassName: 'w-20' },
 			},
 			{
 				accessorKey: 'total',
-				header: 'Total Booked',
+				header: ({ column }) => (
+					<DataGridColumnHeader
+						title='Total Booked'
+						column={column}
+					/>
+				),
 				enableSorting: true,
 				meta: { headerClassName: 'w-20' },
 			},
@@ -102,6 +127,7 @@ const Teams = () => {
 			pagination={{
 				size: 5,
 			}}
+			sorting={[{ id: 'bookedBy', desc: false }]}
 			toolbar={<Toolbar setSearchQuery={setSearchQuery} />}
 			layout={{
 				card: true,

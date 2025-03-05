@@ -71,7 +71,13 @@ const AvailabilityTable = () => {
 				),
 				enableSorting: true,
 				cell: ({ row }) => (
-					<div className={`p-2 rounded-md text-center text-gray-700`}>
+					<div
+						className={`p-2 rounded-md text-center text-gray-700`}
+						style={{
+							backgroundColor: row.original?.colorCode,
+							color: isLightColor(row.original?.colorCode) ? 'black' : 'white',
+						}}
+					>
 						{row.original.fullName}
 					</div>
 				),
@@ -88,7 +94,13 @@ const AvailabilityTable = () => {
 				),
 				enableSorting: true,
 				cell: ({ row }) => (
-					<div className={`p-2 rounded-md text-center text-gray-700`}>
+					<div
+						className={`p-2 rounded-md text-center text-gray-700`}
+						style={{
+							backgroundColor: row.original?.colorCode,
+							color: isLightColor(row.original?.colorCode) ? 'black' : 'white',
+						}}
+					>
 						{row.original.availableHours}
 					</div>
 				),
