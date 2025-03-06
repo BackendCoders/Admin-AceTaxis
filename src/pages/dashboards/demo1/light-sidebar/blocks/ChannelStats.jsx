@@ -68,7 +68,7 @@ const ChannelStats = () => {
 				data?.customerAquireCounts?.find((entry) => entry.periodWhen === 0) // ✅ Find the correct object
 					?.returning || 0,
 			desc: 'Day Returning Customer',
-			color: 'bg-yellow-400',
+			color: 'bg-success',
 		},
 		{
 			icon: 'user-edit',
