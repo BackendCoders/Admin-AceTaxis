@@ -32,7 +32,7 @@ const EntryCallout = () => {
 
 					return (
 						<div
-							className='p-1 rounded text-gray-900 font-semibold'
+							className='p-1 rounded text-center font-semibold'
 							style={{
 								backgroundColor: bgColor, // ✅ Apply background color dynamically
 								color: isLightColor(bgColor) ? 'black' : 'white', // ✅ Ensure readable text
@@ -48,83 +48,211 @@ const EntryCallout = () => {
 				accessorKey: 'jobsCount',
 				header: 'Jobs',
 				enableSorting: true,
+				cell: ({ row, getValue }) => {
+					const bgColor = row.original?.colourCode || '#ffffff';
+					const textColor = isLightColor(bgColor) ? 'black' : 'white';
+
+					return (
+						<div
+							className='p-1 rounded text-center font-semibold'
+							style={{
+								backgroundColor: bgColor,
+								color: textColor,
+							}}
+						>
+							{getValue()}
+						</div>
+					);
+				},
 				meta: { headerClassName: 'w-12' },
 			},
 			{
 				accessorKey: 'cashEarned',
 				header: 'Cash',
 				enableSorting: true,
-				cell: (info) => (
-					<div className='flex items-center gap-1'>
-						<span>£{info.getValue()?.toFixed(2)}</span>
-					</div>
-				),
+				cell: ({ row, getValue }) => {
+					const bgColor = row.original?.colourCode || '#ffffff';
+					const textColor = isLightColor(bgColor) ? 'black' : 'white';
+
+					return (
+						<div
+							className='p-1 rounded text-center font-semibold'
+							style={{
+								backgroundColor: bgColor,
+								color: textColor,
+							}}
+						>
+							£{getValue()?.toFixed(2)}
+						</div>
+					);
+				},
+				// cell: (info) => (
+				// 	<div className='flex items-center gap-1'>
+				// 		<span>{info.getValue()}</span>
+				// 	</div>
+				// ),
 				meta: { headerClassName: 'min-w-[80px]' },
 			},
 			{
 				accessorKey: 'accEarned',
 				header: 'Acc',
 				enableSorting: true,
-				cell: (info) => (
-					<div className='flex items-center gap-1'>
-						<span>£{info.getValue()?.toFixed(2)}</span>
-					</div>
-				),
+				cell: ({ row, getValue }) => {
+					const bgColor = row.original?.colourCode || '#ffffff';
+					const textColor = isLightColor(bgColor) ? 'black' : 'white';
+
+					return (
+						<div
+							className='p-1 rounded text-center font-semibold'
+							style={{
+								backgroundColor: bgColor,
+								color: textColor,
+							}}
+						>
+							£{getValue()?.toFixed(2)}
+						</div>
+					);
+				},
+				// cell: (info) => (
+				// 	<div className='flex items-center gap-1'>
+				// 		<span>£{info.getValue()?.toFixed(2)}</span>
+				// 	</div>
+				// ),
 				meta: { headerClassName: 'w-12' },
 			},
 			{
 				accessorKey: 'rankEarned',
 				header: 'Rank',
 				enableSorting: true,
-				cell: (info) => (
-					<div className='flex items-center gap-1'>
-						<span>£{info.getValue()?.toFixed(2)}</span>
-					</div>
-				),
+				cell: ({ row, getValue }) => {
+					const bgColor = row.original?.colourCode || '#ffffff';
+					const textColor = isLightColor(bgColor) ? 'black' : 'white';
+
+					return (
+						<div
+							className='p-1 rounded text-center font-semibold'
+							style={{
+								backgroundColor: bgColor,
+								color: textColor,
+							}}
+						>
+							£{getValue()?.toFixed(2)}
+						</div>
+					);
+				},
+				// cell: (info) => (
+				// 	<div className='flex items-center gap-1'>
+				// 		<span>£{info.getValue()?.toFixed(2)}</span>
+				// 	</div>
+				// ),
 				meta: { headerClassName: 'w-12' },
 			},
 			{
 				accessorKey: 'commissionCash',
 				header: 'Cash Comms',
 				enableSorting: true,
-				cell: (info) => (
-					<div className='flex items-center gap-1'>
-						<span>£{info.getValue()?.toFixed(2)}</span>
-					</div>
-				),
+				cell: ({ row, getValue }) => {
+					const bgColor = row.original?.colourCode || '#ffffff';
+					const textColor = isLightColor(bgColor) ? 'black' : 'white';
+
+					return (
+						<div
+							className='p-1 rounded text-center font-semibold'
+							style={{
+								backgroundColor: bgColor,
+								color: textColor,
+							}}
+						>
+							£{getValue()?.toFixed(2)}
+						</div>
+					);
+				},
+				// cell: (info) => (
+				// 	<div className='flex items-center gap-1'>
+				// 		<span>£{info.getValue()?.toFixed(2)}</span>
+				// 	</div>
+				// ),
 				meta: { headerClassName: 'w-12' },
 			},
 			{
 				accessorKey: 'commissionRank',
 				header: 'Rank Comms',
 				enableSorting: true,
-				cell: (info) => (
-					<div className='flex items-center gap-1'>
-						<span>£{info.getValue()?.toFixed(2)}</span>
-					</div>
-				),
+				cell: ({ row, getValue }) => {
+					const bgColor = row.original?.colourCode || '#ffffff';
+					const textColor = isLightColor(bgColor) ? 'black' : 'white';
+
+					return (
+						<div
+							className='p-1 rounded text-center font-semibold'
+							style={{
+								backgroundColor: bgColor,
+								color: textColor,
+							}}
+						>
+							£{getValue()?.toFixed(2)}
+						</div>
+					);
+				},
+				// cell: (info) => (
+				// 	<div className='flex items-center gap-1'>
+				// 		<span>£{info.getValue()?.toFixed(2)}</span>
+				// 	</div>
+				// ),
 				meta: { headerClassName: 'w-12' },
 			},
 			{
 				accessorKey: 'takeHome',
 				header: 'Total',
 				enableSorting: true,
-				cell: (info) => (
-					<div className='flex items-center gap-1'>
-						<span>£{info.getValue()?.toFixed(2)}</span>
-					</div>
-				),
+				cell: ({ row, getValue }) => {
+					const bgColor = row.original?.colourCode || '#ffffff';
+					const textColor = isLightColor(bgColor) ? 'black' : 'white';
+
+					return (
+						<div
+							className='p-1 rounded text-center font-semibold'
+							style={{
+								backgroundColor: bgColor,
+								color: textColor,
+							}}
+						>
+							£{getValue()?.toFixed(2)}
+						</div>
+					);
+				},
+				// cell: (info) => (
+				// 	<div className='flex items-center gap-1'>
+				// 		<span>£{info.getValue()?.toFixed(2)}</span>
+				// 	</div>
+				// ),
 				meta: { headerClassName: 'w-12' },
 			},
 			{
 				accessorKey: 'commission',
 				header: 'Total Comms',
 				enableSorting: true,
-				cell: (info) => (
-					<div className='flex items-center gap-1'>
-						<span>£{info.getValue()?.toFixed(2)}</span>
-					</div>
-				),
+				cell: ({ row, getValue }) => {
+					const bgColor = row.original?.colourCode || '#ffffff';
+					const textColor = isLightColor(bgColor) ? 'black' : 'white';
+
+					return (
+						<div
+							className='p-1 rounded text-center font-semibold'
+							style={{
+								backgroundColor: bgColor,
+								color: textColor,
+							}}
+						>
+							£{getValue()?.toFixed(2)}
+						</div>
+					);
+				},
+				// cell: (info) => (
+				// 	<div className='flex items-center gap-1'>
+				// 		<span>£{info.getValue()?.toFixed(2)}</span>
+				// 	</div>
+				// ),
 				meta: { headerClassName: 'w-12' },
 			},
 		],
@@ -197,6 +325,9 @@ const EntryCallout = () => {
 				layout={{
 					card: true,
 				}}
+				rowClassName={(row) =>
+					`bg-[${row.original.colourCode}] text-${isLightColor(row.original.colourCode) ? 'black' : 'white'}`
+				}
 			/>
 			<div className='flex justify-end items-center mt-4 p-4 bg-gray-100 rounded-lg'>
 				<div className='font-bold text-lg text-gray-800 flex gap-4'>
