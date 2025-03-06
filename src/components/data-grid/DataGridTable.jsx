@@ -99,7 +99,7 @@ const DataGridTable = () => {
 										key={cell.id}
 										className={cn(
 											bodyCellSpacing,
-											cellBorder && 'border-e',
+											// cellBorder && 'border-e',
 											'align-middle [&:has([role=checkbox])]:pe-0',
 											cell.column.columnDef.meta?.cellClassName
 										)}
