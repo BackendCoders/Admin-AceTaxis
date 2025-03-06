@@ -318,7 +318,7 @@ const DriverTracking = () => {
 										accessorKey: 'userId',
 										header: ({ column }) => (
 											<DataGridColumnHeader
-												title='#'
+												title=<span className='font-bold'>#</span>
 												column={column}
 											/>
 										),
@@ -330,7 +330,7 @@ const DriverTracking = () => {
 										accessorKey: 'username',
 										header: ({ column }) => (
 											<DataGridColumnHeader
-												title='Name'
+												title=<span className='font-bold'>Name</span>
 												column={column}
 											/>
 										),
@@ -346,7 +346,7 @@ const DriverTracking = () => {
 										accessorKey: 'regNo',
 										header: ({ column }) => (
 											<DataGridColumnHeader
-												title='Reg No'
+												title=<span className='font-bold'>Reg No</span>
 												column={column}
 											/>
 										),
@@ -362,7 +362,7 @@ const DriverTracking = () => {
 										accessorKey: 'gpsLastUpdated',
 										header: ({ column }) => (
 											<DataGridColumnHeader
-												title='Last Updated'
+												title=<span className='font-bold'>Last Updated</span>
 												column={column}
 											/>
 										),
@@ -386,7 +386,7 @@ const DriverTracking = () => {
 										accessorKey: 'speed',
 										header: ({ column }) => (
 											<DataGridColumnHeader
-												title='Speed (km/h)'
+												title=<span className='font-bold'>Speed (km/h)</span>
 												column={column}
 											/>
 										),

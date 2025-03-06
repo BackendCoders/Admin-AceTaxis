@@ -176,7 +176,7 @@ function CardBookings() {
 	const [search, setSearch] = useState('');
 	const [date, setDate] = useState(new Date());
 	const [order, setOrder] = useState('asc'); // Sort order
-	const [orderBy, setOrderBy] = useState('date'); // Default sorted column
+	const [orderBy, setOrderBy] = useState(''); // Default sorted column
 	console.log('card bookings', cardBookings);
 
 	const formattedBookings = (cardBookings || []).map((booking) => ({
@@ -358,6 +358,7 @@ function CardBookings() {
 											'&.Mui-active .MuiTableSortLabel-icon': {
 												color: '#9A9CAE',
 											}, // Change to blue when active
+											'fontWeight': 'bold',
 										}}
 									>
 										#
@@ -374,6 +375,7 @@ function CardBookings() {
 											'&.Mui-active .MuiTableSortLabel-icon': {
 												color: '#9A9CAE',
 											}, // Change to blue when active
+											'fontWeight': 'bold',
 										}}
 									>
 										Date
@@ -390,18 +392,28 @@ function CardBookings() {
 											'&.Mui-active .MuiTableSortLabel-icon': {
 												color: '#9A9CAE',
 											}, // Change to blue when active
+											'fontWeight': 'bold',
 										}}
 									>
 										Driver #
 									</TableSortLabel>
 								</TableCell>
-								<TableCell className='text-[#14151A] dark:text-gray-700'>
+								<TableCell
+									className='text-[#14151A] dark:text-gray-700'
+									sx={{ fontWeight: 'bold' }}
+								>
 									Pickup
 								</TableCell>
-								<TableCell className='text-[#14151A] dark:text-gray-700'>
+								<TableCell
+									className='text-[#14151A] dark:text-gray-700'
+									sx={{ fontWeight: 'bold' }}
+								>
 									Passenger
 								</TableCell>
-								<TableCell className='text-[#14151A] dark:text-gray-700'>
+								<TableCell
+									className='text-[#14151A] dark:text-gray-700'
+									sx={{ fontWeight: 'bold' }}
+								>
 									<TableSortLabel
 										active={orderBy === 'status'}
 										direction={order}
@@ -417,10 +429,16 @@ function CardBookings() {
 										Status
 									</TableSortLabel>
 								</TableCell>
-								<TableCell className='text-[#14151A] dark:text-gray-700'>
+								<TableCell
+									className='text-[#14151A] dark:text-gray-700'
+									sx={{ fontWeight: 'bold' }}
+								>
 									Payment #
 								</TableCell>
-								<TableCell className='text-[#14151A] dark:text-gray-700'>
+								<TableCell
+									className='text-[#14151A] dark:text-gray-700'
+									sx={{ fontWeight: 'bold' }}
+								>
 									Reminder
 								</TableCell>
 							</TableRow>

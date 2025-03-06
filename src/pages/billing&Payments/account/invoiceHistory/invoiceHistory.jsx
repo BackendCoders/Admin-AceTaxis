@@ -72,7 +72,7 @@ function RowNotPriced({ row, handlePostButton }) {
 	const columns = useMemo(
 		() => [
 			{
-				accessorKey: 'bookingId',
+				accessorKey: 'jobNo',
 				header: ({ column }) => (
 					<DataGridColumnHeader
 						title='#'
@@ -157,7 +157,7 @@ function RowNotPriced({ row, handlePostButton }) {
 				meta: { headerClassName: 'min-w-[120px]' },
 			},
 			{
-				accessorKey: 'price',
+				accessorKey: 'journey',
 				header: ({ column }) => (
 					<DataGridColumnHeader
 						title='Price'
@@ -225,7 +225,7 @@ function RowNotPriced({ row, handlePostButton }) {
 				meta: { headerClassName: 'min-w-[120px]' },
 			},
 			{
-				accessorKey: 'totalIncome',
+				accessorKey: 'totalInc',
 				header: ({ column }) => (
 					<DataGridColumnHeader
 						title='Total Inc'
@@ -369,7 +369,7 @@ function RowNotPriced({ row, handlePostButton }) {
 								rowSelection={true}
 								onRowSelectionChange={handleRowSelection}
 								pagination={{ size: 10 }}
-								sorting={[{ id: 'bookingId', desc: false }]}
+								sorting={[{ id: 'jobNo', desc: false }]}
 								layout={{ card: true }}
 							/>
 						</Box>
@@ -387,7 +387,7 @@ function InvoiceHistory() {
 	const [selectedAccount, setSelectedAccount] = useState(0);
 	const [search, setSearch] = useState('');
 	const [order, setOrder] = useState('asc'); // Sort order
-	const [orderBy, setOrderBy] = useState('date'); // Default sorted column
+	const [orderBy, setOrderBy] = useState(''); // Default sorted column
 	const [date, setDate] = useState({
 		from: new Date(),
 		to: addDays(new Date(), 20),

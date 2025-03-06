@@ -46,7 +46,7 @@ const Tariff = () => {
 				accessorKey: 'name',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Tariff Name'
+						title=<span className='font-bold'>Tariff Name</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -60,7 +60,7 @@ const Tariff = () => {
 				// header: "Description",
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Description'
+						title=<span className='font-bold'>Description</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -76,7 +76,7 @@ const Tariff = () => {
 				// header: "Initial Charge",
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Initial Charge'
+						title=<span className='font-bold'>Initial Charge</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -102,7 +102,7 @@ const Tariff = () => {
 				// header: "First Mile Charge",
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='First Mile Charge'
+						title=<span className='font-bold'>First Mile Charge</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -128,7 +128,7 @@ const Tariff = () => {
 				// header: "Additional Mile Charge",
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Additional Mile Charge'
+						title=<span className='font-bold'>Additional Mile Charge</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>

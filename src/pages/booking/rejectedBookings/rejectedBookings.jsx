@@ -96,10 +96,10 @@ function RejectedBookings() {
 	const columns = useMemo(
 		() => [
 			{
-				accessorKey: 'bookingId',
+				accessorKey: 'id',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='# id'
+						title=<span className='font-bold'># id</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -114,7 +114,7 @@ function RejectedBookings() {
 				accessorKey: 'pickUpDateTime',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Pickup Date/Time'
+						title=<span className='font-bold'>Pickup Date/Time</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -138,7 +138,7 @@ function RejectedBookings() {
 				accessorKey: 'pickupAddress',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Pickup Address'
+						title=<span className='font-bold'>Pickup Address</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -155,7 +155,7 @@ function RejectedBookings() {
 				accessorKey: 'destinationAddress',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Destination Address'
+						title=<span className='font-bold'>Destination Address</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -219,7 +219,7 @@ function RejectedBookings() {
 				accessorKey: 'rejectedReason',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Reason'
+						title=<span className='font-bold'>Reason</span>
 						column={column}
 					/>
 				),
@@ -232,10 +232,10 @@ function RejectedBookings() {
 				meta: { headerClassName: 'min-w-[220px]' },
 			},
 			{
-				accessorKey: 'rejectedBy',
+				accessorKey: 'acceptedRejectedBy',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Rejected By'
+						title=<span className='font-bold'>Rejected By</span>
 						column={column}
 					/>
 				),
@@ -248,10 +248,10 @@ function RejectedBookings() {
 				meta: { headerClassName: 'w-18' },
 			},
 			{
-				accessorKey: 'rejectedOn',
+				accessorKey: 'acceptedRejectedOn',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Rejected On'
+						title=<span className='font-bold'>Rejected On</span>
 						column={column}
 					/>
 				),
@@ -408,7 +408,7 @@ function RejectedBookings() {
 									rowSelection={true}
 									onRowSelectionChange={handleRowSelection}
 									pagination={{ size: 10 }}
-									sorting={[{ id: 'bookingId', desc: false }]}
+									sorting={[{ id: 'id', desc: false }]}
 									layout={{ card: true }}
 								/>
 							</div>

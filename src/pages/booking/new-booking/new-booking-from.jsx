@@ -102,10 +102,10 @@ function NewBooking() {
 	const columns = useMemo(
 		() => [
 			{
-				accessorKey: 'bookingId',
+				accessorKey: 'id',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='# id'
+						title=<span className='font-bold'># id</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -120,7 +120,7 @@ function NewBooking() {
 				accessorKey: 'arriveBy',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Arrive By'
+						title=<span className='font-bold'>Arrive By</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -143,7 +143,7 @@ function NewBooking() {
 				accessorKey: 'pickUpDateTime',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Date/Time'
+						title=<span className='font-bold'>Date/Time</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -167,7 +167,7 @@ function NewBooking() {
 				accessorKey: 'pickupAddress',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Pickup Address'
+						title=<span className='font-bold'>Pickup Address</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -184,7 +184,7 @@ function NewBooking() {
 				accessorKey: 'destinationAddress',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Destination Address'
+						title=<span className='font-bold'>Destination Address</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -202,7 +202,7 @@ function NewBooking() {
 				accessorKey: 'passengerName',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Passenger Name'
+						title=<span className='font-bold'>Passenger Name</span>
 						column={column}
 					/>
 				),
@@ -215,10 +215,10 @@ function NewBooking() {
 				meta: { headerClassName: 'w-18' },
 			},
 			{
-				accessorKey: 'passenger',
+				accessorKey: 'passengers',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Passenger'
+						title=<span className='font-bold'>Passenger</span>
 						column={column}
 					/>
 				),
@@ -234,7 +234,7 @@ function NewBooking() {
 				accessorKey: 'phoneNumber',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Phone Number'
+						title=<span className='font-bold'>Phone Number</span>
 						column={column}
 					/>
 				),
@@ -247,10 +247,10 @@ function NewBooking() {
 				meta: { headerClassName: 'min-w-[80px]' },
 			},
 			{
-				accessorKey: 'block',
+				accessorKey: 'repeatText',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Days and Ends on Date'
+						title=<span className='font-bold'>Days & Ends on Date</span>
 						column={column}
 					/>
 				),
@@ -267,7 +267,7 @@ function NewBooking() {
 				accessorKey: 'action',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Action'
+						title=<span className='font-bold'>Actions</span>
 						column={column}
 					/>
 				),
@@ -447,7 +447,7 @@ function NewBooking() {
 									rowSelection={true}
 									onRowSelectionChange={handleRowSelection}
 									pagination={{ size: 10 }}
-									sorting={[{ id: 'bookingId', desc: false }]}
+									sorting={[{ id: 'id', desc: false }]}
 									layout={{ card: true }}
 								/>
 							</div>

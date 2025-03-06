@@ -72,7 +72,7 @@ function ListDriver() {
 	};
 
 	const vehicleTypeName = {
-		0: '',
+		0: 'Unknown',
 		1: 'Saloon',
 		2: 'Estate',
 		3: 'MPV',
@@ -86,7 +86,7 @@ function ListDriver() {
 				accessorKey: 'id',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Id #'
+						title=<span className='font-bold'>Id #</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -101,7 +101,7 @@ function ListDriver() {
 				accessorKey: 'lastLogin',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Last Login'
+						title=<span className='font-bold'>Last Login</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -121,22 +121,24 @@ function ListDriver() {
 				accessorKey: 'regNo',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Reg No.'
+						title=<span className='font-bold'>Reg No.</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
 				),
 				enableSorting: true,
 				cell: ({ row }) => (
-					<span className={`p-2 rounded-md whitespace-nowrap`}>{row.original.regNo}</span>
+					<span className={`p-2 rounded-md whitespace-nowrap`}>
+						{row.original.regNo}
+					</span>
 				),
 				meta: { headerClassName: 'w-25' },
 			},
 			{
-				accessorKey: 'type',
+				accessorKey: 'vehicleType',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Type'
+						title=<span className='font-bold'>Type</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -144,18 +146,16 @@ function ListDriver() {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={`font-medium ${row.original.color}`}>
-						{row.original.vehicleType
-							? vehicleTypeName[row.original.vehicleType]
-							: '-'}
+						{vehicleTypeName[row.original.vehicleType]}
 					</span>
 				),
 				meta: { headerClassName: 'w-20' },
 			},
 			{
-				accessorKey: 'color',
+				accessorKey: 'colorRGB',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Color'
+						title=<span className='font-bold'>Color</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -175,14 +175,16 @@ function ListDriver() {
 				accessorKey: 'fullName',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Full Name'
+						title=<span className='font-bold'>Full Name</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
 				),
 				enableSorting: true,
 				cell: ({ row }) => (
-					<span className={`p-2 rounded-md whitespace-nowrap`}>{row.original.fullName}</span>
+					<span className={`p-2 rounded-md whitespace-nowrap`}>
+						{row.original.fullName}
+					</span>
 				),
 				meta: { headerClassName: 'w-25' },
 			},
@@ -190,7 +192,7 @@ function ListDriver() {
 				accessorKey: 'phoneNumber',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Phone Number'
+						title=<span className='font-bold'>Phone Number</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -207,7 +209,7 @@ function ListDriver() {
 				accessorKey: 'role',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Role'
+						title=<span className='font-bold'>Role</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -228,7 +230,7 @@ function ListDriver() {
 				accessorKey: 'send',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Send'
+						title=<span className='font-bold'>Send</span>
 						column={column}
 					/>
 				),
@@ -249,10 +251,10 @@ function ListDriver() {
 				meta: { headerClassName: 'min-w-[80px]' },
 			},
 			{
-				accessorKey: 'lock',
+				accessorKey: 'isLockedOut',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Lock'
+						title=<span className='font-bold'>Lock</span>
 						column={column}
 					/>
 				),
@@ -273,10 +275,10 @@ function ListDriver() {
 				meta: { headerClassName: 'min-w-[80px]' },
 			},
 			{
-				accessorKey: 'show',
+				accessorKey: 'showAllBookings',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Show'
+						title=<span className='font-bold'>Show</span>
 						column={column}
 					/>
 				),
@@ -297,10 +299,10 @@ function ListDriver() {
 				meta: { headerClassName: 'min-w-[80px]' },
 			},
 			{
-				accessorKey: 'hvs',
+				accessorKey: 'showHVSBookings',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='HVS'
+						title=<span className='font-bold'>HVS</span>
 						column={column}
 					/>
 				),
@@ -325,7 +327,7 @@ function ListDriver() {
 				accessorKey: 'action',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Actions'
+						title=<span className='font-bold'>Actions</span>
 						column={column}
 					/>
 				),

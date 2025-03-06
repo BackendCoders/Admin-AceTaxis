@@ -66,10 +66,10 @@ const AirportRuns = () => {
 	const columns = useMemo(
 		() => [
 			{
-				accessorKey: 'driver',
+				accessorKey: 'identifier',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Driver'
+						title=<span className='font-bold'>Driver</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -86,7 +86,7 @@ const AirportRuns = () => {
 				accessorKey: 'date',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Date'
+						title=<span className='font-bold'>Date</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -104,7 +104,7 @@ const AirportRuns = () => {
 				accessorKey: 'pickup',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Pickup'
+						title=<span className='font-bold'>Pickup</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -118,10 +118,10 @@ const AirportRuns = () => {
 				meta: { headerClassName: 'min-w-[120px]' },
 			},
 			{
-				accessorKey: 'destination',
+				accessorKey: 'destin',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Destination'
+						title=<span className='font-bold'>Destination</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -138,7 +138,7 @@ const AirportRuns = () => {
 				accessorKey: 'price',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Price'
+						title=<span className='font-bold'>Price</span>
 						column={column}
 					/>
 				),
@@ -150,36 +150,6 @@ const AirportRuns = () => {
 				),
 				meta: { headerClassName: 'w-18' },
 			},
-			// {
-			// 	accessorKey: 'passenger',
-			// 	header: ({ column }) => (
-			// 		<DataGridColumnHeader
-			// 			title='Passenger'
-			// 			column={column}
-			// 		/>
-			// 	),
-			// 	enableSorting: true,
-			// 	cell: ({ row }) => (
-			// 		<span className={row.original.color}>
-			// 			{row?.original?.passengers}
-			// 		</span>
-			// 	),
-			// 	meta: { headerClassName: 'w-18' },
-			// },
-			// {
-			// 	accessorKey: 'phoneNumber',
-			// 	header: ({ column }) => (
-			// 		<DataGridColumnHeader
-			// 			title='Phone Number'
-			// 			column={column}
-			// 		/>
-			// 	),
-			// 	enableSorting: true,
-			// 	cell: ({ row }) => (
-			// 		<span className={row.original.color}>{row.original.phoneNumber}</span>
-			// 	),
-			// 	meta: { headerClassName: 'w-18' },
-			// },
 		],
 		[]
 	);
@@ -257,7 +227,7 @@ const AirportRuns = () => {
 						rowSelection={true}
 						onRowSelectionChange={handleRowSelection}
 						pagination={{ size: 10 }}
-						sorting={[{ id: 'driver', desc: false }]}
+						sorting={[{ id: 'identifier', desc: false }]}
 						layout={{ card: true }}
 					/>
 				) : (

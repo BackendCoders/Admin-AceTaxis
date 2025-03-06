@@ -490,7 +490,7 @@ function StateProcessing() {
 	const [date, setDate] = useState(new Date());
 	const [search, setSearch] = useState('');
 	const [order, setOrder] = useState('asc'); // Sort order
-	const [orderBy, setOrderBy] = useState('date'); // Default sorted column
+	const [orderBy, setOrderBy] = useState(''); // Default sorted column
 	console.log(driverChargeableJobs);
 
 	const formattedNotPricedBookings = (

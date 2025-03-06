@@ -98,13 +98,13 @@ const Tablejourney = () => {
 				<table className='w-full border-collapse border border-gray-300'>
 					<thead>
 						<tr>
-							<th className='border border-gray-300 px-4 text-start py-2'>
+							<th className='border border-gray-300 px-4 text-start py-2 text-gray-700'>
 								<span className='ms-6'>Date</span>
 							</th>
-							<th className='border border-gray-300 text-start px-4 py-2'>
+							<th className='border border-gray-300 text-start px-4 py-2 text-gray-700'>
 								<span className=''>Journey</span>
 							</th>
-							<th className='border border-gray-300 text-start px-4 py-2 w-28 whitespace-nowrap'>
+							<th className='border border-gray-300 text-start px-4 py-2 w-28 whitespace-nowrap text-gray-700'>
 								<span className=''>Price (£)</span>
 							</th>
 						</tr>
@@ -120,7 +120,7 @@ const Tablejourney = () => {
 										colSpan='3'
 										className='border border-gray-300 px-4 py-2 font-semibold'
 									>
-										<span className='-ms-1'>
+										<span className='-ms-1 text-gray-700'>
 											{expandedDrivers[driverId] ? (
 												<KeyboardArrowDownIcon />
 											) : (

@@ -22,7 +22,7 @@ function DayEarning() {
 		() => [
 			{
 				accessorKey: 'identifier',
-				header: 'Driver',
+				header: <span className='font-bold'>Driver</span>,
 				enableSorting: true,
 				cell: (info) => {
 					const rowData = info.row.original;
@@ -44,13 +44,13 @@ function DayEarning() {
 			},
 			{
 				accessorKey: 'jobsCount',
-				header: 'Jobs',
+				header: <span className='font-bold'>Jobs</span>,
 				enableSorting: true,
 				meta: { headerClassName: 'w-12' },
 			},
 			{
 				accessorKey: 'cashEarned',
-				header: 'Cash',
+				header: <span className='font-bold'>Cash</span>,
 				enableSorting: true,
 				cell: (info) => (
 					<div className='flex items-center gap-1'>
@@ -61,7 +61,7 @@ function DayEarning() {
 			},
 			{
 				accessorKey: 'accEarned',
-				header: 'Acc',
+				header: <span className='font-bold'>Acc</span>,
 				enableSorting: true,
 				cell: (info) => (
 					<div className='flex items-center gap-1'>
@@ -72,7 +72,7 @@ function DayEarning() {
 			},
 			{
 				accessorKey: 'rankEarned',
-				header: 'Rank',
+				header: <span className='font-bold'>Rank</span>,
 				enableSorting: true,
 				cell: (info) => (
 					<div className='flex items-center gap-1'>
@@ -83,7 +83,7 @@ function DayEarning() {
 			},
 			{
 				accessorKey: 'commissionCash',
-				header: 'Cash Comms',
+				header: <span className='font-bold'>Cash Comms</span>,
 				enableSorting: true,
 				cell: (info) => (
 					<div className='flex items-center gap-1'>
@@ -94,7 +94,7 @@ function DayEarning() {
 			},
 			{
 				accessorKey: 'commissionRank',
-				header: 'Rank Comms',
+				header: <span className='font-bold'>Rank Comms</span>,
 				enableSorting: true,
 				cell: (info) => (
 					<div className='flex items-center gap-1'>
@@ -105,7 +105,7 @@ function DayEarning() {
 			},
 			{
 				accessorKey: 'takeHome',
-				header: 'Total',
+				header: <span className='font-bold'>Total</span>,
 				enableSorting: true,
 				cell: (info) => (
 					<div className='flex items-center gap-1'>
@@ -116,7 +116,7 @@ function DayEarning() {
 			},
 			{
 				accessorKey: 'commission',
-				header: 'Total Comms',
+				header: <span className='font-bold'>Total Comms</span>,
 				enableSorting: true,
 				cell: (info) => (
 					<div className='flex items-center gap-1'>
@@ -136,7 +136,7 @@ function DayEarning() {
 	const filteredData = tableData.filter((driver) =>
 		driver.fullname.toLowerCase().includes(searchQuery.toLowerCase())
 	);
-    
+
 	const handleRowSelection = (state) => {
 		const selectedRowIds = Object.keys(state);
 		if (selectedRowIds.length > 0) {

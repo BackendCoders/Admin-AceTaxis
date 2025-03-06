@@ -21,7 +21,7 @@ const Teams = () => {
 				accessorKey: 'bookedBy',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Booked By'
+						title=<span className='font-bold'>Booked By</span>
 						column={column}
 					/>
 				),
@@ -32,7 +32,7 @@ const Teams = () => {
 				accessorKey: 'cashJobs',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Cash Jobs Booked'
+						title=<span className='font-bold'>Cash Jobs Booked</span>
 						column={column}
 					/>
 				),
@@ -43,7 +43,7 @@ const Teams = () => {
 				accessorKey: 'accountJobs',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Account Jobs Booked'
+						title=<span className='font-bold'>Account Jobs Booked</span>
 						column={column}
 					/>
 				),
@@ -54,7 +54,7 @@ const Teams = () => {
 				accessorKey: 'rankJobs',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Rank Jobs Booked'
+						title=<span className='font-bold'>Rank Jobs Booked</span>
 						column={column}
 					/>
 				),
@@ -65,7 +65,7 @@ const Teams = () => {
 				accessorKey: 'total',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Total Booked'
+						title=<span className='font-bold'>Total Booked</span>
 						column={column}
 					/>
 				),

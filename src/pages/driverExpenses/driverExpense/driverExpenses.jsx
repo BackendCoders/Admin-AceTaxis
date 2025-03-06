@@ -79,7 +79,7 @@ const DriverExpenses = () => {
 				accessorKey: 'date',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Date'
+						title=<span className='font-bold'>Date</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -100,7 +100,7 @@ const DriverExpenses = () => {
 				accessorKey: 'description',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Description'
+						title=<span className='font-bold'>Description</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -117,7 +117,7 @@ const DriverExpenses = () => {
 				accessorKey: 'category',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Category'
+						title=<span className='font-bold'>Category</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -134,7 +134,7 @@ const DriverExpenses = () => {
 				accessorKey: 'amount',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Amount'
+						title=<span className='font-bold'>Amount</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -149,10 +149,10 @@ const DriverExpenses = () => {
 			},
 
 			{
-				accessorKey: 'driver',
+				accessorKey: 'userId',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Driver #'
+						title=<span className='font-bold'>Driver #</span>
 						column={column}
 					/>
 				),

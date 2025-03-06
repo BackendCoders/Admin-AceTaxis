@@ -113,7 +113,7 @@ const AvailabilityReport = () => {
 					accessorKey: 'userId',
 					header: ({ column }) => (
 						<DataGridColumnHeader
-							title='USER ID'
+							title=<span className='font-bold'>Driver #</span>
 							column={column}
 						/>
 					),
@@ -122,7 +122,7 @@ const AvailabilityReport = () => {
 					accessorKey: 'date',
 					header: ({ column }) => (
 						<DataGridColumnHeader
-							title='DATE'
+							title=<span className='font-bold'>Date</span>
 							column={column}
 						/>
 					),
@@ -131,7 +131,7 @@ const AvailabilityReport = () => {
 					accessorKey: 'hoursAvailable',
 					header: ({ column }) => (
 						<DataGridColumnHeader
-							title='HOURS AVAILABLE'
+							title=<span className='font-bold'>Hours Available</span>
 							column={column}
 						/>
 					),
@@ -143,7 +143,7 @@ const AvailabilityReport = () => {
 					accessorKey: 'userId',
 					header: ({ column }) => (
 						<DataGridColumnHeader
-							title='USER ID'
+							title=<span className='font-bold'>Driver #</span>
 							column={column}
 						/>
 					),
@@ -152,7 +152,7 @@ const AvailabilityReport = () => {
 					accessorKey: 'month',
 					header: ({ column }) => (
 						<DataGridColumnHeader
-							title='MONTH'
+							title=<span className='font-bold'>Month</span>
 							column={column}
 						/>
 					),
@@ -161,7 +161,7 @@ const AvailabilityReport = () => {
 					accessorKey: 'totalHours',
 					header: ({ column }) => (
 						<DataGridColumnHeader
-							title='TOTAL HOURS'
+							title=<span className='font-bold'>Total Hours</span>
 							column={column}
 						/>
 					),
@@ -173,7 +173,7 @@ const AvailabilityReport = () => {
 					accessorKey: 'userId',
 					header: ({ column }) => (
 						<DataGridColumnHeader
-							title='USER ID'
+							title=<span className='font-bold'>Driver #</span>
 							column={column}
 						/>
 					),
@@ -182,7 +182,7 @@ const AvailabilityReport = () => {
 					accessorKey: 'week',
 					header: ({ column }) => (
 						<DataGridColumnHeader
-							title='WEEK #'
+							title=<span className='font-bold'>Week #</span>
 							column={column}
 						/>
 					),
@@ -191,7 +191,7 @@ const AvailabilityReport = () => {
 					accessorKey: 'totalHours',
 					header: ({ column }) => (
 						<DataGridColumnHeader
-							title='TOTAL HOURS'
+							title=<span className='font-bold'>Total Hours</span>
 							column={column}
 						/>
 					),
@@ -203,7 +203,7 @@ const AvailabilityReport = () => {
 					accessorKey: 'userId',
 					header: ({ column }) => (
 						<DataGridColumnHeader
-							title='USER ID'
+							title=<span className='font-bold'>Driver #</span>
 							column={column}
 						/>
 					),
@@ -212,7 +212,7 @@ const AvailabilityReport = () => {
 					accessorKey: 'day',
 					header: ({ column }) => (
 						<DataGridColumnHeader
-							title='WEEK DAY'
+							title=<span className='font-bold'>Week Days</span>
 							column={column}
 						/>
 					),
@@ -221,7 +221,7 @@ const AvailabilityReport = () => {
 					accessorKey: 'totalHours',
 					header: ({ column }) => (
 						<DataGridColumnHeader
-							title='TOTAL HOURS'
+							title=<span className='font-bold'>Total Hours</span>
 							column={column}
 						/>
 					),
@@ -233,7 +233,7 @@ const AvailabilityReport = () => {
 					accessorKey: 'userId',
 					header: ({ column }) => (
 						<DataGridColumnHeader
-							title='USER ID'
+							title=<span className='font-bold'>Driver #</span>
 							column={column}
 						/>
 					),
@@ -242,7 +242,7 @@ const AvailabilityReport = () => {
 					accessorKey: 'weekendDay',
 					header: ({ column }) => (
 						<DataGridColumnHeader
-							title='WEEKEND DAY'
+							title=<span className='font-bold'>Weekend Day</span>
 							column={column}
 						/>
 					),
@@ -251,7 +251,7 @@ const AvailabilityReport = () => {
 					accessorKey: 'totalHours',
 					header: ({ column }) => (
 						<DataGridColumnHeader
-							title='TOTAL HOURS'
+							title=<span className='font-bold'>Total Hours</span>
 							column={column}
 						/>
 					),

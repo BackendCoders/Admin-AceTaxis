@@ -115,7 +115,7 @@ function ListLocalPoi() {
 				accessorKey: 'name',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Name'
+						title=<span className='font-bold'>Name</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -132,7 +132,7 @@ function ListLocalPoi() {
 				accessorKey: 'postcode',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Postcode'
+						title=<span className='font-bold'>Postcode</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -149,7 +149,7 @@ function ListLocalPoi() {
 				accessorKey: 'address',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Address'
+						title=<span className='font-bold'>Address</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -166,7 +166,7 @@ function ListLocalPoi() {
 				accessorKey: 'type',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Type'
+						title=<span className='font-bold'>Type</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -183,7 +183,7 @@ function ListLocalPoi() {
 				accessorKey: 'action',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Actions'
+						title=<span className='font-bold'>Actions</span>
 						column={column}
 					/>
 				),

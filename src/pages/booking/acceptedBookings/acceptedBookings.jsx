@@ -96,10 +96,10 @@ function AcceptedBookings() {
 	const columns = useMemo(
 		() => [
 			{
-				accessorKey: 'bookingId',
+				accessorKey: 'id',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='# id'
+						title=<span className='font-bold'># id</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -114,7 +114,7 @@ function AcceptedBookings() {
 				accessorKey: 'pickUpDateTime',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Pickup Date/Time'
+						title=<span className='font-bold'>Pickup Date/Time</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -138,7 +138,7 @@ function AcceptedBookings() {
 				accessorKey: 'pickupAddress',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Pickup Address'
+						title=<span className='font-bold'>Pickup Address</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -155,7 +155,7 @@ function AcceptedBookings() {
 				accessorKey: 'destinationAddress',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Destination Address'
+						title=<span className='font-bold'>Destination Address</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -173,7 +173,7 @@ function AcceptedBookings() {
 				accessorKey: 'passengerName',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Passenger Name'
+						title=<span className='font-bold'>Passenger Name</span>
 						column={column}
 					/>
 				),
@@ -186,10 +186,10 @@ function AcceptedBookings() {
 				meta: { headerClassName: 'w-18' },
 			},
 			{
-				accessorKey: 'passenger',
+				accessorKey: 'passengers',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Passenger'
+						title=<span className='font-bold'>Passenger</span>
 						column={column}
 					/>
 				),
@@ -354,7 +354,7 @@ function AcceptedBookings() {
 									rowSelection={true}
 									onRowSelectionChange={handleRowSelection}
 									pagination={{ size: 10 }}
-									sorting={[{ id: 'bookingId', desc: false }]}
+									sorting={[{ id: 'id', desc: false }]}
 									layout={{ card: true }}
 								/>
 							</div>

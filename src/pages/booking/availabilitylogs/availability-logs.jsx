@@ -64,10 +64,10 @@ const AvailabilityLogs = () => {
 	const columns = useMemo(
 		() => [
 			{
-				accessorKey: 'date',
+				accessorKey: 'forDate',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Date'
+						title=<span className='font-bold'>Date</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -88,7 +88,7 @@ const AvailabilityLogs = () => {
 				accessorKey: 'theChange',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='The Change'
+						title=<span className='font-bold'>The Change</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -105,7 +105,7 @@ const AvailabilityLogs = () => {
 				accessorKey: 'changedOn',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Changed On'
+						title=<span className='font-bold'>Changed On</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -123,10 +123,10 @@ const AvailabilityLogs = () => {
 				meta: { headerClassName: 'min-w-[200px]' },
 			},
 			{
-				accessorKey: 'Changed by User',
+				accessorKey: 'changeBy',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Changed by User'
+						title=<span className='font-bold'>Changed by User</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -141,10 +141,10 @@ const AvailabilityLogs = () => {
 			},
 
 			{
-				accessorKey: 'driver',
+				accessorKey: 'userId',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Driver #'
+						title=<span className='font-bold'>Driver #</span>
 						column={column}
 					/>
 				),
@@ -273,7 +273,7 @@ const AvailabilityLogs = () => {
 										rowSelection={true}
 										onRowSelectionChange={handleRowSelection}
 										pagination={{ size: 10 }}
-										sorting={[{ id: 'date', desc: false }]}
+										sorting={[{ id: 'forDate', desc: false }]}
 										layout={{ card: true }}
 									/>
 								) : (

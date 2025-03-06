@@ -50,10 +50,10 @@ function AuditBooking() {
 	const columns = useMemo(
 		() => [
 			{
-				accessorKey: 'date&Time of Change',
+				accessorKey: 'timeStamp',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Date/Time of Change'
+						title=<span className='font-bold'>Date/Time of Change</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -70,10 +70,10 @@ function AuditBooking() {
 				meta: { headerClassName: 'min-w-[120px]' },
 			},
 			{
-				accessorKey: 'Changed by User',
+				accessorKey: 'userFullName',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Changed by User'
+						title=<span className='font-bold'>Changed By User</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -87,10 +87,10 @@ function AuditBooking() {
 				meta: { headerClassName: 'min-w-[80px]' },
 			},
 			{
-				accessorKey: 'Property Name',
+				accessorKey: 'propertyName',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Property Name'
+						title=<span className='font-bold'>Property Name</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -104,10 +104,10 @@ function AuditBooking() {
 				meta: { headerClassName: 'min-w-[200px]' },
 			},
 			{
-				accessorKey: 'Previous Value',
+				accessorKey: 'oldValue',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Previous Value'
+						title=<span className='font-bold'>Previous Value</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -121,10 +121,10 @@ function AuditBooking() {
 				meta: { headerClassName: 'min-w-[200px]' },
 			},
 			{
-				accessorKey: 'New Value',
+				accessorKey: 'newValue',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='New Value'
+						title=<span className='font-bold'>New Value</span>
 						column={column}
 					/>
 				),
@@ -199,7 +199,7 @@ function AuditBooking() {
 										rowSelection={true}
 										onRowSelectionChange={handleRowSelection}
 										pagination={{ size: 10 }}
-										sorting={[{ id: 'driver', desc: false }]}
+										sorting={[{ id: 'timeStamp', desc: false }]}
 										layout={{ card: true }}
 									/>
 								) : (

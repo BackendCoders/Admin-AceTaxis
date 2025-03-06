@@ -497,7 +497,7 @@ function InvoiceProcessor() {
 	const [autoEmailInvoices, setAutoEmailInvoices] = useState(true);
 	const [search, setSearch] = useState('');
 	const [order, setOrder] = useState('asc'); // Sort order
-	const [orderBy, setOrderBy] = useState('date'); // Default sorted column
+	const [orderBy, setOrderBy] = useState(''); // Default sorted column
 	const [dateRange, setDateRange] = useState({
 		from: new Date(), // January 31, 2025
 		to: new Date(), // Same default date
@@ -927,7 +927,10 @@ function InvoiceProcessor() {
 											>
 												<TableRow>
 													<TableCell />
-													<TableCell className='text-[#14151A] dark:text-gray-700'>
+													<TableCell
+														className='text-[#14151A] dark:text-gray-700'
+														sx={{ fontWeight: 'bold' }}
+													>
 														<TableSortLabel
 															active={orderBy === 'id'}
 															direction={order}
@@ -943,7 +946,10 @@ function InvoiceProcessor() {
 															#
 														</TableSortLabel>
 													</TableCell>
-													<TableCell className='text-[#14151A] dark:text-gray-700'>
+													<TableCell
+														className='text-[#14151A] dark:text-gray-700'
+														sx={{ fontWeight: 'bold' }}
+													>
 														<TableSortLabel
 															active={orderBy === 'date'}
 															direction={order}
@@ -959,34 +965,64 @@ function InvoiceProcessor() {
 															Date
 														</TableSortLabel>
 													</TableCell>
-													<TableCell className='text-[#14151A] dark:text-gray-700'>
+													<TableCell
+														className='text-[#14151A] dark:text-gray-700'
+														sx={{ fontWeight: 'bold' }}
+													>
 														Acc #
 													</TableCell>
-													<TableCell className='text-[#14151A] dark:text-gray-700'>
+													<TableCell
+														className='text-[#14151A] dark:text-gray-700'
+														sx={{ fontWeight: 'bold' }}
+													>
 														Driver #
 													</TableCell>
-													<TableCell className='text-[#14151A] dark:text-gray-700'>
+													<TableCell
+														className='text-[#14151A] dark:text-gray-700'
+														sx={{ fontWeight: 'bold' }}
+													>
 														Pickup
 													</TableCell>
-													<TableCell className='text-[#14151A] dark:text-gray-700'>
+													<TableCell
+														className='text-[#14151A] dark:text-gray-700'
+														sx={{ fontWeight: 'bold' }}
+													>
 														Destination
 													</TableCell>
-													<TableCell className='text-[#14151A] dark:text-gray-700'>
+													<TableCell
+														className='text-[#14151A] dark:text-gray-700'
+														sx={{ fontWeight: 'bold' }}
+													>
 														Passenger
 													</TableCell>
-													<TableCell className='text-[#14151A] dark:text-gray-700'>
+													<TableCell
+														className='text-[#14151A] dark:text-gray-700'
+														sx={{ fontWeight: 'bold' }}
+													>
 														Has Vias
 													</TableCell>
-													<TableCell className='text-[#14151A] dark:text-gray-700'>
+													<TableCell
+														className='text-[#14151A] dark:text-gray-700'
+														sx={{ fontWeight: 'bold' }}
+													>
 														Waiting
 													</TableCell>
-													<TableCell className='text-[#14151A] dark:text-gray-700'>
+													<TableCell
+														className='text-[#14151A] dark:text-gray-700'
+														sx={{ fontWeight: 'bold' }}
+													>
 														Waiting Charge
 													</TableCell>
-													<TableCell className='text-[#14151A] dark:text-gray-700'>
+													<TableCell
+														className='text-[#14151A] dark:text-gray-700'
+														sx={{ fontWeight: 'bold' }}
+													>
 														Actual Miles
 													</TableCell>
-													<TableCell className='text-[#14151A] dark:text-gray-700'>
+													<TableCell
+														className='text-[#14151A] dark:text-gray-700'
+														sx={{ fontWeight: 'bold' }}
+													>
 														<TableSortLabel
 															active={orderBy === 'driverFare'}
 															direction={order}
@@ -1002,7 +1038,10 @@ function InvoiceProcessor() {
 															Driver £
 														</TableSortLabel>
 													</TableCell>
-													<TableCell className='text-[#14151A] dark:text-gray-700'>
+													<TableCell
+														className='text-[#14151A] dark:text-gray-700'
+														sx={{ fontWeight: 'bold' }}
+													>
 														<TableSortLabel
 															active={orderBy === 'journeyCharge'}
 															direction={order}
@@ -1018,19 +1057,34 @@ function InvoiceProcessor() {
 															Journey Charge
 														</TableSortLabel>
 													</TableCell>
-													<TableCell className='text-[#14151A] dark:text-gray-700'>
+													<TableCell
+														className='text-[#14151A] dark:text-gray-700'
+														sx={{ fontWeight: 'bold' }}
+													>
 														Parking
 													</TableCell>
-													<TableCell className='text-[#14151A] dark:text-gray-700 font-semibold'>
+													<TableCell
+														className='text-[#14151A] dark:text-gray-700 font-semibold'
+														sx={{ fontWeight: 'bold' }}
+													>
 														Total
 													</TableCell>
-													<TableCell className='text-gray-900 dark:text-gray-700'>
+													<TableCell
+														className='text-gray-900 dark:text-gray-700'
+														sx={{ fontWeight: 'bold' }}
+													>
 														Price
 													</TableCell>
-													<TableCell className='text-gray-900 dark:text-gray-700'>
+													<TableCell
+														className='text-gray-900 dark:text-gray-700'
+														sx={{ fontWeight: 'bold' }}
+													>
 														Post
 													</TableCell>
-													<TableCell className='text-gray-900 dark:text-gray-700'>
+													<TableCell
+														className='text-gray-900 dark:text-gray-700'
+														sx={{ fontWeight: 'bold' }}
+													>
 														Cancel
 													</TableCell>
 												</TableRow>
@@ -1091,7 +1145,10 @@ function InvoiceProcessor() {
 											>
 												<TableRow>
 													<TableCell />
-													<TableCell className='text-[#14151A] dark:text-gray-700'>
+													<TableCell
+														className='text-[#14151A] dark:text-gray-700'
+														sx={{ fontWeight: 'bold' }}
+													>
 														<TableSortLabel
 															active={orderBy === 'id'}
 															direction={order}
@@ -1107,7 +1164,10 @@ function InvoiceProcessor() {
 															#
 														</TableSortLabel>
 													</TableCell>
-													<TableCell className='text-[#14151A] dark:text-gray-700'>
+													<TableCell
+														className='text-[#14151A] dark:text-gray-700'
+														sx={{ fontWeight: 'bold' }}
+													>
 														<TableSortLabel
 															active={orderBy === 'date'}
 															direction={order}
@@ -1123,34 +1183,64 @@ function InvoiceProcessor() {
 															Date
 														</TableSortLabel>
 													</TableCell>
-													<TableCell className='text-[#14151A] dark:text-gray-700'>
+													<TableCell
+														className='text-[#14151A] dark:text-gray-700'
+														sx={{ fontWeight: 'bold' }}
+													>
 														Acc #
 													</TableCell>
-													<TableCell className='text-[#14151A] dark:text-gray-700'>
+													<TableCell
+														className='text-[#14151A] dark:text-gray-700'
+														sx={{ fontWeight: 'bold' }}
+													>
 														Driver #
 													</TableCell>
-													<TableCell className='text-[#14151A] dark:text-gray-700'>
+													<TableCell
+														className='text-[#14151A] dark:text-gray-700'
+														sx={{ fontWeight: 'bold' }}
+													>
 														Pickup
 													</TableCell>
-													<TableCell className='text-[#14151A] dark:text-gray-700'>
+													<TableCell
+														className='text-[#14151A] dark:text-gray-700'
+														sx={{ fontWeight: 'bold' }}
+													>
 														Destination
 													</TableCell>
-													<TableCell className='text-[#14151A] dark:text-gray-700'>
+													<TableCell
+														className='text-[#14151A] dark:text-gray-700'
+														sx={{ fontWeight: 'bold' }}
+													>
 														Passenger
 													</TableCell>
-													<TableCell className='text-[#14151A] dark:text-gray-700'>
+													<TableCell
+														className='text-[#14151A] dark:text-gray-700'
+														sx={{ fontWeight: 'bold' }}
+													>
 														Has Vias
 													</TableCell>
-													<TableCell className='text-[#14151A] dark:text-gray-700'>
+													<TableCell
+														className='text-[#14151A] dark:text-gray-700'
+														sx={{ fontWeight: 'bold' }}
+													>
 														Waiting
 													</TableCell>
-													<TableCell className='text-[#14151A] dark:text-gray-700'>
+													<TableCell
+														className='text-[#14151A] dark:text-gray-700'
+														sx={{ fontWeight: 'bold' }}
+													>
 														Waiting Charge
 													</TableCell>
-													<TableCell className='text-[#14151A] dark:text-gray-700'>
+													<TableCell
+														className='text-[#14151A] dark:text-gray-700'
+														sx={{ fontWeight: 'bold' }}
+													>
 														Actual Miles
 													</TableCell>
-													<TableCell className='text-[#14151A] dark:text-gray-700'>
+													<TableCell
+														className='text-[#14151A] dark:text-gray-700'
+														sx={{ fontWeight: 'bold' }}
+													>
 														<TableSortLabel
 															active={orderBy === 'driverFare'}
 															direction={order}
@@ -1166,7 +1256,10 @@ function InvoiceProcessor() {
 															Driver £
 														</TableSortLabel>
 													</TableCell>
-													<TableCell className='text-[#14151A] dark:text-gray-700'>
+													<TableCell
+														className='text-[#14151A] dark:text-gray-700'
+														sx={{ fontWeight: 'bold' }}
+													>
 														<TableSortLabel
 															active={orderBy === 'journeyCharge'}
 															direction={order}
@@ -1182,13 +1275,22 @@ function InvoiceProcessor() {
 															Journey Charge
 														</TableSortLabel>
 													</TableCell>
-													<TableCell className='text-[#14151A] dark:text-gray-700'>
+													<TableCell
+														className='text-[#14151A] dark:text-gray-700'
+														sx={{ fontWeight: 'bold' }}
+													>
 														Parking
 													</TableCell>
-													<TableCell className='text-[#14151A] dark:text-gray-700 font-semibold'>
+													<TableCell
+														className='text-[#14151A] dark:text-gray-700 font-semibold'
+														sx={{ fontWeight: 'bold' }}
+													>
 														Total
 													</TableCell>
-													<TableCell className='text-gray-900 dark:text-gray-700'>
+													<TableCell
+														className='text-gray-900 dark:text-gray-700'
+														sx={{ fontWeight: 'bold' }}
+													>
 														Revert
 													</TableCell>
 												</TableRow>

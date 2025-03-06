@@ -36,10 +36,10 @@ const AvailabilityTable = () => {
 	const columns = useMemo(
 		() => [
 			{
-				accessorKey: 'driver',
+				accessorKey: 'userId',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Driver #'
+						title=<span className='font-bold'>Driver #</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 						className={`justify-center`}
@@ -59,10 +59,10 @@ const AvailabilityTable = () => {
 				meta: { headerClassName: 'w-20 text-center' },
 			},
 			{
-				accessorKey: 'name',
+				accessorKey: 'fullName',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Full Name'
+						title=<span className='font-bold'>Full Name</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 						className={` justify-center`}
@@ -82,10 +82,10 @@ const AvailabilityTable = () => {
 				meta: { headerClassName: 'min-w-[200px] text-center' },
 			},
 			{
-				accessorKey: 'details',
+				accessorKey: 'availableHours',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Details'
+						title=<span className='font-bold'>Details</span>
 						column={column}
 						className={` justify-center`}
 					/>
@@ -156,7 +156,7 @@ const AvailabilityTable = () => {
 			rowSelection={true}
 			onRowSelectionChange={handleRowSelection}
 			pagination={{ size: 10 }}
-			sorting={[{ id: 'driver', desc: false }]}
+			sorting={[{ id: 'userId', desc: false }]}
 			toolbar={<Toolbar />}
 			layout={{ card: true }}
 			applyRowColor={true}

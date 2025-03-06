@@ -95,7 +95,7 @@ function AmendmentBookings() {
 				accessorKey: 'bookingId',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='# id'
+						title=<span className='font-bold'># id</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -107,10 +107,10 @@ function AmendmentBookings() {
 				meta: { headerClassName: 'w-20' },
 			},
 			{
-				accessorKey: 'pickUpDateTime',
+				accessorKey: 'dateTime',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Date/Time'
+						title=<span className='font-bold'>Date/Time</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -131,7 +131,7 @@ function AmendmentBookings() {
 				accessorKey: 'pickupAddress',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Pickup Address'
+						title=<span className='font-bold'>Pickup Address</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -148,7 +148,7 @@ function AmendmentBookings() {
 				accessorKey: 'destinationAddress',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Destination Address'
+						title=<span className='font-bold'>Destination Address</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -165,7 +165,7 @@ function AmendmentBookings() {
 				accessorKey: 'passengerName',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Passenger Name'
+						title=<span className='font-bold'>Passenger Name</span>
 						column={column}
 					/>
 				),
@@ -181,7 +181,7 @@ function AmendmentBookings() {
 				accessorKey: 'amendments',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Amendments'
+						title=<span className='font-bold'>Amendments</span>
 						column={column}
 					/>
 				),
@@ -197,7 +197,7 @@ function AmendmentBookings() {
 				accessorKey: 'action',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Action'
+						title=<span className='font-bold'>Actions</span>
 						column={column}
 					/>
 				),

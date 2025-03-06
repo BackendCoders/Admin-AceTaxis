@@ -89,10 +89,10 @@ function UnAllocated() {
 	const columns = useMemo(() => {
 		let baseColumns = [
 			{
-				accessorKey: 'bookingId',
+				accessorKey: 'id',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='# id'
+						title=<span className='font-bold'># id</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -104,10 +104,10 @@ function UnAllocated() {
 				meta: { headerClassName: 'w-20' },
 			},
 			{
-				accessorKey: 'date',
+				accessorKey: 'pickupDateTime',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Date'
+						title=<span className='font-bold'>Date</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -130,10 +130,10 @@ function UnAllocated() {
 				meta: { headerClassName: 'min-w-[120px]' },
 			},
 			{
-				accessorKey: 'pickUp',
+				accessorKey: 'pickupAddress',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Pick Up'
+						title=<span className='font-bold'>Pickup</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -147,10 +147,10 @@ function UnAllocated() {
 				meta: { headerClassName: 'min-w-[200px]' },
 			},
 			{
-				accessorKey: 'destination',
+				accessorKey: 'destinationAddress',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Destination'
+						title=<span className='font-bold'>Destination</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -165,10 +165,10 @@ function UnAllocated() {
 				meta: { headerClassName: 'min-w-[200px]' },
 			},
 			{
-				accessorKey: 'passenger',
+				accessorKey: 'passengerName',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Passenger'
+						title=<span className='font-bold'>Passenger</span>
 						column={column}
 					/>
 				),
@@ -181,10 +181,10 @@ function UnAllocated() {
 				meta: { headerClassName: 'min-w-[80px]' },
 			},
 			{
-				accessorKey: 'pax',
+				accessorKey: 'passengers',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Pax'
+						title=<span className='font-bold'>Pax</span>
 						column={column}
 					/>
 				),
@@ -202,7 +202,7 @@ function UnAllocated() {
 				accessorKey: 'allocate',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Allocate'
+						title=<span className='font-bold'>Allocate</span>
 						column={column}
 					/>
 				),
@@ -225,10 +225,10 @@ function UnAllocated() {
 			});
 		} else if (status === 1 || status === 3) {
 			baseColumns.push({
-				accessorKey: 'driver',
+				accessorKey: 'userId',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Driver #'
+						title=<span className='font-bold'>Driver #</span>
 						column={column}
 					/>
 				),
@@ -242,10 +242,10 @@ function UnAllocated() {
 			});
 			// **Allocated & Completed Jobs** ➝ Show "Last Updated" Column
 			baseColumns.push({
-				accessorKey: 'lastUpdated',
+				accessorKey: 'dateUpdated',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Last Updated'
+						title=<span className='font-bold'>Last Updated</span>
 						column={column}
 					/>
 				),
@@ -263,10 +263,10 @@ function UnAllocated() {
 			});
 		} else if (status === 2) {
 			baseColumns.push({
-				accessorKey: 'cancelled',
+				accessorKey: 'cancelledByName',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Cancelled By'
+						title=<span className='font-bold'>Cancelled By</span>
 						column={column}
 					/>
 				),
@@ -279,10 +279,10 @@ function UnAllocated() {
 				meta: { headerClassName: 'min-w-[150px]' },
 			});
 			baseColumns.push({
-				accessorKey: 'lastUpdated',
+				accessorKey: 'dateUpdated',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Last Updated'
+						title=<span className='font-bold'>Last Updated</span>
 						column={column}
 					/>
 				),
@@ -303,7 +303,7 @@ function UnAllocated() {
 				accessorKey: 'restore',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Restore'
+						title=<span className='font-bold'>Restore</span>
 						column={column}
 					/>
 				),
@@ -490,7 +490,7 @@ function UnAllocated() {
 										rowSelection={true}
 										onRowSelectionChange={handleRowSelection}
 										pagination={{ size: 10 }}
-										sorting={[{ id: 'bookingId', desc: false }]}
+										sorting={[{ id: 'id', desc: false }]}
 										layout={{ card: true }}
 									/>
 								) : (

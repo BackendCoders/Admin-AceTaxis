@@ -201,7 +201,7 @@ function RowNotPriced({ row, handlePostButton }) {
 				meta: { headerClassName: 'min-w-[120px]' },
 			},
 			{
-				accessorKey: 'waiting',
+				accessorKey: 'waitingPriceDriver',
 				header: ({ column }) => (
 					<DataGridColumnHeader
 						title='Waiting'
@@ -218,7 +218,7 @@ function RowNotPriced({ row, handlePostButton }) {
 				meta: { headerClassName: 'min-w-[120px]' },
 			},
 			{
-				accessorKey: 'parking',
+				accessorKey: 'parkingCharge',
 				header: ({ column }) => (
 					<DataGridColumnHeader
 						title='Parking'
@@ -235,7 +235,7 @@ function RowNotPriced({ row, handlePostButton }) {
 				meta: { headerClassName: 'min-w-[120px]' },
 			},
 			{
-				accessorKey: 'total',
+				accessorKey: 'totalCost',
 				header: ({ column }) => (
 					<DataGridColumnHeader
 						title='Total'
@@ -417,7 +417,7 @@ function StatementHistory() {
 	const [selectedDriver, setSelectedDriver] = useState(0);
 	const [search, setSearch] = useState('');
 	const [order, setOrder] = useState('asc'); // Sort order
-	const [orderBy, setOrderBy] = useState('date'); // Default sorted column
+	const [orderBy, setOrderBy] = useState(''); // Default sorted column
 	const [date, setDate] = useState({
 		from: new Date(),
 		to: addDays(new Date(), 20),

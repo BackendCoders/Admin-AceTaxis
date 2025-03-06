@@ -96,7 +96,7 @@ function DriverEarningReport() {
 				accessorKey: 'userId',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='User Id'
+						title=<span className='font-bold'>User Id</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -108,10 +108,10 @@ function DriverEarningReport() {
 				meta: { headerClassName: 'w-20' },
 			},
 			{
-				accessorKey: 'cash',
+				accessorKey: 'cashTotal',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Cash'
+						title=<span className='font-bold'>Cash</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -125,10 +125,10 @@ function DriverEarningReport() {
 				meta: { headerClassName: 'w-20' },
 			},
 			{
-				accessorKey: 'account',
+				accessorKey: 'accTotal',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Account'
+						title=<span className='font-bold'>Account</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -142,10 +142,10 @@ function DriverEarningReport() {
 				meta: { headerClassName: 'min-w-[120px]' },
 			},
 			{
-				accessorKey: 'rank',
+				accessorKey: 'rankTotal',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Rank'
+						title=<span className='font-bold'>Rank</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -159,10 +159,10 @@ function DriverEarningReport() {
 				meta: { headerClassName: 'min-w-[120px]' },
 			},
 			{
-				accessorKey: 'comms',
+				accessorKey: 'commsTotal',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Comms'
+						title=<span className='font-bold'>Comms</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -179,7 +179,7 @@ function DriverEarningReport() {
 				accessorKey: 'grossTotal',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Gross Total'
+						title=<span className='font-bold'>Gross Total</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -196,7 +196,7 @@ function DriverEarningReport() {
 				accessorKey: 'netTotal',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title='Net Total'
+						title=<span className='font-bold'>Net Total</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>

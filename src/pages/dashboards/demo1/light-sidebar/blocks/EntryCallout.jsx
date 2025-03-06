@@ -24,7 +24,7 @@ const EntryCallout = () => {
 		() => [
 			{
 				accessorKey: 'identifier',
-				header: 'Driver',
+				header: <span className='font-bold'>Driver</span>,
 				enableSorting: true,
 				cell: (info) => {
 					const rowData = info.row.original;
@@ -46,7 +46,7 @@ const EntryCallout = () => {
 			},
 			{
 				accessorKey: 'jobsCount',
-				header: 'Jobs',
+				header: <span className='font-bold'>Jobs</span>,
 				enableSorting: true,
 				cell: ({ row, getValue }) => {
 					const bgColor = row.original?.colourCode || '#ffffff';
@@ -64,14 +64,11 @@ const EntryCallout = () => {
 						</div>
 					);
 				},
-				// colourCode: ({ row }) => {
-				// 	return row.original?.colourCode;
-				// },
 				meta: { headerClassName: 'w-12' },
 			},
 			{
 				accessorKey: 'cashEarned',
-				header: 'Cash',
+				header:<span className='font-bold'>Cash</span>,
 				enableSorting: true,
 				cell: ({ row, getValue }) => {
 					const bgColor = row.original?.colourCode || '#ffffff';
@@ -98,7 +95,7 @@ const EntryCallout = () => {
 			},
 			{
 				accessorKey: 'accEarned',
-				header: 'Acc',
+				header: <span className='font-bold'>Acc</span>,
 				enableSorting: true,
 				cell: ({ row, getValue }) => {
 					const bgColor = row.original?.colourCode || '#ffffff';
@@ -125,7 +122,7 @@ const EntryCallout = () => {
 			},
 			{
 				accessorKey: 'rankEarned',
-				header: 'Rank',
+				header: <span className='font-bold'>Rank</span>,
 				enableSorting: true,
 				cell: ({ row, getValue }) => {
 					const bgColor = row.original?.colourCode || '#ffffff';
@@ -152,7 +149,7 @@ const EntryCallout = () => {
 			},
 			{
 				accessorKey: 'commissionCash',
-				header: 'Cash Comms',
+				header: <span className='font-bold'>Cash Comms</span>,
 				enableSorting: true,
 				cell: ({ row, getValue }) => {
 					const bgColor = row.original?.colourCode || '#ffffff';
@@ -179,7 +176,7 @@ const EntryCallout = () => {
 			},
 			{
 				accessorKey: 'commissionRank',
-				header: 'Rank Comms',
+				header: <span className='font-bold'>Rank Comms</span>,
 				enableSorting: true,
 				cell: ({ row, getValue }) => {
 					const bgColor = row.original?.colourCode || '#ffffff';
@@ -206,7 +203,7 @@ const EntryCallout = () => {
 			},
 			{
 				accessorKey: 'takeHome',
-				header: 'Total',
+				header: <span className='font-bold'>Total</span>,
 				enableSorting: true,
 				cell: ({ row, getValue }) => {
 					const bgColor = row.original?.colourCode || '#ffffff';
@@ -233,7 +230,7 @@ const EntryCallout = () => {
 			},
 			{
 				accessorKey: 'commission',
-				header: 'Total Comms',
+				header: <span className='font-bold'>Total Comms</span>,
 				enableSorting: true,
 				cell: ({ row, getValue }) => {
 					const bgColor = row.original?.colourCode || '#ffffff';

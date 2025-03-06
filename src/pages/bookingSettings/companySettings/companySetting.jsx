@@ -86,7 +86,9 @@ const CompanySetting = () => {
 					{/* ✅ Left Section - Company Details */}
 					<div className='space-y-4'>
 						<div>
-							<label className='form-label font-medium'>Company Name</label>
+							<label className='form-label font-medium text-gray-900'>
+								Company Name
+							</label>
 							<input
 								type='text'
 								name='companyName'
@@ -97,7 +99,9 @@ const CompanySetting = () => {
 						</div>
 
 						<div>
-							<label className='form-label font-medium'>Address</label>
+							<label className='form-label font-medium text-gray-900'>
+								Address
+							</label>
 							<input
 								type='text'
 								name='addressLine1'
@@ -108,7 +112,9 @@ const CompanySetting = () => {
 						</div>
 
 						<div>
-							<label className='form-label font-medium'>Line 2</label>
+							<label className='form-label font-medium text-gray-900'>
+								Line 2
+							</label>
 							<input
 								type='text'
 								name='addressLine2'
@@ -119,7 +125,9 @@ const CompanySetting = () => {
 						</div>
 
 						<div>
-							<label className='form-label font-medium'>Line 3</label>
+							<label className='form-label font-medium text-gray-900'>
+								Line 3
+							</label>
 							<input
 								type='text'
 								name='addressLine3'
@@ -130,7 +138,9 @@ const CompanySetting = () => {
 						</div>
 
 						<div>
-							<label className='form-label font-medium'>Line 4</label>
+							<label className='form-label font-medium text-gray-900'>
+								Line 4
+							</label>
 							<input
 								type='text'
 								name='addressLine4'
@@ -141,7 +151,9 @@ const CompanySetting = () => {
 						</div>
 
 						<div>
-							<label className='form-label font-medium'>Postcode</label>
+							<label className='form-label font-medium text-gray-900'>
+								Postcode
+							</label>
 							<input
 								type='text'
 								name='postcode'
@@ -155,7 +167,9 @@ const CompanySetting = () => {
 					{/* ✅ Right Section - Contact Details */}
 					<div className='space-y-4'>
 						<div>
-							<label className='form-label font-medium'>Email</label>
+							<label className='form-label font-medium text-gray-900'>
+								Email
+							</label>
 							<input
 								type='email'
 								name='email'
@@ -166,7 +180,9 @@ const CompanySetting = () => {
 						</div>
 
 						<div>
-							<label className='form-label font-medium'>Web</label>
+							<label className='form-label font-medium text-gray-900'>
+								Web
+							</label>
 							<input
 								type='text'
 								name='web'
@@ -177,7 +193,9 @@ const CompanySetting = () => {
 						</div>
 
 						<div>
-							<label className='form-label font-medium'>Phone</label>
+							<label className='form-label font-medium text-gray-900'>
+								Phone
+							</label>
 							<input
 								type='text'
 								name='phone'
@@ -188,7 +206,9 @@ const CompanySetting = () => {
 						</div>
 
 						<div>
-							<label className='form-label font-medium'>Company No</label>
+							<label className='form-label font-medium text-gray-900'>
+								Company No
+							</label>
 							<input
 								type='text'
 								name='companyNo'
@@ -199,7 +219,9 @@ const CompanySetting = () => {
 						</div>
 
 						<div>
-							<label className='form-label font-medium'>VAT No</label>
+							<label className='form-label font-medium text-gray-900'>
+								VAT No
+							</label>
 							<input
 								type='text'
 								name='vatNo'
@@ -211,7 +233,9 @@ const CompanySetting = () => {
 
 						{/* ✅ Card Rate Dropdown */}
 						<div>
-							<label className='form-label font-medium'>Card Rate %</label>
+							<label className='form-label font-medium text-gray-900'>
+								Card Rate %
+							</label>
 							<input
 								type='number'
 								name='cardTopupRate'
@@ -223,7 +247,7 @@ const CompanySetting = () => {
 
 						{/* ✅ Revolut Secret Key */}
 						<div>
-							<label className='form-label font-medium'>
+							<label className='form-label font-medium text-gray-900'>
 								Revolut Secret Key
 							</label>
 							<input
