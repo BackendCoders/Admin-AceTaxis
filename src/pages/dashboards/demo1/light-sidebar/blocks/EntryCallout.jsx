@@ -32,7 +32,7 @@ const EntryCallout = () => {
 
 					return (
 						<div
-							className='p-1 rounded text-center font-semibold'
+							className='p-1 rounded font-semibold'
 							style={{
 								backgroundColor: bgColor, // ✅ Apply background color dynamically
 								color: isLightColor(bgColor) ? 'black' : 'white', // ✅ Ensure readable text
@@ -64,6 +64,9 @@ const EntryCallout = () => {
 						</div>
 					);
 				},
+				// colourCode: ({ row }) => {
+				// 	return row.original?.colourCode;
+				// },
 				meta: { headerClassName: 'w-12' },
 			},
 			{
