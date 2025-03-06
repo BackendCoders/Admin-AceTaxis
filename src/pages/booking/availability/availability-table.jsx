@@ -50,7 +50,6 @@ const AvailabilityTable = () => {
 					<div
 						className={`p-2 rounded-md text-center`}
 						style={{
-							backgroundColor: row.original?.colorCode,
 							color: isLightColor(row.original?.colorCode) ? 'black' : 'white',
 						}}
 					>
@@ -74,7 +73,6 @@ const AvailabilityTable = () => {
 					<div
 						className={`p-2 rounded-md text-center text-gray-700`}
 						style={{
-							backgroundColor: row.original?.colorCode,
 							color: isLightColor(row.original?.colorCode) ? 'black' : 'white',
 						}}
 					>
@@ -97,7 +95,6 @@ const AvailabilityTable = () => {
 					<div
 						className={`p-2 rounded-md text-center text-gray-700`}
 						style={{
-							backgroundColor: row.original?.colorCode,
 							color: isLightColor(row.original?.colorCode) ? 'black' : 'white',
 						}}
 					>
@@ -158,10 +155,11 @@ const AvailabilityTable = () => {
 			data={allAvailability[0]}
 			rowSelection={true}
 			onRowSelectionChange={handleRowSelection}
-			pagination={{ size: 5 }}
+			pagination={{ size: 10 }}
 			sorting={[{ id: 'driver', desc: false }]}
 			toolbar={<Toolbar />}
 			layout={{ card: true }}
+			applyRowColor={true}
 		/>
 	);
 };

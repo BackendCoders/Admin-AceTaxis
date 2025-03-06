@@ -191,6 +191,7 @@ function DayEarning() {
 				layout={{
 					card: true,
 				}}
+				applyRowColor={true}
 			/>
 			<div className='flex justify-end items-center mt-4 p-4 bg-gray-100 rounded-lg mb-4'>
 				<div className='font-bold text-lg text-gray-800 flex gap-4'>

@@ -80,6 +80,25 @@ export function refreshAvailability(userId, date) {
 	};
 }
 
+export function refreshAllAvailability(date) {
+	return async (dispatch) => {
+		try {
+			const response = await getAvailability(0, date);
+			console.log(response.data);
+
+			if (response.status === 'success') {
+				const availabilityArray = Object.keys(response)
+					.filter((key) => key !== 'status') // Exclude 'status' field
+					.map((key) => response[key]);
+
+				dispatch(setALLAvailability(availabilityArray));
+			}
+		} catch (error) {
+			console.error('Failed to refresh availability:', error);
+		}
+	};
+}
+
 export function refreshAvailabilityLog(userId, date) {
 	return async (dispatch) => {
 		try {

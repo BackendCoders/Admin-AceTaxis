@@ -24,7 +24,10 @@ import { SelectedAvailabilityTable } from './selectedAvaliability';
 import toast from 'react-hot-toast';
 import { updateAvailability } from '../../../service/operations/availabilityApi';
 import { useDispatch, useSelector } from 'react-redux';
-import { refreshAvailability } from '../../../slices/availabilitySlice';
+import {
+	refreshAllAvailability,
+	refreshAvailability,
+} from '../../../slices/availabilitySlice';
 import { refreshAllDrivers } from '../../../slices/driverSlice';
 
 const Availability = () => {
@@ -141,6 +144,11 @@ const Availability = () => {
 							format(new Date(date), "yyyy-MM-dd'T'00:00:00'Z'")
 						)
 					);
+					dispatch(
+						refreshAllAvailability(
+							format(new Date(date), "yyyy-MM-dd'T'00:00:00'Z'")
+						)
+					);
 					toast.success('SR Availability updated successfully!');
 				} else {
 					throw new Error('One or more requests failed');
@@ -174,6 +182,11 @@ const Availability = () => {
 						format(new Date(date), "yyyy-MM-dd'T'00:00:00'Z'")
 					)
 				);
+				dispatch(
+					refreshAllAvailability(
+						format(new Date(date), "yyyy-MM-dd'T'00:00:00'Z'")
+					)
+				);
 			} else {
 				toast.error('Failed to update availability');
 			}
@@ -186,6 +199,12 @@ const Availability = () => {
 	useEffect(() => {
 		dispatch(refreshAllDrivers());
 	}, [dispatch]);
+
+	useEffect(() => {
+		dispatch(
+			refreshAllAvailability(format(new Date(date), "yyyy-MM-dd'T'00:00:00'Z'"))
+		);
+	}, [date, dispatch]);
 
 	useEffect(() => {
 		dispatch(

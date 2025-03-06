@@ -49,6 +49,7 @@ import {
 	TableHead,
 	TableRow,
 	Paper,
+	TableSortLabel,
 } from '@mui/material';
 import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
 import MoneyIcon from '@mui/icons-material/Money';
@@ -414,6 +415,9 @@ function StatementHistory() {
 	const { drivers } = useSelector((state) => state.driver);
 	const { statementHistory, loading } = useSelector((state) => state.billing);
 	const [selectedDriver, setSelectedDriver] = useState(0);
+	const [search, setSearch] = useState('');
+	const [order, setOrder] = useState('asc'); // Sort order
+	const [orderBy, setOrderBy] = useState('date'); // Default sorted column
 	const [date, setDate] = useState({
 		from: new Date(),
 		to: addDays(new Date(), 20),
@@ -439,6 +443,30 @@ function StatementHistory() {
 		paid: booking?.paidInFull || false,
 		items: booking?.jobs || [],
 	}));
+
+	const filteredBookings = formattedBookings?.filter((booking) => {
+		if (!search?.trim()) return true;
+
+		const isMatch = booking?.driver
+			?.toLowerCase()
+			.includes(search?.toLowerCase());
+
+		return isMatch;
+	});
+
+	const handleSort = (property) => {
+		const isAscending = orderBy === property && order === 'asc';
+		setOrder(isAscending ? 'desc' : 'asc');
+		setOrderBy(property);
+	};
+
+	const sortedBookings = [...filteredBookings].sort((a, b) => {
+		if (order === 'asc') {
+			return a[orderBy] > b[orderBy] ? 1 : -1;
+		} else {
+			return a[orderBy] < b[orderBy] ? 1 : -1;
+		}
+	});
 
 	const handlePostButton = async (row) => {
 		try {
@@ -488,7 +516,7 @@ function StatementHistory() {
 							<div className='card card-grid min-w-full'>
 								<div className='card-header flex-wrap gap-2'>
 									<div className='flex flex-wrap gap-2 lg:gap-5'>
-										{/* <div className='flex'>
+										<div className='flex'>
 											<label
 												className='input input-sm hover:shadow-lg'
 												style={{ height: '40px' }}
@@ -496,12 +524,12 @@ function StatementHistory() {
 												<KeenIcon icon='magnifier' />
 												<input
 													type='text'
-													placeholder='Search Statements'
+													placeholder='Search Driver'
 													value={search}
 													onChange={(e) => setSearch(e.target.value)}
 												/>
 											</label>
-										</div> */}
+										</div>
 										<div className='flex flex-wrap items-center gap-2.5'>
 											<Popover>
 												<PopoverTrigger asChild>
@@ -600,7 +628,20 @@ function StatementHistory() {
 													<TableCell className='w-8' />{' '}
 													{/* Empty Cell for Expand Button */}
 													<TableCell className='text-gray-900 dark:text-gray-700'>
-														Statement #
+														<TableSortLabel
+															active={orderBy === 'id'}
+															direction={order}
+															onClick={() => handleSort('id')}
+															sx={{
+																'&:hover': { color: '#9A9CAE' }, // Change color on hover
+																'&.Mui-active': { color: '#9A9CAE' },
+																'&.Mui-active .MuiTableSortLabel-icon': {
+																	color: '#9A9CAE',
+																}, // Change to blue when active
+															}}
+														>
+															Statement #
+														</TableSortLabel>
 													</TableCell>
 													<TableCell className='text-gray-900 dark:text-gray-700'>
 														Driver #
@@ -633,7 +674,20 @@ function StatementHistory() {
 														Payment Due
 													</TableCell>
 													<TableCell className='text-gray-900 dark:text-gray-700'>
-														Paid
+														<TableSortLabel
+															active={orderBy === 'paid'}
+															direction={order}
+															onClick={() => handleSort('paid')}
+															sx={{
+																'&:hover': { color: '#9A9CAE' }, // Change color on hover
+																'&.Mui-active': { color: '#9A9CAE' },
+																'&.Mui-active .MuiTableSortLabel-icon': {
+																	color: '#9A9CAE',
+																}, // Change to blue when active
+															}}
+														>
+															Paid
+														</TableSortLabel>
 													</TableCell>
 													<TableCell className='text-gray-900 dark:text-gray-700'>
 														Mark As Read
@@ -648,7 +702,7 @@ function StatementHistory() {
 													},
 												}}
 											>
-												{formattedBookings.map((row) => (
+												{sortedBookings.map((row) => (
 													<>
 														<RowNotPriced
 															key={row.id}

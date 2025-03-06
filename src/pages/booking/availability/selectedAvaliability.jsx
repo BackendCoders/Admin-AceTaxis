@@ -25,8 +25,9 @@ const SelectedAvailabilityTable = ({ selectedDriver, selectedDate }) => {
 	const { availability } = useSelector((state) => state.availability);
 
 	const handleDelete = async (driver) => {
+		console.log(driver);
 		try {
-			const response = await deleteAvailability(driver?.userId);
+			const response = await deleteAvailability(driver?.id);
 			if (response.status === 'success') {
 				toast.success('Driver Availability deleted successfully');
 				dispatch(
@@ -70,7 +71,9 @@ const SelectedAvailabilityTable = ({ selectedDriver, selectedDate }) => {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<div className={`p-2 rounded-md text-center text-white `}>
-						{row.original.availabilityType ? 'Unavailable' : 'Available'}
+						{row.original.description === 'unavailable'
+							? 'Unavailable'
+							: 'Available'}
 					</div>
 				),
 				meta: { headerClassName: 'w-20 text-center' },
@@ -190,6 +193,7 @@ const SelectedAvailabilityTable = ({ selectedDriver, selectedDate }) => {
 			sorting={[{ id: 'driver', desc: false }]}
 			toolbar={<Toolbar />}
 			layout={{ card: true }}
+			applyRowColor={false}
 		/>
 	);
 };

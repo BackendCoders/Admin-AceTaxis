@@ -22,7 +22,10 @@ import { cn } from '@/lib/utils';
 import { Calendar } from '@/components/ui/calendar';
 import { updateAvailability } from '../../../service/operations/availabilityApi';
 import toast from 'react-hot-toast';
-import { refreshAvailability } from '../../../slices/availabilitySlice';
+import {
+	refreshAllAvailability,
+	refreshAvailability,
+} from '../../../slices/availabilitySlice';
 import { useDispatch } from 'react-redux';
 
 function CustomModal({
@@ -74,6 +77,11 @@ function CustomModal({
 					refreshAvailability(
 						selectedDriver,
 						format(new Date(selectedDate), "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+					)
+				);
+				dispatch(
+					refreshAllAvailability(
+						format(new Date(selectedDate), "yyyy-MM-dd'T'00:00:00'Z'")
 					)
 				);
 				resetForm(); // Reset the form after submission

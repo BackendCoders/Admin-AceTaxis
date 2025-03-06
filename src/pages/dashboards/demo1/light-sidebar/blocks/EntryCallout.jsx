@@ -328,9 +328,7 @@ const EntryCallout = () => {
 				layout={{
 					card: true,
 				}}
-				rowClassName={(row) =>
-					`bg-[${row.original.colourCode}] text-${isLightColor(row.original.colourCode) ? 'black' : 'white'}`
-				}
+				applyRowColor={true}
 			/>
 			<div className='flex justify-end items-center mt-4 p-4 bg-gray-100 rounded-lg'>
 				<div className='font-bold text-lg text-gray-800 flex gap-4'>

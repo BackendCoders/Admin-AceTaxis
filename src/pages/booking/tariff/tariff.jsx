@@ -53,7 +53,7 @@ const Tariff = () => {
 				),
 				enableSorting: true,
 				cell: ({ row }) => <div className='p-2'>{row.original.name}</div>,
-				meta: { headerClassName: 'w-40 text-center' },
+				meta: { headerClassName: 'min-w-[40px] text-center' },
 			},
 			{
 				accessorKey: 'description',
@@ -69,7 +69,7 @@ const Tariff = () => {
 				cell: ({ row }) => (
 					<div className='p-2'>{row.original.description}</div>
 				),
-				meta: { headerClassName: 'w-60 text-left' },
+				meta: { headerClassName: 'min-w-[140px] text-left' },
 			},
 			{
 				accessorKey: 'initialCharge',
@@ -95,7 +95,7 @@ const Tariff = () => {
 						}
 					/>
 				),
-				meta: { headerClassName: 'w-20 text-center' },
+				meta: { headerClassName: 'min-w-[20px] text-center' },
 			},
 			{
 				accessorKey: 'firstMileCharge',
@@ -121,7 +121,7 @@ const Tariff = () => {
 						}
 					/>
 				),
-				meta: { headerClassName: 'w-20 text-center' },
+				meta: { headerClassName: 'min-w-[20px] text-center' },
 			},
 			{
 				accessorKey: 'additionalMileCharge',
@@ -147,7 +147,7 @@ const Tariff = () => {
 						}
 					/>
 				),
-				meta: { headerClassName: 'w-20 text-center' },
+				meta: { headerClassName: 'min-w-[20px] text-center' },
 			},
 		],
 		[tariffData]

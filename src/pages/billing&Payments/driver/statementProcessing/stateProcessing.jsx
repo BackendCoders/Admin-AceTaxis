@@ -12,6 +12,7 @@ import {
 	TableRow,
 	Paper,
 	Typography,
+	TableSortLabel,
 } from '@mui/material';
 import {
 	KeyboardArrowDown,
@@ -53,7 +54,10 @@ import {
 	ToolbarHeading,
 	ToolbarPageTitle,
 } from '@/partials/toolbar';
-import { refreshDriverChargeableJobs } from '../../../../slices/billingSlice';
+import {
+	refreshDriverChargeableJobs,
+	setDriverChargeableJobs,
+} from '../../../../slices/billingSlice';
 import {
 	driverCreateStatements,
 	driverPostOrUnpostJobs,
@@ -484,7 +488,9 @@ function StateProcessing() {
 	const [selectedScope, setSelectedScope] = useState('3');
 	const [priceBaseModal, setPriceBaseModal] = useState(false);
 	const [date, setDate] = useState(new Date());
-
+	const [search, setSearch] = useState('');
+	const [order, setOrder] = useState('asc'); // Sort order
+	const [orderBy, setOrderBy] = useState('date'); // Default sorted column
 	console.log(driverChargeableJobs);
 
 	const formattedNotPricedBookings = (
@@ -523,6 +529,34 @@ function StateProcessing() {
 		},
 	}));
 
+	const filteredNotPricedBookings = formattedNotPricedBookings?.filter(
+		(booking) => {
+			if (!search?.trim()) return true;
+
+			const isMatch =
+				booking?.pickup?.toLowerCase().includes(search?.toLowerCase()) ||
+				booking?.destination?.toLowerCase().includes(search?.toLowerCase()) ||
+				booking?.passenger?.toLowerCase().includes(search?.toLowerCase()) ||
+				String(booking?.id)?.toLowerCase().includes(search?.toLowerCase());
+
+			return isMatch;
+		}
+	);
+
+	const handleSort = (property) => {
+		const isAscending = orderBy === property && order === 'asc';
+		setOrder(isAscending ? 'desc' : 'asc');
+		setOrderBy(property);
+	};
+
+	const sortedBookings = [...filteredNotPricedBookings].sort((a, b) => {
+		if (order === 'asc') {
+			return a[orderBy] > b[orderBy] ? 1 : -1;
+		} else {
+			return a[orderBy] < b[orderBy] ? 1 : -1;
+		}
+	});
+
 	const formattedPricedBookings = (driverChargeableJobs?.priced || []).map(
 		(booking) => ({
 			id: booking?.bookingId,
@@ -558,6 +592,14 @@ function StateProcessing() {
 			},
 		})
 	);
+
+	const sortedPricedBookings = [...formattedPricedBookings].sort((a, b) => {
+		if (order === 'asc') {
+			return a[orderBy] > b[orderBy] ? 1 : -1;
+		} else {
+			return a[orderBy] < b[orderBy] ? 1 : -1;
+		}
+	});
 
 	const handleClose = () => {
 		if (priceBaseModal) setPriceBaseModal(false);
@@ -711,6 +753,10 @@ function StateProcessing() {
 		dispatch(refreshAllDrivers());
 	}, [dispatch]);
 
+	useEffect(() => {
+		dispatch(setDriverChargeableJobs({ priced: [], notPriced: [] }));
+	}, [dispatch]);
+
 	return (
 		<Fragment>
 			<div className='pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1580px] w-full'>
@@ -727,7 +773,7 @@ function StateProcessing() {
 							<div className='card card-grid min-w-full'>
 								<div className='card-header flex-wrap gap-2'>
 									<div className='flex flex-wrap gap-2 lg:gap-5'>
-										{/* <div className='flex'>
+										<div className='flex'>
 											<label
 												className='input input-sm hover:shadow-lg'
 												style={{ height: '40px' }}
@@ -740,7 +786,7 @@ function StateProcessing() {
 													onChange={(e) => setSearch(e.target.value)}
 												/>
 											</label>
-										</div> */}
+										</div>
 										<div className='flex flex-wrap items-center gap-2.5'>
 											<Popover>
 												<PopoverTrigger asChild>
@@ -852,10 +898,36 @@ function StateProcessing() {
 													<TableCell className='w-8' />{' '}
 													{/* Empty Cell for Expand Button */}
 													<TableCell className='text-gray-900 dark:text-gray-700'>
-														#
+														<TableSortLabel
+															active={orderBy === 'id'}
+															direction={order}
+															onClick={() => handleSort('id')}
+															sx={{
+																'&:hover': { color: '#9A9CAE' }, // Change color on hover
+																'&.Mui-active': { color: '#9A9CAE' },
+																'&.Mui-active .MuiTableSortLabel-icon': {
+																	color: '#9A9CAE',
+																}, // Change to blue when active
+															}}
+														>
+															#
+														</TableSortLabel>
 													</TableCell>
 													<TableCell className='text-gray-900 dark:text-gray-700'>
-														Date
+														<TableSortLabel
+															active={orderBy === 'date'}
+															direction={order}
+															onClick={() => handleSort('date')}
+															sx={{
+																'&:hover': { color: '#9A9CAE' }, // Change color on hover
+																'&.Mui-active': { color: '#9A9CAE' },
+																'&.Mui-active .MuiTableSortLabel-icon': {
+																	color: '#9A9CAE',
+																}, // Change to blue when active
+															}}
+														>
+															Date
+														</TableSortLabel>
 													</TableCell>
 													<TableCell className='text-gray-900 dark:text-gray-700'>
 														Acc #
@@ -885,7 +957,20 @@ function StateProcessing() {
 														Actual Miles
 													</TableCell>
 													<TableCell className='text-gray-900 dark:text-gray-700'>
-														Driver Price
+														<TableSortLabel
+															active={orderBy === 'driverFare'}
+															direction={order}
+															onClick={() => handleSort('driverFare')}
+															sx={{
+																'&:hover': { color: '#9A9CAE' }, // Change color on hover
+																'&.Mui-active': { color: '#9A9CAE' },
+																'&.Mui-active .MuiTableSortLabel-icon': {
+																	color: '#9A9CAE',
+																}, // Change to blue when active
+															}}
+														>
+															Driver Price
+														</TableSortLabel>
 													</TableCell>
 													<TableCell className='text-gray-900 dark:text-gray-700'>
 														Parking
@@ -912,7 +997,7 @@ function StateProcessing() {
 													},
 												}}
 											>
-												{formattedNotPricedBookings.map((row) => (
+												{sortedBookings.map((row) => (
 													<>
 														{priceBaseModal && (
 															<PriceBase
@@ -964,10 +1049,36 @@ function StateProcessing() {
 													<TableCell className='w-8' />{' '}
 													{/* Empty Cell for Expand Button */}
 													<TableCell className='text-gray-900 dark:text-gray-700'>
-														#
+														<TableSortLabel
+															active={orderBy === 'id'}
+															direction={order}
+															onClick={() => handleSort('id')}
+															sx={{
+																'&:hover': { color: '#9A9CAE' }, // Change color on hover
+																'&.Mui-active': { color: '#9A9CAE' },
+																'&.Mui-active .MuiTableSortLabel-icon': {
+																	color: '#9A9CAE',
+																}, // Change to blue when active
+															}}
+														>
+															#
+														</TableSortLabel>
 													</TableCell>
 													<TableCell className='text-gray-900 dark:text-gray-700'>
-														Date
+														<TableSortLabel
+															active={orderBy === 'date'}
+															direction={order}
+															onClick={() => handleSort('date')}
+															sx={{
+																'&:hover': { color: '#9A9CAE' }, // Change color on hover
+																'&.Mui-active': { color: '#9A9CAE' },
+																'&.Mui-active .MuiTableSortLabel-icon': {
+																	color: '#9A9CAE',
+																}, // Change to blue when active
+															}}
+														>
+															Date
+														</TableSortLabel>
 													</TableCell>
 													<TableCell className='text-gray-900 dark:text-gray-700'>
 														Acc #
@@ -997,7 +1108,20 @@ function StateProcessing() {
 														Actual Miles
 													</TableCell>
 													<TableCell className='text-gray-900 dark:text-gray-700'>
-														Driver Price
+														<TableSortLabel
+															active={orderBy === 'driverFare'}
+															direction={order}
+															onClick={() => handleSort('driverFare')}
+															sx={{
+																'&:hover': { color: '#9A9CAE' }, // Change color on hover
+																'&.Mui-active': { color: '#9A9CAE' },
+																'&.Mui-active .MuiTableSortLabel-icon': {
+																	color: '#9A9CAE',
+																}, // Change to blue when active
+															}}
+														>
+															Driver Price
+														</TableSortLabel>
 													</TableCell>
 													<TableCell className='text-gray-900 dark:text-gray-700'>
 														Parking
@@ -1018,7 +1142,7 @@ function StateProcessing() {
 													},
 												}}
 											>
-												{formattedPricedBookings.map((row) => (
+												{sortedPricedBookings.map((row) => (
 													<RowPriced
 														key={row.id}
 														row={row}

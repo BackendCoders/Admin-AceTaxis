@@ -108,7 +108,7 @@ function ListDriver() {
 				),
 				enableSorting: true,
 				cell: ({ row }) => (
-					<span className={`p-2 rounded-md`}>
+					<span className={`p-2 rounded-md whitespace-nowrap`}>
 						{new Date(
 							row.original.lastLogin?.split('T')[0]
 						)?.toLocaleDateString('en-GB')}{' '}
@@ -128,7 +128,7 @@ function ListDriver() {
 				),
 				enableSorting: true,
 				cell: ({ row }) => (
-					<span className={`p-2 rounded-md`}>{row.original.regNo}</span>
+					<span className={`p-2 rounded-md whitespace-nowrap`}>{row.original.regNo}</span>
 				),
 				meta: { headerClassName: 'w-25' },
 			},
@@ -182,7 +182,7 @@ function ListDriver() {
 				),
 				enableSorting: true,
 				cell: ({ row }) => (
-					<span className={`p-2 rounded-md`}>{row.original.fullName}</span>
+					<span className={`p-2 rounded-md whitespace-nowrap`}>{row.original.fullName}</span>
 				),
 				meta: { headerClassName: 'w-25' },
 			},

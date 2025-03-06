@@ -96,7 +96,7 @@ function ListAccounts() {
 				cell: ({ row }) => (
 					<span className={`p-2 rounded-md`}>{row.original.businessName}</span>
 				),
-				meta: { headerClassName: 'w-20' },
+				meta: { headerClassName: 'min-w-[80px]' },
 			},
 
 			{

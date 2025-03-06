@@ -114,7 +114,7 @@ function NewBooking() {
 				cell: ({ row }) => (
 					<span className={`p-2 rounded-md`}>{row?.original?.id}</span>
 				),
-				meta: { headerClassName: 'w-20' },
+				meta: { headerClassName: 'w-10' },
 			},
 			{
 				accessorKey: 'arriveBy',
@@ -160,7 +160,7 @@ function NewBooking() {
 							?.slice(0, 5)}
 					</span>
 				),
-				meta: { headerClassName: 'min-w-[120px]' },
+				meta: { headerClassName: 'min-w-[160px]' },
 			},
 
 			{

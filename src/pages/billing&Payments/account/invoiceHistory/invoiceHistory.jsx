@@ -42,6 +42,7 @@ import {
 	TableHead,
 	TableRow,
 	Paper,
+	TableSortLabel,
 } from '@mui/material';
 import { Input } from '@/components/ui/input';
 import { useDispatch, useSelector } from 'react-redux';
@@ -384,6 +385,9 @@ function InvoiceHistory() {
 	const { accounts } = useSelector((state) => state.account);
 	const { invoiceHistory, loading } = useSelector((state) => state.billing);
 	const [selectedAccount, setSelectedAccount] = useState(0);
+	const [search, setSearch] = useState('');
+	const [order, setOrder] = useState('asc'); // Sort order
+	const [orderBy, setOrderBy] = useState('date'); // Default sorted column
 	const [date, setDate] = useState({
 		from: new Date(),
 		to: addDays(new Date(), 20),
@@ -405,6 +409,30 @@ function InvoiceHistory() {
 		paid: booking?.paid || false,
 		items: booking?.items || [],
 	}));
+
+	const filteredBookings = formattedBookings?.filter((booking) => {
+		if (!search?.trim()) return true;
+
+		const isMatch = String(booking?.accNumber)
+			?.toLowerCase()
+			.includes(search?.toLowerCase());
+
+		return isMatch;
+	});
+
+	const handleSort = (property) => {
+		const isAscending = orderBy === property && order === 'asc';
+		setOrder(isAscending ? 'desc' : 'asc');
+		setOrderBy(property);
+	};
+
+	const sortedBookings = [...filteredBookings].sort((a, b) => {
+		if (order === 'asc') {
+			return a[orderBy] > b[orderBy] ? 1 : -1;
+		} else {
+			return a[orderBy] < b[orderBy] ? 1 : -1;
+		}
+	});
 
 	const handlePostButton = async (row) => {
 		try {
@@ -454,7 +482,7 @@ function InvoiceHistory() {
 						<div className='card card-grid min-w-full'>
 							<div className='card-header flex-wrap gap-2'>
 								<div className='flex flex-wrap gap-2 lg:gap-5'>
-									{/* <div className='flex'>
+									<div className='flex'>
 										<label
 											className='input input-sm hover:shadow-lg'
 											style={{ height: '40px' }}
@@ -462,12 +490,12 @@ function InvoiceHistory() {
 											<KeenIcon icon='magnifier' />
 											<input
 												type='text'
-												placeholder='Search History'
-												value={searchInput}
-												onChange={(e) => setSearchInput(e.target.value)}
+												placeholder='Search Account'
+												value={search}
+												onChange={(e) => setSearch(e.target.value)}
 											/>
 										</label>
-									</div> */}
+									</div>
 									<div className='flex flex-wrap items-center gap-2.5'>
 										<Popover>
 											<PopoverTrigger asChild>
@@ -567,7 +595,20 @@ function InvoiceHistory() {
 												<TableCell className='w-8' />{' '}
 												{/* Empty Cell for Expand Button */}
 												<TableCell className='text-gray-900 dark:text-gray-700'>
-													Invoice #
+													<TableSortLabel
+														active={orderBy === 'id'}
+														direction={order}
+														onClick={() => handleSort('id')}
+														sx={{
+															'&:hover': { color: '#9A9CAE' }, // Change color on hover
+															'&.Mui-active': { color: '#9A9CAE' },
+															'&.Mui-active .MuiTableSortLabel-icon': {
+																color: '#9A9CAE',
+															}, // Change to blue when active
+														}}
+													>
+														Invoice #
+													</TableSortLabel>
 												</TableCell>
 												<TableCell className='text-gray-900 dark:text-gray-700'>
 													Acc No.
@@ -588,7 +629,20 @@ function InvoiceHistory() {
 													Download
 												</TableCell>
 												<TableCell className='text-gray-900 dark:text-gray-700'>
-													Paid
+													<TableSortLabel
+														active={orderBy === 'paid'}
+														direction={order}
+														onClick={() => handleSort('paid')}
+														sx={{
+															'&:hover': { color: '#9A9CAE' }, // Change color on hover
+															'&.Mui-active': { color: '#9A9CAE' },
+															'&.Mui-active .MuiTableSortLabel-icon': {
+																color: '#9A9CAE',
+															}, // Change to blue when active
+														}}
+													>
+														Paid
+													</TableSortLabel>
 												</TableCell>
 												<TableCell className='text-gray-900 dark:text-gray-700'>
 													Mark As Read
@@ -603,7 +657,7 @@ function InvoiceHistory() {
 												},
 											}}
 										>
-											{formattedBookings.map((row) => (
+											{sortedBookings.map((row) => (
 												<>
 													<RowNotPriced
 														key={row.id}

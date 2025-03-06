@@ -124,7 +124,7 @@ function AmendmentBookings() {
 						{row.original.dateTime?.split('T')[1].split('.')[0]?.slice(0, 5)}
 					</span>
 				),
-				meta: { headerClassName: 'min-w-[80px]' },
+				meta: { headerClassName: 'min-w-[160px]' },
 			},
 
 			{
