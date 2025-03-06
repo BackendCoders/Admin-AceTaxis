@@ -45,8 +45,8 @@ const DriverTracking = () => {
 	const search = '';
 	const [selectedDriver, setSelectedDriver] = useState('all');
 	const [drivers, setDrivers] = useState([]);
-	const [mapCenter, setMapCenter] = useState({ lat: 51.075, lng: -1.8 }); // Default map center
-	const [mapZoom, setMapZoom] = useState(2); // Default zoom level
+	const [mapCenter, setMapCenter] = useState({ lat: 51.0397, lng: -2.2863 }); // Default map center
+	const [mapZoom, setMapZoom] = useState(14); // Default zoom level
 	const [isBouncing, setIsBouncing] = useState(false); // Track bounce state
 	const [isFullScreen, setIsFullScreen] = useState(false); // ✅ Full-screen state
 
@@ -239,7 +239,7 @@ const DriverTracking = () => {
 			</Box>
 
 			{/* Map and Table Section */}
-			<Box className='flex flex-col lg:flex-row gap-4 h-[500px]'>
+			<Box className='flex flex-col gap-4 h-[900px]'>
 				{/* Map Section */}
 				<Box
 					className='flex-grow rounded-lg shadow-md overflow-hidden border border-gray-200'
@@ -285,7 +285,7 @@ const DriverTracking = () => {
 					)}
 					{/* Small text visible at bottom */}
 					<Box
-						className='absolute left-1/4 transform -translate-x-1/4 px-1 py-1 rounded-md shadow-md'
+						className='absolute left-1/4 transform -translate-x-1/4 px-1 py-1 rounded-md shadow-md mb-4'
 						style={{ zIndex: 10 }}
 					>
 						<Typography
