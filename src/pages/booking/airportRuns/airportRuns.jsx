@@ -31,7 +31,7 @@ const AirportRuns = () => {
 	console.log(airportRuns);
 
 	const filteredData = useMemo(() => {
-		return airportRuns?.data?.lastAirports || [];
+		return airportRuns || [];
 	}, [airportRuns]);
 
 	const month =
@@ -76,9 +76,11 @@ const AirportRuns = () => {
 				),
 				enableSorting: true,
 				cell: ({ row }) => (
-					<span className={`p-2 rounded-md`}>{row?.original?.id}</span>
+					<span className={`p-2 rounded-md whitespace-nowrap`}>
+						{row?.original?.identifier}
+					</span>
 				),
-				meta: { headerClassName: 'w-20' },
+				meta: { headerClassName: 'w-32' },
 			},
 			{
 				accessorKey: 'date',
@@ -91,7 +93,9 @@ const AirportRuns = () => {
 				),
 				enableSorting: true,
 				cell: ({ row }) => (
-					<span className={`font-medium ${row.original.color}`}></span>
+					<span className={`font-medium ${row.original.color}`}>
+						{new Date(row.original.date).toLocaleDateString('en-GB')}
+					</span>
 				),
 				meta: { headerClassName: 'min-w-[80px]' },
 			},
@@ -107,7 +111,9 @@ const AirportRuns = () => {
 				),
 				enableSorting: true,
 				cell: ({ row }) => (
-					<span className={`font-medium ${row.original.color}`}></span>
+					<span className={`font-medium ${row.original.color}`}>
+						{row?.original?.pickup}
+					</span>
 				),
 				meta: { headerClassName: 'min-w-[120px]' },
 			},
@@ -122,7 +128,9 @@ const AirportRuns = () => {
 				),
 				enableSorting: true,
 				cell: ({ row }) => (
-					<span className={`font-medium ${row.original.color}`}></span>
+					<span className={`font-medium ${row.original.color}`}>
+						{row?.original?.destin}
+					</span>
 				),
 				meta: { headerClassName: 'min-w-[120px]' },
 			},
@@ -137,7 +145,7 @@ const AirportRuns = () => {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={row.original.color}>
-						{row?.original?.passengerName}
+						£{row?.original?.price?.toFixed(2)}
 					</span>
 				),
 				meta: { headerClassName: 'w-18' },
@@ -249,7 +257,7 @@ const AirportRuns = () => {
 						rowSelection={true}
 						onRowSelectionChange={handleRowSelection}
 						pagination={{ size: 10 }}
-						sorting={[{ id: 'bookingId', desc: false }]}
+						sorting={[{ id: 'driver', desc: false }]}
 						layout={{ card: true }}
 					/>
 				) : (

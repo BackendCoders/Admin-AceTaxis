@@ -1,5 +1,6 @@
 /** @format */
-
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 
@@ -64,6 +65,25 @@ const Tablejourney = () => {
 	const [expandedDrivers, setExpandedDrivers] = useState({});
 	const { lastJourney } = useSelector((state) => state.booking);
 
+	console.log(lastJourney);
+
+	const groupedJourneys = lastJourney?.reduce((acc, journey) => {
+		if (!acc[journey.userId]) {
+			acc[journey.userId] = {
+				driver: journey.identifier, // "3 - Bex Sims"
+				color: journey.color, // Background color
+				journeys: [],
+			};
+		}
+		acc[journey.userId].journeys.push({
+			date: new Date(journey.date).toLocaleString('en-GB'), // Format date
+			from: journey.pickup,
+			to: journey.destin,
+			price: journey.price.toFixed(2),
+		});
+		return acc;
+	}, {});
+
 	const toggleDriver = (driverId) => {
 		setExpandedDrivers((prev) => ({
 			...prev,
@@ -78,40 +98,52 @@ const Tablejourney = () => {
 				<table className='w-full border-collapse border border-gray-300'>
 					<thead>
 						<tr>
-							<th className='border border-gray-300 px-4 py-2'>Date</th>
-							<th className='border border-gray-300 px-4 py-2'>Journey</th>
-							<th className='border border-gray-300 px-4 py-2'>Price (£)</th>
+							<th className='border border-gray-300 px-4 text-start py-2'>
+								<span className='ms-6'>Date</span>
+							</th>
+							<th className='border border-gray-300 text-start px-4 py-2'>
+								<span className=''>Journey</span>
+							</th>
+							<th className='border border-gray-300 text-start px-4 py-2 w-28 whitespace-nowrap'>
+								<span className=''>Price (£)</span>
+							</th>
 						</tr>
 					</thead>
 					<tbody>
-						{lastJourney.map((driver) => (
-							<React.Fragment key={driver.driverId}>
+						{Object.entries(groupedJourneys).map(([driverId, driver]) => (
+							<React.Fragment key={driverId}>
 								<tr
 									className='bg-gray-100 cursor-pointer'
-									onClick={() => toggleDriver(driver.driverId)}
+									onClick={() => toggleDriver(driverId)}
 								>
 									<td
 										colSpan='3'
 										className='border border-gray-300 px-4 py-2 font-semibold'
 									>
-										{expandedDrivers[driver.driverId] ? '▼' : '▶'} Driver #:{' '}
-										{driver.driverId} - {driver.driver}
+										<span className='-ms-1'>
+											{expandedDrivers[driverId] ? (
+												<KeyboardArrowDownIcon />
+											) : (
+												<KeyboardArrowRightIcon />
+											)}{' '}
+											Driver #: {driver.driver}
+										</span>
 									</td>
 								</tr>
-								{expandedDrivers[driver.driverId] &&
+								{expandedDrivers[driverId] &&
 									driver.journeys.map((journey, index) => (
 										<tr
 											key={index}
 											className='border-t'
 										>
 											<td className='border border-gray-300 px-4 py-2'>
-												{journey.date}
+												<span className='ms-6'>{journey.date}</span>
 											</td>
 											<td className='border border-gray-300 px-4 py-2'>
 												{journey.from} → {journey.to}
 											</td>
 											<td className='border border-gray-300 px-4 py-2'>
-												{journey.price.toFixed(2)}
+												£{journey?.price}
 											</td>
 										</tr>
 									))}
