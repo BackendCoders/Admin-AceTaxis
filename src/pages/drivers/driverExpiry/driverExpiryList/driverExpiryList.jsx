@@ -9,13 +9,13 @@ import {
 	ToolbarPageTitle,
 } from '@/partials/toolbar';
 import { KeenIcon } from '@/components';
-// import {
-// 	Select,
-// 	SelectContent,
-// 	SelectItem,
-// 	SelectTrigger,
-// 	SelectValue,
-// } from '@/components/ui/select';
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from '@/components/ui/select';
 // import { Container } from '@/components/container';
 // import {
 // 	Popover,
@@ -35,23 +35,34 @@ import {
 import { Input } from '@/components/ui/input';
 import { useDispatch, useSelector } from 'react-redux';
 import {
+	refreshAllDrivers,
 	refreshAllDriversExpiry,
 	setDriversExpiry,
 } from '../../../../slices/driverSlice';
-// import isLightColor from '../../../../utils/isLight';
 import { UpdateDriverExpiry } from '../updateExpiry';
 import isLightColor from '../../../../utils/isLight';
 function DriverExpiryList() {
 	const dispatch = useDispatch();
-	const { driversExpiryList } = useSelector((state) => state.driver);
-	const [searchInput, setSearchInput] = useState('');
+	const { driversExpiryList, drivers } = useSelector((state) => state.driver);
+	const [selectedDriver, setSelectedDriver] = useState(0);
 	const [editDriverModal, setEditDriverModal] = useState(false);
+	const [selectedType, setSelectedType] = useState('9');
 	// const [deleteDriverModal, setDeleteDriverModal] = useState(false);
 	// const [date, setDate] = useState(new Date());
 
-	const filteredDriver = driversExpiryList?.filter((driver) =>
-		String(driver?.userId)?.toLowerCase().includes(searchInput.toLowerCase())
-	);
+	const filteredDriver = driversExpiryList?.filter((driver) => {
+		const isMatch = selectedDriver === 0 || driver?.userId === selectedDriver;
+
+		// If selectedType is "9", return all drivers without filtering by documentType
+		if (selectedType === '9') {
+			return isMatch;
+		}
+
+		const isTypeMatch =
+			selectedType === '' || String(driver?.documentType) === selectedType;
+
+		return isMatch && isTypeMatch;
+	});
 
 	const ColumnInputFilter = ({ column }) => {
 		return (
@@ -101,9 +112,17 @@ function DriverExpiryList() {
 				),
 				enableSorting: true,
 				cell: ({ row }) => (
-					<span className={`p-2 rounded-md`}>{row.original.userId}</span>
+					<span
+						className={`p-2 rounded-md whitespace-nowrap`}
+						style={{
+							backgroundColor: row.original.colorCode,
+							color: isLightColor(row?.original?.colorCode) ? 'black' : 'white',
+						}}
+					>
+						{row.original.userId} - {row.original.fullname}
+					</span>
 				),
-				meta: { headerClassName: 'w-20' },
+				meta: { headerClassName: 'min-w-[80px]' },
 			},
 			{
 				accessorKey: 'documentType',
@@ -305,6 +324,7 @@ function DriverExpiryList() {
 	};
 
 	useEffect(() => {
+		dispatch(refreshAllDrivers());
 		dispatch(refreshAllDriversExpiry());
 	}, [dispatch]);
 
@@ -334,7 +354,7 @@ function DriverExpiryList() {
 						<div className='card card-grid min-w-full'>
 							<div className='card-header flex-wrap gap-2'>
 								<div className='flex flex-wrap gap-2 lg:gap-5'>
-									<div className='flex'>
+									{/* <div className='flex'>
 										<label
 											className='input input-sm'
 											style={{ height: '40px' }}
@@ -347,68 +367,97 @@ function DriverExpiryList() {
 												onChange={(e) => setSearchInput(e.target.value)}
 											/>
 										</label>
+									</div> */}
+									<div className='flex items-center gap-2.5'>
+										<Select
+											value={selectedDriver}
+											onValueChange={(value) => setSelectedDriver(value)}
+										>
+											<SelectTrigger
+												className=' w-32 hover:shadow-lg'
+												size='sm'
+												style={{ height: '40px' }}
+											>
+												<SelectValue placeholder='Select' />
+											</SelectTrigger>
+											<SelectContent className='w-36'>
+												<SelectItem value={0}>All</SelectItem>
+												{drivers?.length > 0 &&
+													drivers?.map((driver) => (
+														<>
+															<SelectItem value={driver?.id}>
+																{driver?.id} - {driver?.fullName}
+															</SelectItem>
+														</>
+													))}
+											</SelectContent>
+										</Select>
+										<Select
+											value={selectedType}
+											onValueChange={(value) => setSelectedType(value)}
+										>
+											<SelectTrigger
+												className='w-32'
+												size='sm'
+												style={{ height: '40px' }}
+											>
+												<SelectValue placeholder='Select' />
+											</SelectTrigger>
+											<SelectContent className='w-36'>
+												<SelectItem value='9'>All</SelectItem>
+												<SelectItem value='0'>Insurance</SelectItem>
+												<SelectItem value='1'>MOT</SelectItem>
+												<SelectItem value='2'>DBS</SelectItem>
+												<SelectItem value='3'>VehicleBadge</SelectItem>
+												<SelectItem value='4'>DriverLicense</SelectItem>
+												<SelectItem value='5'>SafeGuarding</SelectItem>
+												<SelectItem value='6'>FirstAidCert</SelectItem>
+												<SelectItem value='7'>DriverPhoto</SelectItem>
+											</SelectContent>
+										</Select>
+										{/* <Popover>
+											<PopoverTrigger asChild>
+												<button
+													id='date'
+													className={cn(
+														'input data-[state=open]:border-primary',
+														!date && 'text-muted-foreground'
+													)}
+													style={{ width: '13rem' }}
+												>
+													<KeenIcon
+														icon='calendar'
+														className='-ms-0.5'
+													/>
+													{date ? (
+														format(date, 'LLL dd, y')
+													) : (
+														<span>Pick a date</span>
+													)}
+												</button>
+											</PopoverTrigger>
+											<PopoverContent
+												className='w-auto p-0'
+												align='start'
+											>
+												<Calendar
+													initialFocus
+													mode='single' // Single date selection
+													defaultMonth={date}
+													selected={date}
+													onSelect={setDate}
+													numberOfMonths={1}
+												/>
+											</PopoverContent>
+										</Popover> */}
+
+										{/* <button
+											className='btn btn-sm btn-outline btn-primary'
+											style={{ height: '40px' }}
+										>
+											<KeenIcon icon='magnifier' /> Search
+										</button> */}
 									</div>
-									{/* <div className='flex items-center gap-2.5'>
-                                        <Popover>
-                                            <PopoverTrigger asChild>
-                                                <button
-                                                    id='date'
-                                                    className={cn(
-                                                        'input data-[state=open]:border-primary',
-                                                        !date && 'text-muted-foreground'
-                                                    )}
-                                                    style={{ width: '13rem' }}
-                                                >
-                                                    <KeenIcon
-                                                        icon='calendar'
-                                                        className='-ms-0.5'
-                                                    />
-                                                    {date ? (
-                                                        format(date, 'LLL dd, y')
-                                                    ) : (
-                                                        <span>Pick a date</span>
-                                                    )}
-                                                </button>
-                                            </PopoverTrigger>
-                                            <PopoverContent
-                                                className='w-auto p-0'
-                                                align='start'
-                                            >
-                                                <Calendar
-                                                    initialFocus
-                                                    mode='single' // Single date selection
-                                                    defaultMonth={date}
-                                                    selected={date}
-                                                    onSelect={setDate}
-                                                    numberOfMonths={1}
-                                                />
-                                            </PopoverContent>
-                                        </Popover>
-
-                                        <Select defaultValue='all'>
-                                            <SelectTrigger
-                                                className='w-28'
-                                                size='sm'
-                                                style={{ height: '40px' }}
-                                            >
-                                                <SelectValue placeholder='Select' />
-                                            </SelectTrigger>
-                                            <SelectContent className='w-32'>
-                                                <SelectItem value='all'>All</SelectItem>
-                                                <SelectItem value='cash'>Cash</SelectItem>
-                                                <SelectItem value='card'>Card</SelectItem>
-                                                <SelectItem value='account'>Account</SelectItem>
-                                                <SelectItem value='rank'>Rank</SelectItem>
-                                            </SelectContent>
-                                        </Select>
-
-                                        <button
-                                            className='btn btn-sm btn-outline btn-primary'
-                                            style={{ height: '40px' }}
-                                        >
-                                            <KeenIcon icon='magnifier' /> Search
-                                        </button>
-                                    </div> */}
 								</div>
 							</div>
 							<div className='card-body'>

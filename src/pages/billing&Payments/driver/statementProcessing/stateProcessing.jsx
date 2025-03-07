@@ -834,7 +834,7 @@ function StateProcessing() {
 														drivers?.map((driver) => (
 															<>
 																<SelectItem value={driver?.id}>
-																	{driver?.fullName}
+																	{driver?.id} - {driver?.fullName}
 																</SelectItem>
 															</>
 														))}

@@ -273,7 +273,9 @@ const Availability = () => {
 						{drivers?.length > 0 &&
 							drivers?.map((driver) => (
 								<>
-									<SelectItem value={driver?.id}>{driver?.fullName}</SelectItem>
+									<SelectItem value={driver?.id}>
+										{driver?.id} - {driver?.fullName}
+									</SelectItem>
 								</>
 							))}
 					</SelectContent>

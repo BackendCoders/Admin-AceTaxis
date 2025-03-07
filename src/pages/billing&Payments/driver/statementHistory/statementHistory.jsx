@@ -591,7 +591,7 @@ function StatementHistory() {
 														drivers?.map((driver) => (
 															<>
 																<SelectItem value={driver?.id}>
-																	{driver?.fullName}
+																	{driver?.id} - {driver?.fullName}
 																</SelectItem>
 															</>
 														))}
