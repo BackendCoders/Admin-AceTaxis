@@ -54,7 +54,7 @@ const Header = () => {
 				<HeaderLogo />
 
 				{/* Agar pathname `/account` include karta hai toh `Breadcrumbs` dikhaye, warna `MegaMenu` */}
-				{pathname.includes('/account') ? <Breadcrumbs /> : <MegaMenu />}
+				{pathname.includes('/profile') ? <Breadcrumbs /> : <MegaMenu />}
 
 				{/* Header ka topbar (search, user icon, etc. ho sakte hain) */}
 				<HeaderTopbar />
