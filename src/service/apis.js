@@ -49,6 +49,8 @@ export const bookingsEndpoints = {
 		`${BASE}/api/AdminUI/BookingsByStatus?date=${date}&scope=${scope}${status ? `&status=${status}` : ''}`,
 	ALLOCATE_BOOKING: `${BASE}/api/Bookings/Allocate`,
 	AIRPORT_RUNS: (months) => `${BASE}/api/AdminUI/AirportRuns?months=${months}`,
+	TURNDOWN_BOOKINGS: (from, to) =>
+		`${BASE}/api/AdminUI/GetTurndowns?from=${from}&to=${to}`,
 };
 
 export const gpsEndpoints = {

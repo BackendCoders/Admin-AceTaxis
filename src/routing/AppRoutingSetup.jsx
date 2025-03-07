@@ -89,6 +89,7 @@ import {
 	AuditBooking,
 	CancelByRange,
 	Tariff,
+	TurndownBookings,
 } from '@/pages/booking';
 import { UnAllocated } from '@/pages/dispatch';
 import { AuthPage } from '@/auth';
@@ -115,6 +116,7 @@ import { DriverEarningReport } from '@/pages/driverEarningReport';
 import { CompanySetting, MsgSettings } from '@/pages/bookingSettings';
 import { DriverExpenses } from '@/pages/driverExpenses';
 import { DriverExpiryList } from '@/pages/drivers/driverExpiry';
+
 const AppRoutingSetup = () => {
 	return (
 		<Routes>
@@ -176,6 +178,10 @@ const AppRoutingSetup = () => {
 					<Route
 						path='/bookings/cancelbyrange'
 						element={<CancelByRange />}
+					/>
+					<Route
+						path='/bookings/turndown'
+						element={<TurndownBookings />}
 					/>
 					<Route
 						path='/bookings/airport-runs'

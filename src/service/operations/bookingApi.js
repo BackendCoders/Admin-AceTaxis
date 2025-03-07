@@ -12,6 +12,7 @@ const {
 	BOOKING_AUDIT,
 	BOOKING_STATUS,
 	AIRPORT_RUNS,
+	TURNDOWN_BOOKINGS,
 } = bookingsEndpoints;
 export async function cancelBookingByDateRange(data) {
 	// Fetch current user details using token
@@ -135,6 +136,25 @@ export async function allocateBooking(data) {
 export async function getAirportRuns(month) {
 	const response = await handleGetReq(AIRPORT_RUNS(month));
 	console.log('get airport runs response ---', response);
+
+	if (response.status === 'success') {
+		// sendLogs(
+		// 	{
+		// 		url: GET_LOCAL_POI2,
+		// 		reqBody: searchTerm,
+		// 		headers: setHeaders(),
+		// 		response: response,
+		// 	},
+		// 	'info'
+		// );
+		return response;
+	}
+	return response;
+}
+
+export async function getTurndownBookings(from, to) {
+	const response = await handleGetReq(TURNDOWN_BOOKINGS(from, to));
+	console.log('get all turndown bookings response ---', response);
 
 	if (response.status === 'success') {
 		// sendLogs(

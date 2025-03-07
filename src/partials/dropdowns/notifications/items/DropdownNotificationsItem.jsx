@@ -19,14 +19,32 @@ const DropdownNotificationsItem = ({ notification, markAsRead }) => {
 		if (event === 3) heading = 'New Booking Request';
 		else if (event === 4) heading = 'Amendment Request';
 		else if (event === 5) heading = 'Cancellation Request';
-		else if (event === 1)
-			heading = (
-				<>
-					<span className='text-blue-600'>{driverName}</span> Rejected{' '}
-					<span className='text-red-600'>Booking #{bookingNumber}</span>
-				</>
-			);
-		else if (event === 2)
+		else if (event === 1) {
+			if (msg.includes('created a new web booking request')) {
+				heading = (
+					<>
+						<span className='text-blue-600'>New Web Booking Request</span>
+						<br />
+						<span className='text-gray-700 text-xs'>{msg}</span>
+					</>
+				);
+			} else if (msg.includes('requested to cancel booking')) {
+				heading = (
+					<>
+						<span className='text-blue-600'>Cancellation Request</span>
+						<br />
+						<span className='text-gray-700 text-xs'>{msg}</span>
+					</>
+				);
+			} else {
+				heading = (
+					<>
+						<span className='text-blue-600'>{driverName}</span> Rejected{' '}
+						<span className='text-red-600'>Booking #{bookingNumber}</span>
+					</>
+				);
+			}
+		} else if (event === 2)
 			heading = (
 				<>
 					<span className='text-blue-600'>{driverName}</span> Didn&apos;t
@@ -81,14 +99,17 @@ const DropdownNotificationsItem = ({ notification, markAsRead }) => {
 							View Document
 						</a>
 					)} */}
-
-					{(event === 3 || event === 4 || event === 5) && (
-						<Link
-							to={`${event === 3 ? '/bookings/web-booking' : '/bookings/amend-booking'}`}
-						>
-							<button className='btn btn-sm btn-primary'>View Bookings</button>
-						</Link>
-					)}
+					{event === 1 &&
+						(message.includes('created a new web booking request') ||
+							message.includes('requested to cancel booking')) && (
+							<Link
+								to={`/bookings/${message.includes('created a new web booking request') ? 'web-booking' : 'amend-booking'}`}
+							>
+								<button className='btn btn-sm btn-primary'>
+									View Bookings
+								</button>
+							</Link>
+						)}
 
 					{/* Mark as Read Button (if unread) */}
 					{status === 0 && (

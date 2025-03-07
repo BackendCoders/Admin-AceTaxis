@@ -585,6 +585,10 @@ export const MENU_SIDEBAR = [
 				title: 'Cancel Range',
 				path: '/bookings/cancelbyrange',
 			},
+			{
+				title: 'Turndown History',
+				path: '/bookings/turndown',
+			},
 			// {
 			// 	title: 'More',
 			// 	collapse: true,
