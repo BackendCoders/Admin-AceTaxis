@@ -14,6 +14,8 @@ const {
 	GET_DRIVER_SHOW_ALL_JOBS,
 	GET_DRIVER_SHOW_HVS_JOBS,
 	GET_DRIVER_LOCKOUT,
+	GET_DRIVER_EXPIRYS,
+	UPDATE_DRIVER_EXPIRYS,
 } = driverEndpoints;
 
 export async function getAllDrivers() {
@@ -167,6 +169,42 @@ export async function driverShowHvsJobs(id, turnOn) {
 export async function driverLockout(id, lockout) {
 	const response = await handleGetReq(GET_DRIVER_LOCKOUT(id, lockout));
 	console.log('driver lockout response ---', response);
+	if (response.status === 'success') {
+		// sendLogs(
+		// 	{
+		// 		url: DELETE_LOCAL_POI,
+		// 		reqBody: { id },
+		// 		headers: setHeaders(),
+		// 		response: response,
+		// 	},
+		// 	'info'
+		// );
+		return response;
+	}
+	return response;
+}
+
+export async function driverExpirys() {
+	const response = await handleGetReq(GET_DRIVER_EXPIRYS);
+	console.log('driver expirys response ---', response);
+	if (response.status === 'success') {
+		// sendLogs(
+		// 	{
+		// 		url: DELETE_LOCAL_POI,
+		// 		reqBody: { id },
+		// 		headers: setHeaders(),
+		// 		response: response,
+		// 	},
+		// 	'info'
+		// );
+		return response;
+	}
+	return response;
+}
+
+export async function updateDriverExpirys(data) {
+	const response = await handlePostReq(UPDATE_DRIVER_EXPIRYS, data);
+	console.log('update driver expirys response ---', response);
 	if (response.status === 'success') {
 		// sendLogs(
 		// 	{

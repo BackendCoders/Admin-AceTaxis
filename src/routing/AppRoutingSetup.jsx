@@ -114,6 +114,7 @@ import {
 import { DriverEarningReport } from '@/pages/driverEarningReport';
 import { CompanySetting, MsgSettings } from '@/pages/bookingSettings';
 import { DriverExpenses } from '@/pages/driverExpenses';
+import { DriverExpiryList } from '@/pages/drivers/driverExpiry';
 const AppRoutingSetup = () => {
 	return (
 		<Routes>
@@ -209,6 +210,10 @@ const AppRoutingSetup = () => {
 						element={<ListAccounts />}
 					/>
 
+					<Route
+						path='/drivers/expires'
+						element={<DriverExpiryList />}
+					/>
 					<Route
 						path='/drivers/list-driver'
 						element={<ListDriver />}

@@ -687,10 +687,12 @@ export const MENU_SIDEBAR = [
 		// },
 	},
 	{
-		title: 'Drivers',
+		title: 'Driver',
 		icon: 'users',
-
-		path: '/drivers/list-driver',
+		children: [
+			{ title: 'Drivers', path: '/drivers/list-driver' },
+			{ title: 'Expires', path: '/drivers/expires' },
+		],
 
 		// {
 		// 	title: 'User Cards',

@@ -3,6 +3,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import {
 	driverExpenses,
+	driverExpirys,
 	driverLockout,
 	driverResendLogin,
 	driverShowAllJobs,
@@ -14,6 +15,8 @@ import toast from 'react-hot-toast';
 const initialState = {
 	loading: false,
 	drivers: [],
+	driversExpiryList: [],
+	driversExpiry: null,
 	driver: null,
 	driverExpenses: {},
 };
@@ -30,6 +33,12 @@ const driverSlice = createSlice({
 		},
 		setDriver(state, action) {
 			state.driver = action.payload;
+		},
+		setDriversExpiryList(state, action) {
+			state.driversExpiryList = action.payload;
+		},
+		setDriversExpiry(state, action) {
+			state.driversExpiry = action.payload;
 		},
 		setDriverExpenses(state, action) {
 			state.driverExpenses = action.payload;
@@ -116,6 +125,24 @@ export function handleSendJobs(id) {
 	};
 }
 
+export function refreshAllDriversExpiry() {
+	return async (dispatch) => {
+		try {
+			const response = await driverExpirys();
+
+			if (response.status === 'success') {
+				const driversExpiryArray = Object.keys(response)
+					.filter((key) => key !== 'status') // Exclude 'status' field
+					.map((key) => response[key]);
+
+				dispatch(setDriversExpiryList(driversExpiryArray));
+			}
+		} catch (error) {
+			console.error('Failed to refresh drivers:', error);
+		}
+	};
+}
+
 export function refreshDriversExpenses(data) {
 	return async (dispatch) => {
 		try {
@@ -136,7 +163,13 @@ export function refreshDriversExpenses(data) {
 	};
 }
 
-export const { setLoading, setDrivers, setDriver, setDriverExpenses } =
-	driverSlice.actions;
+export const {
+	setLoading,
+	setDrivers,
+	setDriver,
+	setDriverExpenses,
+	setDriversExpiryList,
+	setDriversExpiry,
+} = driverSlice.actions;
 
 export default driverSlice.reducer;

@@ -145,4 +145,6 @@ export const driverEndpoints = {
 		`${BASE}/api/AdminUI/DriverShowHVSJobs?userId=${userId}&turnOn=${turnOn}`,
 	GET_DRIVER_LOCKOUT: (userId, lockout) =>
 		`${BASE}/api/AdminUI/DriverShowHVSJobs?userId=${userId}&lockout=${lockout}`,
+	GET_DRIVER_EXPIRYS: `${BASE}/api/AdminUI/GetDriverExpirys`,
+	UPDATE_DRIVER_EXPIRYS: `${BASE}/api/AdminUI/UpdateDriverExpiry`,
 };
