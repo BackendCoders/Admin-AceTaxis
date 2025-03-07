@@ -16,29 +16,36 @@ import {
 } from '@/components/ui/select';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import clsx from 'clsx';
+// import clsx from 'clsx';
 import { updateDriverExpirys } from '../../../../service/operations/driverApi';
 import { useDispatch, useSelector } from 'react-redux';
 import { refreshAllDriversExpiry } from '../../../../slices/driverSlice';
 import toast from 'react-hot-toast';
+import {
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+} from '@/components/ui/popover';
+import { KeenIcon } from '@/components';
+import { Calendar } from '@/components/ui/calendar';
+import { format } from 'date-fns';
+import { cn } from '@/lib/utils';
+import { useState } from 'react';
 function UpdateDriverExpiry({ open, onOpenChange }) {
 	const dispatch = useDispatch();
 	const { driversExpiry } = useSelector((state) => state.driver);
-	const addLocalSchema = Yup.object().shape({});
+	const [date, setDate] = useState(
+		driversExpiry.expiryDate ? new Date(driversExpiry.expiryDate) : new Date()
+	);
+
+	const addLocalSchema = Yup.object().shape({
+		docType: Yup.number().required('Document type is required'),
+		expiryDate: Yup.date().required('Expiry date is required'),
+	});
 
 	const initialValues = {
-		RegistrationNo: driversExpiry?.regNo || '',
-		fullName: driversExpiry?.fullName || '',
-		email: driversExpiry?.email || '',
-		phoneNumber: driversExpiry?.phoneNumber || '',
-		vehicleMake: driversExpiry?.vehicleMake || '',
-		vehicleModel: driversExpiry?.vehicleModel || '',
-		vehicleColor: driversExpiry?.vehicleColour || '',
-		role: driversExpiry?.role || 0,
-		colorCode: driversExpiry?.colorRGB || '#000000',
-		vehicleType: driversExpiry?.vehicleType || 0,
-		showAllBookings: driversExpiry?.showAllBookings || false,
-		nonAce: driversExpiry?.nonAce || false,
+		docType: driversExpiry.documentType || 0,
+		expiryDate: driversExpiry.expiryDate || new Date().toISOString(),
 	};
 
 	const formik = useFormik({
@@ -47,7 +54,7 @@ function UpdateDriverExpiry({ open, onOpenChange }) {
 		onSubmit: async (values, { setSubmitting }) => {
 			try {
 				const payload = {
-					userId: driversExpiry.id || 0,
+					userId: driversExpiry?.userId || 0,
 					docType: values.docType || 0,
 					expiryDate: values.expiryDate || '2025-03-07T06:30:28.204Z',
 				};
@@ -67,6 +74,14 @@ function UpdateDriverExpiry({ open, onOpenChange }) {
 		},
 	});
 
+	// ✅ Handle Date Change in Formik
+	const handleDateChange = (selectedDate) => {
+		if (selectedDate) {
+			setDate(selectedDate);
+			formik.setFieldValue('expiryDate', selectedDate.toISOString());
+		}
+	};
+
 	return (
 		<Dialog
 			open={open}
@@ -79,7 +94,7 @@ function UpdateDriverExpiry({ open, onOpenChange }) {
 				</DialogHeader>
 				<DialogBody className='flex flex-col items-center pt-0 pb-4'>
 					<h3 className='text-lg font-medium text-gray-900 text-center mb-3'>
-						Edit Driver #{driversExpiry?.id}
+						Edit Driver #{driversExpiry?.userId} Expiry
 					</h3>
 
 					<form
@@ -87,322 +102,85 @@ function UpdateDriverExpiry({ open, onOpenChange }) {
 						className='w-full'
 					>
 						<div className='w-full flex justify-center items-center gap-2'>
-							<div className='flex flex-col gap-1 pb-2 w-full'>
-								<label className='form-label text-gray-900'>
-									Registration Number
-								</label>
-								<label className='input'>
-									<input
-										placeholder='Enter registration Number'
-										autoComplete='off'
-										{...formik.getFieldProps('RegistrationNo')}
-										className={clsx('form-control', {
-											'is-invalid':
-												formik.touched.RegistrationNo &&
-												formik.errors.RegistrationNo,
-										})}
-									/>
-								</label>
-								{formik.touched.RegistrationNo &&
-									formik.errors.RegistrationNo && (
-										<span
-											role='alert'
-											className='text-danger text-xs mt-1'
+							<div className='flex flex-col gap-1 pb-2 w-[50%]'>
+								<label className='form-label text-gray-900'>Expiry Date</label>
+
+								<Popover>
+									<PopoverTrigger asChild>
+										<button
+											id='date'
+											className={cn(
+												'input data-[state=open]:border-primary',
+												!date && 'text-muted-foreground'
+											)}
+											style={{ width: '13rem' }}
 										>
-											{formik.errors.RegistrationNo}
-										</span>
-									)}
-							</div>
-							<div className='flex flex-col gap-1 pb-2 w-full'>
-								<label className='form-label text-gray-900'>Full Name</label>
-								<label className='input'>
-									<input
-										placeholder='Enter fullname'
-										autoComplete='off'
-										{...formik.getFieldProps('fullName')}
-										className={clsx('form-control', {
-											'is-invalid':
-												formik.touched.fullName && formik.errors.fullName,
-										})}
-									/>
-								</label>
-								{formik.touched.fullName && formik.errors.fullName && (
+											<KeenIcon
+												icon='calendar'
+												className='-ms-0.5'
+											/>
+											{date ? (
+												format(date, 'LLL dd, y')
+											) : (
+												<span>Pick a date</span>
+											)}
+										</button>
+									</PopoverTrigger>
+									<PopoverContent
+										className='w-auto p-0'
+										align='start'
+									>
+										<Calendar
+											initialFocus
+											mode='single' // Single date selection
+											defaultMonth={date}
+											selected={date}
+											onSelect={handleDateChange}
+											numberOfMonths={1}
+										/>
+									</PopoverContent>
+								</Popover>
+								{/* ✅ Show Formik Validation Error */}
+								{formik.touched.expiryDate && formik.errors.expiryDate && (
 									<span
 										role='alert'
 										className='text-danger text-xs mt-1'
 									>
-										{formik.errors.fullName}
-									</span>
-								)}
-							</div>
-						</div>
-
-						<div className='w-full flex justify-center items-center gap-2'>
-							<div className='flex flex-col gap-1 pb-2 w-full'>
-								<label className='form-label text-gray-900'>Email</label>
-								<label className='input'>
-									<input
-										placeholder='Enter email'
-										autoComplete='off'
-										{...formik.getFieldProps('email')}
-										className={clsx('form-control', {
-											'is-invalid': formik.touched.email && formik.errors.email,
-										})}
-									/>
-								</label>
-								{formik.touched.email && formik.errors.email && (
-									<span
-										role='alert'
-										className='text-danger text-xs mt-1'
-									>
-										{formik.errors.email}
-									</span>
-								)}
-							</div>
-							<div className='flex flex-col gap-1 pb-2 w-full'>
-								<label className='form-label text-gray-900'>Phone Number</label>
-								<label className='input'>
-									<input
-										placeholder='Enter phone number'
-										autoComplete='off'
-										{...formik.getFieldProps('phoneNumber')}
-										className={clsx('form-control', {
-											'is-invalid':
-												formik.touched.phoneNumber && formik.errors.phoneNumber,
-										})}
-									/>
-								</label>
-
-								{formik.touched.phoneNumber && formik.errors.phoneNumber && (
-									<span
-										role='alert'
-										className='text-danger text-xs mt-1'
-									>
-										{formik.errors.phoneNumber}
-									</span>
-								)}
-							</div>
-						</div>
-
-						<div className='w-full flex justify-center items-center gap-2'>
-							<div className='flex flex-col gap-1 pb-2 w-[50%]'>
-								<label className='form-label text-gray-900'>Role</label>
-								<Select
-									value={formik.values.role.toString()} // Ensure value is string
-									onValueChange={(value) =>
-										formik.setFieldValue('role', Number(value))
-									}
-								>
-									<SelectTrigger className='w-full'>
-										<SelectValue placeholder='Select' />
-									</SelectTrigger>
-									<SelectContent>
-										<SelectItem value='0'>Choose Role</SelectItem>
-										<SelectItem value='1'>Admin</SelectItem>
-										<SelectItem value='2'>User</SelectItem>
-										<SelectItem value='3'>Driver</SelectItem>
-										<SelectItem value='4'>Account</SelectItem>
-									</SelectContent>
-								</Select>
-								{formik.touched.role && formik.errors.role && (
-									<span
-										role='alert'
-										className='text-danger text-xs mt-1'
-									>
-										{formik.errors.role}
-									</span>
-								)}
-							</div>
-							<div className='flex flex-col gap-1 pb-2 w-[50%]'>
-								<label className='form-label text-gray-900'>Color</label>
-								<label className='input'>
-									<input
-										type='color'
-										value={
-											formik.values.colorCode?.length === 7
-												? formik.values.colorCode
-												: formik.values.colorCode?.slice(0, 7)
-										}
-										onChange={(e) =>
-											formik.setFieldValue('colorCode', e.target.value)
-										}
-										className='w-10 h-10 rounded cursor-pointer border border-gray-400'
-									/>
-
-									{/* Show HEX Color Code Input */}
-									<input
-										type='text'
-										value={formik.values.colorCode || ''}
-										onChange={(e) =>
-											formik.setFieldValue('colorCode', e.target.value)
-										}
-										className={clsx('form-control flex-grow', {
-											'is-invalid':
-												formik.touched.colorCode && formik.errors.colorCode,
-										})}
-									/>
-								</label>
-								{formik.touched.colorCode && formik.errors.colorCode && (
-									<span
-										color='alert'
-										className='text-danger text-xs mt-1'
-									>
-										{formik.errors.colorCode}
-									</span>
-								)}
-							</div>
-						</div>
-
-						<div className='w-full flex justify-center items-center gap-2'>
-							<div className='flex flex-col gap-1 pb-2 w-full'>
-								<label className='form-label text-gray-900'>Vehicle Make</label>
-								<label className='input'>
-									<input
-										placeholder='Enter vehicle make'
-										autoComplete='off'
-										{...formik.getFieldProps('vehicleMake')}
-										className={clsx('form-control', {
-											'is-invalid':
-												formik.touched.vehicleMake && formik.errors.vehicleMake,
-										})}
-									/>
-								</label>
-								{formik.touched.vehicleMake && formik.errors.vehicleMake && (
-									<span
-										role='alert'
-										className='text-danger text-xs mt-1'
-									>
-										{formik.errors.vehicleMake}
-									</span>
-								)}
-							</div>
-							<div className='flex flex-col gap-1 pb-2 w-full'>
-								<label className='form-label text-gray-900'>
-									Vehicle Model
-								</label>
-								<label className='input'>
-									<input
-										placeholder='Enter vehicle model'
-										autoComplete='off'
-										{...formik.getFieldProps('vehicleModel')}
-										className={clsx('form-control', {
-											'is-invalid':
-												formik.touched.vehicleModel &&
-												formik.errors.vehicleModel,
-										})}
-									/>
-								</label>
-								{formik.touched.vehicleModel && formik.errors.vehicleModel && (
-									<span
-										role='alert'
-										className='text-danger text-xs mt-1'
-									>
-										{formik.errors.vehicleModel}
-									</span>
-								)}
-							</div>
-						</div>
-
-						<div className='w-full flex justify-center items-center gap-2'>
-							<div className='flex flex-col gap-1 pb-2 w-[50%]'>
-								<label className='form-label text-gray-900'>
-									Vehicle Color
-								</label>
-								<label className='input'>
-									<input
-										placeholder='Enter vehicle color'
-										autoComplete='off'
-										{...formik.getFieldProps('vehicleColor')}
-										className={clsx('form-control', {
-											'is-invalid':
-												formik.touched.vehicleColor &&
-												formik.errors.vehicleColor,
-										})}
-									/>
-								</label>
-
-								{formik.touched.vehicleColor && formik.errors.vehicleColor && (
-									<span
-										role='alert'
-										className='text-danger text-xs mt-1'
-									>
-										{formik.errors.vehicleColor}
+										{formik.errors.expiryDate}
 									</span>
 								)}
 							</div>
 							<div className='flex flex-col gap-1 pb-2 w-[50%]'>
-								<label className='form-label text-gray-900'>Vehicle Type</label>
+								<label className='form-label text-gray-900'>
+									Document Type
+								</label>
 								<Select
 									defaultValue='0'
-									value={formik.values.vehicleType.toString()}
+									value={formik.values.docType.toString()}
 									onValueChange={(value) =>
-										formik.setFieldValue('vehicleType', Number(value))
+										formik.setFieldValue('docType', Number(value))
 									}
 								>
 									<SelectTrigger className='w-full'>
 										<SelectValue placeholder='Select' />
 									</SelectTrigger>
 									<SelectContent>
-										<SelectItem value='0'>Unknown</SelectItem>
-										<SelectItem value='1'>Saloon</SelectItem>
-										<SelectItem value='2'>Estate</SelectItem>
-										<SelectItem value='3'>MPV</SelectItem>
-										<SelectItem value='4'>MPVPlus</SelectItem>
-										<SelectItem value='5'>SUV</SelectItem>
+										<SelectItem value='0'> Insurance</SelectItem>
+										<SelectItem value='1'>MOT</SelectItem>
+										<SelectItem value='2'>DBS</SelectItem>
+										<SelectItem value='3'>Vehicle Badge</SelectItem>
+										<SelectItem value='4'>Driver License</SelectItem>
+										<SelectItem value='5'>Safe Guarding</SelectItem>
+										<SelectItem value='6'>FirstAidCert</SelectItem>
+										<SelectItem value='7'>Driver Photo</SelectItem>
 									</SelectContent>
 								</Select>
-								{formik.touched.vehicleType && formik.errors.vehicleType && (
+								{formik.touched.docType && formik.errors.docType && (
 									<span
 										color='alert'
 										className='text-danger text-xs mt-1'
 									>
-										{formik.errors.vehicleType}
-									</span>
-								)}
-							</div>
-						</div>
-
-						<div className='flex justify-start items-center gap-2'>
-							<div className='flex items-center gap-2'>
-								<label className='switch'>
-									<span className='switch-label'>Show All Bookings</span>
-									<input
-										type='checkbox'
-										name='showAllBookings'
-										checked={formik.values.showAllBookings}
-										onChange={(e) =>
-											formik.setFieldValue('showAllBookings', e.target.checked)
-										}
-									/>
-								</label>
-								{formik.touched.showAllBookings &&
-									formik.errors.showAllBookings && (
-										<span
-											role='alert'
-											className='text-danger text-xs mt-1'
-										>
-											{formik.errors.showAllBookings}
-										</span>
-									)}
-							</div>
-							<div className='flex items-center gap-2'>
-								<label className='switch'>
-									<span className='switch-label'>Non Ace</span>
-									<input
-										type='checkbox'
-										name='nonAce'
-										checked={formik.values.nonAce}
-										onChange={(e) =>
-											formik.setFieldValue('nonAce', e.target.checked)
-										}
-									/>
-								</label>
-								{formik.touched.nonAce && formik.errors.nonAce && (
-									<span
-										role='alert'
-										className='text-danger text-xs mt-1'
-									>
-										{formik.errors.nonAce}
+										{formik.errors.docType}
 									</span>
 								)}
 							</div>

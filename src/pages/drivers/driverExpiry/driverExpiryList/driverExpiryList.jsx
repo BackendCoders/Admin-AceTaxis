@@ -34,23 +34,22 @@ import {
 } from '@/components';
 import { Input } from '@/components/ui/input';
 import { useDispatch, useSelector } from 'react-redux';
-import { EditDriver } from '../../editDriver';
-import { DeleteDriver } from '../../deleteDriver';
 import {
 	refreshAllDriversExpiry,
-	setDriver,
+	setDriversExpiry,
 } from '../../../../slices/driverSlice';
-import isLightColor from '../../../../utils/isLight';
+// import isLightColor from '../../../../utils/isLight';
+import { UpdateDriverExpiry } from '../updateExpiry';
 function DriverExpiryList() {
 	const dispatch = useDispatch();
 	const { driversExpiryList } = useSelector((state) => state.driver);
 	const [searchInput, setSearchInput] = useState('');
 	const [editDriverModal, setEditDriverModal] = useState(false);
-	const [deleteDriverModal, setDeleteDriverModal] = useState(false);
+	// const [deleteDriverModal, setDeleteDriverModal] = useState(false);
 	// const [date, setDate] = useState(new Date());
 
 	const filteredDriver = driversExpiryList?.filter((driver) =>
-		driver?.fullName?.toLowerCase().includes(searchInput.toLowerCase())
+		String(driver?.userId)?.toLowerCase().includes(searchInput.toLowerCase())
 	);
 
 	const ColumnInputFilter = ({ column }) => {
@@ -64,13 +63,16 @@ function DriverExpiryList() {
 		);
 	};
 
-	const vehicleTypeName = {
-		0: 'Unknown',
-		1: 'Saloon',
-		2: 'Estate',
-		3: 'MPV',
-		4: 'MPVPlus',
-		5: 'SUV',
+	const docTypeName = {
+		0: 'Insurance',
+		1: 'MOT',
+		2: 'DBS',
+		3: 'VehicleBadge',
+		4: 'DriverLicense',
+		5: 'SafeGuarding',
+		6: 'FirstAidCert',
+		7: 'DriverPhoto',
+		8: '-',
 	};
 
 	const columns = useMemo(
@@ -91,44 +93,22 @@ function DriverExpiryList() {
 				meta: { headerClassName: 'w-20' },
 			},
 			{
-				accessorKey: 'lastLogin',
+				accessorKey: 'userId',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title=<span className='font-bold'>Last Login</span>
+						title=<span className='font-bold'>Driver #</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
 				),
 				enableSorting: true,
 				cell: ({ row }) => (
-					<span className={`p-2 rounded-md whitespace-nowrap`}>
-						{new Date(
-							row.original.lastLogin?.split('T')[0]
-						)?.toLocaleDateString('en-GB')}{' '}
-						{row.original.lastLogin?.split('T')[1].split('.')[0]?.slice(0, 5)}
-					</span>
+					<span className={`p-2 rounded-md`}>{row.original.userId}</span>
 				),
-				meta: { headerClassName: 'w-25' },
+				meta: { headerClassName: 'w-20' },
 			},
 			{
-				accessorKey: 'regNo',
-				header: ({ column }) => (
-					<DataGridColumnHeader
-						title=<span className='font-bold'>Reg No.</span>
-						filter={<ColumnInputFilter column={column} />}
-						column={column}
-					/>
-				),
-				enableSorting: true,
-				cell: ({ row }) => (
-					<span className={`p-2 rounded-md whitespace-nowrap`}>
-						{row.original.regNo}
-					</span>
-				),
-				meta: { headerClassName: 'w-25' },
-			},
-			{
-				accessorKey: 'vehicleType',
+				accessorKey: 'documentType',
 				header: ({ column }) => (
 					<DataGridColumnHeader
 						title=<span className='font-bold'>Type</span>
@@ -139,36 +119,16 @@ function DriverExpiryList() {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={`font-medium ${row.original.color}`}>
-						{vehicleTypeName[row.original.vehicleType]}
+						{docTypeName[row.original.documentType]}
 					</span>
 				),
-				meta: { headerClassName: 'w-20' },
+				meta: { headerClassName: 'min-w-[80px]' },
 			},
 			{
-				accessorKey: 'colorRGB',
+				accessorKey: 'expiryDate',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title=<span className='font-bold'>Color</span>
-						filter={<ColumnInputFilter column={column} />}
-						column={column}
-					/>
-				),
-				enableSorting: true,
-				cell: ({ row }) => (
-					<span
-						className={`font-medium p-2 rounded-md ${isLightColor(row.original.colorRGB) ? 'text-black' : 'text-white'}`}
-						style={{ backgroundColor: row.original.colorRGB }}
-					>
-						{row.original.colorRGB}
-					</span>
-				),
-				meta: { headerClassName: 'w-20' },
-			},
-			{
-				accessorKey: 'fullName',
-				header: ({ column }) => (
-					<DataGridColumnHeader
-						title=<span className='font-bold'>Full Name</span>
+						title=<span className='font-bold'>Expiry Date</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -176,49 +136,112 @@ function DriverExpiryList() {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={`p-2 rounded-md whitespace-nowrap`}>
-						{row.original.fullName}
+						{new Date(
+							row.original.expiryDate?.split('T')[0]
+						)?.toLocaleDateString('en-GB')}{' '}
+						{row.original.expiryDate?.split('T')[1].split('.')[0]?.slice(0, 5)}
 					</span>
 				),
 				meta: { headerClassName: 'w-25' },
 			},
 			{
-				accessorKey: 'phoneNumber',
+				accessorKey: 'lastUpdatedOn',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title=<span className='font-bold'>Phone Number</span>
+						title=<span className='font-bold'>Last Updated On</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
 				),
 				enableSorting: true,
 				cell: ({ row }) => (
-					<span className={`font-medium ${row.original.color}`}>
-						{row.original.phoneNumber}
+					<span className={`p-2 rounded-md whitespace-nowrap`}>
+						{new Date(
+							row.original.lastUpdatedOn?.split('T')[0]
+						)?.toLocaleDateString('en-GB')}{' '}
+						{row.original.lastUpdatedOn
+							?.split('T')[1]
+							.split('.')[0]
+							?.slice(0, 5)}
 					</span>
 				),
-				meta: { headerClassName: 'w-20' },
+				meta: { headerClassName: 'w-25' },
 			},
-			{
-				accessorKey: 'role',
-				header: ({ column }) => (
-					<DataGridColumnHeader
-						title=<span className='font-bold'>Role</span>
-						filter={<ColumnInputFilter column={column} />}
-						column={column}
-					/>
-				),
-				enableSorting: true,
-				cell: ({ row }) => (
-					<span className={`font-medium ${row.original.color}`}>
-						{row.original.role === 1
-							? 'Admin'
-							: row.original.role === 2
-								? 'User'
-								: 'Driver'}
-					</span>
-				),
-				meta: { headerClassName: 'w-20' },
-			},
+			// {
+			// 	accessorKey: 'colorRGB',
+			// 	header: ({ column }) => (
+			// 		<DataGridColumnHeader
+			// 			title=<span className='font-bold'>Color</span>
+			// 			filter={<ColumnInputFilter column={column} />}
+			// 			column={column}
+			// 		/>
+			// 	),
+			// 	enableSorting: true,
+			// 	cell: ({ row }) => (
+			// 		<span
+			// 			className={`font-medium p-2 rounded-md ${isLightColor(row.original.colorRGB) ? 'text-black' : 'text-white'}`}
+			// 			style={{ backgroundColor: row.original.colorRGB }}
+			// 		>
+			// 			{row.original.colorRGB}
+			// 		</span>
+			// 	),
+			// 	meta: { headerClassName: 'w-20' },
+			// },
+			// {
+			// 	accessorKey: 'fullName',
+			// 	header: ({ column }) => (
+			// 		<DataGridColumnHeader
+			// 			title=<span className='font-bold'>Full Name</span>
+			// 			filter={<ColumnInputFilter column={column} />}
+			// 			column={column}
+			// 		/>
+			// 	),
+			// 	enableSorting: true,
+			// 	cell: ({ row }) => (
+			// 		<span className={`p-2 rounded-md whitespace-nowrap`}>
+			// 			{row.original.fullName}
+			// 		</span>
+			// 	),
+			// 	meta: { headerClassName: 'w-25' },
+			// },
+			// {
+			// 	accessorKey: 'phoneNumber',
+			// 	header: ({ column }) => (
+			// 		<DataGridColumnHeader
+			// 			title=<span className='font-bold'>Phone Number</span>
+			// 			filter={<ColumnInputFilter column={column} />}
+			// 			column={column}
+			// 		/>
+			// 	),
+			// 	enableSorting: true,
+			// 	cell: ({ row }) => (
+			// 		<span className={`font-medium ${row.original.color}`}>
+			// 			{row.original.phoneNumber}
+			// 		</span>
+			// 	),
+			// 	meta: { headerClassName: 'w-20' },
+			// },
+			// {
+			// 	accessorKey: 'role',
+			// 	header: ({ column }) => (
+			// 		<DataGridColumnHeader
+			// 			title=<span className='font-bold'>Role</span>
+			// 			filter={<ColumnInputFilter column={column} />}
+			// 			column={column}
+			// 		/>
+			// 	),
+			// 	enableSorting: true,
+			// 	cell: ({ row }) => (
+			// 		<span className={`font-medium ${row.original.color}`}>
+			// 			{row.original.role === 1
+			// 				? 'Admin'
+			// 				: row.original.role === 2
+			// 					? 'User'
+			// 					: 'Driver'}
+			// 		</span>
+			// 	),
+			// 	meta: { headerClassName: 'w-20' },
+			// },
 			{
 				accessorKey: 'action',
 				header: ({ column }) => (
@@ -233,7 +256,7 @@ function DriverExpiryList() {
 						<button
 							className='rounded-full px-2 py-2  w-8 h-8 flex justify-center items-center hover:bg-red-100 group'
 							onClick={() => {
-								dispatch(setDriver(row.original));
+								dispatch(setDriversExpiry(row.original));
 								setEditDriverModal(true);
 							}}
 						>
@@ -242,7 +265,7 @@ function DriverExpiryList() {
 								className='group-hover:text-red-600'
 							/>
 						</button>
-						<button
+						{/* <button
 							className='rounded-full px-2 py-2  w-8 h-8 flex justify-center items-center hover:bg-red-100 group'
 							onClick={() => {
 								dispatch(setDriver(row.original));
@@ -253,7 +276,7 @@ function DriverExpiryList() {
 								icon='trash'
 								className='group-hover:text-red-600'
 							/>
-						</button>
+						</button> */}
 					</div>
 				),
 				meta: { headerClassName: 'min-w-[80px]' },
@@ -275,10 +298,10 @@ function DriverExpiryList() {
 			return;
 		}
 
-		if (deleteDriverModal) {
-			setDeleteDriverModal(false);
-			return;
-		}
+		// if (deleteDriverModal) {
+		// 	setDeleteDriverModal(false);
+		// 	return;
+		// }
 	};
 
 	useEffect(() => {
@@ -405,17 +428,17 @@ function DriverExpiryList() {
 			</div>
 
 			{editDriverModal && (
-				<EditDriver
+				<UpdateDriverExpiry
 					open={editDriverModal}
 					onOpenChange={handleClose}
 				/>
 			)}
-			{deleteDriverModal && (
+			{/* {deleteDriverModal && (
 				<DeleteDriver
 					open={deleteDriverModal}
 					onOpenChange={handleClose}
 				/>
-			)}
+			)} */}
 		</Fragment>
 	);
 }
