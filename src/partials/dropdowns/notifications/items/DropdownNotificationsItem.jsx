@@ -8,35 +8,37 @@ const DropdownNotificationsItem = ({ notification, markAsRead }) => {
 
 	// Extract user and document type from the message
 	const extractDetails = (msg) => {
-		if (event === 3 || event === 4 || event === 5)
-			return {
-				userName:
-					event === 3
-						? 'New booking Request'
-						: event === 4
-							? 'Amendment Request'
-							: event === 5
-								? 'Cancellation Request'
-								: '',
-				docType: '',
-				docPath: '',
-				msg: `${event === 3 ? 'New Booking' : event === 4 ? 'Amend Request' : event === 5 ? 'Cancel Request' : ''}: ${message}`,
-			};
-		const regex =
-			/New Document Upload From '(.+?)'\s+Doc Type: (.+?)\s+Path: <a href="(.+?)"/;
-		const match = msg.match(regex);
+		const driverMatch = msg.match(/Driver '(.+?)'/);
+		const driverName = driverMatch ? driverMatch[1] : 'Unknown Driver';
 
-		if (match) {
-			return {
-				userName: match[1],
-				docType: match[2],
-				docPath: match[3],
-			};
-		}
-		return { userName: 'Unknown', docType: 'Unknown', docPath: '', msg: '' };
+		// Extract Booking Number
+		const bookingMatch = msg.match(/Booking #:\s*(\d+)/);
+		const bookingNumber = bookingMatch ? bookingMatch[1] : 'N/A';
+
+		let heading = 'Notification';
+		if (event === 3) heading = 'New Booking Request';
+		else if (event === 4) heading = 'Amendment Request';
+		else if (event === 5) heading = 'Cancellation Request';
+		else if (event === 1)
+			heading = (
+				<>
+					<span className='text-blue-600'>{driverName}</span> Rejected{' '}
+					<span className='text-red-600'>Booking #{bookingNumber}</span>
+				</>
+			);
+		else if (event === 2)
+			heading = (
+				<>
+					<span className='text-blue-600'>{driverName}</span> Didn&apos;t
+					Respond (Timeout) for{' '}
+					<span className='text-red-600'>Booking #{bookingNumber}</span>
+				</>
+			);
+
+		return { driverName, bookingNumber, heading };
 	};
 
-	const { userName, docType, docPath, msg } = extractDetails(message);
+	const { heading } = extractDetails(message);
 
 	return (
 		<div className='flex gap-3 px-5 py-2 border-b border-gray-200'>
@@ -48,29 +50,28 @@ const DropdownNotificationsItem = ({ notification, markAsRead }) => {
 			</div>
 
 			<div className='flex flex-col gap-2 w-full'>
-				<div className='text-sm font-medium text-gray-900'>
+				<div className='text-sm font-bold text-gray-900'>{heading}</div>
+				{/* <div className='text-sm font-medium text-gray-900'>
 					<Link
 						to='#'
 						className='hover:text-primary-active font-semibold'
 					>
 						{userName}
 					</Link>{' '}
-					{event === 3 || event === 4 || event === 5
-						? ''
-						: 'uploaded a new document: '}
+					{event === 2 ? '' : 'uploaded a new document: '}
 					<span className='text-primary'>{docType}</span>
-				</div>
+				</div> */}
 				<div className='text-xs text-gray-500'>
-					{new Date(dateTimeStamp).toLocaleString("en-gb")}
+					{new Date(dateTimeStamp).toLocaleString('en-gb')}
 				</div>
-				<div className='text-xs text-gray-600'>
+				{/* <div className='text-xs text-gray-600'>
 					{(event === 3 || event === 4 || event === 5) && <span>{msg}</span>}
-				</div>
+				</div> */}
 
 				{/* Extract and render document link */}
 				<div className='flex gap-3 mt-2'>
 					{/* View Document Button (if docPath exists) */}
-					{docPath && (
+					{/* {docPath && (
 						<a
 							href={docPath}
 							target='_blank'
@@ -79,7 +80,7 @@ const DropdownNotificationsItem = ({ notification, markAsRead }) => {
 						>
 							View Document
 						</a>
-					)}
+					)} */}
 
 					{(event === 3 || event === 4 || event === 5) && (
 						<Link

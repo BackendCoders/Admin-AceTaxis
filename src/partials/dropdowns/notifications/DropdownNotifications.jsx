@@ -59,10 +59,10 @@ const DropdownNotifications = ({ menuTtemRef }) => {
 							value={2}
 							className='relative'
 						>
-							Web Bookings
+							System
 							<span className='badge badge-dot badge-success size-[5px] absolute top-2 rtl:start-0 end-0 transform translate-y-1/2 translate-x-full'></span>
 						</Tab>
-						<Tab value={3}>Mobile App</Tab>
+						<Tab value={3}>Driver</Tab>
 						{/* <Tab value={4}>Following</Tab> */}
 					</div>
 					{/* <Menu>

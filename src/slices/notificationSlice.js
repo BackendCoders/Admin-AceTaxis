@@ -11,7 +11,8 @@ import {
 const initialState = {
 	loading: false,
 	allNotifications: [],
-	webNotifications: [],
+	systemNotifications: [],
+	driverNotifications: [],
 	notification: null,
 	unreadCount: 0,
 };
@@ -27,8 +28,11 @@ const notificationSlice = createSlice({
 			state.allNotifications = action.payload;
 			state.unreadCount = action.payload.filter((n) => n.status === 0).length;
 		},
-		setWebNotifications(state, action) {
-			state.webNotifications = action.payload;
+		setSystemNotifications(state, action) {
+			state.systemNotifications = action.payload;
+		},
+		setDriverNotifications(state, action) {
+			state.driverNotifications = action.payload;
 		},
 		setNotification(state, action) {
 			state.notification = action.payload;
@@ -49,11 +53,15 @@ export function refreshNotifications() {
 					.filter((key) => key !== 'status')
 					.map((key) => response[key]);
 
-				const webNotificationsArray = resultArray.filter(
-					(data) => data?.event === 3 || data?.event === 4 || data?.event === 5
+				const systemNotificationsArray = resultArray.filter(
+					(data) => data?.event === 1
+				);
+				const driverNotificationsArray = resultArray.filter(
+					(data) => data?.event === 2
 				);
 				dispatch(setALLNotifications(resultArray));
-				dispatch(setWebNotifications(webNotificationsArray));
+				dispatch(setSystemNotifications(systemNotificationsArray));
+				dispatch(setDriverNotifications(driverNotificationsArray));
 			}
 		} catch (error) {
 			console.error('Failed to refresh users:', error);
@@ -96,7 +104,8 @@ export const {
 	setLoading,
 	setALLNotifications,
 	setNotification,
-	setWebNotifications,
+	setSystemNotifications,
+	setDriverNotifications,
 	clearUnreadCount,
 } = notificationSlice.actions;
 

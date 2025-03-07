@@ -3,8 +3,16 @@
 import { useEffect, useRef, useState } from 'react';
 import { getHeight } from '@/utils';
 import { useViewport } from '@/hooks';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+	markAsAllReadNotifications,
+	markAsReadNotification,
+} from '../../../slices/notificationSlice';
+import { DropdownNotificationsItem } from './items';
 // import { DropdownNotificationsItem7, DropdownNotificationsItem5, DropdownNotificationsItem8, DropdownNotificationsItem1, DropdownNotificationsItem3 } from './items';
 const DropdownNotificationsTeam = () => {
+	const dispatch = useDispatch();
+	const { driverNotifications } = useSelector((state) => state.notification);
 	const footerRef = useRef(null);
 	const [listHeight, setListHeight] = useState(0);
 	const [viewportHeight] = useViewport();
@@ -16,9 +24,30 @@ const DropdownNotificationsTeam = () => {
 			setListHeight(availableHeight);
 		}
 	}, [viewportHeight]);
+
+	const markAsRead = async (id) => {
+		dispatch(markAsReadNotification(id));
+	};
+
+	const markAsAllRead = () => {
+		const type = 3;
+		dispatch(markAsAllReadNotifications(type));
+	};
+
 	const buildList = () => {
 		return (
 			<div className='flex flex-col gap-5 pt-3 pb-4 divider-y divider-gray-200'>
+				{driverNotifications.length > 0 ? (
+					driverNotifications.map((notification) => (
+						<DropdownNotificationsItem
+							key={notification.id}
+							notification={notification}
+							markAsRead={markAsRead}
+						/>
+					))
+				) : (
+					<div className='text-center text-gray-500 p-4'>No notifications</div>
+				)}
 				{/* <DropdownNotificationsItem7 />
 
         <div className="border-b border-b-gray-200"></div>
@@ -34,8 +63,6 @@ const DropdownNotificationsTeam = () => {
         <div className="border-b border-b-gray-200"></div>
 
         <DropdownNotificationsItem3 userName="Thalia Fox" avatar="300-13.png" badgeColor="badge-success" description="has invited you to join" link="Design Research" day="" date="4 days ago" info="Dev Team" /> */}
-
-				<div className='border-b border-b-gray-200'></div>
 			</div>
 		);
 	};
@@ -44,10 +71,13 @@ const DropdownNotificationsTeam = () => {
 			<>
 				<div className='border-b border-b-gray-200'></div>
 				<div className='grid grid-cols-2 p-5 gap-2.5'>
-					<button className='btn btn-sm btn-light justify-center'>
+					{/* <button className='btn btn-sm btn-light justify-center'>
 						Archive all
-					</button>
-					<button className='btn btn-sm btn-light justify-center'>
+					</button> */}
+					<button
+						className='btn btn-sm btn-light justify-center'
+						onClick={markAsAllRead}
+					>
 						Mark all as read
 					</button>
 				</div>
