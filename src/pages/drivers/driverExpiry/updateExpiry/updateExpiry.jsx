@@ -155,8 +155,8 @@ function UpdateDriverExpiry({ open, onOpenChange }) {
 									Document Type
 								</label>
 								<Select
-									defaultValue='0'
 									value={formik.values.docType.toString()}
+									disabled
 									onValueChange={(value) =>
 										formik.setFieldValue('docType', Number(value))
 									}
