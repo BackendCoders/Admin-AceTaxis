@@ -695,7 +695,7 @@ export const MENU_SIDEBAR = [
 		icon: 'users',
 		children: [
 			{ title: 'Drivers', path: '/drivers/list-driver' },
-			{ title: 'Expires', path: '/drivers/expires' },
+			{ title: `Expiry's`, path: '/drivers/expires' },
 		],
 
 		// {

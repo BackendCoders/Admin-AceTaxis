@@ -40,6 +40,7 @@ import {
 } from '../../../../slices/driverSlice';
 // import isLightColor from '../../../../utils/isLight';
 import { UpdateDriverExpiry } from '../updateExpiry';
+import isLightColor from '../../../../utils/isLight';
 function DriverExpiryList() {
 	const dispatch = useDispatch();
 	const { driversExpiryList } = useSelector((state) => state.driver);
@@ -75,23 +76,20 @@ function DriverExpiryList() {
 		8: '-',
 	};
 
+	const doctypeColor = {
+		0: 'bg-blue-500', // Insurance (Primary)
+		1: 'bg-gray-500', // MOT (Secondary)
+		2: 'bg-green-600', // DBS (Success)
+		3: 'bg-red-500', // Vehicle Badge (Danger)
+		4: 'bg-yellow-600', // Driver License (Warning)
+		5: 'bg-cyan-400', // Safe Guarding (Info)
+		6: 'bg-purple-500', // First Aid Cert
+		7: 'bg-pink-500', // Driver Photo
+		8: 'bg-inherit', // Default
+	};
+
 	const columns = useMemo(
 		() => [
-			{
-				accessorKey: 'id',
-				header: ({ column }) => (
-					<DataGridColumnHeader
-						title=<span className='font-bold'>Id #</span>
-						filter={<ColumnInputFilter column={column} />}
-						column={column}
-					/>
-				),
-				enableSorting: true,
-				cell: ({ row }) => (
-					<span className={`p-2 rounded-md`}>{row.original.id}</span>
-				),
-				meta: { headerClassName: 'w-20' },
-			},
 			{
 				accessorKey: 'userId',
 				header: ({ column }) => (
@@ -118,7 +116,9 @@ function DriverExpiryList() {
 				),
 				enableSorting: true,
 				cell: ({ row }) => (
-					<span className={`font-medium ${row.original.color}`}>
+					<span
+						className={`font-semibold px-3 py-1 rounded-full ${doctypeColor[row.original.documentType]} ${isLightColor(doctypeColor[row.original.documentType]) ? 'text-black' : 'text-white'}`}
+					>
 						{docTypeName[row.original.documentType]}
 					</span>
 				),
@@ -315,7 +315,7 @@ function DriverExpiryList() {
 					<ToolbarHeading>
 						<ToolbarPageTitle />
 						<ToolbarDescription>
-							Showing {driversExpiryList?.length} Drivers{' '}
+							Showing {driversExpiryList?.length} Expiry&apos;s{' '}
 						</ToolbarDescription>
 					</ToolbarHeading>
 					{/* <ToolbarActions>
@@ -418,7 +418,7 @@ function DriverExpiryList() {
 									rowSelection={true}
 									onRowSelectionChange={handleRowSelection}
 									pagination={{ size: 10 }}
-									sorting={[{ id: 'id', desc: false }]}
+									sorting={[{ id: 'userId', desc: false }]}
 									layout={{ card: true }}
 								/>
 							</div>
