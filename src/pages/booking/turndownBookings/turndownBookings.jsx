@@ -32,7 +32,7 @@ import {
 	// DataGridRowSelect,
 } from '@/components';
 import { Input } from '@/components/ui/input';
-import { driverEarningsReport } from '../../../service/operations/dashboardApi';
+import { getTurndownBookings } from '../../../service/operations/bookingApi';
 // import toast from 'react-hot-toast';
 function TurndownBookings() {
 	const [loading, setLoading] = useState(false); // ✅ Track loading state
@@ -43,6 +43,7 @@ function TurndownBookings() {
 
 	const colors = ['var(--tw-primary)', 'var(--tw-success)', 'var(--tw-info)'];
 	const [turndownData, setTurndownData] = useState([]);
+	const [totalData, setTotalData] = useState(0);
 	const [date, setDate] = useState({
 		from: new Date(),
 		to: addDays(new Date(), 20),
@@ -51,19 +52,18 @@ function TurndownBookings() {
 	const handleSearch = async () => {
 		setLoading(true);
 		try {
-			const payload = {
-				from: format(new Date(date?.from), 'yyyy-MM-dd'),
-				to: format(new Date(date?.to), 'yyyy-MM-dd'),
-			};
-
-			const response = await driverEarningsReport(payload);
+			const response = await getTurndownBookings(
+				format(new Date(date?.from), 'yyyy-MM-dd'),
+				format(new Date(date?.to), 'yyyy-MM-dd')
+			);
 			if (response.status === 'success') {
-				console.log(response);
-				setTurndownData(response?.earnings);
-				setChartData({
-					data: response?.jobCountDateRangeValues || [],
-					labels: response?.jobCountDateRangeLabels || [],
-				});
+				console.log('-----', response);
+				setTurndownData(response?.data);
+				setTotalData(response.total);
+				// setChartData({
+				// 	data: response?.jobCountDateRangeValues || [],
+				// 	labels: response?.jobCountDateRangeLabels || [],
+				// });
 			}
 		} catch (error) {
 			console.log(error);
@@ -86,42 +86,25 @@ function TurndownBookings() {
 	const columns = useMemo(
 		() => [
 			{
-				accessorKey: 'userId',
+				accessorKey: 'id',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title=<span className='font-bold'>User Id</span>
+						title=<span className='font-bold'># id</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
 				),
 				enableSorting: true,
 				cell: ({ row }) => (
-					<span className={`p-2 rounded-md`}>{row.original.userId}</span>
+					<span className={`p-2 rounded-md`}>{row.original.id}</span>
 				),
 				meta: { headerClassName: 'w-20' },
 			},
 			{
-				accessorKey: 'cashTotal',
+				accessorKey: 'dateTime',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title=<span className='font-bold'>Cash</span>
-						filter={<ColumnInputFilter column={column} />}
-						column={column}
-					/>
-				),
-				enableSorting: true,
-				cell: ({ row }) => (
-					<span className={`p-2 rounded-md`}>
-						{row.original.cashTotal?.toFixed(2)}
-					</span>
-				),
-				meta: { headerClassName: 'w-20' },
-			},
-			{
-				accessorKey: 'accTotal',
-				header: ({ column }) => (
-					<DataGridColumnHeader
-						title=<span className='font-bold'>Account</span>
+						title=<span className='font-bold'>Date/Time</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -129,16 +112,19 @@ function TurndownBookings() {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={`font-medium ${row.original.color}`}>
-						{row.original.accTotal?.toFixed(2)}
+						{new Date(row.original.dateTime?.split('T')[0])?.toLocaleDateString(
+							'en-GB'
+						)}{' '}
+						{row.original.dateTime?.split('T')[1].split('.')[0]?.slice(0, 5)}
 					</span>
 				),
 				meta: { headerClassName: 'min-w-[120px]' },
 			},
 			{
-				accessorKey: 'rankTotal',
+				accessorKey: 'amount',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title=<span className='font-bold'>Rank</span>
+						title=<span className='font-bold'>Amount</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -146,58 +132,7 @@ function TurndownBookings() {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={`font-medium ${row.original.color}`}>
-						{row.original.rankTotal?.toFixed(2)}
-					</span>
-				),
-				meta: { headerClassName: 'min-w-[120px]' },
-			},
-			{
-				accessorKey: 'commsTotal',
-				header: ({ column }) => (
-					<DataGridColumnHeader
-						title=<span className='font-bold'>Comms</span>
-						filter={<ColumnInputFilter column={column} />}
-						column={column}
-					/>
-				),
-				enableSorting: true,
-				cell: ({ row }) => (
-					<span className={`font-medium ${row.original.color}`}>
-						{row.original.commsTotal?.toFixed(2)}
-					</span>
-				),
-				meta: { headerClassName: 'min-w-[120px]' },
-			},
-			{
-				accessorKey: 'grossTotal',
-				header: ({ column }) => (
-					<DataGridColumnHeader
-						title=<span className='font-bold'>Gross Total</span>
-						filter={<ColumnInputFilter column={column} />}
-						column={column}
-					/>
-				),
-				enableSorting: true,
-				cell: ({ row }) => (
-					<span className={`font-medium ${row.original.color}`}>
-						{row.original.grossTotal?.toFixed(2)}
-					</span>
-				),
-				meta: { headerClassName: 'min-w-[120px]' },
-			},
-			{
-				accessorKey: 'netTotal',
-				header: ({ column }) => (
-					<DataGridColumnHeader
-						title=<span className='font-bold'>Net Total</span>
-						filter={<ColumnInputFilter column={column} />}
-						column={column}
-					/>
-				),
-				enableSorting: true,
-				cell: ({ row }) => (
-					<span className={`font-medium ${row.original.color}`}>
-						{row.original.netTotal?.toFixed(2)}
+						£{row.original.amount?.toFixed(2)}
 					</span>
 				),
 				meta: { headerClassName: 'min-w-[120px]' },
@@ -264,27 +199,27 @@ function TurndownBookings() {
 		],
 	};
 
-	const columnTotals = useMemo(() => {
-		return turndownData.reduce(
-			(totals, item) => {
-				totals.cashTotal += item.cashTotal || 0;
-				totals.accTotal += item.accTotal || 0;
-				totals.rankTotal += item.rankTotal || 0;
-				totals.commsTotal += item.commsTotal || 0;
-				totals.grossTotal += item.grossTotal || 0;
-				totals.netTotal += item.netTotal || 0;
-				return totals;
-			},
-			{
-				cashTotal: 0,
-				accTotal: 0,
-				rankTotal: 0,
-				commsTotal: 0,
-				grossTotal: 0,
-				netTotal: 0,
-			}
-		);
-	}, [turndownData]);
+	// const columnTotals = useMemo(() => {
+	// 	return turndownData.reduce(
+	// 		(totals, item) => {
+	// 			totals.cashTotal += item.cashTotal || 0;
+	// 			totals.accTotal += item.accTotal || 0;
+	// 			totals.rankTotal += item.rankTotal || 0;
+	// 			totals.commsTotal += item.commsTotal || 0;
+	// 			totals.grossTotal += item.grossTotal || 0;
+	// 			totals.netTotal += item.netTotal || 0;
+	// 			return totals;
+	// 		},
+	// 		{
+	// 			cashTotal: 0,
+	// 			accTotal: 0,
+	// 			rankTotal: 0,
+	// 			commsTotal: 0,
+	// 			grossTotal: 0,
+	// 			netTotal: 0,
+	// 		}
+	// 	);
+	// }, [turndownData]);
 
 	useEffect(() => {
 		return () => {
@@ -303,7 +238,8 @@ function TurndownBookings() {
 					<ToolbarHeading>
 						<ToolbarPageTitle />
 						<ToolbarDescription>
-							Showing {turndownData?.length} Earning Reports{' '}
+							Showing {turndownData?.length} records with a total amount of £
+							{totalData?.toFixed(2)}
 						</ToolbarDescription>
 					</ToolbarHeading>
 				</Toolbar>
@@ -404,10 +340,10 @@ function TurndownBookings() {
 											rowSelection={true}
 											onRowSelectionChange={handleRowSelection}
 											pagination={{ size: 10 }}
-											sorting={[{ id: 'userId', desc: false }]}
+											sorting={[{ id: 'id', desc: false }]}
 											layout={{ card: true }}
 										/>
-										<div className='flex justify-end gap-6 bg-[#14151A] font-semibold p-3 mt-2'>
+										{/* <div className='flex justify-end gap-6 bg-[#14151A] font-semibold p-3 mt-2'>
 											<span className=''>
 												Total Cash: {columnTotals.cashTotal}
 											</span>
@@ -426,7 +362,7 @@ function TurndownBookings() {
 											<span className=''>
 												Net Total: {columnTotals.netTotal}
 											</span>
-										</div>
+										</div> */}
 									</>
 								) : (
 									<div className='text-center py-10 text-gray-500'>

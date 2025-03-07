@@ -69,23 +69,9 @@ const DropdownNotificationsItem = ({ notification, markAsRead }) => {
 
 			<div className='flex flex-col gap-2 w-full'>
 				<div className='text-sm font-bold text-gray-900'>{heading}</div>
-				{/* <div className='text-sm font-medium text-gray-900'>
-					<Link
-						to='#'
-						className='hover:text-primary-active font-semibold'
-					>
-						{userName}
-					</Link>{' '}
-					{event === 2 ? '' : 'uploaded a new document: '}
-					<span className='text-primary'>{docType}</span>
-				</div> */}
 				<div className='text-xs text-gray-500'>
 					{new Date(dateTimeStamp).toLocaleString('en-gb')}
 				</div>
-				{/* <div className='text-xs text-gray-600'>
-					{(event === 3 || event === 4 || event === 5) && <span>{msg}</span>}
-				</div> */}
-
 				{/* Extract and render document link */}
 				<div className='flex gap-3 mt-2'>
 					{/* View Document Button (if docPath exists) */}

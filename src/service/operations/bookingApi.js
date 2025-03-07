@@ -153,7 +153,7 @@ export async function getAirportRuns(month) {
 }
 
 export async function getTurndownBookings(from, to) {
-	const response = await handleGetReq(TURNDOWN_BOOKINGS(from, to));
+	const response = await handlePostReq(TURNDOWN_BOOKINGS(from, to), null);
 	console.log('get all turndown bookings response ---', response);
 
 	if (response.status === 'success') {
