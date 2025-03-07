@@ -47,7 +47,10 @@ import {
 import { Input } from '@/components/ui/input';
 import { useDispatch, useSelector } from 'react-redux';
 import { refreshAllAccounts } from '../../../../slices/accountSlice';
-import { markInvoiceAsPaid } from '../../../../service/operations/billing&Payment';
+import {
+	downloadInvoice,
+	markInvoiceAsPaid,
+} from '../../../../service/operations/billing&Payment';
 import toast from 'react-hot-toast';
 import {
 	refreshInvoiceHistory,
@@ -55,7 +58,6 @@ import {
 } from '../../../../slices/billingSlice';
 import MoneyIcon from '@mui/icons-material/Money';
 import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
-import { downloadInvoice } from './downloadInvoice';
 import DownloadOutlinedIcon from '@mui/icons-material/DownloadOutlined';
 function RowNotPriced({ row, handlePostButton }) {
 	const [open, setOpen] = useState(false);
@@ -251,6 +253,29 @@ function RowNotPriced({ row, handlePostButton }) {
 		}
 	};
 
+	const downloadInvoiceClick = async (row) => {
+		try {
+			const response = await downloadInvoice(row?.id);
+
+			if (!response || response.size === 0) {
+				console.error('Invalid or empty file received from API.');
+				alert('Failed to download: Received an empty file.');
+				return;
+			}
+
+			const blob = new Blob([response], { type: 'application/pdf' });
+			const link = document.createElement('a');
+			link.href = URL.createObjectURL(blob);
+			link.setAttribute('download', `invoice-${row.id}.pdf`);
+			document.body.appendChild(link);
+			link.click();
+			document.body.removeChild(link);
+		} catch (error) {
+			console.error('Error handling invoice download:', error);
+			toast.error('Error downloading invoice. Please try again.');
+		}
+	};
+
 	return (
 		<>
 			{/* Main Table Row */}
@@ -306,7 +331,7 @@ function RowNotPriced({ row, handlePostButton }) {
 				<TableCell>
 					<IconButton
 						size='small'
-						onClick={() => downloadInvoice(row)}
+						onClick={() => downloadInvoiceClick(row)}
 					>
 						<DownloadOutlinedIcon
 							className={`${row?.coa ? `text-red-500 dark:text-red-900 ` : `text-red-500 dark:text-red-600`}`}

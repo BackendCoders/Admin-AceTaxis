@@ -107,6 +107,8 @@ export const billingAndPaymentEndpoints = {
 		`${BASE}/api/Accounts/ClearInvoice?invoiceNo=${invoiceNo}`,
 	GET_INVOICES: (from, to, accno) =>
 		`${BASE}/api/Accounts/GetInvoices?from=${from}&to=${to}${accno ? `&accno=${accno}` : ''}`,
+	DOWNLOAD_INVOICE: (invoiceNo) =>
+		`${BASE}/api/Accounts/DownloadInvoice?invoiceNo=${invoiceNo}`,
 };
 
 export const webBookingEndpoints = {

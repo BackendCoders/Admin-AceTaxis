@@ -1,7 +1,8 @@
 /** @format */
 
 // import { sendLogs } from '../../utils/getLogs';
-import { handleGetReq, handlePostReq } from '../apiRequestHandler';
+import axios from 'axios';
+import { handleGetReq, handlePostReq, setHeaders } from '../apiRequestHandler';
 import { billingAndPaymentEndpoints } from '../apis';
 
 const {
@@ -24,6 +25,7 @@ const {
 	DELETE_INVOICE,
 	CLEAR_INVOICE,
 	GET_INVOICES,
+	DOWNLOAD_INVOICE,
 } = billingAndPaymentEndpoints;
 
 export async function getVATOutputs(data) {
@@ -421,4 +423,35 @@ export async function getInvoices(from, to, accno) {
 		return response;
 	}
 	return response;
+}
+
+export async function downloadInvoice(invoiceNo) {
+	try {
+		const response = await axios.get(DOWNLOAD_INVOICE(invoiceNo), {
+			responseType: 'blob',
+			headers: {
+				Accept: 'application/pdf',
+				...setHeaders(), // Include other necessary headers
+			},
+		});
+
+		console.log('GET DOWNLOAD_INVOICES API RESPONSE.........', response);
+
+		if (response.status === 200) {
+			// sendLogs(
+			// 	{
+			// 		url: GET_VATOUTPUTS,
+			// 		reqBody: null,
+			// 		headers: setHeaders(),
+			// 		response: response,
+			// 	},
+			// 	'info'
+			// );
+			return response.data;
+		}
+		throw new Error('Failed to download invoice. Response was not 200.');
+	} catch (error) {
+		console.error('Error fetching invoice:', error);
+		throw error;
+	}
 }
