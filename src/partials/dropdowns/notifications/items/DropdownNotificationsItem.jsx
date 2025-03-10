@@ -8,18 +8,35 @@ const DropdownNotificationsItem = ({ notification, markAsRead }) => {
 
 	// Extract user and document type from the message
 	const extractDetails = (msg) => {
-		const driverMatch = msg.match(/Driver '(.+?)'/);
-		const driverName = driverMatch ? driverMatch[1] : 'Unknown Driver';
+		// const driverMatchAll = msg.match(/Driver '(.+?)'/);
+		// let driverName = driverMatchAll ? driverMatchAll[1] : 'Unknown Driver';
+		let driverName;
+
+		if (msg.includes('New Document Upload From')) {
+			const driverMatch = msg.match(/From '(.+?)'/);
+			if (driverMatch)
+				driverName = driverMatch ? driverMatch[1] : 'Unknown Driver';
+		} else {
+			const driverMatchAll = msg.match(/Driver '(.+?)'/);
+			if (driverMatchAll)
+				driverName = driverMatchAll ? driverMatchAll[1] : 'Unknown Driver';
+		}
 
 		// Extract Booking Number
 		const bookingMatch = msg.match(/Booking #:\s*(\d+)/);
 		const bookingNumber = bookingMatch ? bookingMatch[1] : 'N/A';
 
+		// Extract document type
+		const docTypeMatch = msg.match(/Doc Type:\s*(.+?)\r\n/);
+		const documentType = docTypeMatch ? docTypeMatch[1] : 'Unknown Document';
+
+		// Extract document URL
+		const linkMatch = msg.match(/href="(.+?)"/);
+		const documentURL = linkMatch ? linkMatch[1] : null;
+
 		let heading = 'Notification';
-		if (event === 3) heading = 'New Booking Request';
-		else if (event === 4) heading = 'Amendment Request';
-		else if (event === 5) heading = 'Cancellation Request';
-		else if (event === 1) {
+
+		if (event === 1) {
 			if (msg.includes('created a new web booking request')) {
 				heading = (
 					<>
@@ -44,19 +61,40 @@ const DropdownNotificationsItem = ({ notification, markAsRead }) => {
 					</>
 				);
 			}
-		} else if (event === 2)
-			heading = (
-				<>
-					<span className='text-blue-600'>{driverName}</span> Didn&apos;t
-					Respond (Timeout) for{' '}
-					<span className='text-red-600'>Booking #{bookingNumber}</span>
-				</>
-			);
+		} else if (event === 2) {
+			if (msg.includes('New Document Upload From')) {
+				heading = (
+					<>
+						<span className='text-blue-600'>New Document Uploaded</span>
+						<br />
+						<span className='text-gray-700 text-xs'>
+							<strong>{driverName}</strong> uploaded a{' '}
+							<strong>{documentType}</strong>.
+						</span>
+					</>
+				);
+			} else if (msg.includes('has rejected  Booking #:')) {
+				heading = (
+					<>
+						<span className='text-blue-600'>{driverName}</span> Rejected{' '}
+						<span className='text-red-600'>Booking #{bookingNumber}</span>
+					</>
+				);
+			} else {
+				heading = (
+					<>
+						<span className='text-blue-600'>{driverName}</span> Didn&apos;t
+						Respond (Timeout) for{' '}
+						<span className='text-red-600'>Booking #{bookingNumber}</span>
+					</>
+				);
+			}
+		}
 
-		return { driverName, bookingNumber, heading };
+		return { driverName, bookingNumber, heading, documentURL };
 	};
 
-	const { heading } = extractDetails(message);
+	const { heading, documentURL } = extractDetails(message);
 
 	return (
 		<div className='flex gap-3 px-5 py-2 border-b border-gray-200'>
@@ -75,16 +113,16 @@ const DropdownNotificationsItem = ({ notification, markAsRead }) => {
 				{/* Extract and render document link */}
 				<div className='flex gap-3 mt-2'>
 					{/* View Document Button (if docPath exists) */}
-					{/* {docPath && (
+					{documentURL && (
 						<a
-							href={docPath}
+							href={documentURL}
 							target='_blank'
 							rel='noopener noreferrer'
 							className='btn btn-sm btn-primary'
 						>
 							View Document
 						</a>
-					)} */}
+					)}
 					{event === 1 &&
 						(message.includes('created a new web booking request') ||
 							message.includes('requested to cancel booking')) && (
