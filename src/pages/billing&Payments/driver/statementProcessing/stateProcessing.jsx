@@ -483,7 +483,9 @@ function RowPriced({ row, handleRevert }) {
 function StateProcessing() {
 	const dispatch = useDispatch();
 	const { drivers } = useSelector((state) => state.driver);
-	const { driverChargeableJobs } = useSelector((state) => state.billing);
+	const { driverChargeableJobs, loading } = useSelector(
+		(state) => state.billing
+	);
 	const [selectedDriver, setSelectedDriver] = useState(0);
 	const [selectedScope, setSelectedScope] = useState('3');
 	const [priceBaseModal, setPriceBaseModal] = useState(false);
@@ -864,8 +866,9 @@ function StateProcessing() {
 											<button
 												className='btn btn-primary flex justify-center'
 												onClick={handleShow}
+												disabled={loading}
 											>
-												Show Jobs
+												{loading ? 'Searching...' : 'Show Jobs'}
 											</button>
 										</div>
 									</div>

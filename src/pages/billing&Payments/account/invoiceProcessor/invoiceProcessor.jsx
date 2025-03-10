@@ -491,7 +491,9 @@ function RowPriced({ row, handleRevert }) {
 function InvoiceProcessor() {
 	const dispatch = useDispatch();
 	const { accounts } = useSelector((state) => state.account);
-	const { accountChargeableJobs } = useSelector((state) => state.billing);
+	const { accountChargeableJobs, loading } = useSelector(
+		(state) => state.billing
+	);
 	const [selectedAccount, setSelectedAccount] = useState(0);
 	const [priceBaseModal, setPriceBaseModal] = useState(false);
 	const [autoEmailInvoices, setAutoEmailInvoices] = useState(true);
@@ -895,8 +897,9 @@ function InvoiceProcessor() {
 											<button
 												className='btn btn-primary flex justify-center'
 												onClick={handleShow}
+												disabled={loading}
 											>
-												SHOW JOBS
+												{loading ? 'Searching...' : 'Show Jobs'}
 											</button>
 										</div>
 									</div>
