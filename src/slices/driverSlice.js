@@ -146,6 +146,7 @@ export function refreshAllDriversExpiry() {
 export function refreshDriversExpenses(data) {
 	return async (dispatch) => {
 		try {
+			dispatch(setLoading(true));
 			const response = await driverExpenses(data);
 			console.log(response);
 
@@ -159,6 +160,8 @@ export function refreshDriversExpenses(data) {
 			}
 		} catch (error) {
 			console.error('Failed to refresh drivers Expense:', error);
+		} finally {
+			dispatch(setLoading(false));
 		}
 	};
 }
