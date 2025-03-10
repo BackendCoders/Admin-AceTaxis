@@ -17,7 +17,10 @@ import { Input } from '@/components/ui/input';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteAvailability } from '../../../service/operations/availabilityApi';
 import toast from 'react-hot-toast';
-import { refreshAvailability } from '../../../slices/availabilitySlice';
+import {
+	refreshAllAvailability,
+	refreshAvailability,
+} from '../../../slices/availabilitySlice';
 import { format } from 'date-fns';
 
 const SelectedAvailabilityTable = ({ selectedDriver, selectedDate }) => {
@@ -33,6 +36,11 @@ const SelectedAvailabilityTable = ({ selectedDriver, selectedDate }) => {
 				dispatch(
 					refreshAvailability(
 						selectedDriver,
+						format(new Date(selectedDate), "yyyy-MM-dd'T'00:00:00'Z'")
+					)
+				);
+				dispatch(
+					refreshAllAvailability(
 						format(new Date(selectedDate), "yyyy-MM-dd'T'00:00:00'Z'")
 					)
 				);
