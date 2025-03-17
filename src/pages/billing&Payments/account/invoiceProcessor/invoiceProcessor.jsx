@@ -756,9 +756,6 @@ function InvoiceProcessor() {
 				return;
 			}
 
-			console.log(accountChargeableJobs.priced);
-
-			// API expects { jobs: [...] }, so we wrap the array inside an object
 			const payload = accountChargeableJobs.priced.map((job) => ({
 				accNo: job.accNo || 0,
 				bookingId: job.bookingId || 0,
@@ -769,7 +766,7 @@ function InvoiceProcessor() {
 				pickupPostcode: job.pickupPostcode || '',
 				destination: job.destination || '',
 				destinationPostcode: job.destinationPostcode || '',
-				vias: job.vias || [], // Ensure vias is an array
+				vias: job.vias || [],
 				hasVias: job.hasVias || false,
 				passenger: job.passenger || 'string',
 				price: job.price || 0,
@@ -795,7 +792,6 @@ function InvoiceProcessor() {
 
 			console.log('Sending Payload:', payload); // Debugging
 
-			// Call API with the wrapped payload
 			const response = await accountCreateInvoice(autoEmailInvoices, payload);
 
 			if (response?.status === 'success') {
