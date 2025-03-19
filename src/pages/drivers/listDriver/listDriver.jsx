@@ -163,11 +163,9 @@ function ListDriver() {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span
-						className={`font-medium p-2 rounded-md ${isLightColor(row.original.colorRGB) ? 'text-black' : 'text-white'}`}
+						className={`font-medium px-8 py-2 rounded-md ${isLightColor(row.original.colorRGB) ? 'text-black' : 'text-white'}`}
 						style={{ backgroundColor: row.original.colorRGB }}
-					>
-						{row.original.colorRGB}
-					</span>
+					></span>
 				),
 				meta: { headerClassName: 'w-20' },
 			},
