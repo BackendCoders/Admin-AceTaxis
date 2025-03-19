@@ -18,6 +18,7 @@ const initialState = {
 	weekEnd: [],
 	week: [],
 	month: [],
+	unavailable: [],
 };
 
 const availabilitySlice = createSlice({
@@ -53,6 +54,9 @@ const availabilitySlice = createSlice({
 		},
 		setMonth: (state, action) => {
 			state.month = action.payload;
+		},
+		setUnavailable: (state, action) => {
+			state.unavailable = action.payload;
 		},
 	},
 });
@@ -134,6 +138,7 @@ export function refreshAvailabilityReport(payload) {
 				dispatch(setWeekEnd(response?.weekEnd));
 				dispatch(setWeek(response?.week));
 				dispatch(setMonth(response?.month));
+				dispatch(setUnavailable(response?.unavailable));
 			}
 		} catch (error) {
 			console.error('Failed to refresh availability report data:', error);
@@ -154,6 +159,7 @@ export const {
 	setWeekEnd,
 	setWeek,
 	setMonth,
+	setUnavailable,
 } = availabilitySlice.actions;
 
 export default availabilitySlice.reducer;

@@ -138,7 +138,9 @@ function AddLocalPoi({ open, onOpenChange }) {
 								<Select
 									defaultValue={0}
 									value={formik.values.type}
-									onValueChange={(value) => formik.setFieldValue('type', value)}
+									onValueChange={(value) =>
+										formik.setFieldValue('type', Number(value))
+									}
 								>
 									<SelectTrigger className=' w-52'>
 										<SelectValue placeholder='Select' />

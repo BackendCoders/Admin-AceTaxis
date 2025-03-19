@@ -12,6 +12,13 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from '@/components/ui/popover';
+import {
+	Select,
+	SelectTrigger,
+	SelectContent,
+	SelectItem,
+	SelectValue,
+} from '@/components/ui/select';
 import { Calendar } from '@/components/ui/calendar';
 import { Input } from '@/components/ui/input';
 import { format } from 'date-fns';
@@ -23,17 +30,19 @@ import {
 	setAvailabilityLog,
 } from '../../../slices/availabilitySlice';
 import toast from 'react-hot-toast';
+import { refreshAllDrivers } from '../../../slices/driverSlice';
 
 const AvailabilityLogs = () => {
 	const dispatch = useDispatch();
 	const { availabilityLog, loading } = useSelector(
 		(state) => state.availability
 	);
+	const { drivers } = useSelector((state) => state.driver);
 	const [driverNumber, setDriverNumber] = useState();
 	const [date, setDate] = useState(new Date());
 
 	const handleSearch = async () => {
-		if (!driverNumber?.trim()) {
+		if (!String(driverNumber)?.trim()) {
 			toast.error('Please enter a driver ID');
 			dispatch(setAvailabilityLog([])); // Reset table if input is empty
 			return;
@@ -48,6 +57,10 @@ const AvailabilityLogs = () => {
 		return () => {
 			dispatch(setAvailabilityLog([])); // Clear table data
 		};
+	}, [dispatch]);
+
+	useEffect(() => {
+		dispatch(refreshAllDrivers());
 	}, [dispatch]);
 
 	const ColumnInputFilter = ({ column }) => {
@@ -188,7 +201,7 @@ const AvailabilityLogs = () => {
 							<div className='card-header flex-wrap gap-2'>
 								<div className='flex flex-wrap gap-2 lg:gap-5'>
 									<div className='flex gap-2'>
-										<label
+										{/* <label
 											className='input input-sm'
 											style={{ height: '40px' }}
 										>
@@ -199,8 +212,29 @@ const AvailabilityLogs = () => {
 												value={driverNumber}
 												onChange={(e) => setDriverNumber(e.target.value)}
 											/>
-										</label>
-
+										</label> */}
+										<Select
+											value={driverNumber}
+											onValueChange={(value) => setDriverNumber(value)}
+										>
+											<SelectTrigger
+												className='w-40 hover:shadow-lg'
+												size='sm'
+												style={{ height: '40px' }}
+											>
+												<SelectValue placeholder='Select' />
+											</SelectTrigger>
+											<SelectContent className='w-36'>
+												{drivers?.length > 0 &&
+													drivers?.map((driver) => (
+														<>
+															<SelectItem value={driver?.id}>
+																{driver?.id} - {driver?.fullName}
+															</SelectItem>
+														</>
+													))}
+											</SelectContent>
+										</Select>
 										<Popover>
 											<PopoverTrigger asChild>
 												<div className='relative'>

@@ -141,7 +141,9 @@ function EditLocalPoi({ open, onOpenChange }) {
 								<Select
 									defaultValue='1'
 									value={formik.values.type}
-									onValueChange={(value) => formik.setFieldValue('type', value)}
+									onValueChange={(value) =>
+										formik.setFieldValue('type', Number(value))
+									}
 								>
 									<SelectTrigger className=' w-52'>
 										<SelectValue placeholder='Select' />

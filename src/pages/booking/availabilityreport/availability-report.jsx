@@ -23,6 +23,7 @@ import {
 	refreshAvailabilityReport,
 	setAvailableHoursByDay,
 	setMonth,
+	setUnavailable,
 	setWeek,
 	setWeekDay,
 	setWeekEnd,
@@ -31,14 +32,30 @@ import toast from 'react-hot-toast';
 
 const AvailabilityReport = () => {
 	const dispatch = useDispatch();
-	const { availableHoursByDay, weekDay, weekEnd, week, month, loading } =
-		useSelector((state) => state.availability);
+	const {
+		availableHoursByDay,
+		weekDay,
+		weekEnd,
+		week,
+		month,
+		unavailable,
+		loading,
+	} = useSelector((state) => state.availability);
+	const [open, setOpen] = useState(false); // State to control Popover open/close
 	const [selectedTab, setSelectedTab] = useState('dayHours');
 	const [driverNumber, setDriverNumber] = useState();
 	const [dateRange, setDateRange] = useState({
 		from: new Date(), // December 28, 2024
 		to: new Date(), // January 28, 2025
 	});
+
+	const handleDateSelect = (range) => {
+		setDateRange(range); // Update the date range
+		// Close the popover if both from and to dates are selected
+		if (range?.from && range?.to) {
+			setOpen(false);
+		}
+	};
 
 	useEffect(() => {
 		return () => {
@@ -47,6 +64,7 @@ const AvailabilityReport = () => {
 			dispatch(setWeekEnd([])); // Clear table data
 			dispatch(setWeek([])); // Clear table data
 			dispatch(setMonth([])); // Clear table data
+			dispatch(setUnavailable([]));
 		};
 	}, [dispatch]);
 
@@ -75,10 +93,19 @@ const AvailabilityReport = () => {
 			weekHours: week,
 			weekdayHours: weekDay,
 			weekendHours: weekEnd,
+			unavailableHours: unavailable,
 		};
 
 		return dataset[selectedTab] || [];
-	}, [month, selectedTab, week, weekDay, weekEnd, availableHoursByDay]);
+	}, [
+		month,
+		selectedTab,
+		week,
+		weekDay,
+		weekEnd,
+		availableHoursByDay,
+		unavailable,
+	]);
 
 	const monthNames = [
 		'January',
@@ -257,6 +284,39 @@ const AvailabilityReport = () => {
 					),
 				},
 			];
+		} else if (selectedTab === 'unavailableHours') {
+			return [
+				{
+					accessorKey: 'userId',
+					header: ({ column }) => (
+						<DataGridColumnHeader
+							title=<span className='font-bold'>Driver #</span>
+							column={column}
+						/>
+					),
+					meta: { headerClassName: 'min-w-[10px]' },
+				},
+				{
+					accessorKey: 'unAvailableDates',
+					header: ({ column }) => (
+						<DataGridColumnHeader
+							title=<span className='font-bold'>Unavailable Dates</span>
+							column={column}
+						/>
+					),
+					meta: { headerClassName: 'min-w-[120px]' },
+				},
+				{
+					accessorKey: 'totalUnAvailableDays',
+					header: ({ column }) => (
+						<DataGridColumnHeader
+							title=<span className='font-bold'>Total Unavailable Days</span>
+							column={column}
+						/>
+					),
+					meta: { headerClassName: 'min-w-[120px]' },
+				},
+			];
 		}
 		return [];
 	}, [selectedTab]);
@@ -291,6 +351,20 @@ const AvailabilityReport = () => {
 				userId: item.userId,
 				weekendDay: weekDayNames[item.weekendDay],
 				totalHours: item.totalHours,
+			}));
+		} else if (selectedTab === 'unavailableHours') {
+			return dataByTab.map((item) => ({
+				userId: item.userId,
+				unAvailableDates: Array.isArray(item.unAvailableDates)
+					? item.unAvailableDates
+							.map((date) =>
+								typeof date === 'number'
+									? weekDayNames[date]
+									: new Date(date).toLocaleDateString('en-GB')
+							)
+							.join(', ')
+					: 'None',
+				totalUnAvailableDays: item.totalUnAvailableDays,
 			}));
 		}
 		return [];
@@ -327,7 +401,10 @@ const AvailabilityReport = () => {
 											/>
 										</label>
 
-										<Popover>
+										<Popover
+											open={open}
+											onOpenChange={setOpen}
+										>
 											<PopoverTrigger
 												asChild
 												className='h-9'
@@ -363,7 +440,7 @@ const AvailabilityReport = () => {
 												<Calendar
 													mode='range'
 													selected={dateRange}
-													onSelect={setDateRange}
+													onSelect={handleDateSelect}
 													numberOfMonths={2}
 													initialFocus
 												/>
@@ -408,7 +485,12 @@ const AvailabilityReport = () => {
 										},
 										{
 											id: 'weekendHours',
-											label: '⏳ WEEKEND HOURS',
+											label: '⌚ WEEKEND HOURS',
+											color: 'bg-red-500',
+										},
+										{
+											id: 'unavailableHours',
+											label: '⌛ UNAVAILABLE DATES',
 											color: 'bg-red-500',
 										},
 									].map((tab) => (
@@ -430,7 +512,7 @@ const AvailabilityReport = () => {
 
 								{/* Data Grid */}
 								<div className='mt-6 flex justify-center'>
-									<div className='w-[600px]'>
+									<div className='w-[700px]'>
 										<DataGrid
 											columns={columns}
 											data={formattedDataByTab}
