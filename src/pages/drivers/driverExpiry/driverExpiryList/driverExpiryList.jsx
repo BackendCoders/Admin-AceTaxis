@@ -153,39 +153,58 @@ function DriverExpiryList() {
 					/>
 				),
 				enableSorting: true,
-				cell: ({ row }) => (
-					<span className={`p-2 rounded-md whitespace-nowrap`}>
-						{new Date(
-							row.original.expiryDate?.split('T')[0]
-						)?.toLocaleDateString('en-GB')}{' '}
-						{row.original.expiryDate?.split('T')[1].split('.')[0]?.slice(0, 5)}
-					</span>
-				),
+				cell: ({ row }) => {
+					const expiryDate = new Date(row.original.expiryDate);
+					const today = new Date();
+					today.setHours(0, 0, 0, 0); // Reset time for accurate comparison
+
+					const daysDiff = Math.floor(
+						(expiryDate - today) / (1000 * 60 * 60 * 24)
+					);
+
+					let bgColor = ''; // Default color
+					if (daysDiff < -7) {
+						bgColor = 'text-orange-500'; // Expired more than 7 days ago
+					} else if (daysDiff < -1) {
+						bgColor = 'text-red-500'; // Expired within the last 1-7 days
+					}
+					return (
+						<span className={`p-2 rounded-md whitespace-nowrap ${bgColor}`}>
+							{new Date(
+								row.original.expiryDate?.split('T')[0]
+							)?.toLocaleDateString('en-GB')}{' '}
+							{row.original.expiryDate
+								?.split('T')[1]
+								.split('.')[0]
+								?.slice(0, 5)}
+						</span>
+					);
+				},
 				meta: { headerClassName: 'w-25' },
 			},
-			{
-				accessorKey: 'lastUpdatedOn',
-				header: ({ column }) => (
-					<DataGridColumnHeader
-						title=<span className='font-bold'>Last Updated On</span>
-						filter={<ColumnInputFilter column={column} />}
-						column={column}
-					/>
-				),
-				enableSorting: true,
-				cell: ({ row }) => (
-					<span className={`p-2 rounded-md whitespace-nowrap`}>
-						{new Date(
-							row.original.lastUpdatedOn?.split('T')[0]
-						)?.toLocaleDateString('en-GB')}{' '}
-						{row.original.lastUpdatedOn
-							?.split('T')[1]
-							.split('.')[0]
-							?.slice(0, 5)}
-					</span>
-				),
-				meta: { headerClassName: 'w-25' },
-			},
+			// {
+			// 	accessorKey: 'lastUpdatedOn',
+			// 	header: ({ column }) => (
+			// 		<DataGridColumnHeader
+			// 			title=<span className='font-bold'>Last Updated On</span>
+			// 			filter={<ColumnInputFilter column={column} />}
+			// 			column={column}
+			// 		/>
+			// 	),
+			// 	enableSorting: true,
+			// 	cell: ({ row }) => (
+			// 		<span className={`p-2 rounded-md whitespace-nowrap`}>
+			// 			{new Date(
+			// 				row.original.lastUpdatedOn?.split('T')[0]
+			// 			)?.toLocaleDateString('en-GB')}{' '}
+			// 			{row.original.lastUpdatedOn
+			// 				?.split('T')[1]
+			// 				.split('.')[0]
+			// 				?.slice(0, 5)}
+			// 		</span>
+			// 	),
+			// 	meta: { headerClassName: 'w-25' },
+			// },
 			// {
 			// 	accessorKey: 'colorRGB',
 			// 	header: ({ column }) => (
@@ -469,6 +488,7 @@ function DriverExpiryList() {
 									pagination={{ size: 10 }}
 									sorting={[{ id: 'userId', desc: false }]}
 									layout={{ card: true }}
+									applyRowColor={true}
 								/>
 							</div>
 						</div>

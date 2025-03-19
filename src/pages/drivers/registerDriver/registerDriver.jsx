@@ -18,7 +18,7 @@ import { KeenIcon } from '@/components';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import clsx from 'clsx';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { createDriver } from '../../../service/operations/driverApi';
 import { useDispatch } from 'react-redux';
 import { refreshAllDrivers } from '../../../slices/driverSlice';
@@ -28,6 +28,7 @@ function RegisterDriver({ open, onOpenChange }) {
 	const addLocalSchema = Yup.object().shape({
 		username: Yup.string().required('User Name is required'),
 	});
+	const colorInputRef = useRef(null);
 
 	const initialValues = {
 		username: '',
@@ -292,6 +293,7 @@ function RegisterDriver({ open, onOpenChange }) {
 								<label className='form-label text-gray-900'>Color</label>
 								<label className='input'>
 									<input
+										ref={colorInputRef}
 										type='color'
 										value={
 											formik.values.colorCode?.length === 7
@@ -315,6 +317,7 @@ function RegisterDriver({ open, onOpenChange }) {
 											'is-invalid':
 												formik.touched.colorCode && formik.errors.colorCode,
 										})}
+										onClick={() => colorInputRef.current.click()}
 									/>
 								</label>
 								{formik.touched.colorCode && formik.errors.colorCode && (

@@ -21,11 +21,12 @@ import { updateDriver } from '../../../service/operations/driverApi';
 import { useDispatch, useSelector } from 'react-redux';
 import { refreshAllDrivers } from '../../../slices/driverSlice';
 import toast from 'react-hot-toast';
+import { useRef } from 'react';
 function EditDriver({ open, onOpenChange }) {
 	const dispatch = useDispatch();
 	const { driver } = useSelector((state) => state.driver);
 	const addLocalSchema = Yup.object().shape({});
-
+	const colorInputRef = useRef(null);
 	const initialValues = {
 		RegistrationNo: driver?.regNo || '',
 		fullName: driver?.fullName || '',
@@ -216,6 +217,7 @@ function EditDriver({ open, onOpenChange }) {
 								<label className='form-label text-gray-900'>Color</label>
 								<label className='input'>
 									<input
+										ref={colorInputRef}
 										type='color'
 										value={
 											formik.values.colorCode?.length === 7
@@ -239,6 +241,7 @@ function EditDriver({ open, onOpenChange }) {
 											'is-invalid':
 												formik.touched.colorCode && formik.errors.colorCode,
 										})}
+										onClick={() => colorInputRef.current.click()}
 									/>
 								</label>
 								{formik.touched.colorCode && formik.errors.colorCode && (
