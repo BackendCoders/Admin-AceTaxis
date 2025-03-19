@@ -20,6 +20,9 @@ const Demo1LightSidebarContent = () => {
 
 				<div className='lg:col-span-2'>
 					<EntryCallout className='h-full' />
+					<div className='lg:col-span-2 mt-4'>
+						<Teams />
+					</div>
 				</div>
 			</div>
 
@@ -29,13 +32,9 @@ const Demo1LightSidebarContent = () => {
 				<div className='lg:col-span-2'>{/* <EarningsChart /> */}</div>
 			</div>
 
-			<div className='grid lg:grid-cols-3 gap-5 lg:gap-7.5 items-stretch'>
-				<div className='lg:col-span-1'>{/* <TeamMeeting /> */}</div>
-
-				<div className='lg:col-span-2'>
-					<Teams />
-				</div>
-			</div>
+			{/* <div className='grid lg:grid-cols-3 gap-5 lg:gap-7.5 items-stretch'>
+				<div className='lg:col-span-1'><TeamMeeting /></div>
+			</div> */}
 		</div>
 	);
 };
