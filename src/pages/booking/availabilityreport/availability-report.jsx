@@ -15,7 +15,7 @@ import {
 	PopoverTrigger,
 } from '@/components/ui/popover';
 import { Calendar } from '@/components/ui/calendar';
-import { format } from 'date-fns';
+import { format, subDays } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { KeenIcon } from '@/components/keenicons';
 import { useDispatch, useSelector } from 'react-redux';
@@ -45,7 +45,7 @@ const AvailabilityReport = () => {
 	const [selectedTab, setSelectedTab] = useState('dayHours');
 	const [driverNumber, setDriverNumber] = useState();
 	const [dateRange, setDateRange] = useState({
-		from: new Date(), // December 28, 2024
+		from: subDays(new Date(), 30), // December 28, 2024
 		to: new Date(), // January 28, 2025
 	});
 

@@ -48,7 +48,6 @@ export async function setMsgConfig(data) {
 		// 	},
 		// 	'info'
 		// );
-		toast.success('Msg. Config Updated Successfully');
 		return response;
 	}
 }

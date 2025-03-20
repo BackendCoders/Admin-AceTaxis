@@ -8,21 +8,20 @@ import {
 	ToolbarPageTitle,
 } from '@/partials/toolbar';
 import { KeenIcon } from '@/components';
-// import {
-// 	Select,
-// 	SelectContent,
-// 	SelectItem,
-// 	SelectTrigger,
-// 	SelectValue,
-// } from '@/components/ui/select';
-// import { Container } from '@/components/container';
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from '@/components/ui/select';
 import {
 	Popover,
 	PopoverContent,
 	PopoverTrigger,
 } from '@/components/ui/popover';
 import { Calendar } from '@/components/ui/calendar';
-import { format, addDays } from 'date-fns';
+import { format, subDays } from 'date-fns';
 import { cn } from '@/lib/utils';
 import {
 	DataGrid,
@@ -34,23 +33,33 @@ import {
 import { Input } from '@/components/ui/input';
 import { driverEarningsReport } from '../../../service/operations/dashboardApi';
 import toast from 'react-hot-toast';
+import { useSelector } from 'react-redux';
 function DriverEarningReport() {
 	const [loading, setLoading] = useState(false); // ✅ Track loading state
 	const [chartData, setChartData] = useState({
 		data: [],
 		labels: [],
 	});
-
+	const { drivers } = useSelector((state) => state.driver);
 	const colors = ['var(--tw-primary)', 'var(--tw-success)', 'var(--tw-info)'];
 	const [driverNumber, setDriverNumber] = useState();
 	const [earningData, setEarningData] = useState([]);
+	const [open, setOpen] = useState(false);
 	const [date, setDate] = useState({
-		from: new Date(),
-		to: addDays(new Date(), 20),
+		from: subDays(new Date(), 30),
+		to: new Date(),
 	});
 
+	const handleDateSelect = (range) => {
+		setDate(range); // Update the date range
+		// Close the popover if both from and to dates are selected
+		if (range?.from && range?.to) {
+			setOpen(false);
+		}
+	};
+
 	const handleSearch = async () => {
-		if (!driverNumber?.trim()) {
+		if (!String(driverNumber)?.trim()) {
 			toast.error('Please enter a driver ID');
 			setEarningData([]); // Reset table if input is empty
 			return;
@@ -322,7 +331,7 @@ function DriverEarningReport() {
 							<div className='card-header flex-wrap gap-2'>
 								<div className='flex flex-wrap gap-2 lg:gap-5'>
 									<div className='flex'>
-										<label
+										{/* <label
 											className='input input-sm hover:shadow-lg'
 											style={{ height: '40px' }}
 										>
@@ -333,10 +342,35 @@ function DriverEarningReport() {
 												value={driverNumber}
 												onChange={(e) => setDriverNumber(e.target.value)}
 											/>
-										</label>
+										</label> */}
+										<Select
+											value={driverNumber}
+											onValueChange={(value) => setDriverNumber(value)}
+										>
+											<SelectTrigger
+												className='w-40 hover:shadow-lg'
+												size='sm'
+												style={{ height: '40px' }}
+											>
+												<SelectValue placeholder='Select' />
+											</SelectTrigger>
+											<SelectContent className='w-36'>
+												{drivers?.length > 0 &&
+													drivers?.map((driver) => (
+														<>
+															<SelectItem value={driver?.id}>
+																{driver?.id} - {driver?.fullName}
+															</SelectItem>
+														</>
+													))}
+											</SelectContent>
+										</Select>
 									</div>
 									<div className='flex flex-wrap items-center gap-2.5'>
-										<Popover>
+										<Popover
+											open={open}
+											onOpenChange={setOpen}
+										>
 											<PopoverTrigger asChild>
 												<button
 													id='date'
@@ -373,7 +407,7 @@ function DriverEarningReport() {
 													mode='range'
 													defaultMonth={date?.from}
 													selected={date}
-													onSelect={setDate}
+													onSelect={handleDateSelect}
 													numberOfMonths={2}
 												/>
 											</PopoverContent>
@@ -414,7 +448,7 @@ function DriverEarningReport() {
 											sorting={[{ id: 'userId', desc: false }]}
 											layout={{ card: true }}
 										/>
-										<div className='flex justify-end gap-6 bg-[#14151A] font-semibold p-3 mt-2'>
+										<div className='flex justify-end gap-6 dark:bg-[#14151A] font-semibold p-3 mt-2'>
 											<span className=''>
 												Total Cash: {columnTotals.cashTotal}
 											</span>

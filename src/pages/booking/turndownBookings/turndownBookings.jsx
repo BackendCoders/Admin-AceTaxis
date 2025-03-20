@@ -22,7 +22,7 @@ import {
 	PopoverTrigger,
 } from '@/components/ui/popover';
 import { Calendar } from '@/components/ui/calendar';
-import { format, addDays } from 'date-fns';
+import { format, subDays } from 'date-fns';
 import { cn } from '@/lib/utils';
 import {
 	DataGrid,
@@ -45,8 +45,8 @@ function TurndownBookings() {
 	const [turndownData, setTurndownData] = useState([]);
 	const [totalData, setTotalData] = useState(0);
 	const [date, setDate] = useState({
-		from: new Date(),
-		to: addDays(new Date(), 20),
+		from: subDays(new Date(), 30),
+		to: new Date(),
 	});
 
 	const handleSearch = async () => {

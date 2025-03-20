@@ -104,7 +104,7 @@ const CompanySetting = () => {
 							</label>
 							<input
 								type='text'
-								name='addressLine1'
+								name='address1'
 								value={companyData?.address1}
 								onChange={handleChange}
 								className='input border border-gray-300 rounded-md p-2 focus:ring-blue-600'
@@ -117,7 +117,7 @@ const CompanySetting = () => {
 							</label>
 							<input
 								type='text'
-								name='addressLine2'
+								name='address2'
 								value={companyData?.address2}
 								onChange={handleChange}
 								className='input border border-gray-300 rounded-md p-2 focus:ring-blue-600'
@@ -130,7 +130,7 @@ const CompanySetting = () => {
 							</label>
 							<input
 								type='text'
-								name='addressLine3'
+								name='address3'
 								value={companyData?.address3}
 								onChange={handleChange}
 								className='input border border-gray-300 rounded-md p-2 focus:ring-blue-600'
@@ -143,7 +143,7 @@ const CompanySetting = () => {
 							</label>
 							<input
 								type='text'
-								name='addressLine4'
+								name='address4'
 								value={companyData?.address4}
 								onChange={handleChange}
 								className='input border border-gray-300 rounded-md p-2 focus:ring-blue-600'
@@ -185,7 +185,7 @@ const CompanySetting = () => {
 							</label>
 							<input
 								type='text'
-								name='web'
+								name='website'
 								value={companyData?.website}
 								onChange={handleChange}
 								className='input border border-gray-300 rounded-md p-2 focus:ring-blue-600'
@@ -211,7 +211,7 @@ const CompanySetting = () => {
 							</label>
 							<input
 								type='text'
-								name='companyNo'
+								name='companyNumber'
 								value={companyData?.companyNumber}
 								onChange={handleChange}
 								className='input border border-gray-300 rounded-md p-2  focus:ring-blue-600'
@@ -224,7 +224,7 @@ const CompanySetting = () => {
 							</label>
 							<input
 								type='text'
-								name='vatNo'
+								name='vatNumber'
 								value={companyData?.vatNumber}
 								onChange={handleChange}
 								className='input border border-gray-300 rounded-md p-2  focus:ring-blue-600'

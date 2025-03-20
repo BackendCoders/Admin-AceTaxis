@@ -18,32 +18,50 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from '@/components/ui/popover';
+import {
+	Select,
+	SelectTrigger,
+	SelectContent,
+	SelectItem,
+	SelectValue,
+} from '@/components/ui/select';
 import { Calendar } from '@/components/ui/calendar';
 import { Input } from '@/components/ui/input';
-import { format } from 'date-fns';
+import { format, subDays } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { KeenIcon } from '@/components';
 import { useDispatch, useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
 import {
+	refreshAllDrivers,
 	refreshDriversExpenses,
 	setDriverExpenses,
 } from '../../../slices/driverSlice';
 
 const DriverExpenses = () => {
 	const dispatch = useDispatch();
+	const { drivers } = useSelector((state) => state.driver);
+	const [open, setOpen] = useState(false);
 	const {
 		driverExpenses: { data, total },
 		loading,
 	} = useSelector((state) => state.driver);
-	const [driverNumber, setDriverNumber] = useState(0);
+	const [driverNumber, setDriverNumber] = useState();
 	const [dateRange, setDateRange] = useState({
-		from: new Date(), // December 28, 2024
+		from: subDays(new Date(), 30), // December 28, 2024
 		to: new Date(), // January 28, 2025
 	});
 
+	const handleDateSelect = (range) => {
+		setDateRange(range); // Update the date range
+		// Close the popover if both from and to dates are selected
+		if (range?.from && range?.to) {
+			setOpen(false);
+		}
+	};
+
 	const handleSearch = async () => {
-		if (!driverNumber?.trim()) {
+		if (!String(driverNumber)?.trim()) {
 			toast.error('Please enter a Driver Id');
 			dispatch(setDriverExpenses({})); // Reset table if input is empty
 			return;
@@ -60,6 +78,9 @@ const DriverExpenses = () => {
 		return () => {
 			dispatch(setDriverExpenses({})); // Clear table data
 		};
+	}, [dispatch]);
+	useEffect(() => {
+		dispatch(refreshAllDrivers());
 	}, [dispatch]);
 
 	const ColumnInputFilter = ({ column }) => {
@@ -196,7 +217,7 @@ const DriverExpenses = () => {
 							<div className='card-header flex-wrap gap-2'>
 								<div className='flex flex-wrap gap-2 lg:gap-5'>
 									<div className='flex gap-2'>
-										<label
+										{/* <label
 											className='input input-sm w-36'
 											style={{ height: '40px' }}
 										>
@@ -207,9 +228,34 @@ const DriverExpenses = () => {
 												value={driverNumber}
 												onChange={(e) => setDriverNumber(e.target.value)}
 											/>
-										</label>
+										</label> */}
+										<Select
+											value={driverNumber}
+											onValueChange={(value) => setDriverNumber(value)}
+										>
+											<SelectTrigger
+												className='w-40 hover:shadow-lg'
+												size='sm'
+												style={{ height: '40px' }}
+											>
+												<SelectValue placeholder='Select' />
+											</SelectTrigger>
+											<SelectContent className='w-36'>
+												{drivers?.length > 0 &&
+													drivers?.map((driver) => (
+														<>
+															<SelectItem value={driver?.id}>
+																{driver?.id} - {driver?.fullName}
+															</SelectItem>
+														</>
+													))}
+											</SelectContent>
+										</Select>
 
-										<Popover>
+										<Popover
+											open={open}
+											onOpenChange={setOpen}
+										>
 											<PopoverTrigger
 												asChild
 												className='h-10'
@@ -245,7 +291,7 @@ const DriverExpenses = () => {
 												<Calendar
 													mode='range'
 													selected={dateRange}
-													onSelect={setDateRange}
+													onSelect={handleDateSelect}
 													numberOfMonths={2}
 													initialFocus
 												/>
