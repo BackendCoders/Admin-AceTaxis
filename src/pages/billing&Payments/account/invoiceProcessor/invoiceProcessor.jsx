@@ -113,7 +113,11 @@ function RowNotPriced({ row, setPriceBaseModal, handlePostButton }) {
 
 			// Move focus to the next input field
 			if (nextField) {
-				document.querySelector(`input[name="${nextField}"]`)?.focus();
+				const nextInput = document.querySelector(`input[name="${nextField}"]`);
+				if (nextInput) {
+					nextInput.focus();
+					nextInput.select(); // Select the text inside the input
+				}
 			}
 		}
 	};
@@ -210,6 +214,7 @@ function RowNotPriced({ row, setPriceBaseModal, handlePostButton }) {
 						name='waiting'
 						onChange={(e) => handleInputChange('waiting', +e.target.value)}
 						onKeyDown={(e) => handleKeyPress(e, 'driverFare')}
+						onFocus={(e) => e.target.select()}
 					/>
 				</TableCell>
 				<TableCell
@@ -854,7 +859,7 @@ function InvoiceProcessor() {
 									<div className='flex flex-wrap gap-2 lg:gap-5'>
 										<div className='flex'>
 											<label
-												className='input input-sm hover:shadow-lg'
+												className='input input-sm hover:shadow-lg mt-4'
 												style={{ height: '40px' }}
 											>
 												<KeenIcon icon='magnifier' />
@@ -867,31 +872,35 @@ function InvoiceProcessor() {
 											</label>
 										</div>
 										<div className='flex flex-wrap items-center gap-2.5'>
-											<Select
-												value={selectedAccount}
-												onValueChange={(value) => setSelectedAccount(value)}
-											>
-												<SelectTrigger
-													className='w-40 hover:shadow-lg'
-													size='sm'
-													style={{ height: '40px' }}
+											<div className='flex flex-col'>
+												<label className='form-label'>Accounts</label>
+												<Select
+													value={selectedAccount}
+													onValueChange={(value) => setSelectedAccount(value)}
 												>
-													<SelectValue placeholder='Select' />
-												</SelectTrigger>
-												<SelectContent className='w-40'>
-													<SelectItem value={0}>All</SelectItem>
-													{accounts?.length > 0 &&
-														accounts?.map((acc) => (
-															<>
-																<SelectItem value={acc?.accNo}>
-																	{acc?.accNo} - {acc?.businessName}
-																</SelectItem>
-															</>
-														))}
-												</SelectContent>
-											</Select>
+													<SelectTrigger
+														className='w-40 hover:shadow-lg'
+														size='sm'
+														style={{ height: '40px' }}
+													>
+														<SelectValue placeholder='Select' />
+													</SelectTrigger>
+													<SelectContent className='w-40'>
+														<SelectItem value={0}>All</SelectItem>
+														{accounts?.length > 0 &&
+															accounts?.map((acc) => (
+																<>
+																	<SelectItem value={acc?.accNo}>
+																		{acc?.accNo} - {acc?.businessName}
+																	</SelectItem>
+																</>
+															))}
+													</SelectContent>
+												</Select>
+											</div>
 
 											<div className='flex flex-col'>
+												<label className='form-label'>Select Date Range</label>
 												<DateRangePicker
 													dateRange={dateRange}
 													handleDateSelect={handleDateSelect}
@@ -899,7 +908,7 @@ function InvoiceProcessor() {
 											</div>
 
 											<div className='flex items-center gap-2'>
-												<label className='switch switch-sm flex-1 sm:flex-none'>
+												<label className='switch switch-sm flex-1 sm:flex-none mt-4'>
 													<span className='switch-label'>
 														Auto Email Invoices
 													</span>
@@ -915,7 +924,7 @@ function InvoiceProcessor() {
 											</div>
 
 											<button
-												className='btn btn-primary flex justify-center'
+												className='btn btn-primary flex justify-center mt-4'
 												onClick={handleShow}
 												disabled={loading}
 											>
@@ -935,214 +944,220 @@ function InvoiceProcessor() {
 											Post All Priced
 										</button>
 									</div>
-									<TableContainer
-										component={Paper}
-										className='shadow-none bg-white dark:bg-[#14151A] overflow-x-auto'
-									>
-										<Table className='text-[#14151A] dark:text-gray-100'>
-											<TableHead
-												className='bg-gray-100 dark:bg-[#14151A]'
-												sx={{
-													'& .MuiTableCell-root': {
-														borderBottom: '1px solid #464852',
-													},
-												}}
-											>
-												<TableRow>
-													<TableCell />
-													<TableCell
-														className='text-[#14151A] dark:text-gray-700'
-														sx={{ fontWeight: 'bold' }}
-													>
-														<TableSortLabel
-															active={orderBy === 'id'}
-															direction={order}
-															onClick={() => handleSort('id')}
-															sx={{
-																'&:hover': { color: '#9A9CAE' }, // Change color on hover
-																'&.Mui-active': { color: '#9A9CAE' },
-																'&.Mui-active .MuiTableSortLabel-icon': {
-																	color: '#9A9CAE',
-																}, // Change to blue when active
-															}}
+									{sortedBookings?.length > 0 ? (
+										<TableContainer
+											component={Paper}
+											className='shadow-none bg-white dark:bg-[#14151A] overflow-x-auto'
+										>
+											<Table className='text-[#14151A] dark:text-gray-100'>
+												<TableHead
+													className='bg-gray-100 dark:bg-[#14151A]'
+													sx={{
+														'& .MuiTableCell-root': {
+															borderBottom: '1px solid #464852',
+														},
+													}}
+												>
+													<TableRow>
+														<TableCell />
+														<TableCell
+															className='text-[#14151A] dark:text-gray-700'
+															sx={{ fontWeight: 'bold' }}
 														>
-															#
-														</TableSortLabel>
-													</TableCell>
-													<TableCell
-														className='text-[#14151A] dark:text-gray-700'
-														sx={{ fontWeight: 'bold' }}
-													>
-														<TableSortLabel
-															active={orderBy === 'date'}
-															direction={order}
-															onClick={() => handleSort('date')}
-															sx={{
-																'&:hover': { color: '#9A9CAE' }, // Change color on hover
-																'&.Mui-active': { color: '#9A9CAE' },
-																'&.Mui-active .MuiTableSortLabel-icon': {
-																	color: '#9A9CAE',
-																}, // Change to blue when active
-															}}
+															<TableSortLabel
+																active={orderBy === 'id'}
+																direction={order}
+																onClick={() => handleSort('id')}
+																sx={{
+																	'&:hover': { color: '#9A9CAE' }, // Change color on hover
+																	'&.Mui-active': { color: '#9A9CAE' },
+																	'&.Mui-active .MuiTableSortLabel-icon': {
+																		color: '#9A9CAE',
+																	}, // Change to blue when active
+																}}
+															>
+																#
+															</TableSortLabel>
+														</TableCell>
+														<TableCell
+															className='text-[#14151A] dark:text-gray-700'
+															sx={{ fontWeight: 'bold' }}
 														>
-															Date
-														</TableSortLabel>
-													</TableCell>
-													<TableCell
-														className='text-[#14151A] dark:text-gray-700'
-														sx={{ fontWeight: 'bold' }}
-													>
-														Acc #
-													</TableCell>
-													<TableCell
-														className='text-[#14151A] dark:text-gray-700'
-														sx={{ fontWeight: 'bold' }}
-													>
-														Driver #
-													</TableCell>
-													<TableCell
-														className='text-[#14151A] dark:text-gray-700'
-														sx={{ fontWeight: 'bold' }}
-													>
-														Pickup
-													</TableCell>
-													<TableCell
-														className='text-[#14151A] dark:text-gray-700'
-														sx={{ fontWeight: 'bold' }}
-													>
-														Destination
-													</TableCell>
-													<TableCell
-														className='text-[#14151A] dark:text-gray-700'
-														sx={{ fontWeight: 'bold' }}
-													>
-														Passenger
-													</TableCell>
-													<TableCell
-														className='text-[#14151A] dark:text-gray-700'
-														sx={{ fontWeight: 'bold' }}
-													>
-														Has Vias
-													</TableCell>
-													<TableCell
-														className='text-[#14151A] dark:text-gray-700'
-														sx={{ fontWeight: 'bold' }}
-													>
-														Waiting
-													</TableCell>
-													<TableCell
-														className='text-[#14151A] dark:text-gray-700'
-														sx={{ fontWeight: 'bold' }}
-													>
-														Waiting Charge
-													</TableCell>
-													<TableCell
-														className='text-[#14151A] dark:text-gray-700'
-														sx={{ fontWeight: 'bold' }}
-													>
-														Actual Miles
-													</TableCell>
-													<TableCell
-														className='text-[#14151A] dark:text-gray-700'
-														sx={{ fontWeight: 'bold' }}
-													>
-														<TableSortLabel
-															active={orderBy === 'driverFare'}
-															direction={order}
-															onClick={() => handleSort('driverFare')}
-															sx={{
-																'&:hover': { color: '#9A9CAE' }, // Change color on hover
-																'&.Mui-active': { color: '#9A9CAE' },
-																'&.Mui-active .MuiTableSortLabel-icon': {
-																	color: '#9A9CAE',
-																}, // Change to blue when active
-															}}
+															<TableSortLabel
+																active={orderBy === 'date'}
+																direction={order}
+																onClick={() => handleSort('date')}
+																sx={{
+																	'&:hover': { color: '#9A9CAE' }, // Change color on hover
+																	'&.Mui-active': { color: '#9A9CAE' },
+																	'&.Mui-active .MuiTableSortLabel-icon': {
+																		color: '#9A9CAE',
+																	}, // Change to blue when active
+																}}
+															>
+																Date
+															</TableSortLabel>
+														</TableCell>
+														<TableCell
+															className='text-[#14151A] dark:text-gray-700'
+															sx={{ fontWeight: 'bold' }}
 														>
-															Driver £
-														</TableSortLabel>
-													</TableCell>
-													<TableCell
-														className='text-[#14151A] dark:text-gray-700'
-														sx={{ fontWeight: 'bold' }}
-													>
-														<TableSortLabel
-															active={orderBy === 'journeyCharge'}
-															direction={order}
-															onClick={() => handleSort('journeyCharge')}
-															sx={{
-																'&:hover': { color: '#9A9CAE' }, // Change color on hover
-																'&.Mui-active': { color: '#9A9CAE' },
-																'&.Mui-active .MuiTableSortLabel-icon': {
-																	color: '#9A9CAE',
-																}, // Change to blue when active
-															}}
+															Acc #
+														</TableCell>
+														<TableCell
+															className='text-[#14151A] dark:text-gray-700'
+															sx={{ fontWeight: 'bold' }}
 														>
-															Journey Charge
-														</TableSortLabel>
-													</TableCell>
-													<TableCell
-														className='text-[#14151A] dark:text-gray-700'
-														sx={{ fontWeight: 'bold' }}
-													>
-														Parking
-													</TableCell>
-													<TableCell
-														className='text-[#14151A] dark:text-gray-700 font-semibold'
-														sx={{ fontWeight: 'bold' }}
-													>
-														Total
-													</TableCell>
-													<TableCell
-														className='text-gray-900 dark:text-gray-700'
-														sx={{ fontWeight: 'bold' }}
-													>
-														Price
-													</TableCell>
-													<TableCell
-														className='text-gray-900 dark:text-gray-700'
-														sx={{ fontWeight: 'bold' }}
-													>
-														Post
-													</TableCell>
-													<TableCell
-														className='text-gray-900 dark:text-gray-700'
-														sx={{ fontWeight: 'bold' }}
-													>
-														Cancel
-													</TableCell>
-												</TableRow>
-											</TableHead>
+															Driver #
+														</TableCell>
+														<TableCell
+															className='text-[#14151A] dark:text-gray-700'
+															sx={{ fontWeight: 'bold' }}
+														>
+															Pickup
+														</TableCell>
+														<TableCell
+															className='text-[#14151A] dark:text-gray-700'
+															sx={{ fontWeight: 'bold' }}
+														>
+															Destination
+														</TableCell>
+														<TableCell
+															className='text-[#14151A] dark:text-gray-700'
+															sx={{ fontWeight: 'bold' }}
+														>
+															Passenger
+														</TableCell>
+														<TableCell
+															className='text-[#14151A] dark:text-gray-700'
+															sx={{ fontWeight: 'bold' }}
+														>
+															Has Vias
+														</TableCell>
+														<TableCell
+															className='text-[#14151A] dark:text-gray-700'
+															sx={{ fontWeight: 'bold' }}
+														>
+															Waiting
+														</TableCell>
+														<TableCell
+															className='text-[#14151A] dark:text-gray-700'
+															sx={{ fontWeight: 'bold' }}
+														>
+															Waiting Charge
+														</TableCell>
+														<TableCell
+															className='text-[#14151A] dark:text-gray-700'
+															sx={{ fontWeight: 'bold' }}
+														>
+															Actual Miles
+														</TableCell>
+														<TableCell
+															className='text-[#14151A] dark:text-gray-700'
+															sx={{ fontWeight: 'bold' }}
+														>
+															<TableSortLabel
+																active={orderBy === 'driverFare'}
+																direction={order}
+																onClick={() => handleSort('driverFare')}
+																sx={{
+																	'&:hover': { color: '#9A9CAE' }, // Change color on hover
+																	'&.Mui-active': { color: '#9A9CAE' },
+																	'&.Mui-active .MuiTableSortLabel-icon': {
+																		color: '#9A9CAE',
+																	}, // Change to blue when active
+																}}
+															>
+																Driver £
+															</TableSortLabel>
+														</TableCell>
+														<TableCell
+															className='text-[#14151A] dark:text-gray-700'
+															sx={{ fontWeight: 'bold' }}
+														>
+															<TableSortLabel
+																active={orderBy === 'journeyCharge'}
+																direction={order}
+																onClick={() => handleSort('journeyCharge')}
+																sx={{
+																	'&:hover': { color: '#9A9CAE' }, // Change color on hover
+																	'&.Mui-active': { color: '#9A9CAE' },
+																	'&.Mui-active .MuiTableSortLabel-icon': {
+																		color: '#9A9CAE',
+																	}, // Change to blue when active
+																}}
+															>
+																Journey Charge
+															</TableSortLabel>
+														</TableCell>
+														<TableCell
+															className='text-[#14151A] dark:text-gray-700'
+															sx={{ fontWeight: 'bold' }}
+														>
+															Parking
+														</TableCell>
+														<TableCell
+															className='text-[#14151A] dark:text-gray-700 font-semibold'
+															sx={{ fontWeight: 'bold' }}
+														>
+															Total
+														</TableCell>
+														<TableCell
+															className='text-gray-900 dark:text-gray-700'
+															sx={{ fontWeight: 'bold' }}
+														>
+															Price
+														</TableCell>
+														<TableCell
+															className='text-gray-900 dark:text-gray-700'
+															sx={{ fontWeight: 'bold' }}
+														>
+															Post
+														</TableCell>
+														<TableCell
+															className='text-gray-900 dark:text-gray-700'
+															sx={{ fontWeight: 'bold' }}
+														>
+															Cancel
+														</TableCell>
+													</TableRow>
+												</TableHead>
 
-											<TableBody
-												sx={{
-													'& .MuiTableCell-root': {
-														borderBottom: '1px solid #464852',
-													},
-												}}
-											>
-												{sortedBookings.map((row) => (
-													<>
-														{priceBaseModal && (
-															<PriceBase
-																open={priceBaseModal}
-																onOpenChange={handleClose}
-																bookingId={row?.id}
-																handleShow={handleShow}
+												<TableBody
+													sx={{
+														'& .MuiTableCell-root': {
+															borderBottom: '1px solid #464852',
+														},
+													}}
+												>
+													{sortedBookings.map((row) => (
+														<>
+															{priceBaseModal && (
+																<PriceBase
+																	open={priceBaseModal}
+																	onOpenChange={handleClose}
+																	bookingId={row?.id}
+																	handleShow={handleShow}
+																/>
+															)}
+															<RowNotPriced
+																key={row.id}
+																row={row}
+																setPriceBaseModal={setPriceBaseModal}
+																handlePostButton={handlePostButton}
 															/>
-														)}
-														<RowNotPriced
-															key={row.id}
-															row={row}
-															setPriceBaseModal={setPriceBaseModal}
-															handlePostButton={handlePostButton}
-														/>
-													</>
-												))}
-											</TableBody>
-										</Table>
-									</TableContainer>
+														</>
+													))}
+												</TableBody>
+											</Table>
+										</TableContainer>
+									) : (
+										<div className='text-start ml-4  text-gray-500'>
+											⚠️ No data found
+										</div>
+									)}
 								</div>
-								<div className='card-body'>
+								<div className='card-body mt-10'>
 									<div className='flex justify-start items-center gap-4 ml-4 mt-2 mb-2'>
 										Ready for Invoicing -{' '}
 										{accountChargeableJobs?.priced?.length}
@@ -1153,191 +1168,197 @@ function InvoiceProcessor() {
 											Process Driver {accountChargeableJobs?.priced?.length}
 										</button>
 									</div>
-									<TableContainer
-										component={Paper}
-										className='shadow-none bg-white dark:bg-[#14151A] overflow-x-auto'
-									>
-										<Table className='text-[#14151A] dark:text-gray-100'>
-											<TableHead
-												className='bg-gray-100 dark:bg-[#14151A]'
-												sx={{
-													'& .MuiTableCell-root': {
-														borderBottom: '1px solid #464852',
-													},
-												}}
-											>
-												<TableRow>
-													<TableCell />
-													<TableCell
-														className='text-[#14151A] dark:text-gray-700'
-														sx={{ fontWeight: 'bold' }}
-													>
-														<TableSortLabel
-															active={orderBy === 'id'}
-															direction={order}
-															onClick={() => handleSort('id')}
-															sx={{
-																'&:hover': { color: '#9A9CAE' }, // Change color on hover
-																'&.Mui-active': { color: '#9A9CAE' },
-																'&.Mui-active .MuiTableSortLabel-icon': {
-																	color: '#9A9CAE',
-																}, // Change to blue when active
-															}}
+									{sortedPricedBookings.length > 0 ? (
+										<TableContainer
+											component={Paper}
+											className='shadow-none bg-white dark:bg-[#14151A] overflow-x-auto'
+										>
+											<Table className='text-[#14151A] dark:text-gray-100'>
+												<TableHead
+													className='bg-gray-100 dark:bg-[#14151A]'
+													sx={{
+														'& .MuiTableCell-root': {
+															borderBottom: '1px solid #464852',
+														},
+													}}
+												>
+													<TableRow>
+														<TableCell />
+														<TableCell
+															className='text-[#14151A] dark:text-gray-700'
+															sx={{ fontWeight: 'bold' }}
 														>
-															#
-														</TableSortLabel>
-													</TableCell>
-													<TableCell
-														className='text-[#14151A] dark:text-gray-700'
-														sx={{ fontWeight: 'bold' }}
-													>
-														<TableSortLabel
-															active={orderBy === 'date'}
-															direction={order}
-															onClick={() => handleSort('date')}
-															sx={{
-																'&:hover': { color: '#9A9CAE' }, // Change color on hover
-																'&.Mui-active': { color: '#9A9CAE' },
-																'&.Mui-active .MuiTableSortLabel-icon': {
-																	color: '#9A9CAE',
-																}, // Change to blue when active
-															}}
+															<TableSortLabel
+																active={orderBy === 'id'}
+																direction={order}
+																onClick={() => handleSort('id')}
+																sx={{
+																	'&:hover': { color: '#9A9CAE' }, // Change color on hover
+																	'&.Mui-active': { color: '#9A9CAE' },
+																	'&.Mui-active .MuiTableSortLabel-icon': {
+																		color: '#9A9CAE',
+																	}, // Change to blue when active
+																}}
+															>
+																#
+															</TableSortLabel>
+														</TableCell>
+														<TableCell
+															className='text-[#14151A] dark:text-gray-700'
+															sx={{ fontWeight: 'bold' }}
 														>
-															Date
-														</TableSortLabel>
-													</TableCell>
-													<TableCell
-														className='text-[#14151A] dark:text-gray-700'
-														sx={{ fontWeight: 'bold' }}
-													>
-														Acc #
-													</TableCell>
-													<TableCell
-														className='text-[#14151A] dark:text-gray-700'
-														sx={{ fontWeight: 'bold' }}
-													>
-														Driver #
-													</TableCell>
-													<TableCell
-														className='text-[#14151A] dark:text-gray-700'
-														sx={{ fontWeight: 'bold' }}
-													>
-														Pickup
-													</TableCell>
-													<TableCell
-														className='text-[#14151A] dark:text-gray-700'
-														sx={{ fontWeight: 'bold' }}
-													>
-														Destination
-													</TableCell>
-													<TableCell
-														className='text-[#14151A] dark:text-gray-700'
-														sx={{ fontWeight: 'bold' }}
-													>
-														Passenger
-													</TableCell>
-													<TableCell
-														className='text-[#14151A] dark:text-gray-700'
-														sx={{ fontWeight: 'bold' }}
-													>
-														Has Vias
-													</TableCell>
-													<TableCell
-														className='text-[#14151A] dark:text-gray-700'
-														sx={{ fontWeight: 'bold' }}
-													>
-														Waiting
-													</TableCell>
-													<TableCell
-														className='text-[#14151A] dark:text-gray-700'
-														sx={{ fontWeight: 'bold' }}
-													>
-														Waiting Charge
-													</TableCell>
-													<TableCell
-														className='text-[#14151A] dark:text-gray-700'
-														sx={{ fontWeight: 'bold' }}
-													>
-														Actual Miles
-													</TableCell>
-													<TableCell
-														className='text-[#14151A] dark:text-gray-700'
-														sx={{ fontWeight: 'bold' }}
-													>
-														<TableSortLabel
-															active={orderBy === 'driverFare'}
-															direction={order}
-															onClick={() => handleSort('driverFare')}
-															sx={{
-																'&:hover': { color: '#9A9CAE' }, // Change color on hover
-																'&.Mui-active': { color: '#9A9CAE' },
-																'&.Mui-active .MuiTableSortLabel-icon': {
-																	color: '#9A9CAE',
-																}, // Change to blue when active
-															}}
+															<TableSortLabel
+																active={orderBy === 'date'}
+																direction={order}
+																onClick={() => handleSort('date')}
+																sx={{
+																	'&:hover': { color: '#9A9CAE' }, // Change color on hover
+																	'&.Mui-active': { color: '#9A9CAE' },
+																	'&.Mui-active .MuiTableSortLabel-icon': {
+																		color: '#9A9CAE',
+																	}, // Change to blue when active
+																}}
+															>
+																Date
+															</TableSortLabel>
+														</TableCell>
+														<TableCell
+															className='text-[#14151A] dark:text-gray-700'
+															sx={{ fontWeight: 'bold' }}
 														>
-															Driver £
-														</TableSortLabel>
-													</TableCell>
-													<TableCell
-														className='text-[#14151A] dark:text-gray-700'
-														sx={{ fontWeight: 'bold' }}
-													>
-														<TableSortLabel
-															active={orderBy === 'journeyCharge'}
-															direction={order}
-															onClick={() => handleSort('journeyCharge')}
-															sx={{
-																'&:hover': { color: '#9A9CAE' }, // Change color on hover
-																'&.Mui-active': { color: '#9A9CAE' },
-																'&.Mui-active .MuiTableSortLabel-icon': {
-																	color: '#9A9CAE',
-																}, // Change to blue when active
-															}}
+															Acc #
+														</TableCell>
+														<TableCell
+															className='text-[#14151A] dark:text-gray-700'
+															sx={{ fontWeight: 'bold' }}
 														>
-															Journey Charge
-														</TableSortLabel>
-													</TableCell>
-													<TableCell
-														className='text-[#14151A] dark:text-gray-700'
-														sx={{ fontWeight: 'bold' }}
-													>
-														Parking
-													</TableCell>
-													<TableCell
-														className='text-[#14151A] dark:text-gray-700 font-semibold'
-														sx={{ fontWeight: 'bold' }}
-													>
-														Total
-													</TableCell>
-													<TableCell
-														className='text-gray-900 dark:text-gray-700'
-														sx={{ fontWeight: 'bold' }}
-													>
-														Revert
-													</TableCell>
-												</TableRow>
-											</TableHead>
+															Driver #
+														</TableCell>
+														<TableCell
+															className='text-[#14151A] dark:text-gray-700'
+															sx={{ fontWeight: 'bold' }}
+														>
+															Pickup
+														</TableCell>
+														<TableCell
+															className='text-[#14151A] dark:text-gray-700'
+															sx={{ fontWeight: 'bold' }}
+														>
+															Destination
+														</TableCell>
+														<TableCell
+															className='text-[#14151A] dark:text-gray-700'
+															sx={{ fontWeight: 'bold' }}
+														>
+															Passenger
+														</TableCell>
+														<TableCell
+															className='text-[#14151A] dark:text-gray-700'
+															sx={{ fontWeight: 'bold' }}
+														>
+															Has Vias
+														</TableCell>
+														<TableCell
+															className='text-[#14151A] dark:text-gray-700'
+															sx={{ fontWeight: 'bold' }}
+														>
+															Waiting
+														</TableCell>
+														<TableCell
+															className='text-[#14151A] dark:text-gray-700'
+															sx={{ fontWeight: 'bold' }}
+														>
+															Waiting Charge
+														</TableCell>
+														<TableCell
+															className='text-[#14151A] dark:text-gray-700'
+															sx={{ fontWeight: 'bold' }}
+														>
+															Actual Miles
+														</TableCell>
+														<TableCell
+															className='text-[#14151A] dark:text-gray-700'
+															sx={{ fontWeight: 'bold' }}
+														>
+															<TableSortLabel
+																active={orderBy === 'driverFare'}
+																direction={order}
+																onClick={() => handleSort('driverFare')}
+																sx={{
+																	'&:hover': { color: '#9A9CAE' }, // Change color on hover
+																	'&.Mui-active': { color: '#9A9CAE' },
+																	'&.Mui-active .MuiTableSortLabel-icon': {
+																		color: '#9A9CAE',
+																	}, // Change to blue when active
+																}}
+															>
+																Driver £
+															</TableSortLabel>
+														</TableCell>
+														<TableCell
+															className='text-[#14151A] dark:text-gray-700'
+															sx={{ fontWeight: 'bold' }}
+														>
+															<TableSortLabel
+																active={orderBy === 'journeyCharge'}
+																direction={order}
+																onClick={() => handleSort('journeyCharge')}
+																sx={{
+																	'&:hover': { color: '#9A9CAE' }, // Change color on hover
+																	'&.Mui-active': { color: '#9A9CAE' },
+																	'&.Mui-active .MuiTableSortLabel-icon': {
+																		color: '#9A9CAE',
+																	}, // Change to blue when active
+																}}
+															>
+																Journey Charge
+															</TableSortLabel>
+														</TableCell>
+														<TableCell
+															className='text-[#14151A] dark:text-gray-700'
+															sx={{ fontWeight: 'bold' }}
+														>
+															Parking
+														</TableCell>
+														<TableCell
+															className='text-[#14151A] dark:text-gray-700 font-semibold'
+															sx={{ fontWeight: 'bold' }}
+														>
+															Total
+														</TableCell>
+														<TableCell
+															className='text-gray-900 dark:text-gray-700'
+															sx={{ fontWeight: 'bold' }}
+														>
+															Revert
+														</TableCell>
+													</TableRow>
+												</TableHead>
 
-											<TableBody
-												sx={{
-													'& .MuiTableCell-root': {
-														borderBottom: '1px solid #464852',
-													},
-												}}
-											>
-												{sortedPricedBookings.map((row) => (
-													<>
-														<RowPriced
-															key={row.id}
-															row={row}
-															handleRevert={handleRevert}
-														/>
-													</>
-												))}
-											</TableBody>
-										</Table>
-									</TableContainer>
+												<TableBody
+													sx={{
+														'& .MuiTableCell-root': {
+															borderBottom: '1px solid #464852',
+														},
+													}}
+												>
+													{sortedPricedBookings.map((row) => (
+														<>
+															<RowPriced
+																key={row.id}
+																row={row}
+																handleRevert={handleRevert}
+															/>
+														</>
+													))}
+												</TableBody>
+											</Table>
+										</TableContainer>
+									) : (
+										<div className='text-start ml-4  text-gray-500'>
+											⚠️ No data found
+										</div>
+									)}
 								</div>
 							</div>
 						</div>
