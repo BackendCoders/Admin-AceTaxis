@@ -132,6 +132,7 @@ function RowNotPriced({ row, setPriceBaseModal, handlePostButton }) {
 
 			if (response?.status === 'success') {
 				console.log(response);
+				toast.success('Value Updated');
 			}
 		} catch (error) {
 			console.error('Error updating charges:', error);
