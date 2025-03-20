@@ -14,6 +14,13 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from '@/components/ui/popover';
+import {
+	Select,
+	SelectTrigger,
+	SelectContent,
+	SelectItem,
+	SelectValue,
+} from '@/components/ui/select';
 import { Calendar } from '@/components/ui/calendar';
 import { format, subDays } from 'date-fns';
 import { cn } from '@/lib/utils';
@@ -29,6 +36,7 @@ import {
 	setWeekEnd,
 } from '../../../slices/availabilitySlice';
 import toast from 'react-hot-toast';
+import { refreshAllDrivers } from '../../../slices/driverSlice';
 
 const AvailabilityReport = () => {
 	const dispatch = useDispatch();
@@ -44,6 +52,7 @@ const AvailabilityReport = () => {
 	const [open, setOpen] = useState(false); // State to control Popover open/close
 	const [selectedTab, setSelectedTab] = useState('dayHours');
 	const [driverNumber, setDriverNumber] = useState();
+	const { drivers } = useSelector((state) => state.driver);
 	const [dateRange, setDateRange] = useState({
 		from: subDays(new Date(), 30), // December 28, 2024
 		to: new Date(), // January 28, 2025
@@ -69,7 +78,7 @@ const AvailabilityReport = () => {
 	}, [dispatch]);
 
 	const handleSearch = async () => {
-		if (!driverNumber?.trim()) {
+		if (!String(driverNumber)?.trim()) {
 			toast.error('Please enter a Driver ID');
 			return;
 		}
@@ -370,6 +379,10 @@ const AvailabilityReport = () => {
 		return [];
 	}, [dataByTab, monthNames, selectedTab, weekDayNames]);
 
+	useEffect(() => {
+		dispatch(refreshAllDrivers());
+	}, [dispatch]);
+
 	return (
 		<Fragment>
 			<div className='pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1580px] w-full'>
@@ -388,7 +401,7 @@ const AvailabilityReport = () => {
 							<div className='card-header flex-wrap gap-2'>
 								<div className='flex flex-wrap gap-2 lg:gap-5'>
 									<div className='flex flex-wrap gap-2 w-full justify-start items-center'>
-										<label
+										{/* <label
 											className='input input-sm w-36'
 											style={{ height: '36px' }}
 										>
@@ -399,7 +412,29 @@ const AvailabilityReport = () => {
 												value={driverNumber}
 												onChange={(e) => setDriverNumber(e.target.value)}
 											/>
-										</label>
+										</label> */}
+										<Select
+											value={driverNumber}
+											onValueChange={(value) => setDriverNumber(value)}
+										>
+											<SelectTrigger
+												className='w-40 hover:shadow-lg'
+												size='sm'
+												style={{ height: '40px' }}
+											>
+												<SelectValue placeholder='Select' />
+											</SelectTrigger>
+											<SelectContent className='w-36'>
+												{drivers?.length > 0 &&
+													drivers?.map((driver) => (
+														<>
+															<SelectItem value={driver?.id}>
+																{driver?.id} - {driver?.fullName}
+															</SelectItem>
+														</>
+													))}
+											</SelectContent>
+										</Select>
 
 										<Popover
 											open={open}

@@ -33,8 +33,10 @@ import {
 import { Input } from '@/components/ui/input';
 import { driverEarningsReport } from '../../../service/operations/dashboardApi';
 import toast from 'react-hot-toast';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { refreshAllDrivers } from '../../../slices/driverSlice';
 function DriverEarningReport() {
+	const dispatch = useDispatch();
 	const [loading, setLoading] = useState(false); // ✅ Track loading state
 	const [chartData, setChartData] = useState({
 		data: [],
@@ -311,6 +313,10 @@ function DriverEarningReport() {
 			});
 		};
 	}, []);
+
+	useEffect(() => {
+		dispatch(refreshAllDrivers());
+	}, [dispatch]);
 
 	return (
 		<Fragment>

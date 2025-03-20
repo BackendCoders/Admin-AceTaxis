@@ -89,9 +89,7 @@ const AvailabilityLogs = () => {
 				cell: ({ row }) => (
 					<span className={`font-medium ${row.original.color}`}>
 						{row.original.forDate
-							? new Date(row.original.forDate).toLocaleDateString('en-GB') +
-								' ' +
-								row.original.forDate.split('T')[1]?.split('.')[0]?.slice(0, 5)
+							? new Date(row.original.forDate).toLocaleDateString('en-GB')
 							: '-'}
 					</span>
 				),

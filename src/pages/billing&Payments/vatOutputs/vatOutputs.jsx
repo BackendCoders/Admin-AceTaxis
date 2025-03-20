@@ -8,17 +8,26 @@ import {
 	PopoverTrigger,
 } from '@/components/ui/popover';
 import { Calendar } from '@/components/ui/calendar';
-import { format } from 'date-fns';
+import { format, subDays } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { KeenIcon } from '@/components';
 import { getVATOutputs } from '../../../service/operations/billing&Payment';
 import toast from 'react-hot-toast';
 
 const VatOutputs = () => {
+	const [open, setOpen] = useState(false);
 	const [dateRange, setDateRange] = useState({
-		from: new Date(), // January 31, 2025
+		from: subDays(new Date(), 30), // January 31, 2025
 		to: new Date(), // Same default date
 	});
+
+	const handleDateSelect = (range) => {
+		setDateRange(range); // Update the date range
+		// Close the popover if both from and to dates are selected
+		if (range?.from && range?.to) {
+			setOpen(false);
+		}
+	};
 
 	const handleClick = async (e) => {
 		e.preventDefault();
@@ -57,9 +66,12 @@ const VatOutputs = () => {
 		// do something when the button is clicked
 	};
 
-	const DateRangePicker = ({ dateRange, setDateRange }) => (
+	const DateRangePicker = ({ dateRange, handleDateSelect }) => (
 		<div className='flex flex-col'>
-			<Popover>
+			<Popover
+				open={open}
+				onOpenChange={setOpen}
+			>
 				<PopoverTrigger asChild>
 					<button
 						className={cn(
@@ -93,7 +105,7 @@ const VatOutputs = () => {
 					<Calendar
 						mode='range'
 						selected={dateRange}
-						onSelect={setDateRange}
+						onSelect={handleDateSelect}
 						numberOfMonths={2}
 						initialFocus
 					/>
@@ -117,7 +129,7 @@ const VatOutputs = () => {
 				<div className='flex flex-col'>
 					<DateRangePicker
 						dateRange={dateRange}
-						setDateRange={setDateRange}
+						handleDateSelect={handleDateSelect}
 					/>
 				</div>
 
