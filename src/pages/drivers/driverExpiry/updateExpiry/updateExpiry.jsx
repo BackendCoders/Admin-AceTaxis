@@ -21,23 +21,17 @@ import { updateDriverExpirys } from '../../../../service/operations/driverApi';
 import { useDispatch, useSelector } from 'react-redux';
 import { refreshAllDriversExpiry } from '../../../../slices/driverSlice';
 import toast from 'react-hot-toast';
-import {
-	Popover,
-	PopoverContent,
-	PopoverTrigger,
-} from '@/components/ui/popover';
-import { KeenIcon } from '@/components';
-import { Calendar } from '@/components/ui/calendar';
-import { format } from 'date-fns';
-import { cn } from '@/lib/utils';
+import clsx from 'clsx';
 import { useState } from 'react';
+import { formatMyDate } from '../../../../utils/Date';
 function UpdateDriverExpiry({ open, onOpenChange }) {
 	const dispatch = useDispatch();
 	const { driversExpiry } = useSelector((state) => state.driver);
 	const [date, setDate] = useState(
-		driversExpiry.expiryDate ? new Date(driversExpiry.expiryDate) : new Date()
+		driversExpiry.expiryDate
+			? formatMyDate(new Date(driversExpiry.expiryDate))
+			: formatMyDate(new Date())
 	);
-
 	const addLocalSchema = Yup.object().shape({
 		docType: Yup.number().required('Document type is required'),
 		expiryDate: Yup.date().required('Expiry date is required'),
@@ -45,7 +39,8 @@ function UpdateDriverExpiry({ open, onOpenChange }) {
 
 	const initialValues = {
 		docType: driversExpiry.documentType || 0,
-		expiryDate: driversExpiry.expiryDate || new Date().toISOString(),
+		expiryDate:
+			formatMyDate(driversExpiry.expiryDate) || formatMyDate(new Date()),
 	};
 
 	const formik = useFormik({
@@ -56,7 +51,7 @@ function UpdateDriverExpiry({ open, onOpenChange }) {
 				const payload = {
 					userId: driversExpiry?.userId || 0,
 					docType: values.docType || 0,
-					expiryDate: values.expiryDate || '2025-03-07T06:30:28.204Z',
+					expiryDate: values.expiryDate || date,
 				};
 				const response = await updateDriverExpirys(payload);
 				if (response.status === 'success') {
@@ -75,11 +70,25 @@ function UpdateDriverExpiry({ open, onOpenChange }) {
 	});
 
 	// ✅ Handle Date Change in Formik
-	const handleDateChange = (selectedDate) => {
-		if (selectedDate) {
-			setDate(selectedDate);
-			formik.setFieldValue('expiryDate', selectedDate.toISOString());
+	const handleDateTimeChange = (e) => {
+		const dateTimeValue = e.target.value; // e.g., "2025-03-07T06:30"
+		if (dateTimeValue) {
+			// Convert to ISO string with seconds (required by API)
+			const selectedDate = new Date(dateTimeValue);
+			setDate(formatMyDate(selectedDate));
+			formik.setFieldValue('expiryDate', formatMyDate(selectedDate));
 		}
+	};
+
+	const formatDateForInput = (date) => {
+		if (!date) return '';
+		const d = new Date(date);
+		const year = d.getFullYear();
+		const month = String(d.getMonth() + 1).padStart(2, '0');
+		const day = String(d.getDate()).padStart(2, '0');
+		const hours = String(d.getHours()).padStart(2, '0');
+		const minutes = String(d.getMinutes()).padStart(2, '0');
+		return `${year}-${month}-${day}T${hours}:${minutes}`;
 	};
 
 	return (
@@ -104,8 +113,7 @@ function UpdateDriverExpiry({ open, onOpenChange }) {
 						<div className='w-full flex justify-center items-center gap-2'>
 							<div className='flex flex-col gap-1 pb-2 w-[50%]'>
 								<label className='form-label text-gray-900'>Expiry Date</label>
-
-								<Popover>
+								{/* <Popover>
 									<PopoverTrigger asChild>
 										<button
 											id='date'
@@ -139,7 +147,23 @@ function UpdateDriverExpiry({ open, onOpenChange }) {
 											numberOfMonths={1}
 										/>
 									</PopoverContent>
-								</Popover>
+								</Popover> */}
+
+								<label className='input'>
+									<input
+										type='datetime-local'
+										placeholder='Enter Expiry Date'
+										autoComplete='off'
+										value={formatDateForInput(formik.values.expiryDate)}
+										onChange={handleDateTimeChange}
+										step='60'
+										className={clsx('form-control', {
+											'is-invalid':
+												formik.touched.expiryDate && formik.errors.expiryDate,
+										})}
+									/>
+								</label>
+
 								{/* ✅ Show Formik Validation Error */}
 								{formik.touched.expiryDate && formik.errors.expiryDate && (
 									<span

@@ -4,7 +4,6 @@ import { toast } from 'sonner';
 import { useState, useMemo, useEffect } from 'react';
 
 import { useSelector } from 'react-redux';
-import isLightColor from '../../../../../utils/isLight';
 function DayEarning() {
 	const { driverDaysEarnings } = useSelector((state) => state.dashboard);
 	const [searchQuery, setSearchQuery] = useState('');
@@ -25,17 +24,8 @@ function DayEarning() {
 				header: <span className='font-bold'>Driver</span>,
 				enableSorting: true,
 				cell: (info) => {
-					const rowData = info.row.original;
-					const bgColor = rowData.colourCode || '#ffffff'; // Default to white if color is missing
-
 					return (
-						<div
-							className='p-1 rounded text-gray-900 font-semibold'
-							style={{
-								backgroundColor: bgColor, // ✅ Apply background color dynamically
-								color: isLightColor(bgColor) ? 'black' : 'white', // ✅ Ensure readable text
-							}}
-						>
+						<div className='p-1 rounded text-gray-900 font-semibold'>
 							{info.getValue()}
 						</div>
 					);

@@ -47,21 +47,51 @@ function DriverExpiryList() {
 	const [selectedDriver, setSelectedDriver] = useState(0);
 	const [editDriverModal, setEditDriverModal] = useState(false);
 	const [selectedType, setSelectedType] = useState('9');
+	const [selectedExpiryType, setSelectedExpiryType] = useState('all');
 	// const [deleteDriverModal, setDeleteDriverModal] = useState(false);
 	// const [date, setDate] = useState(new Date());
 
 	const filteredDriver = driversExpiryList?.filter((driver) => {
-		const isMatch = selectedDriver === 0 || driver?.userId === selectedDriver;
+		// Ensure driver exists before filtering
+		if (!driver) return false;
 
-		// If selectedType is "9", return all drivers without filtering by documentType
-		if (selectedType === '9') {
-			return isMatch;
+		// Get today's date and reset time for accurate comparison
+		const today = new Date();
+		today.setHours(0, 0, 0, 0);
+
+		// Ensure expiryDate is valid and parsed correctly
+		const expiryDate = driver?.expiryDate ? new Date(driver.expiryDate) : null;
+		if (expiryDate) expiryDate.setHours(0, 0, 0, 0); // Normalize time
+
+		// Check if driver filter should be applied (if NOT 'all', apply filtering)
+		const isMatch =
+			selectedDriver === 0 ||
+			selectedDriver === 'all' ||
+			driver?.userId === selectedDriver;
+
+		// Check if document type filter should be applied (if NOT 'all', apply filtering)
+		const isTypeMatch =
+			selectedType === '' ||
+			selectedType === '9' ||
+			selectedType === 'all' ||
+			String(driver?.documentType) === selectedType;
+
+		// Check expiry filter
+		let isExpiryMatch = true; // Default to true in case no expiry filter is selected
+		if (expiryDate) {
+			if (selectedExpiryType === 'expiring') {
+				isExpiryMatch = expiryDate > today; // Expiring (expiryDate is in the future)
+			} else if (selectedExpiryType === 'expired') {
+				isExpiryMatch = expiryDate < today; // Expired (expiryDate is in the past)
+			}
 		}
 
-		const isTypeMatch =
-			selectedType === '' || String(driver?.documentType) === selectedType;
-
-		return isMatch && isTypeMatch;
+		// Apply filters independently using OR (||) instead of AND (&&)
+		return (
+			(selectedDriver === 'all' || isMatch) &&
+			(selectedType === 'all' || isTypeMatch) &&
+			(selectedExpiryType === 'all' || isExpiryMatch)
+		);
 	});
 
 	const ColumnInputFilter = ({ column }) => {
@@ -167,9 +197,13 @@ function DriverExpiryList() {
 						bgColor = 'text-orange-500'; // Expired more than 7 days ago
 					} else if (daysDiff < -1) {
 						bgColor = 'text-red-500'; // Expired within the last 1-7 days
+					} else {
+						bgColor = 'text-black';
 					}
 					return (
-						<span className={`p-2 rounded-md whitespace-nowrap ${bgColor}`}>
+						<span
+							className={`p-2 rounded-md whitespace-nowrap ${bgColor} bg-white font-semibold`}
+						>
 							{new Date(
 								row.original.expiryDate?.split('T')[0]
 							)?.toLocaleDateString('en-GB')}{' '}
@@ -432,6 +466,23 @@ function DriverExpiryList() {
 												<SelectItem value='5'>SafeGuarding</SelectItem>
 												<SelectItem value='6'>FirstAidCert</SelectItem>
 												<SelectItem value='7'>DriverPhoto</SelectItem>
+											</SelectContent>
+										</Select>
+										<Select
+											value={selectedExpiryType}
+											onValueChange={(value) => setSelectedExpiryType(value)}
+										>
+											<SelectTrigger
+												className='w-32'
+												size='sm'
+												style={{ height: '40px' }}
+											>
+												<SelectValue placeholder='Select' />
+											</SelectTrigger>
+											<SelectContent className='w-36'>
+												<SelectItem value='all'>All</SelectItem>
+												<SelectItem value='expiring'>Expiring</SelectItem>
+												<SelectItem value='expired'>Expired</SelectItem>
 											</SelectContent>
 										</Select>
 										{/* <Popover>

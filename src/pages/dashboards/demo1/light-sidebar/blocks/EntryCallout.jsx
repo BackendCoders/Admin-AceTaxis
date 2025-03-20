@@ -5,7 +5,6 @@ import { toast } from 'sonner';
 import { useState, useMemo, useEffect } from 'react';
 
 import { useSelector } from 'react-redux';
-import isLightColor from '../../../../../utils/isLight';
 import { DayEarning } from './DriverDaysEarning';
 
 const EntryCallout = () => {
@@ -27,19 +26,8 @@ const EntryCallout = () => {
 				header: <span className='font-bold'>Driver</span>,
 				enableSorting: true,
 				cell: (info) => {
-					const rowData = info.row.original;
-					const bgColor = rowData.colourCode || '#ffffff'; // Default to white if color is missing
-
 					return (
-						<div
-							className='p-1 rounded font-semibold'
-							style={{
-								backgroundColor: bgColor, // ✅ Apply background color dynamically
-								color: isLightColor(bgColor) ? 'black' : 'white', // ✅ Ensure readable text
-							}}
-						>
-							{info.getValue()}
-						</div>
+						<div className='p-1 rounded font-semibold'>{info.getValue()}</div>
 					);
 				},
 				meta: { headerClassName: 'min-w-[120px]' },
@@ -48,18 +36,9 @@ const EntryCallout = () => {
 				accessorKey: 'jobsCount',
 				header: <span className='font-bold'>Jobs</span>,
 				enableSorting: true,
-				cell: ({ row, getValue }) => {
-					const bgColor = row.original?.colourCode || '#ffffff';
-					const textColor = isLightColor(bgColor) ? 'black' : 'white';
-
+				cell: ({ getValue }) => {
 					return (
-						<div
-							className='p-1 rounded text-center font-semibold'
-							style={{
-								backgroundColor: bgColor,
-								color: textColor,
-							}}
-						>
+						<div className='p-1 rounded text-center font-semibold'>
 							{getValue()}
 						</div>
 					);
@@ -68,20 +47,11 @@ const EntryCallout = () => {
 			},
 			{
 				accessorKey: 'cashEarned',
-				header:<span className='font-bold'>Cash</span>,
+				header: <span className='font-bold'>Cash</span>,
 				enableSorting: true,
-				cell: ({ row, getValue }) => {
-					const bgColor = row.original?.colourCode || '#ffffff';
-					const textColor = isLightColor(bgColor) ? 'black' : 'white';
-
+				cell: ({ getValue }) => {
 					return (
-						<div
-							className='p-1 rounded text-center font-semibold'
-							style={{
-								backgroundColor: bgColor,
-								color: textColor,
-							}}
-						>
+						<div className='p-1 rounded text-center font-semibold'>
 							£{getValue()?.toFixed(2)}
 						</div>
 					);
@@ -97,18 +67,9 @@ const EntryCallout = () => {
 				accessorKey: 'accEarned',
 				header: <span className='font-bold'>Acc</span>,
 				enableSorting: true,
-				cell: ({ row, getValue }) => {
-					const bgColor = row.original?.colourCode || '#ffffff';
-					const textColor = isLightColor(bgColor) ? 'black' : 'white';
-
+				cell: ({ getValue }) => {
 					return (
-						<div
-							className='p-1 rounded text-center font-semibold'
-							style={{
-								backgroundColor: bgColor,
-								color: textColor,
-							}}
-						>
+						<div className='p-1 rounded text-center font-semibold'>
 							£{getValue()?.toFixed(2)}
 						</div>
 					);
@@ -124,18 +85,9 @@ const EntryCallout = () => {
 				accessorKey: 'rankEarned',
 				header: <span className='font-bold'>Rank</span>,
 				enableSorting: true,
-				cell: ({ row, getValue }) => {
-					const bgColor = row.original?.colourCode || '#ffffff';
-					const textColor = isLightColor(bgColor) ? 'black' : 'white';
-
+				cell: ({ getValue }) => {
 					return (
-						<div
-							className='p-1 rounded text-center font-semibold'
-							style={{
-								backgroundColor: bgColor,
-								color: textColor,
-							}}
-						>
+						<div className='p-1 rounded text-center font-semibold'>
 							£{getValue()?.toFixed(2)}
 						</div>
 					);
@@ -151,18 +103,9 @@ const EntryCallout = () => {
 				accessorKey: 'commissionCash',
 				header: <span className='font-bold'>Cash Comms</span>,
 				enableSorting: true,
-				cell: ({ row, getValue }) => {
-					const bgColor = row.original?.colourCode || '#ffffff';
-					const textColor = isLightColor(bgColor) ? 'black' : 'white';
-
+				cell: ({ getValue }) => {
 					return (
-						<div
-							className='p-1 rounded text-center font-semibold'
-							style={{
-								backgroundColor: bgColor,
-								color: textColor,
-							}}
-						>
+						<div className='p-1 rounded text-center font-semibold'>
 							£{getValue()?.toFixed(2)}
 						</div>
 					);
@@ -178,18 +121,9 @@ const EntryCallout = () => {
 				accessorKey: 'commissionRank',
 				header: <span className='font-bold'>Rank Comms</span>,
 				enableSorting: true,
-				cell: ({ row, getValue }) => {
-					const bgColor = row.original?.colourCode || '#ffffff';
-					const textColor = isLightColor(bgColor) ? 'black' : 'white';
-
+				cell: ({ getValue }) => {
 					return (
-						<div
-							className='p-1 rounded text-center font-semibold'
-							style={{
-								backgroundColor: bgColor,
-								color: textColor,
-							}}
-						>
+						<div className='p-1 rounded text-center font-semibold'>
 							£{getValue()?.toFixed(2)}
 						</div>
 					);
@@ -205,18 +139,9 @@ const EntryCallout = () => {
 				accessorKey: 'takeHome',
 				header: <span className='font-bold'>Total</span>,
 				enableSorting: true,
-				cell: ({ row, getValue }) => {
-					const bgColor = row.original?.colourCode || '#ffffff';
-					const textColor = isLightColor(bgColor) ? 'black' : 'white';
-
+				cell: ({ getValue }) => {
 					return (
-						<div
-							className='p-1 rounded text-center font-semibold'
-							style={{
-								backgroundColor: bgColor,
-								color: textColor,
-							}}
-						>
+						<div className='p-1 rounded text-center font-semibold'>
 							£{getValue()?.toFixed(2)}
 						</div>
 					);
@@ -232,18 +157,9 @@ const EntryCallout = () => {
 				accessorKey: 'commission',
 				header: <span className='font-bold'>Total Comms</span>,
 				enableSorting: true,
-				cell: ({ row, getValue }) => {
-					const bgColor = row.original?.colourCode || '#ffffff';
-					const textColor = isLightColor(bgColor) ? 'black' : 'white';
-
+				cell: ({ getValue }) => {
 					return (
-						<div
-							className='p-1 rounded text-center font-semibold'
-							style={{
-								backgroundColor: bgColor,
-								color: textColor,
-							}}
-						>
+						<div className='p-1 rounded text-center font-semibold'>
 							£{getValue()?.toFixed(2)}
 						</div>
 					);
