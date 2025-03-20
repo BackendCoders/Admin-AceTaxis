@@ -276,7 +276,7 @@ function RowNotPriced({ row, setPriceBaseModal, handlePostButton }) {
 						onClick={() => setPriceBaseModal(true)}
 					>
 						<MoneyIcon
-							className={`${row?.coa ? 'text-blue-600 dark:text-white' : 'text-blue-500 dark:text-cyan-400'}  `}
+							className={`${row?.coa ? 'text-green-600 dark:text-white' : 'text-green-500 dark:text-green-400'}  `}
 						/>
 					</IconButton>
 				</TableCell>
