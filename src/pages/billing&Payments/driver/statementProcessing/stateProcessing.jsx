@@ -104,34 +104,40 @@ function RowNotPriced({ row, setPriceBaseModal, handlePostButton }) {
 		if (field === 'parking') setParking(newValue);
 	};
 
-	useEffect(() => {
-		const timer = setTimeout(() => {
-			const updateCharges = async () => {
-				try {
-					const payload = {
-						bookingId: row?.id || 0,
-						waitingMinutes: waiting || 0,
-						parkingCharge: parking || 0,
-						priceAccount: 0,
-						price: driverFare || 0,
-					};
+	const handleKeyPress = (event, nextField) => {
+		if (event.key === 'Enter') {
+			event.preventDefault(); // Prevent form submission
 
-					const response = await driverUpdateChargesData(payload);
+			// Trigger API call immediately
+			updateCharges();
 
-					if (response?.status === 'success') {
-						console.log(response);
-					}
-				} catch (error) {
-					console.error('Error updating charges:', error);
-				}
+			// Move focus to the next input field
+			if (nextField) {
+				document.querySelector(`input[name="${nextField}"]`)?.focus();
+			}
+		}
+	};
+
+	const updateCharges = async () => {
+		try {
+			const payload = {
+				bookingId: row?.id || 0,
+				waitingMinutes: waiting || 0,
+				parkingCharge: parking || 0,
+				priceAccount: 0,
+				price: driverFare || 0,
 			};
 
-			updateCharges(); // Call the async function
-		}, 500); // API calls after 500ms
+			const response = await driverUpdateChargesData(payload);
 
-		// Cleanup timeout if input changes again before 500ms
-		return () => clearTimeout(timer);
-	}, [waiting, driverFare, parking, row?.id]);
+			if (response?.status === 'success') {
+				toast.success('Value Updated');
+				console.log(response);
+			}
+		} catch (error) {
+			console.error('Error updating charges:', error);
+		}
+	};
 
 	return (
 		<>
@@ -200,9 +206,11 @@ function RowNotPriced({ row, setPriceBaseModal, handlePostButton }) {
 				>
 					<input
 						type='number'
+						name='waiting'
 						className='w-16 text-center border rounded p-1 bg-inherit ring-inherit dark:bg-inherit dark:ring-inherit'
 						value={waiting}
 						onChange={(e) => handleInputChange('waiting', +e.target.value)}
+						onKeyDown={(e) => handleKeyPress(e, 'driverFare')}
 					/>
 				</TableCell>
 				<TableCell
@@ -220,9 +228,11 @@ function RowNotPriced({ row, setPriceBaseModal, handlePostButton }) {
 				>
 					<input
 						type='number'
+						name='driverFare'
 						className='w-16 text-center border rounded p-1 bg-inherit ring-inherit dark:bg-inherit dark:ring-inherit'
 						value={driverFare}
 						onChange={(e) => handleInputChange('driverFare', +e.target.value)}
+						onKeyDown={(e) => handleKeyPress(e, 'parking')}
 					/>
 				</TableCell>
 				<TableCell
@@ -230,9 +240,11 @@ function RowNotPriced({ row, setPriceBaseModal, handlePostButton }) {
 				>
 					<input
 						type='number'
+						name='parking'
 						className='w-16 text-center border rounded p-1 bg-inherit ring-inherit dark:bg-inherit dark:ring-inherit'
 						value={parking}
 						onChange={(e) => handleInputChange('parking', +e.target.value)}
+						onKeyDown={(e) => handleKeyPress(e, null)}
 					/>
 				</TableCell>
 				<TableCell

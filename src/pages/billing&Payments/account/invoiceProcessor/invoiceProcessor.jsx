@@ -32,7 +32,7 @@ import {
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import MoneyIcon from '@mui/icons-material/Money';
 
-import { format } from 'date-fns';
+import { format, subDays } from 'date-fns';
 // import { Container } from '@/components/container';
 // import {
 // 	Select,
@@ -104,34 +104,39 @@ function RowNotPriced({ row, setPriceBaseModal, handlePostButton }) {
 		if (field === 'parking') setParking(newValue);
 	};
 
-	useEffect(() => {
-		const timer = setTimeout(() => {
-			const updateCharges = async () => {
-				try {
-					const payload = {
-						bookingId: row?.id || 0,
-						waitingMinutes: waiting || 0,
-						parkingCharge: parking || 0,
-						priceAccount: journeyCharge || 0,
-						price: driverFare || 0,
-					};
+	const handleKeyPress = (event, nextField) => {
+		if (event.key === 'Enter') {
+			event.preventDefault(); // Prevent form submission
 
-					const response = await accountUpdateChargesData(payload);
+			// Trigger API call immediately
+			updateCharges();
 
-					if (response?.status === 'success') {
-						console.log(response);
-					}
-				} catch (error) {
-					console.error('Error updating charges:', error);
-				}
+			// Move focus to the next input field
+			if (nextField) {
+				document.querySelector(`input[name="${nextField}"]`)?.focus();
+			}
+		}
+	};
+
+	const updateCharges = async () => {
+		try {
+			const payload = {
+				bookingId: row?.id || 0,
+				waitingMinutes: waiting || 0,
+				parkingCharge: parking || 0,
+				priceAccount: journeyCharge || 0,
+				price: driverFare || 0,
 			};
 
-			updateCharges(); // Call the async function
-		}, 500); // API calls after 500ms
+			const response = await accountUpdateChargesData(payload);
 
-		// Cleanup timeout if input changes again before 500ms
-		return () => clearTimeout(timer);
-	}, [waiting, driverFare, parking, row?.id, journeyCharge]);
+			if (response?.status === 'success') {
+				console.log(response);
+			}
+		} catch (error) {
+			console.error('Error updating charges:', error);
+		}
+	};
 
 	return (
 		<>
@@ -201,7 +206,9 @@ function RowNotPriced({ row, setPriceBaseModal, handlePostButton }) {
 						type='number'
 						className='w-16 text-center border rounded p-1 bg-inherit ring-inherit dark:bg-inherit dark:ring-inherit'
 						value={waiting}
+						name='waiting'
 						onChange={(e) => handleInputChange('waiting', +e.target.value)}
+						onKeyDown={(e) => handleKeyPress(e, 'driverFare')}
 					/>
 				</TableCell>
 				<TableCell
@@ -221,7 +228,9 @@ function RowNotPriced({ row, setPriceBaseModal, handlePostButton }) {
 						type='number'
 						className='w-16 text-center border rounded p-1 bg-inherit ring-inherit dark:bg-inherit dark:ring-inherit'
 						value={driverFare}
+						name='driverFare'
 						onChange={(e) => handleInputChange('driverFare', +e.target.value)}
+						onKeyDown={(e) => handleKeyPress(e, 'journeyCharge')}
 					/>
 				</TableCell>
 				<TableCell
@@ -231,9 +240,11 @@ function RowNotPriced({ row, setPriceBaseModal, handlePostButton }) {
 						type='number'
 						className='w-16 text-center border rounded p-1 bg-inherit ring-inherit dark:bg-inherit dark:ring-inherit'
 						value={journeyCharge}
+						name='journeyCharge'
 						onChange={(e) =>
 							handleInputChange('journeyCharge', +e.target.value)
 						}
+						onKeyDown={(e) => handleKeyPress(e, 'parking')}
 					/>
 				</TableCell>
 				<TableCell
@@ -243,7 +254,9 @@ function RowNotPriced({ row, setPriceBaseModal, handlePostButton }) {
 						type='number'
 						className='w-16 text-center border rounded p-1 bg-inherit ring-inherit dark:bg-inherit dark:ring-inherit'
 						value={parking}
+						name='parking'
 						onChange={(e) => handleInputChange('parking', +e.target.value)}
+						onKeyDown={(e) => handleKeyPress(e, null)}
 					/>
 				</TableCell>
 				<TableCell
@@ -500,16 +513,26 @@ function InvoiceProcessor() {
 	const [search, setSearch] = useState('');
 	const [order, setOrder] = useState('asc'); // Sort order
 	const [orderBy, setOrderBy] = useState(''); // Default sorted column
+	const [open, setOpen] = useState(false);
 	const [dateRange, setDateRange] = useState({
-		from: new Date(), // January 31, 2025
+		from: subDays(new Date(), 30), // January 31, 2025
 		to: new Date(), // Same default date
 	});
 
-	console.log(accountChargeableJobs);
+	const handleDateSelect = (range) => {
+		setDateRange(range); // Update the date range
+		// Close the popover if both from and to dates are selected
+		if (range?.from && range?.to) {
+			setOpen(false);
+		}
+	};
 
-	const DateRangePicker = ({ dateRange, setDateRange }) => (
+	const DateRangePicker = ({ dateRange, handleDateSelect }) => (
 		<div className='flex flex-col'>
-			<Popover>
+			<Popover
+				open={open}
+				onOpenChange={setOpen}
+			>
 				<PopoverTrigger asChild>
 					<button
 						className={cn(
@@ -543,7 +566,7 @@ function InvoiceProcessor() {
 					<Calendar
 						mode='range'
 						selected={dateRange}
-						onSelect={setDateRange}
+						onSelect={handleDateSelect}
 						numberOfMonths={2}
 						initialFocus
 					/>
@@ -870,7 +893,7 @@ function InvoiceProcessor() {
 											<div className='flex flex-col'>
 												<DateRangePicker
 													dateRange={dateRange}
-													setDateRange={setDateRange}
+													handleDateSelect={handleDateSelect}
 												/>
 											</div>
 
