@@ -225,7 +225,7 @@ const Availability = () => {
 			</div>
 
 			{/* Date & Unavailable Button */}
-			<div className='flex justify-start items-center mt-4 gap-3'>
+			<div className='flex flex-wrap justify-start items-center mt-4 gap-3'>
 				<Popover>
 					<PopoverTrigger asChild>
 						<button
@@ -234,7 +234,7 @@ const Availability = () => {
 								'input data-[state=open]:border-primary',
 								!date && 'text-muted-foreground'
 							)}
-							style={{ width: '13rem' }}
+							style={{ width: '13rem', marginTop: '16px' }}
 						>
 							<KeenIcon
 								icon='calendar'
@@ -257,60 +257,63 @@ const Availability = () => {
 						/>
 					</PopoverContent>
 				</Popover>
-				<Select
-					value={selectedDriver}
-					onValueChange={(value) => setSelectedDriver(value)}
-				>
-					<SelectTrigger
-						className=' w-32 hover:shadow-lg'
-						size='sm'
-						style={{ height: '40px' }}
+				<div className='flex flex-col'>
+					<label className='form-label'>Driver</label>
+					<Select
+						value={selectedDriver}
+						onValueChange={(value) => setSelectedDriver(value)}
 					>
-						<SelectValue placeholder='Select' />
-					</SelectTrigger>
-					<SelectContent className='w-36'>
-						<SelectItem value={0}>All</SelectItem>
-						{drivers?.length > 0 &&
-							drivers?.map((driver) => (
-								<>
-									<SelectItem value={driver?.id}>
-										{driver?.id} - {driver?.fullName}
-									</SelectItem>
-								</>
-							))}
-					</SelectContent>
-				</Select>
+						<SelectTrigger
+							className=' w-32 hover:shadow-lg'
+							size='sm'
+							style={{ height: '40px' }}
+						>
+							<SelectValue placeholder='Select' />
+						</SelectTrigger>
+						<SelectContent className='w-36'>
+							<SelectItem value={0}>All</SelectItem>
+							{drivers?.length > 0 &&
+								drivers?.map((driver) => (
+									<>
+										<SelectItem value={driver?.id}>
+											{driver?.id} - {driver?.fullName}
+										</SelectItem>
+									</>
+								))}
+						</SelectContent>
+					</Select>
+				</div>
 
 				<button
-					className='btn btn-primary'
+					className='btn btn-primary mt-4'
 					onClick={() => setIsCustomModal(true)}
 					disabled={selectedDriver === 0}
 				>
 					Custom
 				</button>
 				<button
-					className='btn btn-primary'
+					className='btn btn-primary mt-4'
 					onClick={() => handleClick('srAmOnly')}
 					disabled={selectedDriver === 0}
 				>
 					SR AM Only
 				</button>
 				<button
-					className='btn btn-primary'
+					className='btn btn-primary mt-4'
 					onClick={() => handleClick('srPmOnly')}
 					disabled={selectedDriver === 0}
 				>
 					SR PM Only
 				</button>
 				<button
-					className='btn btn-primary'
+					className='btn btn-primary mt-4'
 					onClick={() => handleClick('srOnly')}
 					disabled={selectedDriver === 0}
 				>
 					SR Only
 				</button>
 				<button
-					className='btn btn-danger'
+					className='btn btn-danger mt-4'
 					onClick={() => handleClick('unavailableAllDay')}
 					disabled={selectedDriver === 0}
 				>
@@ -333,7 +336,7 @@ const Availability = () => {
 			)}
 
 			{/* No Availability Message */}
-			<div className='mt-4 mb-5 p-4 rounded-md text-start'>
+			<div className='mt-4 mb-5 py-4 px-1 rounded-md text-start'>
 				All Drivers Availability
 			</div>
 

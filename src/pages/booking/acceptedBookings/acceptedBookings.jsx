@@ -253,7 +253,7 @@ function AcceptedBookings() {
 									<div className='flex'>
 										<label
 											className='input input-sm'
-											style={{ height: '40px' }}
+											style={{ height: '40px', marginTop: '16px' }}
 										>
 											<KeenIcon icon='magnifier' />
 											<input
@@ -274,7 +274,7 @@ function AcceptedBookings() {
 															'input data-[state=open]:border-primary',
 															!date && 'text-muted-foreground'
 														)}
-														style={{ width: '13rem' }}
+														style={{ width: '13rem', marginTop: '16px' }}
 													>
 														<KeenIcon
 															icon='calendar'
@@ -317,28 +317,31 @@ function AcceptedBookings() {
 											</PopoverContent>
 										</Popover>
 
-										<Select
-											value={selectedScope}
-											onValueChange={setSelectedScope}
-										>
-											<SelectTrigger
-												className='w-28'
-												size='sm'
-												style={{ height: '40px' }}
+										<div className='flex flex-col'>
+											<label className='form-label'>Scope</label>
+											<Select
+												value={selectedScope}
+												onValueChange={setSelectedScope}
 											>
-												<SelectValue placeholder='Select' />
-											</SelectTrigger>
-											<SelectContent className='w-32'>
-												<SelectItem value='3'>All</SelectItem>
-												<SelectItem value='0'>Cash</SelectItem>
-												<SelectItem value='4'>Card</SelectItem>
-												<SelectItem value='1'>Account</SelectItem>
-												<SelectItem value='2'>Rank</SelectItem>
-											</SelectContent>
-										</Select>
+												<SelectTrigger
+													className='w-28'
+													size='sm'
+													style={{ height: '40px' }}
+												>
+													<SelectValue placeholder='Select' />
+												</SelectTrigger>
+												<SelectContent className='w-32'>
+													<SelectItem value='3'>All</SelectItem>
+													<SelectItem value='0'>Cash</SelectItem>
+													<SelectItem value='4'>Card</SelectItem>
+													<SelectItem value='1'>Account</SelectItem>
+													<SelectItem value='2'>Rank</SelectItem>
+												</SelectContent>
+											</Select>
+										</div>
 
 										<button
-											className='btn btn-sm btn-outline btn-primary'
+											className='btn btn-sm btn-outline btn-primary mt-4'
 											style={{ height: '40px' }}
 											onClick={() => dispatch(refreshAcceptedWebBookings())}
 										>

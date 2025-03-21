@@ -229,77 +229,84 @@ const DriverExpenses = () => {
 												onChange={(e) => setDriverNumber(e.target.value)}
 											/>
 										</label> */}
-										<Select
-											value={driverNumber}
-											onValueChange={(value) => setDriverNumber(value)}
-										>
-											<SelectTrigger
-												className='w-40 hover:shadow-lg'
-												size='sm'
-												style={{ height: '40px' }}
-											>
-												<SelectValue placeholder='Select' />
-											</SelectTrigger>
-											<SelectContent className='w-36'>
-												{drivers?.length > 0 &&
-													drivers?.map((driver) => (
-														<>
-															<SelectItem value={driver?.id}>
-																{driver?.id} - {driver?.fullName}
-															</SelectItem>
-														</>
-													))}
-											</SelectContent>
-										</Select>
 
-										<Popover
-											open={open}
-											onOpenChange={setOpen}
-										>
-											<PopoverTrigger
-												asChild
-												className='h-10'
+										<div className='flex flex-col'>
+											<label className='form-label'>Driver</label>
+											<Select
+												value={driverNumber}
+												onValueChange={(value) => setDriverNumber(value)}
 											>
-												<button
-													className={cn(
-														'btn btn-sm btn-light data-[state=open]:bg-light-active',
-														!dateRange && 'text-gray-400'
-													)}
+												<SelectTrigger
+													className='w-40 hover:shadow-lg'
+													size='sm'
+													style={{ height: '40px' }}
 												>
-													<KeenIcon
-														icon='calendar'
-														className='me-0.5'
-													/>
-													{dateRange?.from ? (
-														dateRange.to ? (
+													<SelectValue placeholder='Select' />
+												</SelectTrigger>
+												<SelectContent className='w-36'>
+													{drivers?.length > 0 &&
+														drivers?.map((driver) => (
 															<>
-																{format(dateRange.from, 'dd/MM/yyyy')} →{' '}
-																{format(dateRange.to, 'dd/MM/yyyy')}
+																<SelectItem value={driver?.id}>
+																	{driver?.id} - {driver?.fullName}
+																</SelectItem>
 															</>
-														) : (
-															format(dateRange.from, 'dd/MM/yyyy')
-														)
-													) : (
-														<span>Pick a date range</span>
-													)}
-												</button>
-											</PopoverTrigger>
-											<PopoverContent
-												className='w-auto p-0'
-												align='end'
+														))}
+												</SelectContent>
+											</Select>
+										</div>
+
+										<div className='flex flex-col'>
+											<label className='form-label'>Date Range</label>
+											<Popover
+												open={open}
+												onOpenChange={setOpen}
 											>
-												<Calendar
-													mode='range'
-													selected={dateRange}
-													onSelect={handleDateSelect}
-													numberOfMonths={2}
-													initialFocus
-												/>
-											</PopoverContent>
-										</Popover>
+												<PopoverTrigger
+													asChild
+													className='h-10'
+												>
+													<button
+														className={cn(
+															'btn btn-sm btn-light data-[state=open]:bg-light-active',
+															!dateRange && 'text-gray-400'
+														)}
+													>
+														<KeenIcon
+															icon='calendar'
+															className='me-0.5'
+														/>
+														{dateRange?.from ? (
+															dateRange.to ? (
+																<>
+																	{format(dateRange.from, 'dd/MM/yyyy')} →{' '}
+																	{format(dateRange.to, 'dd/MM/yyyy')}
+																</>
+															) : (
+																format(dateRange.from, 'dd/MM/yyyy')
+															)
+														) : (
+															<span>Pick a date range</span>
+														)}
+													</button>
+												</PopoverTrigger>
+												<PopoverContent
+													className='w-auto p-0'
+													align='end'
+												>
+													<Calendar
+														mode='range'
+														selected={dateRange}
+														onSelect={handleDateSelect}
+														numberOfMonths={2}
+														initialFocus
+													/>
+												</PopoverContent>
+											</Popover>
+										</div>
 
 										<button
-											className='btn btn-sm btn-outline btn-primary'
+											className='btn btn-sm btn-outline btn-primary mt-4'
 											style={{ height: '40px' }}
 											onClick={handleSearch}
 											disabled={loading}

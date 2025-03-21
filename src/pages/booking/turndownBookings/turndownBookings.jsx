@@ -265,51 +265,54 @@ function TurndownBookings() {
 										</label>
 									</div> */}
 									<div className='flex flex-wrap items-center gap-2.5'>
-										<Popover>
-											<PopoverTrigger asChild>
-												<button
-													id='date'
-													className={cn(
-														'btn btn-sm btn-light data-[state=open]:bg-light-active',
-														!date && 'text-gray-400'
-													)}
-													style={{ height: '40px' }}
-												>
-													<KeenIcon
-														icon='calendar'
-														className='me-0.5'
-													/>
-													{date?.from ? (
-														date.to ? (
-															<>
-																{format(date.from, 'LLL dd, y')} -{' '}
-																{format(date.to, 'LLL dd, y')}
-															</>
+										<div className='flex flex-col'>
+											<label className='form-label'>Date Range</label>
+											<Popover>
+												<PopoverTrigger asChild>
+													<button
+														id='date'
+														className={cn(
+															'btn btn-sm btn-light data-[state=open]:bg-light-active',
+															!date && 'text-gray-400'
+														)}
+														style={{ height: '40px' }}
+													>
+														<KeenIcon
+															icon='calendar'
+															className='me-0.5'
+														/>
+														{date?.from ? (
+															date.to ? (
+																<>
+																	{format(date.from, 'LLL dd, y')} -{' '}
+																	{format(date.to, 'LLL dd, y')}
+																</>
+															) : (
+																format(date.from, 'LLL dd, y')
+															)
 														) : (
-															format(date.from, 'LLL dd, y')
-														)
-													) : (
-														<span>Pick a date range</span>
-													)}
-												</button>
-											</PopoverTrigger>
-											<PopoverContent
-												className='w-auto p-0'
-												align='end'
-											>
-												<Calendar
-													initialFocus
-													mode='range'
-													defaultMonth={date?.from}
-													selected={date}
-													onSelect={setDate}
-													numberOfMonths={2}
-												/>
-											</PopoverContent>
-										</Popover>
+															<span>Pick a date range</span>
+														)}
+													</button>
+												</PopoverTrigger>
+												<PopoverContent
+													className='w-auto p-0'
+													align='end'
+												>
+													<Calendar
+														initialFocus
+														mode='range'
+														defaultMonth={date?.from}
+														selected={date}
+														onSelect={setDate}
+														numberOfMonths={2}
+													/>
+												</PopoverContent>
+											</Popover>
+										</div>
 
 										<button
-											className='btn btn-sm btn-outline btn-primary'
+											className='btn btn-sm btn-outline btn-primary mt-4'
 											style={{ height: '40px' }}
 											onClick={handleSearch}
 											disabled={loading}

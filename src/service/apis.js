@@ -46,7 +46,7 @@ export const bookingsEndpoints = {
 	SEND_REMINDER_CARD_PAYMENT: `${BASE}/api/AdminUI/SendCardPaymentReminder`,
 	BOOKING_AUDIT: (id) => `${BASE}/api/AdminUI/BookingAudit?bookingId=${id}`,
 	BOOKING_STATUS: (date, scope, status) =>
-		`${BASE}/api/AdminUI/BookingsByStatus?date=${date}&scope=${scope}${status ? `&status=${status}` : ''}`,
+		`${BASE}/api/AdminUI/BookingsByStatus?date=${date}&scope=${scope}${status !== undefined ? `&status=${status}` : ''}`,
 	ALLOCATE_BOOKING: `${BASE}/api/Bookings/Allocate`,
 	AIRPORT_RUNS: (months) => `${BASE}/api/AdminUI/AirportRuns?months=${months}`,
 	TURNDOWN_BOOKINGS: (from, to) =>

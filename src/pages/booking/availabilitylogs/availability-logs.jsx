@@ -211,82 +211,89 @@ const AvailabilityLogs = () => {
 												onChange={(e) => setDriverNumber(e.target.value)}
 											/>
 										</label> */}
-										<Select
-											value={driverNumber}
-											onValueChange={(value) => setDriverNumber(value)}
-										>
-											<SelectTrigger
-												className='w-40 hover:shadow-lg'
-												size='sm'
-												style={{ height: '40px' }}
+										<div className='flex flex-col'>
+											<label className='form-label'>Driver</label>
+											<Select
+												value={driverNumber}
+												onValueChange={(value) => setDriverNumber(value)}
 											>
-												<SelectValue placeholder='Select' />
-											</SelectTrigger>
-											<SelectContent className='w-36'>
-												{drivers?.length > 0 &&
-													drivers?.map((driver) => (
-														<>
-															<SelectItem value={driver?.id}>
-																{driver?.id} - {driver?.fullName}
-															</SelectItem>
-														</>
-													))}
-											</SelectContent>
-										</Select>
-										<Popover>
-											<PopoverTrigger asChild>
-												<div className='relative'>
-													<button
-														id='date'
-														className={cn(
-															'input data-[state=open]:border-primary',
-															!date && 'text-muted-foreground'
-														)}
-														style={{ width: '13rem' }}
-													>
-														<KeenIcon
-															icon='calendar'
-															className='-ms-0.5'
-														/>
-														{date ? (
-															format(date, 'LLL dd, y')
-														) : (
-															<span>Pick a date</span>
-														)}
-													</button>
-													{date && (
+												<SelectTrigger
+													className='w-40 hover:shadow-lg'
+													size='sm'
+													style={{ height: '40px' }}
+												>
+													<SelectValue placeholder='Select' />
+												</SelectTrigger>
+												<SelectContent className='w-36'>
+													{drivers?.length > 0 &&
+														drivers?.map((driver) => (
+															<>
+																<SelectItem value={driver?.id}>
+																	{driver?.id} - {driver?.fullName}
+																</SelectItem>
+															</>
+														))}
+												</SelectContent>
+											</Select>
+										</div>
+
+										<div className='flex flex-col'>
+											<label className='form-label'>Date</label>
+											<Popover>
+												<PopoverTrigger asChild>
+													<div className='relative'>
 														<button
-															onClick={(e) => {
-																e.stopPropagation(); // Prevent closing popover
-																setDate(undefined); // Clear date
-															}}
-															className='absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700'
+															id='date'
+															className={cn(
+																'input data-[state=open]:border-primary',
+																!date && 'text-muted-foreground'
+															)}
+															style={{ width: '13rem' }}
 														>
 															<KeenIcon
-																icon='cross-circle'
-																className=''
+																icon='calendar'
+																className='-ms-0.5'
 															/>
+															{date ? (
+																format(date, 'LLL dd, y')
+															) : (
+																<span>Pick a date</span>
+															)}
 														</button>
-													)}
-												</div>
-											</PopoverTrigger>
-											<PopoverContent
-												className='w-auto p-0'
-												align='start'
-											>
-												<Calendar
-													initialFocus
-													mode='single' // Single date selection
-													defaultMonth={date}
-													selected={date}
-													onSelect={setDate}
-													numberOfMonths={1}
-												/>
-											</PopoverContent>
-										</Popover>
+														{date && (
+															<button
+																onClick={(e) => {
+																	e.stopPropagation(); // Prevent closing popover
+																	setDate(undefined); // Clear date
+																}}
+																className='absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700'
+															>
+																<KeenIcon
+																	icon='cross-circle'
+																	className=''
+																/>
+															</button>
+														)}
+													</div>
+												</PopoverTrigger>
+												<PopoverContent
+													className='w-auto p-0'
+													align='start'
+												>
+													<Calendar
+														initialFocus
+														mode='single' // Single date selection
+														defaultMonth={date}
+														selected={date}
+														onSelect={setDate}
+														numberOfMonths={1}
+													/>
+												</PopoverContent>
+											</Popover>
+										</div>
 
 										<button
-											className='btn btn-sm btn-outline btn-primary'
+											className='btn btn-sm btn-outline btn-primary mt-4'
 											style={{ height: '40px' }}
 											onClick={handleSearch}
 											disabled={loading}

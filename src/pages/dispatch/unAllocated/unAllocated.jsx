@@ -66,13 +66,22 @@ function UnAllocated() {
 
 	useEffect(() => {
 		// Agar status, scope ya date change hota hai to API call karega
-		dispatch(
-			refreshBookingsByStatus(
-				format(new Date(date), "yyyy-MM-dd'T'00:00:00'Z'"),
-				scope,
-				status || ''
-			)
-		);
+		if (status === null) {
+			dispatch(
+				refreshBookingsByStatus(
+					format(new Date(date), "yyyy-MM-dd'T'00:00:00'Z'"),
+					scope
+				)
+			);
+		} else {
+			dispatch(
+				refreshBookingsByStatus(
+					format(new Date(date), "yyyy-MM-dd'T'00:00:00'Z'"),
+					scope,
+					status
+				)
+			);
+		}
 	}, [date, scope, status, dispatch]);
 
 	const ColumnInputFilter = ({ column }) => {
@@ -383,7 +392,7 @@ function UnAllocated() {
 									<div className='flex'>
 										<label
 											className='input input-sm'
-											style={{ height: '40px' }}
+											style={{ height: '40px', marginTop: '1rem' }}
 										>
 											<KeenIcon icon='magnifier' />
 											<input
@@ -403,7 +412,7 @@ function UnAllocated() {
 														'input data-[state=open]:border-primary',
 														!date && 'text-muted-foreground'
 													)}
-													style={{ width: '13rem' }}
+													style={{ width: '13rem', marginTop: '1rem' }}
 												>
 													<KeenIcon
 														icon='calendar'
@@ -431,44 +440,50 @@ function UnAllocated() {
 											</PopoverContent>
 										</Popover>
 
-										<Select
-											value={scope}
-											onValueChange={(value) => setScope(value)}
-										>
-											<SelectTrigger
-												className='w-28'
-												size='sm'
-												style={{ height: '40px' }}
+										<div className='flex flex-col'>
+											<label className='form-label'>Scope</label>
+											<Select
+												value={scope}
+												onValueChange={(value) => setScope(value)}
 											>
-												<SelectValue placeholder='Select' />
-											</SelectTrigger>
-											<SelectContent className='w-32'>
-												<SelectItem value={3}>All</SelectItem>
-												<SelectItem value={0}>Cash</SelectItem>
-												<SelectItem value={4}>Card</SelectItem>
-												<SelectItem value={1}>Account</SelectItem>
-												<SelectItem value={2}>Rank</SelectItem>
-											</SelectContent>
-										</Select>
+												<SelectTrigger
+													className='w-28'
+													size='sm'
+													style={{ height: '40px' }}
+												>
+													<SelectValue placeholder='Select' />
+												</SelectTrigger>
+												<SelectContent className='w-32'>
+													<SelectItem value={3}>All</SelectItem>
+													<SelectItem value={0}>Cash</SelectItem>
+													<SelectItem value={4}>Card</SelectItem>
+													<SelectItem value={1}>Account</SelectItem>
+													<SelectItem value={2}>Rank</SelectItem>
+												</SelectContent>
+											</Select>
+										</div>
 
-										<Select
-											value={status}
-											onValueChange={(value) => setStatus(value)}
-										>
-											<SelectTrigger
-												className='w-28'
-												size='sm'
-												style={{ height: '40px' }}
+										<div className='flex flex-col'>
+											<label className='form-label'>Status</label>
+											<Select
+												value={status}
+												onValueChange={(value) => setStatus(value)}
 											>
-												<SelectValue placeholder='Select' />
-											</SelectTrigger>
-											<SelectContent className='w-32'>
-												<SelectItem value={0}>Unallocated</SelectItem>
-												<SelectItem value={1}>Allocated</SelectItem>
-												<SelectItem value={2}>Cancelled</SelectItem>
-												<SelectItem value={3}>Completed</SelectItem>
-											</SelectContent>
-										</Select>
+												<SelectTrigger
+													className='w-28'
+													size='sm'
+													style={{ height: '40px' }}
+												>
+													<SelectValue placeholder='Select' />
+												</SelectTrigger>
+												<SelectContent className='w-32'>
+													<SelectItem value={0}>Unallocated</SelectItem>
+													<SelectItem value={1}>Allocated</SelectItem>
+													<SelectItem value={2}>Cancelled</SelectItem>
+													<SelectItem value={3}>Completed</SelectItem>
+												</SelectContent>
+											</Select>
+										</div>
 
 										{/* <button
 											className='btn btn-sm btn-outline btn-primary'

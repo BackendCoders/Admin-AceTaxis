@@ -196,13 +196,13 @@ function DriverExpiryList() {
 					if (daysDiff < -7) {
 						bgColor = 'text-orange-500'; // Expired more than 7 days ago
 					} else if (daysDiff < -1) {
-						bgColor = 'text-red-500'; // Expired within the last 1-7 days
+						bgColor = 'text-red-600'; // Expired within the last 1-7 days
 					} else {
 						bgColor = 'text-black';
 					}
 					return (
 						<span
-							className={`p-2 rounded-md whitespace-nowrap ${bgColor} bg-white font-semibold`}
+							className={`p-2 rounded-md whitespace-nowrap bg-white ${bgColor}  font-semibold`}
 						>
 							{new Date(
 								row.original.expiryDate?.split('T')[0]
@@ -422,69 +422,81 @@ function DriverExpiryList() {
 										</label>
 									</div> */}
 									<div className='flex items-center gap-2.5'>
-										<Select
-											value={selectedDriver}
-											onValueChange={(value) => setSelectedDriver(value)}
-										>
-											<SelectTrigger
-												className=' w-32 hover:shadow-lg'
-												size='sm'
-												style={{ height: '40px' }}
+										<div className='flex flex-col'>
+											<label className='form-label'>Driver</label>
+											<Select
+												value={selectedDriver}
+												onValueChange={(value) => setSelectedDriver(value)}
 											>
-												<SelectValue placeholder='Select' />
-											</SelectTrigger>
-											<SelectContent className='w-36'>
-												<SelectItem value={0}>All</SelectItem>
-												{drivers?.length > 0 &&
-													drivers?.map((driver) => (
-														<>
-															<SelectItem value={driver?.id}>
-																{driver?.id} - {driver?.fullName}
-															</SelectItem>
-														</>
-													))}
-											</SelectContent>
-										</Select>
-										<Select
-											value={selectedType}
-											onValueChange={(value) => setSelectedType(value)}
-										>
-											<SelectTrigger
-												className='w-32'
-												size='sm'
-												style={{ height: '40px' }}
+												<SelectTrigger
+													className=' w-32 hover:shadow-lg'
+													size='sm'
+													style={{ height: '40px' }}
+												>
+													<SelectValue placeholder='Select' />
+												</SelectTrigger>
+												<SelectContent className='w-36'>
+													<SelectItem value={0}>All</SelectItem>
+													{drivers?.length > 0 &&
+														drivers?.map((driver) => (
+															<>
+																<SelectItem value={driver?.id}>
+																	{driver?.id} - {driver?.fullName}
+																</SelectItem>
+															</>
+														))}
+												</SelectContent>
+											</Select>
+										</div>
+
+										<div className='flex flex-col'>
+											<label className='form-label'>Doc Type</label>
+											<Select
+												value={selectedType}
+												onValueChange={(value) => setSelectedType(value)}
 											>
-												<SelectValue placeholder='Select' />
-											</SelectTrigger>
-											<SelectContent className='w-36'>
-												<SelectItem value='9'>All</SelectItem>
-												<SelectItem value='0'>Insurance</SelectItem>
-												<SelectItem value='1'>MOT</SelectItem>
-												<SelectItem value='2'>DBS</SelectItem>
-												<SelectItem value='3'>VehicleBadge</SelectItem>
-												<SelectItem value='4'>DriverLicense</SelectItem>
-												<SelectItem value='5'>SafeGuarding</SelectItem>
-												<SelectItem value='6'>FirstAidCert</SelectItem>
-												<SelectItem value='7'>DriverPhoto</SelectItem>
-											</SelectContent>
-										</Select>
-										<Select
-											value={selectedExpiryType}
-											onValueChange={(value) => setSelectedExpiryType(value)}
-										>
-											<SelectTrigger
-												className='w-32'
-												size='sm'
-												style={{ height: '40px' }}
+												<SelectTrigger
+													className='w-32'
+													size='sm'
+													style={{ height: '40px' }}
+												>
+													<SelectValue placeholder='Select' />
+												</SelectTrigger>
+												<SelectContent className='w-36'>
+													<SelectItem value='9'>All</SelectItem>
+													<SelectItem value='0'>Insurance</SelectItem>
+													<SelectItem value='1'>MOT</SelectItem>
+													<SelectItem value='2'>DBS</SelectItem>
+													<SelectItem value='3'>VehicleBadge</SelectItem>
+													<SelectItem value='4'>DriverLicense</SelectItem>
+													<SelectItem value='5'>SafeGuarding</SelectItem>
+													<SelectItem value='6'>FirstAidCert</SelectItem>
+													<SelectItem value='7'>DriverPhoto</SelectItem>
+												</SelectContent>
+											</Select>
+										</div>
+
+										<div className='flex flex-col'>
+											<label className='form-label'>Type</label>
+											<Select
+												value={selectedExpiryType}
+												onValueChange={(value) => setSelectedExpiryType(value)}
 											>
-												<SelectValue placeholder='Select' />
-											</SelectTrigger>
-											<SelectContent className='w-36'>
-												<SelectItem value='all'>All</SelectItem>
-												<SelectItem value='expiring'>Expiring</SelectItem>
-												<SelectItem value='expired'>Expired</SelectItem>
-											</SelectContent>
-										</Select>
+												<SelectTrigger
+													className='w-32'
+													size='sm'
+													style={{ height: '40px' }}
+												>
+													<SelectValue placeholder='Select' />
+												</SelectTrigger>
+												<SelectContent className='w-36'>
+													<SelectItem value='all'>All</SelectItem>
+													<SelectItem value='expiring'>Expiring</SelectItem>
+													<SelectItem value='expired'>Expired</SelectItem>
+												</SelectContent>
+											</Select>
+										</div>
+
 										{/* <Popover>
 											<PopoverTrigger asChild>
 												<button
