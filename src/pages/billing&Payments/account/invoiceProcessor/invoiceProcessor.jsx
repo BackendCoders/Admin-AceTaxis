@@ -865,7 +865,7 @@ function InvoiceProcessor() {
 												<KeenIcon icon='magnifier' />
 												<input
 													type='text'
-													placeholder='Search Invoice'
+													placeholder='Search'
 													value={search}
 													onChange={(e) => setSearch(e.target.value)}
 												/>

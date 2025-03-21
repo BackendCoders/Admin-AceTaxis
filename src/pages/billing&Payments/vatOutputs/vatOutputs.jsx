@@ -127,6 +127,7 @@ const VatOutputs = () => {
 			<div className='flex flex-wrap items-center gap-6 mt-4'>
 				{/* Date Range Picker */}
 				<div className='flex flex-col'>
+					<label className='form-label'>Date Range</label>
 					<DateRangePicker
 						dateRange={dateRange}
 						handleDateSelect={handleDateSelect}
@@ -134,7 +135,7 @@ const VatOutputs = () => {
 				</div>
 
 				<button
-					className='btn btn-primary flex justify-center'
+					className='btn btn-primary flex justify-center mt-4'
 					onClick={handleClick}
 				>
 					CREATE CSV FILE
