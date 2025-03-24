@@ -44,6 +44,12 @@ function AcceptedBookings() {
 	const [searchInput, setSearchInput] = useState('');
 	const [selectedScope, setSelectedScope] = useState('3');
 	const [date, setDate] = useState(new Date());
+	const [open, setOpen] = useState(false);
+
+	const handleDateSelect = (date) => {
+		setDate(date);
+		setOpen(false);
+	};
 
 	useEffect(() => {
 		dispatch(refreshAcceptedWebBookings());
@@ -265,7 +271,10 @@ function AcceptedBookings() {
 										</label>
 									</div>
 									<div className='flex flex-wrap items-center gap-2.5'>
-										<Popover>
+										<Popover
+											open={open}
+											onOpenChange={setOpen}
+										>
 											<PopoverTrigger asChild>
 												<div className='relative'>
 													<button
@@ -292,7 +301,7 @@ function AcceptedBookings() {
 																e.stopPropagation(); // Prevent closing popover
 																setDate(null); // Clear date
 															}}
-															className='absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700'
+															className='absolute right-2 top-2/3 transform -translate-y-1/2 text-gray-500 hover:text-gray-700'
 														>
 															<KeenIcon
 																icon='cross-circle'
@@ -311,7 +320,7 @@ function AcceptedBookings() {
 													mode='single' // Single date selection
 													defaultMonth={date}
 													selected={date}
-													onSelect={setDate}
+													onSelect={handleDateSelect}
 													numberOfMonths={1}
 												/>
 											</PopoverContent>

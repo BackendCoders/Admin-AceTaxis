@@ -530,10 +530,17 @@ function StateProcessing() {
 	const [selectedScope, setSelectedScope] = useState('3');
 	const [priceBaseModal, setPriceBaseModal] = useState(false);
 	const [date, setDate] = useState(new Date());
+	const [openDate, setOpenDate] = useState(false);
 	const [search, setSearch] = useState('');
 	const [order, setOrder] = useState('asc'); // Sort order
 	const [orderBy, setOrderBy] = useState(''); // Default sorted column
 	console.log(driverChargeableJobs);
+
+	const handleDateSelect = (date) => {
+		setDate(date); // Update the date range
+		// Close the popover if both from and to dates are selected
+		setOpenDate(false);
+	};
 
 	const formattedNotPricedBookings = (
 		driverChargeableJobs?.notPriced || []
@@ -832,7 +839,10 @@ function StateProcessing() {
 										<div className='flex flex-wrap items-center gap-2.5'>
 											<div className='flex flex-col'>
 												<label className='form-label'>Last Date Included</label>
-												<Popover>
+												<Popover
+													open={openDate}
+													onOpenChange={setOpenDate}
+												>
 													<PopoverTrigger asChild>
 														<button className='input border-gray-300 bg-transparent w-48 py-2 px-3 rounded-md'>
 															<KeenIcon
@@ -855,7 +865,7 @@ function StateProcessing() {
 															mode='single'
 															defaultMonth={date}
 															selected={date}
-															onSelect={setDate}
+															onSelect={handleDateSelect}
 															numberOfMonths={1}
 														/>
 													</PopoverContent>

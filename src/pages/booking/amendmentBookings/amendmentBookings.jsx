@@ -43,6 +43,13 @@ function AmendmentBookings() {
 	const [searchInput, setSearchInput] = useState('');
 	const [date, setDate] = useState();
 	const [cancelModal, setCancelModal] = useState(false);
+	const [open, setOpen] = useState(false);
+
+	const handleDateSelect = (date) => {
+		setDate(date); // Update the date range
+		// Close the popover if both from and to dates are selected
+		setOpen(false);
+	};
 
 	useEffect(() => {
 		dispatch(refreshAmendWebBookings());
@@ -285,7 +292,10 @@ function AmendmentBookings() {
 										</label>
 									</div>
 									<div className='flex flex-wrap items-center gap-2.5'>
-										<Popover>
+										<Popover
+											open={open}
+											onOpenChange={setOpen}
+										>
 											<PopoverTrigger asChild>
 												<div className='relative'>
 													<button
@@ -331,7 +341,7 @@ function AmendmentBookings() {
 													mode='single' // Single date selection
 													defaultMonth={date}
 													selected={date}
-													onSelect={setDate}
+													onSelect={handleDateSelect}
 													numberOfMonths={1}
 												/>
 											</PopoverContent>

@@ -542,62 +542,21 @@ function InvoiceProcessor() {
 		from: subDays(new Date(), 30), // January 31, 2025
 		to: new Date(), // Same default date
 	});
+	const [tempRange, setTempRange] = useState(dateRange);
+
+	useEffect(() => {
+		if (open) {
+			setTempRange({ from: null, to: null });
+		}
+	}, [open]);
 
 	const handleDateSelect = (range) => {
-		setDateRange(range); // Update the date range
-		// Close the popover if both from and to dates are selected
+		setTempRange(range);
 		if (range?.from && range?.to) {
+			setDateRange(range);
 			setOpen(false);
 		}
 	};
-
-	const DateRangePicker = ({ dateRange, handleDateSelect }) => (
-		<div className='flex flex-col'>
-			<Popover
-				open={open}
-				onOpenChange={setOpen}
-			>
-				<PopoverTrigger asChild>
-					<button
-						className={cn(
-							'flex items-center gap-2 border px-4 py-2 rounded-md  transition-all',
-							!dateRange && 'text-gray-400'
-						)}
-					>
-						<KeenIcon
-							icon='calendar'
-							className='text-gray-600'
-						/>
-						{dateRange?.from ? (
-							dateRange.to ? (
-								<>
-									{format(dateRange.from, 'dd/MM/yyyy')} →{' '}
-									{format(dateRange.to, 'dd/MM/yyyy')}
-								</>
-							) : (
-								format(dateRange.from, 'dd/MM/yyyy')
-							)
-						) : (
-							<span>Pick a date range</span>
-						)}
-					</button>
-				</PopoverTrigger>
-
-				<PopoverContent
-					className='w-auto p-2 shadow-md rounded-lg'
-					align='end'
-				>
-					<Calendar
-						mode='range'
-						selected={dateRange}
-						onSelect={handleDateSelect}
-						numberOfMonths={2}
-						initialFocus
-					/>
-				</PopoverContent>
-			</Popover>
-		</div>
-	);
 
 	const formattedNotPricedBookings = (
 		accountChargeableJobs?.notPriced || []
@@ -919,10 +878,51 @@ function InvoiceProcessor() {
 
 											<div className='flex flex-col'>
 												<label className='form-label'>Select Date Range</label>
-												<DateRangePicker
-													dateRange={dateRange}
-													handleDateSelect={handleDateSelect}
-												/>
+												<Popover
+													open={open}
+													onOpenChange={setOpen}
+												>
+													<PopoverTrigger asChild>
+														<button
+															id='date'
+															className={cn(
+																'btn btn-sm btn-light data-[state=open]:bg-light-active',
+																!dateRange && 'text-gray-400'
+															)}
+															style={{ height: '40px' }}
+														>
+															<KeenIcon
+																icon='calendar'
+																className='me-0.5'
+															/>
+															{dateRange?.from ? (
+																dateRange.to ? (
+																	<>
+																		{format(dateRange.from, 'LLL dd, y')} -{' '}
+																		{format(dateRange.to, 'LLL dd, y')}
+																	</>
+																) : (
+																	format(dateRange.from, 'LLL dd, y')
+																)
+															) : (
+																<span>Pick a date range</span>
+															)}
+														</button>
+													</PopoverTrigger>
+
+													<PopoverContent
+														className='w-auto p-0'
+														align='end'
+													>
+														<Calendar
+															mode='range'
+															selected={tempRange}
+															onSelect={handleDateSelect}
+															numberOfMonths={2}
+															initialFocus
+														/>
+													</PopoverContent>
+												</Popover>
 											</div>
 
 											<div className='flex items-center gap-2'>

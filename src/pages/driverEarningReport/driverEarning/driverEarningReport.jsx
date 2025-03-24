@@ -51,11 +51,18 @@ function DriverEarningReport() {
 		from: subDays(new Date(), 30),
 		to: new Date(),
 	});
+	const [tempRange, setTempRange] = useState(date);
+
+	useEffect(() => {
+		if (open) {
+			setTempRange({ from: null, to: null });
+		}
+	}, [open]);
 
 	const handleDateSelect = (range) => {
-		setDate(range); // Update the date range
-		// Close the popover if both from and to dates are selected
+		setTempRange(range);
 		if (range?.from && range?.to) {
+			setDate(range);
 			setOpen(false);
 		}
 	};
@@ -418,7 +425,7 @@ function DriverEarningReport() {
 														initialFocus
 														mode='range'
 														defaultMonth={date?.from}
-														selected={date}
+														selected={tempRange}
 														onSelect={handleDateSelect}
 														numberOfMonths={2}
 													/>

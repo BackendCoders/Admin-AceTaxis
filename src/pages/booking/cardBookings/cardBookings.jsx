@@ -175,9 +175,15 @@ function CardBookings() {
 	const { cardBookings } = useSelector((state) => state.booking);
 	const [search, setSearch] = useState('');
 	const [date, setDate] = useState(new Date());
+	const [openDate, setOpenDate] = useState(false);
 	const [order, setOrder] = useState('asc'); // Sort order
 	const [orderBy, setOrderBy] = useState(''); // Default sorted column
 	console.log('card bookings', cardBookings);
+
+	const handleDateSelect = (date) => {
+		setDate(date);
+		setOpenDate(false);
+	};
 
 	const formattedBookings = (cardBookings || []).map((booking) => ({
 		id: booking?.id,
@@ -282,7 +288,10 @@ function CardBookings() {
 						/>
 					</div>
 
-					<Popover>
+					<Popover
+						open={openDate}
+						onOpenChange={setOpenDate}
+					>
 						<PopoverTrigger asChild>
 							<div className='relative'>
 								<button
@@ -324,7 +333,7 @@ function CardBookings() {
 								mode='single' // Single date selection
 								defaultMonth={date}
 								selected={date}
-								onSelect={setDate}
+								onSelect={handleDateSelect}
 								numberOfMonths={1}
 							/>
 						</PopoverContent>

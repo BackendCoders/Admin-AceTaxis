@@ -417,6 +417,22 @@ function InvoiceHistory() {
 		from: new Date(),
 		to: addDays(new Date(), 20),
 	});
+	const [openDate, setOpenDate] = useState(false);
+	const [tempRange, setTempRange] = useState(date);
+
+	useEffect(() => {
+		if (openDate) {
+			setTempRange({ from: null, to: null });
+		}
+	}, [openDate]);
+
+	const handleDateSelect = (range) => {
+		setTempRange(range);
+		if (range?.from && range?.to) {
+			setDate(range);
+			setOpenDate(false);
+		}
+	};
 
 	console.log(invoiceHistory);
 
@@ -510,7 +526,7 @@ function InvoiceHistory() {
 									<div className='flex'>
 										<label
 											className='input input-sm hover:shadow-lg'
-											style={{ height: '40px' }}
+											style={{ height: '40px', marginTop: '16px' }}
 										>
 											<KeenIcon icon='magnifier' />
 											<input
@@ -522,75 +538,84 @@ function InvoiceHistory() {
 										</label>
 									</div>
 									<div className='flex flex-wrap items-center gap-2.5'>
-										<Popover>
-											<PopoverTrigger asChild>
-												<button
-													id='date'
-													className={cn(
-														'btn btn-sm btn-light data-[state=open]:bg-light-active',
-														!date && 'text-gray-400'
-													)}
+										<div className='flex flex-col'>
+											<label className='form-label'>Date Range</label>
+											<Popover
+												open={openDate}
+												onOpenChange={setOpenDate}
+											>
+												<PopoverTrigger asChild>
+													<button
+														id='date'
+														className={cn(
+															'btn btn-sm btn-light data-[state=open]:bg-light-active',
+															!date && 'text-gray-400'
+														)}
+														style={{ height: '40px' }}
+													>
+														<KeenIcon
+															icon='calendar'
+															className='me-0.5'
+														/>
+														{date?.from ? (
+															date.to ? (
+																<>
+																	{format(date.from, 'LLL dd, y')} -{' '}
+																	{format(date.to, 'LLL dd, y')}
+																</>
+															) : (
+																format(date.from, 'LLL dd, y')
+															)
+														) : (
+															<span>Pick a date range</span>
+														)}
+													</button>
+												</PopoverTrigger>
+												<PopoverContent
+													className='w-auto p-0'
+													align='end'
+												>
+													<Calendar
+														initialFocus
+														mode='range'
+														defaultMonth={date?.from}
+														selected={tempRange}
+														onSelect={handleDateSelect}
+														numberOfMonths={2}
+													/>
+												</PopoverContent>
+											</Popover>
+										</div>
+
+										<div className='flex flex-col'>
+											<label className='form-label'>Accounts</label>
+											<Select
+												value={selectedAccount}
+												onValueChange={(value) => setSelectedAccount(value)}
+											>
+												<SelectTrigger
+													className='w-40 hover:shadow-lg'
+													size='sm'
 													style={{ height: '40px' }}
 												>
-													<KeenIcon
-														icon='calendar'
-														className='me-0.5'
-													/>
-													{date?.from ? (
-														date.to ? (
+													<SelectValue placeholder='Select' />
+												</SelectTrigger>
+												<SelectContent className='w-40'>
+													<SelectItem value={0}>All</SelectItem>
+													{accounts?.length > 0 &&
+														accounts?.map((acc) => (
 															<>
-																{format(date.from, 'LLL dd, y')} -{' '}
-																{format(date.to, 'LLL dd, y')}
+																<SelectItem value={acc?.accNo}>
+																	{acc?.accNo} - {acc?.businessName}
+																</SelectItem>
 															</>
-														) : (
-															format(date.from, 'LLL dd, y')
-														)
-													) : (
-														<span>Pick a date range</span>
-													)}
-												</button>
-											</PopoverTrigger>
-											<PopoverContent
-												className='w-auto p-0'
-												align='end'
-											>
-												<Calendar
-													initialFocus
-													mode='range'
-													defaultMonth={date?.from}
-													selected={date}
-													onSelect={setDate}
-													numberOfMonths={2}
-												/>
-											</PopoverContent>
-										</Popover>
-
-										<Select
-											value={selectedAccount}
-											onValueChange={(value) => setSelectedAccount(value)}
-										>
-											<SelectTrigger
-												className='w-40 hover:shadow-lg'
-												size='sm'
-												style={{ height: '40px' }}
-											>
-												<SelectValue placeholder='Select' />
-											</SelectTrigger>
-											<SelectContent className='w-40'>
-												<SelectItem value={0}>All</SelectItem>
-												{accounts?.length > 0 &&
-													accounts?.map((acc) => (
-														<>
-															<SelectItem value={acc?.accNo}>
-																{acc?.accNo} - {acc?.businessName}
-															</SelectItem>
-														</>
-													))}
-											</SelectContent>
-										</Select>
+														))}
+												</SelectContent>
+											</Select>
+										</div>
 
 										<button
-											className='btn btn-sm btn-outline btn-primary'
+											className='btn btn-sm btn-outline btn-primary mt-4'
 											style={{ height: '40px' }}
 											onClick={handleSearch}
 											disabled={loading}

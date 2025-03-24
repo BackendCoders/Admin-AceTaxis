@@ -1,5 +1,5 @@
 /** @format */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 // import { IoChevronUpSharp } from 'react-icons/io5';
 // import { IoChevronDownSharp } from 'react-icons/io5';
 import {
@@ -16,10 +16,27 @@ import toast from 'react-hot-toast';
 
 const CancelByRange = () => {
 	const [driverNumber, setDriverNumber] = useState(0);
+	const [open, setOpen] = useState(false);
 	const [dateRange, setDateRange] = useState({
 		from: new Date(), // January 31, 2025
 		to: new Date(), // Same default date
 	});
+
+	const [tempRange, setTempRange] = useState(dateRange);
+
+	useEffect(() => {
+		if (open) {
+			setTempRange({ from: null, to: null });
+		}
+	}, [open]);
+
+	const handleDateSelect = (range) => {
+		setTempRange(range);
+		if (range?.from && range?.to) {
+			setDateRange(range);
+			setOpen(false);
+		}
+	};
 
 	const handleCancelButton = async () => {
 		try {
@@ -71,30 +88,34 @@ const CancelByRange = () => {
 						htmlFor='date'
 						className='form-label text-gray-900'
 					>
-						Date
+						Date Range
 					</label>
 
 					<div className='flex items-center gap-2 relative'>
-						<Popover>
+						<Popover
+							open={open}
+							onOpenChange={setOpen}
+						>
 							<PopoverTrigger asChild>
 								<button
 									className={cn(
-										'flex items-center gap-2 border px-4 py-2 rounded-md  transition-all',
+										'btn btn-sm btn-light data-[state=open]:bg-light-active',
 										!dateRange && 'text-gray-400'
 									)}
+									style={{ height: '40px' }}
 								>
 									<KeenIcon
 										icon='calendar'
-										className='text-gray-600'
+										className='me-0.5'
 									/>
 									{dateRange?.from ? (
 										dateRange.to ? (
 											<>
-												{format(dateRange.from, 'dd/MM/yyyy')} →{' '}
-												{format(dateRange.to, 'dd/MM/yyyy')}
+												{format(dateRange.from, 'LLL dd, y')} -{' '}
+												{format(dateRange.to, 'LLL dd, y')}
 											</>
 										) : (
-											format(dateRange.from, 'dd/MM/yyyy')
+											format(dateRange.from, 'LLL dd, y')
 										)
 									) : (
 										<span>Pick a date range</span>
@@ -103,13 +124,14 @@ const CancelByRange = () => {
 							</PopoverTrigger>
 
 							<PopoverContent
-								className='w-auto p-2 shadow-md rounded-lg'
+								className='w-auto p-0'
 								align='end'
 							>
 								<Calendar
 									mode='range'
-									selected={dateRange}
-									onSelect={setDateRange}
+									defaultMonth={dateRange?.from}
+									selected={tempRange}
+									onSelect={handleDateSelect}
 									numberOfMonths={2}
 									initialFocus
 								/>

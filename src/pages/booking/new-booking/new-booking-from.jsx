@@ -49,6 +49,7 @@ function NewBooking() {
 	const [searchInput, setSearchInput] = useState('');
 	const [selectedScope, setSelectedScope] = useState('3');
 	const [date, setDate] = useState(null);
+	const [open, setOpen] = useState(false);
 	const { webBookings } = useSelector((state) => state.webBooking);
 
 	console.log(webBookings);
@@ -318,6 +319,13 @@ function NewBooking() {
 			alert(`Selected Drivers: ${selectedRowIds.join(', ')}`);
 		}
 	};
+
+	const handleDateSelect = (date) => {
+		setDate(date); // Update the date range
+		// Close the popover if both from and to dates are selected
+		setOpen(false);
+	};
+
 	return (
 		<Fragment>
 			<div className='pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1580px] w-full'>
@@ -358,7 +366,10 @@ function NewBooking() {
 										</label>
 									</div>
 									<div className='flex flex-wrap items-center gap-2.5'>
-										<Popover>
+										<Popover
+											open={open}
+											onOpenChange={setOpen}
+										>
 											<PopoverTrigger asChild>
 												<div className='relative'>
 													<button
@@ -404,7 +415,7 @@ function NewBooking() {
 													mode='single' // Single date selection
 													defaultMonth={date}
 													selected={date}
-													onSelect={setDate}
+													onSelect={handleDateSelect}
 													numberOfMonths={1}
 												/>
 											</PopoverContent>

@@ -418,10 +418,26 @@ function StatementHistory() {
 	const [search, setSearch] = useState('');
 	const [order, setOrder] = useState('asc'); // Sort order
 	const [orderBy, setOrderBy] = useState(''); // Default sorted column
+	const [openDate, setOpenDate] = useState(false);
 	const [date, setDate] = useState({
 		from: new Date(),
 		to: addDays(new Date(), 20),
 	});
+	const [tempRange, setTempRange] = useState(date);
+
+	useEffect(() => {
+		if (openDate) {
+			setTempRange({ from: null, to: null });
+		}
+	}, [openDate]);
+
+	const handleDateSelect = (range) => {
+		setTempRange(range);
+		if (range?.from && range?.to) {
+			setDate(range);
+			setOpenDate(false);
+		}
+	};
 
 	const formattedBookings = (statementHistory || []).map((booking) => ({
 		id: booking?.statementId,
@@ -519,7 +535,7 @@ function StatementHistory() {
 										<div className='flex'>
 											<label
 												className='input input-sm hover:shadow-lg'
-												style={{ height: '40px' }}
+												style={{ height: '40px', marginTop: '16px' }}
 											>
 												<KeenIcon icon='magnifier' />
 												<input
@@ -531,75 +547,83 @@ function StatementHistory() {
 											</label>
 										</div>
 										<div className='flex flex-wrap items-center gap-2.5'>
-											<Popover>
-												<PopoverTrigger asChild>
-													<button
-														id='date'
-														className={cn(
-															'btn btn-sm btn-light data-[state=open]:bg-light-active',
-															!date && 'text-gray-400'
-														)}
+											<div className='flex flex-col'>
+												<label className='form-label'>Date Range</label>
+												<Popover
+													open={openDate}
+													onOpenChange={setOpenDate}
+												>
+													<PopoverTrigger asChild>
+														<button
+															id='date'
+															className={cn(
+																'btn btn-sm btn-light data-[state=open]:bg-light-active',
+																!date && 'text-gray-400'
+															)}
+															style={{ height: '40px' }}
+														>
+															<KeenIcon
+																icon='calendar'
+																className='me-0.5'
+															/>
+															{date?.from ? (
+																date.to ? (
+																	<>
+																		{format(date.from, 'LLL dd, y')} -{' '}
+																		{format(date.to, 'LLL dd, y')}
+																	</>
+																) : (
+																	format(date.from, 'LLL dd, y')
+																)
+															) : (
+																<span>Pick a date range</span>
+															)}
+														</button>
+													</PopoverTrigger>
+													<PopoverContent
+														className='w-auto p-0'
+														align='end'
+													>
+														<Calendar
+															initialFocus
+															mode='range'
+															defaultMonth={date?.from}
+															selected={tempRange}
+															onSelect={handleDateSelect}
+															numberOfMonths={2}
+														/>
+													</PopoverContent>
+												</Popover>
+											</div>
+											<div className='flex flex-col'>
+												<label className='form-label'>Drivers</label>
+												<Select
+													value={selectedDriver}
+													onValueChange={(value) => setSelectedDriver(value)}
+												>
+													<SelectTrigger
+														className=' w-32 hover:shadow-lg'
+														size='sm'
 														style={{ height: '40px' }}
 													>
-														<KeenIcon
-															icon='calendar'
-															className='me-0.5'
-														/>
-														{date?.from ? (
-															date.to ? (
+														<SelectValue placeholder='Select' />
+													</SelectTrigger>
+													<SelectContent className='w-36'>
+														<SelectItem value={0}>All</SelectItem>
+														{drivers?.length > 0 &&
+															drivers?.map((driver) => (
 																<>
-																	{format(date.from, 'LLL dd, y')} -{' '}
-																	{format(date.to, 'LLL dd, y')}
+																	<SelectItem value={driver?.id}>
+																		{driver?.id} - {driver?.fullName}
+																	</SelectItem>
 																</>
-															) : (
-																format(date.from, 'LLL dd, y')
-															)
-														) : (
-															<span>Pick a date range</span>
-														)}
-													</button>
-												</PopoverTrigger>
-												<PopoverContent
-													className='w-auto p-0'
-													align='end'
-												>
-													<Calendar
-														initialFocus
-														mode='range'
-														defaultMonth={date?.from}
-														selected={date}
-														onSelect={setDate}
-														numberOfMonths={2}
-													/>
-												</PopoverContent>
-											</Popover>
-
-											<Select
-												value={selectedDriver}
-												onValueChange={(value) => setSelectedDriver(value)}
-											>
-												<SelectTrigger
-													className=' w-32 hover:shadow-lg'
-													size='sm'
-													style={{ height: '40px' }}
-												>
-													<SelectValue placeholder='Select' />
-												</SelectTrigger>
-												<SelectContent className='w-36'>
-													<SelectItem value={0}>All</SelectItem>
-													{drivers?.length > 0 &&
-														drivers?.map((driver) => (
-															<>
-																<SelectItem value={driver?.id}>
-																	{driver?.id} - {driver?.fullName}
-																</SelectItem>
-															</>
-														))}
-												</SelectContent>
-											</Select>
+															))}
+													</SelectContent>
+												</Select>
+											</div>
 
 											<button
-												className='btn btn-primary flex justify-center'
+												className='btn btn-primary flex justify-center mt-4'
 												onClick={handleSearch}
 												disabled={loading}
 											>

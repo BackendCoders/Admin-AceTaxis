@@ -48,6 +48,7 @@ export async function setMsgConfig(data) {
 		// 	},
 		// 	'info'
 		// );
+		toast.success('Message Config Updated Successfully');
 		return response;
 	}
 }
@@ -125,6 +126,7 @@ export async function setTariffConfig(data) {
 		// 	},
 		// 	'info'
 		// );
+		toast.success('Tariff Updated Successfully');
 		return response;
 	}
 }

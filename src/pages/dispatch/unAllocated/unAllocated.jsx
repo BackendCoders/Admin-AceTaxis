@@ -45,6 +45,7 @@ function UnAllocated() {
 	const { bookingsByStatus } = useSelector((state) => state.booking);
 	const [searchInput, setSearchInput] = useState('');
 	const [date, setDate] = useState(new Date());
+	const [open, setOpen] = useState(false);
 	const [scope, setScope] = useState(3);
 	const [status, setStatus] = useState();
 	const [allocatedModal, setAllocatedModal] = useState(false);
@@ -59,6 +60,10 @@ function UnAllocated() {
 	// 		)
 	// 	);
 	// };
+	const handleDateSelect = (date) => {
+		setDate(date);
+		setOpen(false);
+	};
 
 	const handleClose = () => {
 		setAllocatedModal(false);
@@ -404,7 +409,10 @@ function UnAllocated() {
 										</label>
 									</div>
 									<div className='flex flex-wrap items-center gap-2.5'>
-										<Popover>
+										<Popover
+											open={open}
+											onOpenChange={setOpen}
+										>
 											<PopoverTrigger asChild>
 												<button
 													id='date'
@@ -434,7 +442,7 @@ function UnAllocated() {
 													mode='single' // Single date selection
 													defaultMonth={date}
 													selected={date}
-													onSelect={setDate}
+													onSelect={handleDateSelect}
 													numberOfMonths={1}
 												/>
 											</PopoverContent>

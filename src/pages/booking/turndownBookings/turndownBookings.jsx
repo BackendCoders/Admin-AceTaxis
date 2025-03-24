@@ -48,6 +48,23 @@ function TurndownBookings() {
 		from: subDays(new Date(), 30),
 		to: new Date(),
 	});
+	const [open, setOpen] = useState(false);
+
+	const [tempRange, setTempRange] = useState(date);
+
+	useEffect(() => {
+		if (open) {
+			setTempRange({ from: null, to: null });
+		}
+	}, [open]);
+
+	const handleDateSelect = (range) => {
+		setTempRange(range);
+		if (range?.from && range?.to) {
+			setDate(range);
+			setOpen(false);
+		}
+	};
 
 	const handleSearch = async () => {
 		setLoading(true);
@@ -267,7 +284,10 @@ function TurndownBookings() {
 									<div className='flex flex-wrap items-center gap-2.5'>
 										<div className='flex flex-col'>
 											<label className='form-label'>Date Range</label>
-											<Popover>
+											<Popover
+												open={open}
+												onOpenChange={setOpen}
+											>
 												<PopoverTrigger asChild>
 													<button
 														id='date'
@@ -303,8 +323,8 @@ function TurndownBookings() {
 														initialFocus
 														mode='range'
 														defaultMonth={date?.from}
-														selected={date}
-														onSelect={setDate}
+														selected={tempRange}
+														onSelect={handleDateSelect}
 														numberOfMonths={2}
 													/>
 												</PopoverContent>
