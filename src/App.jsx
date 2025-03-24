@@ -1,12 +1,13 @@
 /** @format */
 
 // Import necessary modules and components
-import { useEffect } from 'react'; // Hook for side effects like updating the DOM
+import { useEffect, useRef } from 'react'; // Hook for side effects like updating the DOM
 import { BrowserRouter } from 'react-router-dom'; // Provides routing functionality for the app
 import { useSettings } from '@/providers/SettingsProvider'; // Custom hook to access app settings
 import { AppRouting } from '@/routing'; // Component that defines app routes
 import { PathnameProvider } from '@/providers'; // Custom provider for managing the current pathname
-import { Toaster } from '@/components/ui/sonner'; // Toaster for displaying notifications/toasts
+// import { Toaster } from '@/components/ui/sonner'; // Toaster for displaying notifications/toasts
+import { useNotifications } from './hooks/useNotifications';
 
 // Import environment variable for the app's base URL
 const { BASE_URL } = import.meta.env;
@@ -15,7 +16,8 @@ const { BASE_URL } = import.meta.env;
 const App = () => {
 	// Destructure `settings` object from custom `useSettings` hook
 	const { settings } = useSettings();
-
+	const { requestPermissionAndSubscribe } = useNotifications();
+	const hasCheckedRef = useRef(false); // Prevent double run in StrictMode
 	// Side effect to update the `themeMode` class on the root HTML element
 	useEffect(() => {
 		// Remove existing theme classes (light/dark) from the document
@@ -25,6 +27,34 @@ const App = () => {
 		// Add the current theme mode (light or dark) to the document
 		document.documentElement.classList.add(settings.themeMode);
 	}, [settings]); // Re-run the effect whenever `settings` changes
+
+	// Check and prompt for notifications on app load
+	useEffect(() => {
+		const checkNotificationStatus = async () => {
+			if (!('Notification' in window)) return;
+
+			// Reset ref on every mount to ensure alert checks each time
+			hasCheckedRef.current = false;
+
+			if (hasCheckedRef.current) return;
+			hasCheckedRef.current = true;
+
+			const permission = Notification.permission;
+			const registration = await navigator.serviceWorker.ready;
+			const subscription = await registration.pushManager.getSubscription();
+
+			if (permission === 'default' && !subscription) {
+				const enableNotifications = window.confirm(
+					'Would you like to enable browser notifications to stay updated with admin alerts?'
+				);
+				if (enableNotifications) {
+					await requestPermissionAndSubscribe();
+				}
+			}
+		};
+
+		checkNotificationStatus();
+	}, [requestPermissionAndSubscribe]); // Runs on every mount
 
 	// Return the app's main structure
 	return (
@@ -42,7 +72,7 @@ const App = () => {
 			</PathnameProvider>
 
 			{/* Toast notifications for showing alerts/messages */}
-			<Toaster />
+			{/* <Toaster /> */}
 		</BrowserRouter>
 	);
 };
