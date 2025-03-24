@@ -82,6 +82,14 @@ function RowNotPriced({ row, setPriceBaseModal, handlePostButton }) {
 	const [driverFare, setDriverFare] = useState(row.driverFare);
 	const [parking, setParking] = useState(row.parking);
 
+	const calculatedTotal =
+		Number(driverFare) +
+		Number(parking) +
+		Number(waiting) +
+		Number(journeyCharge);
+
+	const [debouncedValue, setDebouncedValue] = useState(null);
+
 	const handleCancel = async () => {
 		try {
 			const response = await clearInvoice(row?.id);
@@ -102,14 +110,24 @@ function RowNotPriced({ row, setPriceBaseModal, handlePostButton }) {
 		if (field === 'journeyCharge') setJourneyCharge(newValue);
 		if (field === 'driverFare') setDriverFare(newValue);
 		if (field === 'parking') setParking(newValue);
+
+		// Set debounced value for API call
+		setDebouncedValue({ field, value: newValue });
 	};
+
+	useEffect(() => {
+		if (!debouncedValue) return;
+
+		const timer = setTimeout(() => {
+			updateCharges();
+		}, 500); // Delay of 500ms
+
+		return () => clearTimeout(timer);
+	}, [debouncedValue]);
 
 	const handleKeyPress = (event, nextField) => {
 		if (event.key === 'Enter') {
 			event.preventDefault(); // Prevent form submission
-
-			// Trigger API call immediately
-			updateCharges();
 
 			// Move focus to the next input field
 			if (nextField) {
@@ -268,7 +286,7 @@ function RowNotPriced({ row, setPriceBaseModal, handlePostButton }) {
 				<TableCell
 					className={`${row?.coa ? 'dark:text-white' : 'dark:text-gray-700'} text-gray-900 font-semibold`}
 				>
-					£{row.total.toFixed(2)}
+					£{calculatedTotal.toFixed(2)}
 				</TableCell>
 				<TableCell>
 					<IconButton
@@ -276,7 +294,7 @@ function RowNotPriced({ row, setPriceBaseModal, handlePostButton }) {
 						onClick={() => setPriceBaseModal(true)}
 					>
 						<MoneyIcon
-							className={`${row?.coa ? 'text-green-600 dark:text-white' : 'text-green-500 dark:text-green-400'}  `}
+							className={`${row?.coa ? 'text-green-600 dark:text-green-600' : 'text-green-500 dark:text-green-400'}  `}
 						/>
 					</IconButton>
 				</TableCell>
@@ -1161,12 +1179,6 @@ function InvoiceProcessor() {
 									<div className='flex justify-start items-center gap-4 ml-4 mt-2 mb-2'>
 										Ready for Invoicing -{' '}
 										{accountChargeableJobs?.priced?.length}
-										<button
-											className='btn btn-success flex justify-center'
-											onClick={handleProcessDriver}
-										>
-											Process Driver {accountChargeableJobs?.priced?.length}
-										</button>
 									</div>
 									{sortedPricedBookings.length > 0 ? (
 										<TableContainer
@@ -1358,6 +1370,15 @@ function InvoiceProcessor() {
 										<div className='text-start ml-4  text-gray-500'>
 											⚠️ No data found
 										</div>
+									)}
+
+									{accountChargeableJobs?.priced?.length > 0 && (
+										<button
+											className='btn btn-success flex justify-center mt-5 w-full'
+											onClick={handleProcessDriver}
+										>
+											Process Driver {accountChargeableJobs?.priced?.length}
+										</button>
 									)}
 								</div>
 							</div>

@@ -37,7 +37,7 @@ const Availability = () => {
 	const [selectedDriver, setSelectedDriver] = useState(0);
 	const [isCustomModal, setIsCustomModal] = useState(false);
 	const [date, setDate] = useState(new Date());
-
+	const [open, setOpen] = useState(false);
 	const handleClose = () => {
 		setIsCustomModal(false);
 	};
@@ -196,6 +196,12 @@ const Availability = () => {
 		}
 	};
 
+	const handleDateSelect = (date) => {
+		setDate(date); // Update the date range
+		// Close the popover if both from and to dates are selected
+		setOpen(false);
+	};
+
 	useEffect(() => {
 		dispatch(refreshAllDrivers());
 	}, [dispatch]);
@@ -226,7 +232,10 @@ const Availability = () => {
 
 			{/* Date & Unavailable Button */}
 			<div className='flex flex-wrap justify-start items-center mt-4 gap-3'>
-				<Popover>
+				<Popover
+					open={open}
+					onOpenChange={setOpen}
+				>
 					<PopoverTrigger asChild>
 						<button
 							id='date'
@@ -252,7 +261,7 @@ const Availability = () => {
 							mode='single' // Single date selection
 							defaultMonth={date}
 							selected={date}
-							onSelect={setDate}
+							onSelect={handleDateSelect}
 							numberOfMonths={1}
 						/>
 					</PopoverContent>

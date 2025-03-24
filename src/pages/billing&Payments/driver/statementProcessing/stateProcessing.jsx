@@ -76,6 +76,12 @@ function RowNotPriced({ row, setPriceBaseModal, handlePostButton }) {
 	const [parking, setParking] = useState(row.parking);
 	const user = JSON.parse(localStorage.getItem('userData'));
 	const waitingRef = useRef(null);
+
+	const calculatedTotal =
+		Number(driverFare) + Number(parking) + Number(waiting);
+
+	const [debouncedValue, setDebouncedValue] = useState(null);
+
 	const handleCancel = async () => {
 		try {
 			const payload = {
@@ -109,14 +115,24 @@ function RowNotPriced({ row, setPriceBaseModal, handlePostButton }) {
 		if (field === 'waiting') setWaiting(newValue);
 		if (field === 'driverFare') setDriverFare(newValue);
 		if (field === 'parking') setParking(newValue);
+
+		// Set debounced value for API call
+		setDebouncedValue({ field, value: newValue });
 	};
+
+	useEffect(() => {
+		if (!debouncedValue) return;
+
+		const timer = setTimeout(() => {
+			updateCharges();
+		}, 500); // Delay of 500ms
+
+		return () => clearTimeout(timer);
+	}, [debouncedValue]);
 
 	const handleKeyPress = (event, nextField) => {
 		if (event.key === 'Enter') {
 			event.preventDefault(); // Prevent form submission
-
-			// Trigger API call immediately
-			updateCharges();
 
 			// Move focus to the next input field
 			if (nextField) {
@@ -262,7 +278,7 @@ function RowNotPriced({ row, setPriceBaseModal, handlePostButton }) {
 				<TableCell
 					className={`${row?.coa ? 'dark:text-white' : 'dark:text-gray-700'} text-gray-900 font-semibold`}
 				>
-					£{row.total.toFixed(2)}
+					£{calculatedTotal.toFixed(2)}
 				</TableCell>
 				<TableCell>
 					<IconButton
@@ -270,7 +286,7 @@ function RowNotPriced({ row, setPriceBaseModal, handlePostButton }) {
 						onClick={() => setPriceBaseModal(true)}
 					>
 						<MoneyIcon
-							className={`${row?.coa ? 'text-green-600 dark:text-white' : 'text-green-500 dark:text-green-400'}  `}
+							className={`${row?.coa ? 'text-green-600 dark:text-green-600' : 'text-green-500 dark:text-green-400'}  `}
 						/>
 					</IconButton>
 				</TableCell>
@@ -1066,12 +1082,6 @@ function StateProcessing() {
 									<div className='flex justify-start items-center gap-4 ml-4 mt-2 mb-2'>
 										Ready for Processing -{' '}
 										{driverChargeableJobs?.priced?.length}
-										<button
-											className='btn btn-success flex justify-center'
-											onClick={handleProcessDriver}
-										>
-											Process Driver {driverChargeableJobs?.priced?.length}
-										</button>
 									</div>
 									{sortedPricedBookings?.length > 0 ? (
 										<TableContainer
@@ -1199,6 +1209,15 @@ function StateProcessing() {
 										<div className='text-start ml-4 text-gray-500'>
 											⚠️ No data found
 										</div>
+									)}
+
+									{driverChargeableJobs?.priced?.length > 0 && (
+										<button
+											className='btn btn-success flex mt-5 justify-center w-full'
+											onClick={handleProcessDriver}
+										>
+											Process Driver {driverChargeableJobs?.priced?.length}
+										</button>
 									)}
 								</div>
 							</div>

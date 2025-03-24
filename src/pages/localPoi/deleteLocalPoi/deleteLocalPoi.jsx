@@ -48,7 +48,7 @@ function DeleteLocalPoi({ open, onOpenChange }) {
 							Cancel
 						</button>
 						<button
-							className='btn btn-primary ml-2'
+							className='btn btn-danger ml-2'
 							onClick={handleDelete}
 						>
 							Delete

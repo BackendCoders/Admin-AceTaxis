@@ -353,8 +353,8 @@ function RowNotPriced({ row, handlePostButton }) {
 								row.paid
 									? 'text-gray-400 dark:text-gray-500' // Blur effect when disabled
 									: row?.coa
-										? 'text-blue-600 dark:text-white'
-										: 'text-blue-500 dark:text-cyan-400'
+										? 'text-green-600 dark:text-green-600'
+										: 'text-green-500 dark:text-green-400'
 							}`}
 							onClick={() => {
 								if (row.total === 0 && !row.paid) {

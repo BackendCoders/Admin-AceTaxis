@@ -51,11 +51,18 @@ const DriverExpenses = () => {
 		from: subDays(new Date(), 30), // December 28, 2024
 		to: new Date(), // January 28, 2025
 	});
+	const [tempRange, setTempRange] = useState(dateRange);
+
+	useEffect(() => {
+		if (open) {
+			setTempRange({ from: null, to: null });
+		}
+	}, [open]);
 
 	const handleDateSelect = (range) => {
-		setDateRange(range); // Update the date range
-		// Close the popover if both from and to dates are selected
+		setTempRange(range);
 		if (range?.from && range?.to) {
+			setDateRange(range);
 			setOpen(false);
 		}
 	};
@@ -296,7 +303,7 @@ const DriverExpenses = () => {
 												>
 													<Calendar
 														mode='range'
-														selected={dateRange}
+														selected={tempRange}
 														onSelect={handleDateSelect}
 														numberOfMonths={2}
 														initialFocus

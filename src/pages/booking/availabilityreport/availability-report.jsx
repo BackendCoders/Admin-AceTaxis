@@ -61,7 +61,7 @@ const AvailabilityReport = () => {
 	const handleDateSelect = (range) => {
 		setDateRange(range); // Update the date range
 		// Close the popover if both from and to dates are selected
-		if (range?.from && range?.to) {
+		if (range?.to) {
 			setOpen(false);
 		}
 	};

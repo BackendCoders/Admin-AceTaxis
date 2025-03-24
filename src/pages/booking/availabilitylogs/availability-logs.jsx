@@ -40,7 +40,7 @@ const AvailabilityLogs = () => {
 	const { drivers } = useSelector((state) => state.driver);
 	const [driverNumber, setDriverNumber] = useState();
 	const [date, setDate] = useState(new Date());
-
+	const [open, setOpen] = useState(false);
 	const handleSearch = async () => {
 		if (!String(driverNumber)?.trim()) {
 			toast.error('Please enter a driver ID');
@@ -178,6 +178,12 @@ const AvailabilityLogs = () => {
 		}
 	};
 
+	const handleDateSelect = (date) => {
+		setDate(date); // Update the date range
+		// Close the popover if both from and to dates are selected
+		setOpen(false);
+	};
+
 	return (
 		<Fragment>
 			<div className='pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1580px] w-full'>
@@ -239,7 +245,10 @@ const AvailabilityLogs = () => {
 
 										<div className='flex flex-col'>
 											<label className='form-label'>Date</label>
-											<Popover>
+											<Popover
+												open={open}
+												onOpenChange={setOpen}
+											>
 												<PopoverTrigger asChild>
 													<div className='relative'>
 														<button
@@ -285,7 +294,7 @@ const AvailabilityLogs = () => {
 														mode='single' // Single date selection
 														defaultMonth={date}
 														selected={date}
-														onSelect={setDate}
+														onSelect={handleDateSelect}
 														numberOfMonths={1}
 													/>
 												</PopoverContent>

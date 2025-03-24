@@ -385,7 +385,7 @@ function NewBooking() {
 																e.stopPropagation(); // Prevent closing popover
 																setDate(null); // Clear date
 															}}
-															className='absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700'
+															className='absolute right-2 top-2/3 transform -translate-y-1/2 text-gray-500 hover:text-gray-700'
 														>
 															<KeenIcon
 																icon='cross-circle'

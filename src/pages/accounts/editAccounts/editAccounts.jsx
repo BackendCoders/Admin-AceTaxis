@@ -429,7 +429,7 @@ function EditAccounts({ open, onOpenChange }) {
 								Cancel
 							</button>
 							<button
-								className='btn btn-primary ml-2'
+								className='btn btn-success ml-2'
 								type='submit'
 							>
 								Submit

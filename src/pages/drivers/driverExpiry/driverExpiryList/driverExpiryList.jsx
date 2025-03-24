@@ -51,7 +51,26 @@ function DriverExpiryList() {
 	// const [deleteDriverModal, setDeleteDriverModal] = useState(false);
 	// const [date, setDate] = useState(new Date());
 
-	const filteredDriver = driversExpiryList?.filter((driver) => {
+	const sortedDriversExpiryList = [...driversExpiryList].sort((a, b) => {
+		// Get today's date for comparison
+		const today = new Date();
+		today.setHours(0, 0, 0, 0);
+
+		// Parse expiry dates, default to far future if invalid/null
+		const expiryA = a.expiryDate
+			? new Date(a.expiryDate)
+			: new Date('9999-12-31');
+		const expiryB = b.expiryDate
+			? new Date(b.expiryDate)
+			: new Date('9999-12-31');
+		expiryA.setHours(0, 0, 0, 0);
+		expiryB.setHours(0, 0, 0, 0);
+
+		// Sort: Expired (past) first, then expiring (future)
+		return expiryA - expiryB;
+	});
+
+	const filteredDriver = sortedDriversExpiryList?.filter((driver) => {
 		// Ensure driver exists before filtering
 		if (!driver) return false;
 
