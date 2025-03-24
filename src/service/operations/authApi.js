@@ -80,7 +80,7 @@ export function login(data, navigate) {
 			// );
 		} else {
 			toast.error('Failed to Login User');
-			navigate('/auth/signin');
+			navigate('/auth/login');
 		}
 
 		dispatch(setLoading(false));
