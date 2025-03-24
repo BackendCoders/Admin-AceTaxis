@@ -1,13 +1,17 @@
 /** @format */
 
 // Import necessary modules and components
-import { useEffect, useRef } from 'react'; // Hook for side effects like updating the DOM
+import { useEffect } from 'react'; // Hook for side effects like updating the DOM
 import { BrowserRouter } from 'react-router-dom'; // Provides routing functionality for the app
 import { useSettings } from '@/providers/SettingsProvider'; // Custom hook to access app settings
 import { AppRouting } from '@/routing'; // Component that defines app routes
 import { PathnameProvider } from '@/providers'; // Custom provider for managing the current pathname
 // import { Toaster } from '@/components/ui/sonner'; // Toaster for displaying notifications/toasts
-import { useNotifications } from './hooks/useNotifications';
+// import {
+// 	getFirebaseToken,
+// 	onForegroundMessage,
+// } from './hooks/useNotifications';
+// import toast from 'react-hot-toast';
 
 // Import environment variable for the app's base URL
 const { BASE_URL } = import.meta.env;
@@ -16,8 +20,6 @@ const { BASE_URL } = import.meta.env;
 const App = () => {
 	// Destructure `settings` object from custom `useSettings` hook
 	const { settings } = useSettings();
-	const { requestPermissionAndSubscribe } = useNotifications();
-	const hasCheckedRef = useRef(false); // Prevent double run in StrictMode
 	// Side effect to update the `themeMode` class on the root HTML element
 	useEffect(() => {
 		// Remove existing theme classes (light/dark) from the document
@@ -28,33 +30,39 @@ const App = () => {
 		document.documentElement.classList.add(settings.themeMode);
 	}, [settings]); // Re-run the effect whenever `settings` changes
 
-	// Check and prompt for notifications on app load
-	useEffect(() => {
-		const checkNotificationStatus = async () => {
-			if (!('Notification' in window)) return;
+	// useEffect(() => {
+	// 	onForegroundMessage()
+	// 		.then((payload) => {
+	// 			console.log('Received foreground message: ', payload);
+	// 			const {
+	// 				notification: { title, body },
+	// 			} = payload;
+	// 			toast(`${title} - ${body}`);
+	// 		})
+	// 		.catch((err) =>
+	// 			console.log(
+	// 				'An error occured while retrieving foreground message. ',
+	// 				err
+	// 			)
+	// 		);
+	// }, []);
 
-			// Reset ref on every mount to ensure alert checks each time
-			hasCheckedRef.current = false;
+	// const handleGetFirebaseToken = () => {
+	// 	getFirebaseToken()
+	// 		.then((firebaseToken) => {
+	// 			console.log('Firebase token: ', firebaseToken);
+	// 			if (firebaseToken) {
+	// 				console.log(firebaseToken);
+	// 			}
+	// 		})
+	// 		.catch((err) =>
+	// 			console.error('An error occured while retrieving firebase token. ', err)
+	// 		);
+	// };
 
-			if (hasCheckedRef.current) return;
-			hasCheckedRef.current = true;
-
-			const permission = Notification.permission;
-			const registration = await navigator.serviceWorker.ready;
-			const subscription = await registration.pushManager.getSubscription();
-
-			if (permission === 'default' && !subscription) {
-				const enableNotifications = window.confirm(
-					'Would you like to enable browser notifications to stay updated with admin alerts?'
-				);
-				if (enableNotifications) {
-					await requestPermissionAndSubscribe();
-				}
-			}
-		};
-
-		checkNotificationStatus();
-	}, [requestPermissionAndSubscribe]); // Runs on every mount
+	// useEffect(() => {
+	// 	handleGetFirebaseToken();
+	// }, []);
 
 	// Return the app's main structure
 	return (

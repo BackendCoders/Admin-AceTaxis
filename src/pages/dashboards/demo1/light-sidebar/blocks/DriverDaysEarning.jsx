@@ -25,9 +25,7 @@ function DayEarning() {
 				enableSorting: true,
 				cell: (info) => {
 					return (
-						<div className='p-1 rounded text-gray-900 font-semibold'>
-							{info.getValue()}
-						</div>
+						<div className='p-1 rounded font-semibold'>{info.getValue()}</div>
 					);
 				},
 				meta: { headerClassName: 'min-w-[120px]' },
