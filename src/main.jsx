@@ -23,6 +23,17 @@ const store = configureStore({
 	reducer: rootReducer,
 });
 
+if ('serviceWorker' in navigator) {
+	navigator.serviceWorker
+		.register('/firebase-messaging-sw.js')
+		.then((registration) => {
+			console.log('Service Worker Registered:', registration);
+		})
+		.catch((err) => {
+			console.error('Service Worker Registration Failed:', err);
+		});
+}
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
 	<React.StrictMode>
