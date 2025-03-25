@@ -14,7 +14,6 @@ const { BASE_URL } = import.meta.env;
 
 // Main App Component
 const App = () => {
-	// Destructure `settings` object from custom `useSettings` hook
 	const { settings } = useSettings();
 
 	// Side effect to update the `themeMode` class on the root HTML element
