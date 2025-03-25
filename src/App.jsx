@@ -1,100 +1,101 @@
 /** @format */
 
-// Import necessary modules and components
-import { useState } from 'react';
-import { useCallback, useEffect } from 'react'; // Hook for side effects like updating the DOM
-import { BrowserRouter } from 'react-router-dom'; // Provides routing functionality for the app
-import { useSettings } from '@/providers/SettingsProvider'; // Custom hook to access app settings
-import { AppRouting } from '@/routing'; // Component that defines app routes
-import { PathnameProvider } from '@/providers'; // Custom provider for managing the current pathname
+import { useState, useCallback, useEffect } from 'react';
+import { BrowserRouter } from 'react-router-dom';
+import { useSettings } from '@/providers/SettingsProvider';
+import { AppRouting } from '@/routing';
+import { PathnameProvider } from '@/providers';
 import { getFirebaseToken, onForegroundMessage } from './firebase';
 import toast from 'react-hot-toast';
 import { updateFCM } from './service/operations/gpsApi';
 
-// Import environment variable for the app's base URL
-const { BASE_URL } = import.meta.env;
+const BASE_URL = import.meta.env.BASE_URL;
 
-// Main App Component
 const App = () => {
-	const { settings } = useSettings();
-	const [notifications, setNotifications] = useState([]);
-	const [fcmToken, setFcmToken] = useState(null);
+  const { settings } = useSettings();
+  const [notifications, setNotifications] = useState([]);
+  const [fcmToken, setFcmToken] = useState(null);
 
-	// Side effect to update the `themeMode` class on the root HTML element
-	useEffect(() => {
-		// Remove existing theme classes (light/dark) from the document
-		document.documentElement.classList.remove('dark');
-		document.documentElement.classList.remove('light');
+  // Theme management
+  const updateTheme = useCallback(() => {
+    const root = document.documentElement;
+    root.classList.remove('dark', 'light');
+    root.classList.add(settings.themeMode);
+  }, [settings.themeMode]);
 
-		// Add the current theme mode (light or dark) to the document
-		document.documentElement.classList.add(settings.themeMode);
-	}, [settings]); // Re-run the effect whenever `settings` changes
+  useEffect(() => {
+    updateTheme();
+  }, [updateTheme]);
 
-	// Handle foreground notifications
-	useEffect(() => {
-		const unsubscribe = onForegroundMessage((payload) => {
-			console.log('New notification received: ', payload); // Debugging ke liye
-			if (payload?.notification) {
-				const { title, body } = payload.notification;
-				setNotifications((prev) => [...prev, { title, body }]); // Store notifications
-				toast.success(`🔔 ${title}: ${body}`);
-			}
-		});
+  // Register service worker (moved to main.jsx)
 
-		return () => unsubscribe && unsubscribe();
-	}, []);
+  // Handle foreground notifications
+  useEffect(() => {
+    const unsubscribe = onForegroundMessage((payload) => {
+      console.log('Foreground message received on Vercel:', payload);
+      if (!payload?.notification) {
+        console.warn('Invalid foreground notification payload:', payload);
+        return;
+      }
 
-	// Request notification permission (memoized)
-	const requestPermission = useCallback(async () => {
-		try {
-			const permission = await Notification.requestPermission();
-			console.log('Notification permission result:', permission);
-			if (permission === 'granted') {
-				const token = await getFirebaseToken();
-				if (token && token !== fcmToken) {
-					// Only send if token is new
-					setFcmToken(token); // Store the token to prevent duplicate calls
-					try {
-						const response = await updateFCM(token);
-						console.log('FCM token sent to API successfully:', response);
-						toast.success('FCM token updated successfully!');
-					} catch (error) {
-						console.error('Error sending FCM token to API:', error);
-						toast.error('Failed to update FCM token.');
-					}
-				} else if (!token) {
-					console.warn('No FCM token retrieved.');
-					toast.error('Failed to retrieve FCM token.');
-				}
-			} else {
-				console.warn('Notification permission not granted:', permission);
-				toast.error('Notification permission denied.');
-			}
-		} catch (error) {
-			console.error('Error requesting notification permission:', error);
-			toast.error('Error requesting notification permission.');
-		}
-	}, [fcmToken]);
+      const { title, body } = payload.notification;
+      setNotifications((prev) => [...prev, { title, body }]);
+      toast.success(`🔔 ${title}: ${body}`, {
+        duration: 4000,
+        position: 'top-right',
+      });
+    });
 
-	useEffect(() => {
-		requestPermission();
-	}, [requestPermission]);
+    return () => unsubscribe?.();
+  }, []);
 
-	// Return the app's main structure
-	return (
-		<BrowserRouter
-			basename={BASE_URL} // Sets the base URL for routing (useful for deploying to subdirectories)
-		>
-			{/* Custom provider for managing pathname state */}
-			<PathnameProvider>
-				{/* Handles app routing by rendering pages based on the URL */}
-				<AppRouting />
-			</PathnameProvider>
+  // Request notification permission and handle FCM token
+  const requestPermission = useCallback(async () => {
+    try {
+      const permission = await Notification.requestPermission();
+      console.log('Notification permission result:', permission);
+      if (permission === 'granted') {
+        const token = await getFirebaseToken();
+        if (token) {
+          if (token !== fcmToken) {
+            setFcmToken(token);
+            try {
+              const response = await updateFCM(token);
+              console.log('FCM token sent to API successfully:', response);
+              toast.success('FCM token updated successfully!');
+            } catch (error) {
+              console.error('Error sending FCM token to API:', error);
+              toast.error('Failed to update FCM token.');
+            }
+          } else {
+            console.log('FCM token unchanged, skipping API call.');
+          }
+        } else {
+          console.warn('No FCM token retrieved.');
+          toast.error('Failed to retrieve FCM token.');
+        }
+      } else {
+        console.warn('Notification permission not granted:', permission);
+        toast.error('Notification permission denied. Please enable notifications.');
+      }
+    } catch (error) {
+      console.error('Error requesting notification permission:', error);
+      toast.error('Error requesting notification permission.');
+    }
+  }, [fcmToken]);
 
-			{/* Toast notifications for showing alerts/messages */}
-			{/* <Toaster /> */}
-		</BrowserRouter>
-	);
+  useEffect(() => {
+    requestPermission();
+  }, [requestPermission]);
+
+  return (
+    <BrowserRouter basename={BASE_URL}>
+      <PathnameProvider>
+        <AppRouting />
+      </PathnameProvider>
+    </BrowserRouter>
+  );
 };
 
-export { App }; // Export the App component for use in index.js or elsewhere
+// Switch to default export
+export default App;
