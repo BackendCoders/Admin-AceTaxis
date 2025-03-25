@@ -10,13 +10,13 @@ importScripts(
 
 // ✅ Firebase Configuration (Keep API keys secure in production)
 const firebaseConfig = {
-	apiKey: 'AIzaSyB4FIuijeXuTHw-5PQRsveIlAnUlCuTgrM',
-	authDomain: 'test-cda92.firebaseapp.com',
-	projectId: 'test-cda92',
-	storageBucket: 'test-cda92.firebaseapp.com', // Fixed incorrect domain
-	messagingSenderId: '682669403712',
-	appId: '1:682669403712:web:b77a4199c66848acc6b9a5',
-	measurementId: 'G-K788GFL7SD',
+	apiKey: 'AIzaSyCoKELS2o8EsCHAcpdoyFBd1zQ2ld0t69o',
+	authDomain: 'joyride-cba49.firebaseapp.com',
+	projectId: 'joyride-cba49',
+	storageBucket: 'joyride-cba49.firebasestorage.app',
+	messagingSenderId: '498604695616',
+	appId: '1:498604695616:web:0b4dee2178c510c421bfa5',
+	measurementId: 'G-FB4PHGWCCF',
 };
 
 // ✅ Initialize Firebase
