@@ -55,6 +55,7 @@ export const bookingsEndpoints = {
 
 export const gpsEndpoints = {
 	GET_ALL_GPS: `${BASE}/api/UserProfile/GetAllGPS`,
+	UPDATE_FCM: (fcm) => `${BASE}/api/AdminUI/UpdateBrowserFCM?fcm=${fcm}`,
 };
 
 export const dashBoardEndpoints = {
