@@ -1,19 +1,13 @@
 /** @format */
 
 // Import necessary modules and components
-import { useEffect, useState } from 'react'; // Hook for side effects like updating the DOM
+import { useCallback, useEffect } from 'react'; // Hook for side effects like updating the DOM
 import { BrowserRouter } from 'react-router-dom'; // Provides routing functionality for the app
 import { useSettings } from '@/providers/SettingsProvider'; // Custom hook to access app settings
 import { AppRouting } from '@/routing'; // Component that defines app routes
 import { PathnameProvider } from '@/providers'; // Custom provider for managing the current pathname
 import { getFirebaseToken, onForegroundMessage } from './firebase';
 import toast from 'react-hot-toast';
-// import { Toaster } from '@/components/ui/sonner'; // Toaster for displaying notifications/toasts
-// import {
-// 	getFirebaseToken,
-// 	onForegroundMessage,
-// } from './hooks/useNotifications';
-// import toast from 'react-hot-toast';
 
 // Import environment variable for the app's base URL
 const { BASE_URL } = import.meta.env;
@@ -22,9 +16,7 @@ const { BASE_URL } = import.meta.env;
 const App = () => {
 	// Destructure `settings` object from custom `useSettings` hook
 	const { settings } = useSettings();
-	const [notificationPermission, setNotificationPermission] = useState(
-		Notification.permission
-	);
+
 	// Side effect to update the `themeMode` class on the root HTML element
 	useEffect(() => {
 		// Remove existing theme classes (light/dark) from the document
@@ -35,39 +27,33 @@ const App = () => {
 		document.documentElement.classList.add(settings.themeMode);
 	}, [settings]); // Re-run the effect whenever `settings` changes
 
+	// Handle foreground notifications
 	useEffect(() => {
-		// 🔔 Foreground Messages Listen Karega
 		const unsubscribe = onForegroundMessage((payload) => {
-			console.log('Foreground Notification:', payload);
-			const { title, body } = payload.notification;
-			toast(`${title}: ${body}`);
+			if (payload?.notification) {
+				const { title, body } = payload.notification;
+				toast(`🔔${title}: ${body}`);
+			}
 		});
 
-		return () => unsubscribe();
+		return () => unsubscribe && unsubscribe();
 	}, []);
 
-	const requestPermission = async () => {
+	// Request notification permission (memoized)
+	const requestPermission = useCallback(async () => {
 		const permission = await Notification.requestPermission();
-		setNotificationPermission(permission);
-		if (permission === 'granted') {
-			await getFirebaseToken();
-		} else {
-			console.warn('Notification permission denied.');
-		}
-	};
+		if (permission === 'granted') await getFirebaseToken();
+	}, []);
+
+	useEffect(() => {
+		requestPermission();
+	}, []);
 
 	// Return the app's main structure
 	return (
 		<BrowserRouter
 			basename={BASE_URL} // Sets the base URL for routing (useful for deploying to subdirectories)
-			future={{
-				v7_relativeSplatPath: true, // Enables React Router v7 experimental feature for relative splat matching
-				v7_startTransition: true, // Enables React Router v7 experimental feature for start transitions
-			}}
 		>
-			{notificationPermission === 'default' && (
-				<button onClick={requestPermission}>Enable Notifications</button>
-			)}
 			{/* Custom provider for managing pathname state */}
 			<PathnameProvider>
 				{/* Handles app routing by rendering pages based on the URL */}

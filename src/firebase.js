@@ -1,52 +1,75 @@
-/** @format */
+/* @format */
 
-// src/firebase.js
+// 🔥 Import Firebase modules
 import { initializeApp } from 'firebase/app';
-import { getMessaging, getToken, onMessage } from 'firebase/messaging';
+import {
+	getMessaging,
+	getToken,
+	onMessage,
+	isSupported,
+} from 'firebase/messaging';
 
 // 🔥 Firebase Config
 const firebaseConfig = {
-	apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-	authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-	projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-	storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-	messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-	appId: import.meta.env.VITE_FIREBASE_APP_ID,
-	measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
+	apiKey: import.meta.env.VITE_APP_API_KEY,
+	authDomain: import.meta.env.VITE_APP_AUTH_DOMAIN,
+	projectId: import.meta.env.VITE_APP_PROJECT_ID,
+	storageBucket: import.meta.env.VITE_APP_STORAGE_BUCKET,
+	messagingSenderId: import.meta.env.VITE_APP_MESSAGING_SENDER_ID,
+	appId: import.meta.env.VITE_APP_APP_ID,
+	measurementId: import.meta.env.VITE_APP_MEASUREMENT_ID,
 };
 
-// 🔥 Initialize Firebase
+// 🔥 Initialize Firebase App
 const firebaseApp = initializeApp(firebaseConfig);
 
-// 🔥 Initialize Messaging
-let messaging;
-try {
-    messaging = getMessaging(firebaseApp);
-} catch (err) {
-    console.error('Error initializing Firebase Messaging:', err);
-}
+// 🔥 Initialize Firebase Messaging (Only if supported)
+let messaging = null;
 
-// 🔥 Get Firebase Token
-export const getFirebaseToken = async () => {
-	try {
-		const currentToken = await getToken(messaging, {
-			vapidKey: import.meta.env.VITE_FIREBASE_VAPID_KEY,
-		});
-		if (currentToken) {
-			console.log('FCM Token:', currentToken);
-			return currentToken;
+isSupported()
+	.then((supported) => {
+		if (supported) {
+			messaging = getMessaging(firebaseApp);
+			console.log('✅ Firebase Messaging is supported and initialized.');
 		} else {
-			console.warn('No registration token available. Request permission.');
+			console.warn('⚠️ Firebase Messaging is not supported in this browser.');
+		}
+	})
+	.catch((err) => console.error('🚨 Error checking messaging support:', err));
+
+// 🔥 Function to get FCM Token
+export const getFirebaseToken = async () => {
+	if (!messaging) {
+		console.warn('⚠️ Firebase Messaging is not initialized.');
+		return null;
+	}
+
+	try {
+		const token = await getToken(messaging, {
+			vapidKey: import.meta.env.VITE_APP_VAPID_KEY,
+		});
+		if (token) {
+			console.log('🔥 FCM Token:', token);
+			return token;
+		} else {
+			console.warn('⚠️ No FCM token available. Requesting permission...');
+			return null;
 		}
 	} catch (err) {
-		console.error('Error fetching Firebase token:', err);
+		console.error('🚨 Error fetching Firebase token:', err);
+		return null;
 	}
 };
 
 // 🔥 Listen for Foreground Messages
 export const onForegroundMessage = (callback) => {
-	return onMessage(messaging, (payload) => {
-		console.log('Foreground Message Received:', payload);
+	if (!messaging) {
+		console.warn('⚠️ Firebase Messaging is not initialized.');
+		return;
+	}
+
+	onMessage(messaging, (payload) => {
+		console.log('📩 Foreground Message Received:', payload);
 		callback(payload);
 	});
 };
