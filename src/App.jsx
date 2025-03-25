@@ -28,19 +28,31 @@ const App = () => {
 		document.documentElement.classList.add(settings.themeMode);
 	}, [settings]); // Re-run the effect whenever `settings` changes
 
-	// Handle foreground notifications
-	useEffect(() => {
-		const unsubscribe = onForegroundMessage((payload) => {
-			console.log("New notification received: ", payload); // Debugging ke liye
+
+	// Handle foreground notifications (optimized with logging)
+	const handleForegroundMessage = useCallback(() => {
+		return onForegroundMessage((payload) => {
+			console.log('📩 New notification received:', payload); // Debugging log
+
 			if (payload?.notification) {
 				const { title, body } = payload.notification;
+				console.log(`🔔 Notification Details - Title: ${title}, Body: ${body}`); // Detailed log
+
 				setNotifications((prev) => [...prev, { title, body }]); // Store notifications
 				toast.success(`🔔 ${title}: ${body}`);
 			}
 		});
-	
-		return () => unsubscribe && unsubscribe();
 	}, []);
+
+	useEffect(() => {
+		console.log('🔄 Setting up foreground message listener...');
+		const unsubscribe = handleForegroundMessage();
+
+		return () => {
+			console.log('🛑 Cleaning up foreground message listener...');
+			unsubscribe && unsubscribe();
+		};
+	}, [handleForegroundMessage]);
 
 	// Request notification permission (memoized)
 	const requestPermission = useCallback(async () => {
