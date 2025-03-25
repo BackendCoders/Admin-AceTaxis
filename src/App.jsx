@@ -30,40 +30,6 @@ const App = () => {
 		document.documentElement.classList.add(settings.themeMode);
 	}, [settings]); // Re-run the effect whenever `settings` changes
 
-	// useEffect(() => {
-	// 	onForegroundMessage()
-	// 		.then((payload) => {
-	// 			console.log('Received foreground message: ', payload);
-	// 			const {
-	// 				notification: { title, body },
-	// 			} = payload;
-	// 			toast(`${title} - ${body}`);
-	// 		})
-	// 		.catch((err) =>
-	// 			console.log(
-	// 				'An error occured while retrieving foreground message. ',
-	// 				err
-	// 			)
-	// 		);
-	// }, []);
-
-	// const handleGetFirebaseToken = () => {
-	// 	getFirebaseToken()
-	// 		.then((firebaseToken) => {
-	// 			console.log('Firebase token: ', firebaseToken);
-	// 			if (firebaseToken) {
-	// 				console.log(firebaseToken);
-	// 			}
-	// 		})
-	// 		.catch((err) =>
-	// 			console.error('An error occured while retrieving firebase token. ', err)
-	// 		);
-	// };
-
-	// useEffect(() => {
-	// 	handleGetFirebaseToken();
-	// }, []);
-
 	// Return the app's main structure
 	return (
 		<BrowserRouter

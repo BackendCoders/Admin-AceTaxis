@@ -48,7 +48,6 @@
     "clsx": "^2.1.1",
     "cmdk": "^1.0.4",
     "date-fns": "^3.0.0",
-    "firebase": "^10.14.1",
     "formik": "^2.4.6",
     "jspdf": "^3.0.0",
     "jspdf-autotable": "^5.0.2",
