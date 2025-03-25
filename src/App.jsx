@@ -64,7 +64,6 @@ const App = () => {
 					}
 				} else if (!token) {
 					console.warn('No FCM token retrieved.');
-					toast.error('Failed to retrieve FCM token.');
 				}
 			} else {
 				console.warn('Notification permission not granted:', permission);
