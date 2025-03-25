@@ -1,6 +1,7 @@
 /** @format */
 
 // Import necessary modules and components
+import { useState } from 'react';
 import { useCallback, useEffect } from 'react'; // Hook for side effects like updating the DOM
 import { BrowserRouter } from 'react-router-dom'; // Provides routing functionality for the app
 import { useSettings } from '@/providers/SettingsProvider'; // Custom hook to access app settings
@@ -15,6 +16,7 @@ const { BASE_URL } = import.meta.env;
 // Main App Component
 const App = () => {
 	const { settings } = useSettings();
+	const [notifications, setNotifications] = useState([]);
 
 	// Side effect to update the `themeMode` class on the root HTML element
 	useEffect(() => {
@@ -29,12 +31,14 @@ const App = () => {
 	// Handle foreground notifications
 	useEffect(() => {
 		const unsubscribe = onForegroundMessage((payload) => {
+			console.log("New notification received: ", payload); // Debugging ke liye
 			if (payload?.notification) {
 				const { title, body } = payload.notification;
-				toast(`🔔${title}: ${body}`);
+				setNotifications((prev) => [...prev, { title, body }]); // Store notifications
+				toast.success(`🔔 ${title}: ${body}`);
 			}
 		});
-
+	
 		return () => unsubscribe && unsubscribe();
 	}, []);
 
