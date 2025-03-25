@@ -1,91 +1,75 @@
-/** @format */
+/* @format */
 
+// 🔥 Import Firebase modules
 import { initializeApp } from 'firebase/app';
 import {
-  getMessaging,
-  getToken,
-  onMessage,
-  isSupported,
+	getMessaging,
+	getToken,
+	onMessage,
+	isSupported,
 } from 'firebase/messaging';
 
-// Firebase Configuration
+// 🔥 Firebase Config
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_APP_API_KEY,
-  authDomain: import.meta.env.VITE_APP_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_APP_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_APP_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_APP_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_APP_APP_ID,
-  measurementId: import.meta.env.VITE_APP_MEASUREMENT_ID,
+	apiKey: import.meta.env.VITE_APP_API_KEY,
+	authDomain: import.meta.env.VITE_APP_AUTH_DOMAIN,
+	projectId: import.meta.env.VITE_APP_PROJECT_ID,
+	storageBucket: import.meta.env.VITE_APP_STORAGE_BUCKET,
+	messagingSenderId: import.meta.env.VITE_APP_MESSAGING_SENDER_ID,
+	appId: import.meta.env.VITE_APP_APP_ID,
+	measurementId: import.meta.env.VITE_APP_MEASUREMENT_ID,
 };
 
-// Validate Firebase config
-if (!firebaseConfig.apiKey || !firebaseConfig.projectId) {
-  console.error('Firebase configuration is incomplete:', firebaseConfig);
-  throw new Error('Firebase configuration is incomplete. Check environment variables.');
-}
-
-// Initialize Firebase App
+// 🔥 Initialize Firebase App
 const firebaseApp = initializeApp(firebaseConfig);
 
-// Singleton for messaging instance
+// 🔥 Initialize Firebase Messaging (Only if supported)
 let messaging = null;
 
-// Initialize messaging if supported
-const initializeMessaging = async () => {
-  try {
-    const supported = await isSupported();
-    if (supported) {
-      messaging = getMessaging(firebaseApp);
-      console.log('Firebase Messaging initialized successfully.');
-    } else {
-      console.warn('Firebase Messaging is not supported in this environment.');
-    }
-    return supported;
-  } catch (error) {
-    console.error('Error initializing Firebase Messaging:', error);
-    return false;
-  }
-};
+isSupported()
+	.then((supported) => {
+		if (supported) {
+			messaging = getMessaging(firebaseApp);
+			console.log('✅ Firebase Messaging is supported and initialized.');
+		} else {
+			console.warn('⚠️ Firebase Messaging is not supported in this browser.');
+		}
+	})
+	.catch((err) => console.error('🚨 Error checking messaging support:', err));
 
-// Initialize messaging on load
-(async () => {
-  const isMessagingSupported = await initializeMessaging();
-  if (!isMessagingSupported) {
-    console.warn('Firebase Messaging will not work in this environment.');
-  }
-})();
-
-// Get FCM Token
+// 🔥 Function to get FCM Token
 export const getFirebaseToken = async () => {
-  if (!messaging) {
-    console.warn('Firebase Messaging not available. Cannot fetch token.');
-    return null;
-  }
+	if (!messaging) {
+		console.warn('⚠️ Firebase Messaging is not initialized.');
+		return null;
+	}
 
-  try {
-    const token = await getToken(messaging, {
-      vapidKey: import.meta.env.VITE_APP_VAPID_KEY,
-    });
-    if (!token) {
-      console.warn('No FCM token available. Ensure notifications are enabled.');
-    }
-    return token || null;
-  } catch (error) {
-    console.error('Failed to fetch FCM token:', error);
-    return null;
-  }
+	try {
+		const token = await getToken(messaging, {
+			vapidKey: import.meta.env.VITE_APP_VAPID_KEY,
+		});
+		if (token) {
+			console.log('🔥 FCM Token:', token);
+			return token;
+		} else {
+			console.warn('⚠️ No FCM token available. Requesting permission...');
+			return null;
+		}
+	} catch (err) {
+		console.error('🚨 Error fetching Firebase token:', err);
+		return null;
+	}
 };
 
-// Listen for Foreground Messages
+// 🔥 Listen for Foreground Messages
 export const onForegroundMessage = (callback) => {
-  if (!messaging) {
-    console.warn('Firebase Messaging not available. Cannot listen for messages.');
-    return () => {};
-  }
+	if (!messaging) {
+		console.warn('⚠️ Firebase Messaging is not initialized.');
+		return;
+	}
 
-  return onMessage(messaging, (payload) => {
-    console.log('Foreground message received:', payload);
-    callback(payload);
-  });
+	onMessage(messaging, (payload) => {
+		console.log('📩 Foreground Message Received:', payload);
+		callback(payload);
+	});
 };
