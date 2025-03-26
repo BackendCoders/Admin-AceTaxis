@@ -13,6 +13,7 @@ const {
 	BOOKING_STATUS,
 	AIRPORT_RUNS,
 	TURNDOWN_BOOKINGS,
+	RESTORE_CANCELLED,
 } = bookingsEndpoints;
 export async function cancelBookingByDateRange(data) {
 	// Fetch current user details using token
@@ -161,6 +162,27 @@ export async function getTurndownBookings(from, to) {
 		// 	{
 		// 		url: GET_LOCAL_POI2,
 		// 		reqBody: searchTerm,
+		// 		headers: setHeaders(),
+		// 		response: response,
+		// 	},
+		// 	'info'
+		// );
+		return response;
+	}
+	return response;
+}
+
+export async function restoreCancelledBooking(bookingId) {
+	// Fetch current user details using token
+	const response = await handlePostReq(RESTORE_CANCELLED(bookingId), null);
+
+	console.log('RESTORE_CANCELLED API RESPONSE.........', response);
+
+	if (response.status === 'success') {
+		// sendLogs(
+		// 	{
+		// 		url: GET_ALL_GPS,
+		// 		reqBody: null,
 		// 		headers: setHeaders(),
 		// 		response: response,
 		// 	},

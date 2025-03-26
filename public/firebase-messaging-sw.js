@@ -32,8 +32,8 @@ messaging.onBackgroundMessage(({ notification }) => {
 	const { title, body } = notification;
 	const options = {
 		body,
-		icon: '/firebase-logo.png',
-		badge: '/badge-icon.png', // Optional: Badge icon for notifications
+		icon: '/media/app/favicon.ico',
+		badge: '/media/app/favicon.ico', // Optional: Badge icon for notifications
 		vibrate: [200, 100, 200], // Vibration pattern for alerts
 	};
 

@@ -51,6 +51,8 @@ export const bookingsEndpoints = {
 	AIRPORT_RUNS: (months) => `${BASE}/api/AdminUI/AirportRuns?months=${months}`,
 	TURNDOWN_BOOKINGS: (from, to) =>
 		`${BASE}/api/AdminUI/GetTurndowns?from=${from}&to=${to}`,
+	RESTORE_CANCELLED: (id) =>
+		`${BASE}/api/Bookings/RestoreCancelled?bookingId=${id}`,
 };
 
 export const gpsEndpoints = {

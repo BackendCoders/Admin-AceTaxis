@@ -40,6 +40,8 @@ import {
 } from '../../../slices/bookingSlice';
 import RestoreOutlinedIcon from '@mui/icons-material/RestoreOutlined';
 import { AllocateBookingModal } from './allocateBookingModal';
+import { restoreCancelledBooking } from '../../../service/operations/bookingApi';
+import toast from 'react-hot-toast';
 function UnAllocated() {
 	const dispatch = useDispatch();
 	const { bookingsByStatus } = useSelector((state) => state.booking);
@@ -322,8 +324,11 @@ function UnAllocated() {
 					/>
 				),
 				enableSorting: false,
-				cell: () => (
-					<button className='rounded-full px-2 py-2  w-8 h-8 flex justify-center items-center hover:bg-red-100 group' onClick={handleRestoreBooking}>
+				cell: ({ row }) => (
+					<button
+						className='rounded-full px-2 py-2  w-8 h-8 flex justify-center items-center hover:bg-red-100 group'
+						onClick={() => handleRestoreBooking(row?.original?.id)}
+					>
 						{/* <KeenIcon
 							icon='plus'
 							className='group-hover:text-red-600'
@@ -348,9 +353,33 @@ function UnAllocated() {
 		}
 	};
 
-	const handleRestoreBooking = () => {
-		
-	}
+	const handleRestoreBooking = async (id) => {
+		console.log('Restore Booking ID:', id);
+		try {
+			const response = await restoreCancelledBooking(id);
+			if (response.status === 'success') {
+				toast.success('Booking restored successfully');
+				if (status === null) {
+					dispatch(
+						refreshBookingsByStatus(
+							format(new Date(date), "yyyy-MM-dd'T'00:00:00'Z'"),
+							scope
+						)
+					);
+				} else {
+					dispatch(
+						refreshBookingsByStatus(
+							format(new Date(date), "yyyy-MM-dd'T'00:00:00'Z'"),
+							scope,
+							status
+						)
+					);
+				}
+			}
+		} catch (error) {
+			console.error('Error restoring booking:', error);
+		}
+	};
 
 	const filteredBookings = useMemo(() => {
 		return bookingsByStatus.filter((booking) => {
