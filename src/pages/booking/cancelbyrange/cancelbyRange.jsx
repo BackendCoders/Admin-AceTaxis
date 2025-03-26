@@ -8,7 +8,7 @@ import {
 	PopoverTrigger,
 } from '@/components/ui/popover';
 import { Calendar } from '@/components/ui/calendar';
-import { format } from 'date-fns';
+import { format, isBefore, startOfDay } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { KeenIcon } from '@/components';
 import { cancelBookingByDateRange } from '../../../service/operations/bookingApi';
@@ -55,6 +55,8 @@ const CancelByRange = () => {
 			toast.error('Error cancelling bookings by date range');
 		}
 	};
+
+	const today = startOfDay(new Date());
 
 	return (
 		<div className='pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1580px] w-full'>
@@ -134,6 +136,7 @@ const CancelByRange = () => {
 									onSelect={handleDateSelect}
 									numberOfMonths={2}
 									initialFocus
+									disabled={(date) => isBefore(date, today)}
 								/>
 							</PopoverContent>
 						</Popover>

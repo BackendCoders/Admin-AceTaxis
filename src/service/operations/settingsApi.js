@@ -126,7 +126,6 @@ export async function setTariffConfig(data) {
 		// 	},
 		// 	'info'
 		// );
-		toast.success('Tariff Updated Successfully');
 		return response;
 	}
 }

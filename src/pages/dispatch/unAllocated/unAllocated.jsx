@@ -323,7 +323,7 @@ function UnAllocated() {
 				),
 				enableSorting: false,
 				cell: () => (
-					<button className='rounded-full px-2 py-2  w-8 h-8 flex justify-center items-center hover:bg-red-100 group'>
+					<button className='rounded-full px-2 py-2  w-8 h-8 flex justify-center items-center hover:bg-red-100 group' onClick={handleRestoreBooking}>
 						{/* <KeenIcon
 							icon='plus'
 							className='group-hover:text-red-600'
@@ -347,6 +347,10 @@ function UnAllocated() {
 			alert(`Selected Drivers: ${selectedRowIds.join(', ')}`);
 		}
 	};
+
+	const handleRestoreBooking = () => {
+		
+	}
 
 	const filteredBookings = useMemo(() => {
 		return bookingsByStatus.filter((booking) => {

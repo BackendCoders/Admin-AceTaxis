@@ -47,8 +47,12 @@ function ListAccounts() {
 	const { accounts } = useSelector((state) => state.account);
 	// const [date, setDate] = useState(new Date());
 
-	const filterAccounts = accounts?.filter((acc) =>
-		acc?.businessName?.toLowerCase()?.includes(searchInput.toLowerCase())
+	const filterAccounts = accounts?.filter(
+		(acc) =>
+			acc?.businessName?.toLowerCase()?.includes(searchInput.toLowerCase()) ||
+			acc?.address1?.toLowerCase()?.includes(searchInput.toLowerCase()) ||
+			acc?.postcode?.toLowerCase()?.includes(searchInput.toLowerCase()) ||
+			acc?.email?.toLowerCase()?.includes(searchInput.toLowerCase())
 	);
 
 	useEffect(() => {

@@ -55,9 +55,28 @@ function ListDriver() {
 	const [editDriverModal, setEditDriverModal] = useState(false);
 	const [deleteDriverModal, setDeleteDriverModal] = useState(false);
 	// const [date, setDate] = useState(new Date());
+	const vehicleTypeName = {
+		0: 'Unknown',
+		1: 'Saloon',
+		2: 'Estate',
+		3: 'MPV',
+		4: 'MPVPlus',
+		5: 'SUV',
+	};
 
-	const filteredDriver = drivers.filter((driver) =>
-		driver?.fullName?.toLowerCase().includes(searchInput.toLowerCase())
+	const filteredDriver = drivers.filter(
+		(driver) =>
+			driver?.fullName?.toLowerCase().includes(searchInput.toLowerCase()) ||
+			driver?.phoneNumber?.toLowerCase().includes(searchInput.toLowerCase()) ||
+			driver?.lastLogin?.toLowerCase().includes(searchInput.toLowerCase()) ||
+			driver?.regNo?.toLowerCase().includes(searchInput.toLowerCase()) ||
+			(driver?.role === 1 ? 'Admin' : driver?.role === 2 ? 'User' : 'Driver')
+				.toLowerCase()
+				.includes(searchInput.toLowerCase()) ||
+			String(driver?.id)?.toLowerCase().includes(searchInput.toLowerCase()) ||
+			vehicleTypeName[driver?.vehicleType]
+				?.toLowerCase()
+				.includes(searchInput.toLowerCase())
 	);
 
 	const ColumnInputFilter = ({ column }) => {
@@ -69,15 +88,6 @@ function ListDriver() {
 				className='h-9 w-full max-w-40'
 			/>
 		);
-	};
-
-	const vehicleTypeName = {
-		0: 'Unknown',
-		1: 'Saloon',
-		2: 'Estate',
-		3: 'MPV',
-		4: 'MPVPlus',
-		5: 'SUV',
 	};
 
 	const columns = useMemo(

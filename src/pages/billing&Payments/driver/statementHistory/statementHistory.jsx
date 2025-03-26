@@ -415,8 +415,8 @@ function StatementHistory() {
 	const { statementHistory, loading } = useSelector((state) => state.billing);
 	const [selectedDriver, setSelectedDriver] = useState(0);
 	const [search, setSearch] = useState('');
-	const [order, setOrder] = useState('asc'); // Sort order
-	const [orderBy, setOrderBy] = useState(''); // Default sorted column
+	const [order, setOrder] = useState('desc'); // Sort order
+	const [orderBy, setOrderBy] = useState('id'); // Default sorted column
 	const [openDate, setOpenDate] = useState(false);
 	const [date, setDate] = useState({
 		from: new Date(),

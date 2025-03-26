@@ -76,6 +76,7 @@ function EditAccounts({ open, onOpenChange }) {
 			};
 			const response = await updateAccounts(payload);
 			if (response.status === 'success') {
+				toast.success('Account updated successfully');
 				dispatch(refreshAllAccounts());
 				setSubmitting(false);
 				onOpenChange(); // Reset Formik's submitting state

@@ -695,7 +695,7 @@ function InvoiceHistory() {
 													</TableSortLabel>
 												</TableCell>
 												<TableCell className='text-gray-900 dark:text-gray-700'>
-													Mark As Read
+													Mark Paid
 												</TableCell>
 											</TableRow>
 										</TableHead>

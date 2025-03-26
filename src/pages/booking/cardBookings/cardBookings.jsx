@@ -46,7 +46,7 @@ function Row({ row }) {
 			if (response?.status === 'success') {
 				toast.success('Reminder send Successfully');
 			} else {
-				// console.log('error response', response);
+				console.log('error response', response);
 				toast.error(response.data);
 			}
 		} catch (error) {
@@ -95,7 +95,10 @@ function Row({ row }) {
 				<TableCell>
 					<IconButton
 						size='small'
-						onClick={handleSendReminder}
+						onClick={() => {
+							if (row.phoneNumber) handleSendReminder();
+							else toast.error('Phone number is Required');
+						}}
 					>
 						<EmailOutlined className='text-blue-400 dark:text-cyan-400' />
 					</IconButton>

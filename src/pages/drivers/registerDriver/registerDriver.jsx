@@ -22,6 +22,7 @@ import { useRef, useState } from 'react';
 import { createDriver } from '../../../service/operations/driverApi';
 import { useDispatch } from 'react-redux';
 import { refreshAllDrivers } from '../../../slices/driverSlice';
+import toast from 'react-hot-toast';
 function RegisterDriver({ open, onOpenChange }) {
 	const dispatch = useDispatch();
 	const [showPassword, setShowPassword] = useState(false);
@@ -55,7 +56,7 @@ function RegisterDriver({ open, onOpenChange }) {
 				const response = await createDriver(values);
 				if (response.status === 'success') {
 					dispatch(refreshAllDrivers());
-					console.log('Driver registered successfully');
+					toast.success('Driver registered successfully');
 					setSubmitting(false);
 					onOpenChange(); // Reset Formik's submitting state
 				} else {

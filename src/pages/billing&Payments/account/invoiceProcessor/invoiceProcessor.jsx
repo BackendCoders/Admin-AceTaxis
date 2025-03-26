@@ -228,10 +228,10 @@ function RowNotPriced({ row, setPriceBaseModal, handlePostButton }) {
 					<input
 						type='number'
 						className='w-16 text-center border rounded p-1 bg-inherit ring-inherit dark:bg-inherit dark:ring-inherit'
-						value={waiting}
-						name='waiting'
+						value='waiting'
+						name={`waiting-${row.id}`}
 						onChange={(e) => handleInputChange('waiting', +e.target.value)}
-						onKeyDown={(e) => handleKeyPress(e, 'driverFare')}
+						onKeyDown={(e) => handleKeyPress(e, `driverFare-${row.id}`)}
 						onFocus={(e) => e.target.select()}
 					/>
 				</TableCell>
@@ -252,9 +252,9 @@ function RowNotPriced({ row, setPriceBaseModal, handlePostButton }) {
 						type='number'
 						className='w-16 text-center border rounded p-1 bg-inherit ring-inherit dark:bg-inherit dark:ring-inherit'
 						value={driverFare}
-						name='driverFare'
+						name={`driverFare-${row.id}`}
 						onChange={(e) => handleInputChange('driverFare', +e.target.value)}
-						onKeyDown={(e) => handleKeyPress(e, 'journeyCharge')}
+						onKeyDown={(e) => handleKeyPress(e, `journeyCharge-${row.id}`)}
 					/>
 				</TableCell>
 				<TableCell
@@ -264,11 +264,11 @@ function RowNotPriced({ row, setPriceBaseModal, handlePostButton }) {
 						type='number'
 						className='w-16 text-center border rounded p-1 bg-inherit ring-inherit dark:bg-inherit dark:ring-inherit'
 						value={journeyCharge}
-						name='journeyCharge'
+						name={`journeyCharge-${row.id}`}
 						onChange={(e) =>
 							handleInputChange('journeyCharge', +e.target.value)
 						}
-						onKeyDown={(e) => handleKeyPress(e, 'parking')}
+						onKeyDown={(e) => handleKeyPress(e, `parking-${row.id}`)}
 					/>
 				</TableCell>
 				<TableCell
@@ -278,7 +278,7 @@ function RowNotPriced({ row, setPriceBaseModal, handlePostButton }) {
 						type='number'
 						className='w-16 text-center border rounded p-1 bg-inherit ring-inherit dark:bg-inherit dark:ring-inherit'
 						value={parking}
-						name='parking'
+						name={`parking-${row.id}`}
 						onChange={(e) => handleInputChange('parking', +e.target.value)}
 						onKeyDown={(e) => handleKeyPress(e, null)}
 					/>
