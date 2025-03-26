@@ -372,7 +372,7 @@ const DriverTracking = () => {
 												{row.original.gpsLastUpdated
 													? new Date(
 															row.original.gpsLastUpdated
-														).toLocaleTimeString('en-US', {
+														).toLocaleTimeString('en-GB', {
 															hour: '2-digit',
 															minute: '2-digit',
 															second: '2-digit',

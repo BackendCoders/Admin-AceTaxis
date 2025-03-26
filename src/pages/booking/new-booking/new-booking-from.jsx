@@ -338,7 +338,7 @@ function NewBooking() {
 					</ToolbarHeading>
 					<ToolbarActions>
 						<Link to='/bookings/reject-booking'>
-							<button className='btn btn-sm btn-primary px-4 py-4'>
+							<button className='btn btn-sm btn-danger px-4 py-4'>
 								Rejected Bookings
 							</button>
 						</Link>
