@@ -258,8 +258,8 @@ const DriverTracking = () => {
 										lat: driver.latitude || 0,
 										lng: driver.longitude || 0,
 									}}
-									title={`Driver: ${driver.regNo || 'Unknown'} | Speed: ${
-										driver.speed || 'N/A'
+									title={`Driver: ${driver.username || 'Unknown'} | Speed: ${
+										driver.speed.toFixed(2) || 'N/A'
 									} km/h`}
 									icon={{
 										url: '/media/images/car/gps-navigation.png',
