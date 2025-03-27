@@ -83,7 +83,7 @@ const SidebarMenu = () => {
 					>
 						<MenuIcon
 							className={clsx(
-								'items-start text-gray-500 dark:text-gray-400',
+								'items-start text-green-500 dark:text-green-400',
 								iconWidth
 							)}
 						>
@@ -94,7 +94,7 @@ const SidebarMenu = () => {
 								/>
 							)}
 						</MenuIcon>
-						<MenuTitle className='text-sm font-medium text-gray-800 menu-item-active:text-primary menu-link-hover:!text-primary'>
+						<MenuTitle className='text-sm font-medium text-gray-800 menu-item-active:text-danger menu-link-hover:!text-danger'>
 							{item.title}
 						</MenuTitle>
 						{buildMenuArrow()}
@@ -126,7 +126,7 @@ const SidebarMenu = () => {
 					>
 						<MenuIcon
 							className={clsx(
-								'items-start text-gray-600 dark:text-gray-500 menu-item-active:text-primary menu-link-hover:!text-primary',
+								'items-start text-green-600 dark:text-green-500 menu-item-active:text-danger menu-link-hover:!text-danger',
 								iconWidth
 							)}
 						>
@@ -137,7 +137,7 @@ const SidebarMenu = () => {
 								/>
 							)}
 						</MenuIcon>
-						<MenuTitle className='text-sm font-medium text-gray-800 menu-item-active:text-primary menu-link-hover:!text-primary'>
+						<MenuTitle className='text-sm font-medium text-gray-800 menu-item-active:text-danger menu-link-hover:!text-danger'>
 							{item.title}
 						</MenuTitle>
 					</MenuLink>
@@ -222,7 +222,7 @@ const SidebarMenu = () => {
 								</span>
 							</MenuTitle>
 						) : (
-							<MenuTitle className='text-2sm font-normal me-1 text-gray-800 menu-item-active:text-primary menu-item-active:font-medium menu-link-hover:!text-primary'>
+							<MenuTitle className='text-2sm font-normal me-1 text-gray-800 menu-item-active:text-danger menu-item-active:font-medium menu-link-hover:!text-danger'>
 								{item.title}
 							</MenuTitle>
 						)}
@@ -261,7 +261,7 @@ const SidebarMenu = () => {
 						)}
 					>
 						{buildMenuBullet()}
-						<MenuTitle className='text-2sm font-normal text-gray-800 menu-item-active:text-primary menu-item-active:font-semibold menu-link-hover:!text-primary'>
+						<MenuTitle className='text-2sm font-normal text-gray-800 menu-item-active:text-danger menu-item-active:font-semibold menu-link-hover:!text-danger'>
 							{item.title}
 						</MenuTitle>
 					</MenuLink>
@@ -329,7 +329,7 @@ const SidebarMenu = () => {
 	};
 	const buildMenuBullet = () => {
 		return (
-			<MenuBullet className='flex w-[6px] -start-[3px] rtl:start-0 relative before:absolute before:top-0 before:size-[6px] before:rounded-full rtl:before:translate-x-1/2 before:-translate-y-1/2 menu-item-active:before:bg-primary menu-item-hover:before:bg-primary'></MenuBullet>
+			<MenuBullet className='flex w-[6px] -start-[3px] rtl:start-0 relative before:absolute before:top-0 before:size-[6px] before:rounded-full rtl:before:translate-x-1/2 before:-translate-y-1/2 menu-item-active:before:bg-danger menu-item-hover:before:bg-primary'></MenuBullet>
 		);
 	};
 	const buildMenuSoon = () => {
