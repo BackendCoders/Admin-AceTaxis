@@ -56,7 +56,9 @@ function CancelModal({ open, onOpenChange }) {
 				</DialogHeader>
 				<DialogBody className='flex flex-col items-center pt-2 pb-4'>
 					<h3 className='text-lg font-medium text-gray-900 text-center mb-2'>
-						Cancel Booking
+						{amendRequest?.applyToBlock
+							? 'Cancel Block Booking'
+							: 'Cancel Booking'}
 					</h3>
 
 					<div className='text-2sm text-center text-gray-700 mb-7'>
@@ -68,7 +70,12 @@ function CancelModal({ open, onOpenChange }) {
 								?.split('T')[1]
 								.split('.')[0]
 								?.slice(0, 5)}{' '}
-						{amendRequest?.applyToBlock ? 'and Future Bookings' : ''} ?
+						{amendRequest?.applyToBlock && (
+							<>
+								and <span className='font-bold'>Future Booking</span>
+							</>
+						)}{' '}
+						?
 					</div>
 
 					<div className='flex justify-center mb-2'>
