@@ -303,7 +303,7 @@ function RowNotPriced({ row, setPriceBaseModal, handlePostButton }) {
 					<IconButton
 						size='small'
 						onClick={() => {
-							if (row.driverFare === 0) {
+							if (driverFare === 0) {
 								toast.error('Driver Price Should not be 0'); // Show error if price is 0
 							} else {
 								handlePostButton(row); // Post the job if valid

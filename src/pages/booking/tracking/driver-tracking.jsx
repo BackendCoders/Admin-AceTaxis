@@ -372,11 +372,11 @@ const DriverTracking = () => {
 												{row.original.gpsLastUpdated
 													? new Date(
 															row.original.gpsLastUpdated
-														).toLocaleTimeString('en-GB', {
-															hour: '2-digit',
-															minute: '2-digit',
-															second: '2-digit',
-														})
+														).toLocaleDateString('en-Gb') +
+														' ' +
+														row.original.gpsLastUpdated
+															?.split('T')[1]
+															.slice(0, 5)
 													: 'N/A'}
 											</span>
 										),
@@ -386,7 +386,7 @@ const DriverTracking = () => {
 										accessorKey: 'speed',
 										header: ({ column }) => (
 											<DataGridColumnHeader
-												title=<span className='font-bold'>Speed (km/h)</span>
+												title=<span className='font-bold'>Speed (mph)</span>
 												column={column}
 											/>
 										),
@@ -394,8 +394,8 @@ const DriverTracking = () => {
 										cell: ({ row }) => (
 											<span className='font-medium'>
 												{row.original.speed
-													? `${parseFloat(row.original.speed).toFixed(2)} km/h`
-													: '0 km/h'}
+													? `${parseFloat(row.original.speed).toFixed(2)} mph`
+													: '0 mph'}
 											</span>
 										),
 										meta: { headerClassName: 'min-w-[100px]' },

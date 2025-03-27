@@ -53,7 +53,7 @@ const SidebarHeader = forwardRef((props, ref) => {
 	return (
 		<div
 			ref={ref}
-			className='sidebar-header hidden lg:flex items-center relative justify-between px-3 lg:px-6 shrink-0'
+			className='sidebar-header hidden lg:flex items-center relative justify-between px-3 lg:px-6 shrink-0 bg-[#fefefe]'
 		>
 			{layout.options.sidebar.theme === 'light' ? lightLogo() : darkLogo()}
 			<SidebarToggle />
