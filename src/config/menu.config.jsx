@@ -4,6 +4,8 @@ export const MENU_SIDEBAR = [
 	{
 		title: 'Dashboards',
 		icon: 'element-11',
+		iconLightColor: 'text-red-600',
+		iconDarkColor: 'text-red-500',
 		path: '/',
 		// children: [
 		// 	{
@@ -20,6 +22,8 @@ export const MENU_SIDEBAR = [
 	{
 		title: 'Booking & Dispatch',
 		icon: 'chart-simple-3',
+		iconLightColor: 'text-blue-600',
+		iconDarkColor: 'text-blue-500',
 		path: '/bookings/booking-dispatch',
 	},
 
@@ -203,6 +207,8 @@ export const MENU_SIDEBAR = [
 	{
 		title: 'Tracking',
 		icon: 'focus',
+		iconLightColor: 'text-cyan-600',
+		iconDarkColor: 'text-cyan-400',
 		path: '/booking/driver-tracking',
 		// children: [
 		// 	{
@@ -379,22 +385,30 @@ export const MENU_SIDEBAR = [
 	{
 		title: 'Availability',
 		icon: 'chart-simple-3',
+		iconLightColor: 'text-green-600',
+		iconDarkColor: 'text-green-500',
 		path: '/booking/availability',
 	},
 	{
 		title: 'Availability Logs',
 		icon: 'graph',
+		iconLightColor: 'text-purple-600',
+		iconDarkColor: 'text-purple-500',
 		path: '/booking/availability-logs',
 	},
 	{
 		title: 'Availability Report',
 		icon: 'graph-up',
+		iconLightColor: 'text-yellow-600',
+		iconDarkColor: 'text-yellow-500',
 		path: '/booking/availability-report',
 	},
 
 	{
 		title: 'Local POIs',
 		icon: 'geolocation',
+		iconLightColor: 'text-green-600',
+		iconDarkColor: 'text-green-500',
 		path: '/localPOIs/list-local-Poi',
 
 		// {
@@ -474,6 +488,8 @@ export const MENU_SIDEBAR = [
 	{
 		title: 'Bookings',
 		icon: 'car',
+		iconLightColor: 'text-orange-600',
+		iconDarkColor: 'text-orange-500',
 		children: [
 			// {
 			// 	title: 'Profiles',
@@ -618,6 +634,8 @@ export const MENU_SIDEBAR = [
 	{
 		title: 'Accounts',
 		icon: 'book-open',
+		iconLightColor: 'text-blue-600',
+		iconDarkColor: 'text-blue-500',
 		path: '/accounts/list-account',
 
 		// {
@@ -693,6 +711,8 @@ export const MENU_SIDEBAR = [
 	{
 		title: 'Driver',
 		icon: 'users',
+		iconLightColor: 'text-cyan-600',
+		iconDarkColor: 'text-cyan-400',
 		children: [
 			{ title: 'Driver List', path: '/drivers/list-driver' },
 			{ title: `Expiry's`, path: '/drivers/expires' },
@@ -771,18 +791,24 @@ export const MENU_SIDEBAR = [
 	{
 		title: 'Drivers Expenses',
 		icon: 'two-credit-cart',
+		iconLightColor: 'text-green-600',
+		iconDarkColor: 'text-green-500',
 		path: '/driver-expenses',
 	},
 
 	{
 		title: 'Tariffs',
 		icon: 'simcard',
+		iconLightColor: 'text-purple-600',
+		iconDarkColor: 'text-purple-500',
 		path: '/tariffs',
 	},
 
 	{
 		title: 'Billing & Payments',
 		icon: 'bitcoin',
+		iconLightColor: 'text-yellow-600',
+		iconDarkColor: 'text-yellow-500',
 		children: [
 			{
 				title: 'Driver',
@@ -890,18 +916,24 @@ export const MENU_SIDEBAR = [
 	{
 		title: 'Driver Earning Report',
 		icon: 'euro',
+		iconLightColor: 'text-green-600',
+		iconDarkColor: 'text-green-500',
 		path: '/driver-earning-report',
 	},
 
 	{
 		title: 'Company Settings',
 		icon: 'setting-3',
+		iconLightColor: 'text-blue-600',
+		iconDarkColor: 'text-blue-500',
 		path: '/setting/company-settings',
 	},
 
 	{
 		title: 'Message Settings',
 		icon: 'social-media',
+		iconLightColor: 'text-cyan-600',
+		iconDarkColor: 'text-cyan-400',
 		path: '/setting/msg-settings',
 	},
 	// {

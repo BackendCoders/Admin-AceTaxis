@@ -83,7 +83,7 @@ const SidebarMenu = () => {
 					>
 						<MenuIcon
 							className={clsx(
-								'items-start text-green-500 dark:text-green-400',
+								`items-start ${item?.iconLightColor} dark:${item?.iconDarkColor}`,
 								iconWidth
 							)}
 						>
@@ -126,7 +126,7 @@ const SidebarMenu = () => {
 					>
 						<MenuIcon
 							className={clsx(
-								'items-start text-green-600 dark:text-green-500 menu-item-active:text-danger menu-link-hover:!text-danger',
+								`items-start ${item?.iconLightColor} dark:${item?.iconDarkColor} menu-item-active:text-danger menu-link-hover:!text-danger`,
 								iconWidth
 							)}
 						>
