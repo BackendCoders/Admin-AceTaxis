@@ -119,6 +119,7 @@ const DropdownNotificationsItem = ({ notification, markAsRead }) => {
 							target='_blank'
 							rel='noopener noreferrer'
 							className='btn btn-sm btn-primary'
+							onClick={() => markAsRead(id)}
 						>
 							View Document
 						</a>
@@ -128,6 +129,7 @@ const DropdownNotificationsItem = ({ notification, markAsRead }) => {
 							message.includes('requested to cancel booking')) && (
 							<Link
 								to={`/bookings/${message.includes('created a new web booking request') ? 'web-booking' : 'amend-booking'}`}
+								onClick={() => markAsRead(id)}
 							>
 								<button className='btn btn-sm btn-primary'>
 									View Bookings

@@ -102,21 +102,21 @@ function NewBooking() {
 
 	const columns = useMemo(
 		() => [
-			{
-				accessorKey: 'id',
-				header: ({ column }) => (
-					<DataGridColumnHeader
-						title=<span className='font-bold'># id</span>
-						filter={<ColumnInputFilter column={column} />}
-						column={column}
-					/>
-				),
-				enableSorting: true,
-				cell: ({ row }) => (
-					<span className={`p-2 rounded-md`}>{row?.original?.id}</span>
-				),
-				meta: { headerClassName: 'w-10' },
-			},
+			// {
+			// 	accessorKey: 'id',
+			// 	header: ({ column }) => (
+			// 		<DataGridColumnHeader
+			// 			title=<span className='font-bold'># id</span>
+			// 			filter={<ColumnInputFilter column={column} />}
+			// 			column={column}
+			// 		/>
+			// 	),
+			// 	enableSorting: true,
+			// 	cell: ({ row }) => (
+			// 		<span className={`p-2 rounded-md`}>{row?.original?.id}</span>
+			// 	),
+			// 	meta: { headerClassName: 'w-10' },
+			// },
 			{
 				accessorKey: 'arriveBy',
 				header: ({ column }) => (
@@ -461,7 +461,7 @@ function NewBooking() {
 									rowSelection={true}
 									onRowSelectionChange={handleRowSelection}
 									pagination={{ size: 10 }}
-									sorting={[{ id: 'id', desc: false }]}
+									sorting={[{ id: 'pickUpDateTime', desc: false }]}
 									layout={{ card: true }}
 								/>
 							</div>

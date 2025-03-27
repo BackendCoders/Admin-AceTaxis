@@ -17,6 +17,17 @@ const DropdownNotificationsTeam = () => {
 	const [listHeight, setListHeight] = useState(0);
 	const [viewportHeight] = useViewport();
 	const offset = 300;
+
+	const latestDriverNotification = [...driverNotifications].sort(
+		(a, b) => new Date(b?.dateTimeStamp) - new Date(a?.dateTimeStamp)
+	);
+
+	// console.log(
+	// 	'notifications---',
+	// 	driverNotifications,
+	// 	latestDriverNotification
+	// );
+
 	useEffect(() => {
 		if (footerRef.current) {
 			const footerHeight = getHeight(footerRef.current);
@@ -37,8 +48,8 @@ const DropdownNotificationsTeam = () => {
 	const buildList = () => {
 		return (
 			<div className='flex flex-col gap-5 pt-3 pb-4 divider-y divider-gray-200'>
-				{driverNotifications.length > 0 ? (
-					driverNotifications.map((notification) => (
+				{latestDriverNotification.length > 0 ? (
+					latestDriverNotification.map((notification) => (
 						<DropdownNotificationsItem
 							key={notification.id}
 							notification={notification}

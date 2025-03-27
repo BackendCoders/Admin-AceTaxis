@@ -27,6 +27,7 @@ function CancelModal({ open, onOpenChange }) {
 				cancelBlock: amendRequest?.applyToBlock ? true : false,
 				cancelledOnArrival: false,
 				actionByUserId: user?.userId,
+				sendEmail: true,
 			};
 			const response = await cancelBooking(payload);
 

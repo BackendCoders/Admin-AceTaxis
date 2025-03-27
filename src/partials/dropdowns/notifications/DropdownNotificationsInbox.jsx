@@ -17,6 +17,17 @@ const DropdownNotificationsInbox = () => {
 	const [listHeight, setListHeight] = useState(0);
 	const [viewportHeight] = useViewport();
 	const offset = 300;
+
+	const latestSystemNotification = [...systemNotifications].sort(
+		(a, b) => new Date(b?.dateTimeStamp) - new Date(a?.dateTimeStamp)
+	);
+
+	// console.log(
+	// 	'notifications---',
+	// 	systemNotifications,
+	// 	latestSystemNotification
+	// );
+
 	useEffect(() => {
 		if (footerRef.current) {
 			const footerHeight = getHeight(footerRef.current);
@@ -37,8 +48,8 @@ const DropdownNotificationsInbox = () => {
 	const buildList = () => {
 		return (
 			<div className='flex flex-col gap-5 pt-3 pb-4 divider-y divider-gray-200'>
-				{systemNotifications.length > 0 ? (
-					systemNotifications.map((notification) => (
+				{latestSystemNotification.length > 0 ? (
+					latestSystemNotification.map((notification) => (
 						<DropdownNotificationsItem
 							key={notification.id}
 							notification={notification}

@@ -14,7 +14,11 @@ const DropdownNotificationsAll = () => {
 	const dispatch = useDispatch();
 	const { allNotifications } = useSelector((state) => state.notification);
 
-	// console.log('notifications---', allNotifications);
+	const latestAllNotification = [...allNotifications].sort(
+		(a, b) => new Date(b?.dateTimeStamp) - new Date(a?.dateTimeStamp)
+	);
+
+	// console.log('notifications---', allNotifications, latestAllNotification);
 	const footerRef = useRef(null);
 	const [listHeight, setListHeight] = useState(0);
 	const [viewportHeight] = useViewport();
@@ -40,8 +44,8 @@ const DropdownNotificationsAll = () => {
 	const buildList = () => {
 		return (
 			<div className='flex flex-col gap-5 pt-3 pb-4 divider-y divider-gray-200'>
-				{allNotifications.length > 0 ? (
-					allNotifications.map((notification) => (
+				{latestAllNotification.length > 0 ? (
+					latestAllNotification.map((notification) => (
 						<DropdownNotificationsItem
 							key={notification.id}
 							notification={notification}
