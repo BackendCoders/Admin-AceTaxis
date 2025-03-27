@@ -63,7 +63,8 @@ function CancelModal({ open, onOpenChange }) {
 
 					<div className='text-2sm text-center text-gray-700 mb-7'>
 						Are you sure you want to cancel the booking for{' '}
-						{amendRequest?.passengerName} on{' '}
+						{amendRequest?.passengerName}{' '}
+						{amendRequest?.applyToBlock ? 'from' : 'on'}{' '}
 						{new Date(amendRequest?.dateTime).toLocaleDateString('en-GB') +
 							' ' +
 							amendRequest?.dateTime
