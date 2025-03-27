@@ -94,7 +94,7 @@ const SidebarMenu = () => {
 								/>
 							)}
 						</MenuIcon>
-						<MenuTitle className='text-sm font-medium text-gray-800 menu-item-active:text-danger menu-link-hover:!text-danger'>
+						<MenuTitle className='text-sm font-medium text-white menu-item-active:text-danger menu-link-hover:!text-danger'>
 							{item.title}
 						</MenuTitle>
 						{buildMenuArrow()}
@@ -137,7 +137,7 @@ const SidebarMenu = () => {
 								/>
 							)}
 						</MenuIcon>
-						<MenuTitle className='text-sm font-medium text-gray-800 menu-item-active:text-danger menu-link-hover:!text-danger'>
+						<MenuTitle className='text-sm font-medium text-white menu-item-active:text-danger menu-link-hover:!text-danger'>
 							{item.title}
 						</MenuTitle>
 					</MenuLink>
@@ -170,7 +170,7 @@ const SidebarMenu = () => {
 							/>
 						)}
 					</MenuIcon>
-					<MenuTitle className='text-sm font-medium text-gray-800'>
+					<MenuTitle className='text-sm font-medium text-white'>
 						{item.title}
 					</MenuTitle>
 
@@ -222,7 +222,7 @@ const SidebarMenu = () => {
 								</span>
 							</MenuTitle>
 						) : (
-							<MenuTitle className='text-2sm font-normal me-1 text-gray-800 menu-item-active:text-danger menu-item-active:font-medium menu-link-hover:!text-danger'>
+							<MenuTitle className='text-2sm font-normal me-1 text-white menu-item-active:text-danger menu-item-active:font-medium menu-link-hover:!text-danger'>
 								{item.title}
 							</MenuTitle>
 						)}
@@ -261,7 +261,7 @@ const SidebarMenu = () => {
 						)}
 					>
 						{buildMenuBullet()}
-						<MenuTitle className='text-2sm font-normal text-gray-800 menu-item-active:text-danger menu-item-active:font-semibold menu-link-hover:!text-danger'>
+						<MenuTitle className='text-2sm font-normal text-white menu-item-active:text-danger menu-item-active:font-semibold menu-link-hover:!text-danger'>
 							{item.title}
 						</MenuTitle>
 					</MenuLink>
