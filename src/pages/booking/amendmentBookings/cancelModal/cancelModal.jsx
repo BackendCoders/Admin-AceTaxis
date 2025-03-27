@@ -64,8 +64,11 @@ function CancelModal({ open, onOpenChange }) {
 						{amendRequest?.passengerName} on{' '}
 						{new Date(amendRequest?.dateTime).toLocaleDateString('en-GB') +
 							' ' +
-							amendRequest?.dateTime?.split('T')[1].split('.')[0]?.slice(0, 5)}
-						?
+							amendRequest?.dateTime
+								?.split('T')[1]
+								.split('.')[0]
+								?.slice(0, 5)}{' '}
+						{amendRequest?.applyToBlock ? 'and Future Bookings' : ''} ?
 					</div>
 
 					<div className='flex justify-center mb-2'>

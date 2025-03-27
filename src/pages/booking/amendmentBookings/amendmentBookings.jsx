@@ -201,6 +201,22 @@ function AmendmentBookings() {
 				meta: { headerClassName: 'w-18' },
 			},
 			{
+				accessorKey: 'applyToBlock',
+				header: ({ column }) => (
+					<DataGridColumnHeader
+						title=<span className='font-bold'>Block</span>
+						column={column}
+					/>
+				),
+				enableSorting: true,
+				cell: ({ row }) => (
+					<span className={row.original.color}>
+						{row?.original?.applyToBlock ? "True" : "False"}
+					</span>
+				),
+				meta: { headerClassName: 'w-18' },
+			},
+			{
 				accessorKey: 'action',
 				header: ({ column }) => (
 					<DataGridColumnHeader
