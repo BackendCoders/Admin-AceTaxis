@@ -67,7 +67,7 @@ function CustomModal({
 					from: values.from,
 					to: values.to,
 					giveOrTake: values.giveOrTake, // Checkbox value
-					type: 0, // Default Type 1 (Available)
+					type: values.type, // Default Type 1 (Available)
 					note: values.note || '', // Optional note
 				};
 
@@ -250,14 +250,14 @@ function CustomModal({
 							<button
 								type='button'
 								className='btn btn-primary bg-green-600 hover:bg-green-500'
-								onClick={() => handleAvailabilitySubmit(0)}
+								onClick={() => handleAvailabilitySubmit(1)}
 							>
 								Add Available Hours
 							</button>
 							<button
 								type='button'
 								className='btn btn-danger ml-2'
-								onClick={() => handleAvailabilitySubmit(1)}
+								onClick={() => handleAvailabilitySubmit(2)}
 							>
 								Add Unavailable Hours
 							</button>

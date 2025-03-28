@@ -67,7 +67,7 @@ const SelectedAvailabilityTable = ({ selectedDriver, selectedDate }) => {
 	const columns = useMemo(
 		() => [
 			{
-				accessorKey: 'description',
+				accessorKey: 'availabilityType',
 				header: ({ column }) => (
 					<DataGridColumnHeader
 						title=<span className='font-bold'>Type</span>
@@ -79,9 +79,11 @@ const SelectedAvailabilityTable = ({ selectedDriver, selectedDate }) => {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<div className={`p-2 rounded-md text-center text-white `}>
-						{row.original.description === 'unavailable'
+						{row.original.availabilityType === 2
 							? 'Unavailable'
-							: 'Available'}
+							: row.original.availabilityType === 1
+								? 'Available'
+								: 'Not Set'}
 					</div>
 				),
 				meta: { headerClassName: 'w-20 text-center' },

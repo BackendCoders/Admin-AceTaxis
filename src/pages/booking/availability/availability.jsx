@@ -102,7 +102,7 @@ const Availability = () => {
 			from: '',
 			to: '',
 			giveOrTake: false,
-			type: 0,
+			type: 1,
 			note: '',
 		};
 
@@ -161,7 +161,7 @@ const Availability = () => {
 		} else if (type === 'unavailableAllDay') {
 			payload.from = '00:00:00';
 			payload.to = '23:59:59';
-			payload.type = 1; // Unavailable All Day
+			payload.type = 2; // Unavailable All Day
 			payload.note = 'Unavailable All Day';
 		}
 
