@@ -78,7 +78,7 @@ const SelectedAvailabilityTable = ({ selectedDriver, selectedDate }) => {
 				),
 				enableSorting: true,
 				cell: ({ row }) => (
-					<div className={`p-2 rounded-md text-center text-white `}>
+					<div className={`p-2 rounded-md text-center text-gray-700`}>
 						{row.original.availabilityType === 2
 							? 'Unavailable'
 							: row.original.availabilityType === 1
