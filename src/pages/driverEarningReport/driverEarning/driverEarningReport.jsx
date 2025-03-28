@@ -137,7 +137,7 @@ function DriverEarningReport() {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={`p-2 rounded-md`}>
-						{row.original.cashTotal?.toFixed(2)}
+						£{row.original.cashTotal?.toFixed(2)}
 					</span>
 				),
 				meta: { headerClassName: 'w-20' },
@@ -154,7 +154,7 @@ function DriverEarningReport() {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={`font-medium ${row.original.color}`}>
-						{row.original.accTotal?.toFixed(2)}
+						£{row.original.accTotal?.toFixed(2)}
 					</span>
 				),
 				meta: { headerClassName: 'min-w-[120px]' },
@@ -171,7 +171,7 @@ function DriverEarningReport() {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={`font-medium ${row.original.color}`}>
-						{row.original.rankTotal?.toFixed(2)}
+						£{row.original.rankTotal?.toFixed(2)}
 					</span>
 				),
 				meta: { headerClassName: 'min-w-[120px]' },
@@ -188,7 +188,7 @@ function DriverEarningReport() {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={`font-medium ${row.original.color}`}>
-						{row.original.commsTotal?.toFixed(2)}
+						£{row.original.commsTotal?.toFixed(2)}
 					</span>
 				),
 				meta: { headerClassName: 'min-w-[120px]' },
@@ -205,7 +205,7 @@ function DriverEarningReport() {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={`font-medium ${row.original.color}`}>
-						{row.original.grossTotal?.toFixed(2)}
+						£{row.original.grossTotal?.toFixed(2)}
 					</span>
 				),
 				meta: { headerClassName: 'min-w-[120px]' },
@@ -222,7 +222,7 @@ function DriverEarningReport() {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={`font-medium ${row.original.color}`}>
-						{row.original.netTotal?.toFixed(2)}
+						£{row.original.netTotal?.toFixed(2)}
 					</span>
 				),
 				meta: { headerClassName: 'min-w-[120px]' },
@@ -470,22 +470,22 @@ function DriverEarningReport() {
 										/>
 										<div className='flex justify-end gap-6 dark:bg-[#14151A] font-semibold p-3 mt-2'>
 											<span className=''>
-												Total Cash: {columnTotals.cashTotal}
+												Total Cash: £{columnTotals.cashTotal.toFixed(2)}
 											</span>
 											<span className=''>
-												Total Account: {columnTotals.accTotal}
+												Total Account: £{columnTotals.accTotal?.toFixed(2)}
 											</span>
 											<span className=''>
-												Total Rank: {columnTotals.rankTotal}
+												Total Rank: £{columnTotals.rankTotal?.toFixed(2)}
 											</span>
 											<span className=''>
-												Total Comms: {columnTotals.commsTotal}
+												Total Comms: £{columnTotals.commsTotal?.toFixed(2)}
 											</span>
 											<span className=''>
-												Gross Total: {columnTotals.grossTotal}
+												Gross Total: £{columnTotals.grossTotal?.toFixed(2)}
 											</span>
 											<span className=''>
-												Net Total: {columnTotals.netTotal}
+												Net Total: £{columnTotals.netTotal?.toFixed(2)}
 											</span>
 										</div>
 									</>
