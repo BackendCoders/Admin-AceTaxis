@@ -376,7 +376,7 @@ const DriverTracking = () => {
 														' ' +
 														row.original.gpsLastUpdated
 															?.split('T')[1]
-															.slice(0, 5)
+															.slice(0, 8)
 													: 'N/A'}
 											</span>
 										),

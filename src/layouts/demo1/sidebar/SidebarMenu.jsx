@@ -16,6 +16,14 @@ import {
 	MenuTitle,
 } from '@/components/menu';
 import { useMenus } from '@/providers';
+
+const getUserRole = () => {
+	// Replace this with your actual logic to get the user's role
+	// For example, from localStorage, a context, or an API
+	const user = JSON.parse(localStorage.getItem('userData')) || {};
+	return user?.roleId || 0; // Default to 'user' if no role is found
+};
+
 const SidebarMenu = () => {
 	const linkPl = 'ps-[10px]';
 	const linkPr = 'pe-[10px]';
@@ -49,8 +57,19 @@ const SidebarMenu = () => {
 		'before:start-[32px]',
 		'before:start-[32px]',
 	];
+
+	const userRoleId = getUserRole();
+
+	const isItemVisible = (item) => {
+		// If the item has no roles defined, it's visible to all
+		if (!item.roles) return true;
+		// Check if the user's role is in the item's allowed roles
+		return item.roles.includes(userRoleId);
+	};
+
 	const buildMenu = (items) => {
-		return items.map((item, index) => {
+		const visibleItems = items.filter(isItemVisible);
+		return visibleItems.map((item, index) => {
 			if (item.heading) {
 				return buildMenuHeading(item, index);
 			} else if (item.disabled) {
@@ -62,6 +81,8 @@ const SidebarMenu = () => {
 	};
 	const buildMenuItemRoot = (item, index) => {
 		if (item.children) {
+			const visibleChildren = item.children.filter(isItemVisible);
+			if (visibleChildren.length === 0) return null; // Skip if no visible children
 			return (
 				<MenuItem
 					key={index}
@@ -107,7 +128,7 @@ const SidebarMenu = () => {
 							accordionPl[0]
 						)}
 					>
-						{buildMenuItemChildren(item.children, index, 1)}
+						{buildMenuItemChildren(visibleChildren, index, 1)}
 					</MenuSub>
 				</MenuItem>
 			);
@@ -180,7 +201,10 @@ const SidebarMenu = () => {
 		);
 	};
 	const buildMenuItemChildren = (items, index, level = 0) => {
-		return items.map((item, index) => {
+		const visibleItems = items.filter(isItemVisible);
+		if (visibleItems.length === 0) return null;
+
+		return visibleItems.map((item, index) => {
 			if (item.disabled) {
 				return buildMenuItemChildDisabled(item, index, level);
 			} else {
@@ -190,6 +214,8 @@ const SidebarMenu = () => {
 	};
 	const buildMenuItemChild = (item, index, level = 0) => {
 		if (item.children) {
+			const visibleChildren = item.children.filter(isItemVisible);
+			if (visibleChildren.length === 0) return null;
 			return (
 				<MenuItem
 					key={index}
@@ -240,7 +266,7 @@ const SidebarMenu = () => {
 						)}
 					>
 						{buildMenuItemChildren(
-							item.children,
+							visibleChildren,
 							index,
 							item.collapse ? level : level + 1
 						)}

@@ -6,6 +6,7 @@ export const MENU_SIDEBAR = [
 		icon: 'element-11',
 		iconLightColor: 'text-red-600',
 		iconDarkColor: 'text-red-500',
+		roles: [1, 2, 3],
 		path: '/',
 		// children: [
 		// 	{
@@ -24,6 +25,7 @@ export const MENU_SIDEBAR = [
 		icon: 'chart-simple-3',
 		iconLightColor: 'text-blue-600',
 		iconDarkColor: 'text-blue-500',
+		roles: [1, 2, 3],
 		path: '/bookings/booking-dispatch',
 	},
 	{
@@ -31,6 +33,7 @@ export const MENU_SIDEBAR = [
 		icon: 'focus',
 		iconLightColor: 'text-cyan-600',
 		iconDarkColor: 'text-cyan-400',
+		roles: [1, 2, 3],
 		path: '/booking/driver-tracking',
 	},
 	{
@@ -38,6 +41,7 @@ export const MENU_SIDEBAR = [
 		icon: 'chart-simple-3',
 		iconLightColor: 'text-green-600',
 		iconDarkColor: 'text-green-500',
+		roles: [1, 2, 3],
 		path: '/booking/availability',
 	},
 	{
@@ -45,6 +49,7 @@ export const MENU_SIDEBAR = [
 		icon: 'graph',
 		iconLightColor: 'text-purple-600',
 		iconDarkColor: 'text-purple-500',
+		roles: [1, 2, 3],
 		path: '/booking/availability-logs',
 	},
 	{
@@ -52,6 +57,7 @@ export const MENU_SIDEBAR = [
 		icon: 'graph-up',
 		iconLightColor: 'text-yellow-600',
 		iconDarkColor: 'text-yellow-500',
+		roles: [1, 2, 3],
 		path: '/booking/availability-report',
 	},
 	{
@@ -59,6 +65,7 @@ export const MENU_SIDEBAR = [
 		icon: 'geolocation',
 		iconLightColor: 'text-green-600',
 		iconDarkColor: 'text-green-500',
+		roles: [1, 2, 3],
 		path: '/localPOIs/list-local-Poi',
 	},
 	{
@@ -66,6 +73,7 @@ export const MENU_SIDEBAR = [
 		icon: 'car',
 		iconLightColor: 'text-orange-600',
 		iconDarkColor: 'text-orange-500',
+		roles: [1, 2, 3],
 		children: [
 			{
 				title: 'Web Bookings',
@@ -73,44 +81,54 @@ export const MENU_SIDEBAR = [
 					{
 						title: 'All Web Requests',
 						path: '/bookings/web-booking',
+						roles: [1, 2, 3],
 					},
 					{
 						title: 'Amendment Requests',
 						path: '/bookings/amend-booking',
+						roles: [1, 2, 3],
 					},
 					{
 						title: 'Accepted Requests',
 						path: '/bookings/accept-booking',
+						roles: [1, 2, 3],
 					},
 					{
 						title: 'Rejected Requests',
 						path: '/bookings/reject-booking',
+						roles: [1, 2, 3],
 					},
 				],
 			},
 			{
 				title: 'Global Search',
 				path: '/bookings/global-search',
+				roles: [1, 2, 3],
 			},
 			{
 				title: 'Audit View',
 				path: '/bookings/audit-view',
+				roles: [1, 2, 3],
 			},
 			{
 				title: 'Airport Runs',
 				path: '/bookings/airport-runs',
+				roles: [1, 2, 3],
 			},
 			{
 				title: 'Card Bookings',
 				path: '/bookings/card-bookings',
+				roles: [1, 2, 3],
 			},
 			{
 				title: 'Cancel Range',
 				path: '/bookings/cancelbyrange',
+				roles: [1, 2, 3],
 			},
 			{
 				title: 'Turndown History',
 				path: '/bookings/turndown',
+				roles: [1, 2, 3],
 			},
 			// {
 			// 	title: 'More',
@@ -142,6 +160,7 @@ export const MENU_SIDEBAR = [
 		icon: 'book-open',
 		iconLightColor: 'text-blue-600',
 		iconDarkColor: 'text-blue-500',
+		roles: [1],
 		path: '/accounts/list-account',
 	},
 	{
@@ -149,9 +168,10 @@ export const MENU_SIDEBAR = [
 		icon: 'users',
 		iconLightColor: 'text-cyan-600',
 		iconDarkColor: 'text-cyan-400',
+		roles: [1],
 		children: [
-			{ title: 'Driver List', path: '/drivers/list-driver' },
-			{ title: `Expiry's`, path: '/drivers/expires' },
+			{ title: 'Driver List', path: '/drivers/list-driver', roles: [1] },
+			{ title: `Expiry's`, path: '/drivers/expires', roles: [1] },
 		],
 	},
 	{
@@ -159,6 +179,7 @@ export const MENU_SIDEBAR = [
 		icon: 'two-credit-cart',
 		iconLightColor: 'text-green-600',
 		iconDarkColor: 'text-green-500',
+		roles: [1],
 		path: '/driver-expenses',
 	},
 	{
@@ -166,6 +187,7 @@ export const MENU_SIDEBAR = [
 		icon: 'simcard',
 		iconLightColor: 'text-purple-600',
 		iconDarkColor: 'text-purple-500',
+		roles: [1],
 		path: '/tariffs',
 	},
 	{
@@ -173,17 +195,21 @@ export const MENU_SIDEBAR = [
 		icon: 'bitcoin',
 		iconLightColor: 'text-yellow-600',
 		iconDarkColor: 'text-yellow-500',
+		roles: [1],
 		children: [
 			{
 				title: 'Driver',
+				roles: [1],
 				children: [
 					{
 						title: 'Statement Processing',
 						path: '/billing/driver/statement-processing',
+						roles: [1],
 					},
 					{
 						title: 'Statement History',
 						path: '/billing/driver/statement-history',
+						roles: [1],
 					},
 					// {
 					// 	title: '2FA',
@@ -218,18 +244,22 @@ export const MENU_SIDEBAR = [
 			},
 			{
 				title: 'Account',
+				roles: [1],
 				children: [
 					{
 						title: 'Invoice Processor',
 						path: '/billing/account/invoice-processor',
+						roles: [1],
 					},
 					{
 						title: 'Invoice History',
 						path: '/billing/account/invoice-history',
+						roles: [1],
 					},
 					{
 						title: 'Invoice Delete',
 						path: '/billing/account/invoice-delete',
+						roles: [1],
 					},
 					// {
 					// 	title: 'Check Email',
@@ -261,6 +291,7 @@ export const MENU_SIDEBAR = [
 			{
 				title: 'Vat Outputs',
 				path: '/billing/vat-outputs',
+				roles: [1],
 			},
 		],
 	},
@@ -270,6 +301,7 @@ export const MENU_SIDEBAR = [
 		icon: 'euro',
 		iconLightColor: 'text-green-600',
 		iconDarkColor: 'text-green-500',
+		roles: [1, 3],
 		path: '/driver-earning-report',
 	},
 
@@ -278,6 +310,7 @@ export const MENU_SIDEBAR = [
 		icon: 'setting-3',
 		iconLightColor: 'text-blue-600',
 		iconDarkColor: 'text-blue-500',
+		roles: [1],
 		path: '/setting/company-settings',
 	},
 
@@ -286,6 +319,7 @@ export const MENU_SIDEBAR = [
 		icon: 'social-media',
 		iconLightColor: 'text-cyan-600',
 		iconDarkColor: 'text-cyan-400',
+		roles: [1],
 		path: '/setting/msg-settings',
 	},
 	// {

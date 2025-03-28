@@ -2,77 +2,77 @@
 
 import { Navigate, Route, Routes } from 'react-router';
 import { DefaultPage, Demo1DarkSidebarPage } from '@/pages/dashboards';
-import {
-	ProfileActivityPage,
-	ProfileBloggerPage,
-	CampaignsCardPage,
-	CampaignsListPage,
-	ProjectColumn2Page,
-	ProjectColumn3Page,
-	ProfileCompanyPage,
-	ProfileCreatorPage,
-	ProfileCRMPage,
-	ProfileDefaultPage,
-	ProfileEmptyPage,
-	ProfileFeedsPage,
-	ProfileGamerPage,
-	ProfileModalPage,
-	ProfileNetworkPage,
-	ProfileNFTPage,
-	ProfilePlainPage,
-	ProfileTeamsPage,
-	ProfileWorksPage,
-} from '@/pages/public-profile';
-import {
-	AccountActivityPage,
-	AccountAllowedIPAddressesPage,
-	AccountApiKeysPage,
-	AccountAppearancePage,
-	AccountBackupAndRecoveryPage,
-	AccountBasicPage,
-	AccountCompanyProfilePage,
-	AccountCurrentSessionsPage,
-	AccountDeviceManagementPage,
-	AccountEnterprisePage,
-	AccountGetStartedPage,
-	AccountHistoryPage,
-	AccountImportMembersPage,
-	AccountIntegrationsPage,
-	AccountInviteAFriendPage,
-	AccountMembersStarterPage,
-	AccountNotificationsPage,
-	AccountOverviewPage,
-	AccountPermissionsCheckPage,
-	AccountPermissionsTogglePage,
-	AccountPlansPage,
-	AccountPrivacySettingsPage,
-	AccountRolesPage,
-	AccountSecurityGetStartedPage,
-	AccountSecurityLogPage,
-	AccountSettingsEnterprisePage,
-	AccountSettingsModalPage,
-	AccountSettingsPlainPage,
-	AccountSettingsSidebarPage,
-	AccountTeamInfoPage,
-	AccountTeamMembersPage,
-	AccountTeamsPage,
-	AccountTeamsStarterPage,
-	AccountUserProfilePage,
-} from '@/pages/account';
-import {
-	NetworkAppRosterPage,
-	NetworkMarketAuthorsPage,
-	NetworkAuthorPage,
-	NetworkGetStartedPage,
-	NetworkMiniCardsPage,
-	NetworkNFTPage,
-	NetworkSocialPage,
-	NetworkUserCardsTeamCrewPage,
-	NetworkSaasUsersPage,
-	NetworkStoreClientsPage,
-	NetworkUserTableTeamCrewPage,
-	NetworkVisitorsPage,
-} from '@/pages/network';
+// import {
+// 	ProfileActivityPage,
+// 	ProfileBloggerPage,
+// 	CampaignsCardPage,
+// 	CampaignsListPage,
+// 	ProjectColumn2Page,
+// 	ProjectColumn3Page,
+// 	ProfileCompanyPage,
+// 	ProfileCreatorPage,
+// 	ProfileCRMPage,
+// 	ProfileDefaultPage,
+// 	ProfileEmptyPage,
+// 	ProfileFeedsPage,
+// 	ProfileGamerPage,
+// 	ProfileModalPage,
+// 	ProfileNetworkPage,
+// 	ProfileNFTPage,
+// 	ProfilePlainPage,
+// 	ProfileTeamsPage,
+// 	ProfileWorksPage,
+// } from '@/pages/public-profile';
+// import {
+// 	AccountActivityPage,
+// 	AccountAllowedIPAddressesPage,
+// 	AccountApiKeysPage,
+// 	AccountAppearancePage,
+// 	AccountBackupAndRecoveryPage,
+// 	AccountBasicPage,
+// 	AccountCompanyProfilePage,
+// 	AccountCurrentSessionsPage,
+// 	AccountDeviceManagementPage,
+// 	AccountEnterprisePage,
+// 	AccountGetStartedPage,
+// 	AccountHistoryPage,
+// 	AccountImportMembersPage,
+// 	AccountIntegrationsPage,
+// 	AccountInviteAFriendPage,
+// 	AccountMembersStarterPage,
+// 	AccountNotificationsPage,
+// 	AccountOverviewPage,
+// 	AccountPermissionsCheckPage,
+// 	AccountPermissionsTogglePage,
+// 	AccountPlansPage,
+// 	AccountPrivacySettingsPage,
+// 	AccountRolesPage,
+// 	AccountSecurityGetStartedPage,
+// 	AccountSecurityLogPage,
+// 	AccountSettingsEnterprisePage,
+// 	AccountSettingsModalPage,
+// 	AccountSettingsPlainPage,
+// 	AccountSettingsSidebarPage,
+// 	AccountTeamInfoPage,
+// 	AccountTeamMembersPage,
+// 	AccountTeamsPage,
+// 	AccountTeamsStarterPage,
+// 	AccountUserProfilePage,
+// } from '@/pages/account';
+// import {
+// 	NetworkAppRosterPage,
+// 	NetworkMarketAuthorsPage,
+// 	NetworkAuthorPage,
+// 	NetworkGetStartedPage,
+// 	NetworkMiniCardsPage,
+// 	NetworkNFTPage,
+// 	NetworkSocialPage,
+// 	NetworkUserCardsTeamCrewPage,
+// 	NetworkSaasUsersPage,
+// 	NetworkStoreClientsPage,
+// 	NetworkUserTableTeamCrewPage,
+// 	NetworkVisitorsPage,
+// } from '@/pages/network';
 import {
 	NewBooking,
 	BookingDispatch,
@@ -95,11 +95,11 @@ import { UnAllocated } from '@/pages/dispatch';
 import { AuthPage } from '@/auth';
 import { Demo1Layout } from '@/layouts/demo1';
 import { ErrorsRouting } from '@/errors';
-import {
-	AuthenticationWelcomeMessagePage,
-	AuthenticationAccountDeactivatedPage,
-	AuthenticationGetStartedPage,
-} from '@/pages/authentication';
+// import {
+// 	AuthenticationWelcomeMessagePage,
+// 	AuthenticationAccountDeactivatedPage,
+// 	AuthenticationGetStartedPage,
+// } from '@/pages/authentication';
 import { RequireAuth } from '../auth';
 import { ListLocalPoi } from '@/pages/localPoi';
 import { ListAccounts } from '@/pages/accounts';
@@ -118,6 +118,7 @@ import { DriverExpenses } from '@/pages/driverExpenses';
 import { DriverExpiryList } from '@/pages/drivers/driverExpiry';
 
 const AppRoutingSetup = () => {
+	const userRole = JSON.parse(localStorage.getItem('userData'))?.roleId || 0;
 	return (
 		<Routes>
 			<Route element={<RequireAuth />}>
@@ -211,66 +212,94 @@ const AppRoutingSetup = () => {
 						path='/localPOIs/list-local-Poi'
 						element={<ListLocalPoi />}
 					/>
-					<Route
-						path='/accounts/list-account'
-						element={<ListAccounts />}
-					/>
+					{userRole !== 1 && (
+						<Route
+							path='/accounts/list-account'
+							element={<ListAccounts />}
+						/>
+					)}
 
-					<Route
-						path='/drivers/expires'
-						element={<DriverExpiryList />}
-					/>
-					<Route
-						path='/drivers/list-driver'
-						element={<ListDriver />}
-					/>
-					<Route
-						path='/driver-expenses'
-						element={<DriverExpenses />}
-					/>
+					{userRole !== 1 && (
+						<Route
+							path='/drivers/expires'
+							element={<DriverExpiryList />}
+						/>
+					)}
+					{userRole !== 1 && (
+						<Route
+							path='/drivers/list-driver'
+							element={<ListDriver />}
+						/>
+					)}
+					{userRole !== 1 && (
+						<Route
+							path='/driver-expenses'
+							element={<DriverExpenses />}
+						/>
+					)}
 
-					<Route
-						path='/billing/driver/statement-processing'
-						element={<StateProcessing />}
-					/>
-					<Route
-						path='/billing/driver/statement-history'
-						element={<StatementHistory />}
-					/>
-					<Route
-						path='/billing/account/invoice-processor'
-						element={<InvoiceProcessor />}
-					/>
-					<Route
-						path='/billing/account/invoice-history'
-						element={<InvoiceHistory />}
-					/>
-					<Route
-						path='/billing/account/invoice-delete'
-						element={<InvoiceDelete />}
-					/>
-					<Route
-						path='/billing/vat-outputs'
-						element={<VatOutputs />}
-					/>
-					<Route
-						path='/tariffs'
-						element={<Tariff />}
-					/>
-					<Route
-						path='/driver-earning-report'
-						element={<DriverEarningReport />}
-					/>
-					<Route
-						path='/setting/company-settings'
-						element={<CompanySetting />}
-					/>
-					<Route
-						path='/setting/msg-settings'
-						element={<MsgSettings />}
-					/>
+					{userRole !== 1 && (
+						<Route
+							path='/billing/driver/statement-processing'
+							element={<StateProcessing />}
+						/>
+					)}
+					{userRole !== 1 && (
+						<Route
+							path='/billing/driver/statement-history'
+							element={<StatementHistory />}
+						/>
+					)}
+					{userRole !== 1 && (
+						<Route
+							path='/billing/account/invoice-processor'
+							element={<InvoiceProcessor />}
+						/>
+					)}
+					{userRole !== 1 && (
+						<Route
+							path='/billing/account/invoice-history'
+							element={<InvoiceHistory />}
+						/>
+					)}
+					{userRole !== 1 && (
+						<Route
+							path='/billing/account/invoice-delete'
+							element={<InvoiceDelete />}
+						/>
+					)}
+					{userRole !== 1 && (
+						<Route
+							path='/billing/vat-outputs'
+							element={<VatOutputs />}
+						/>
+					)}
+					{userRole !== 1 && (
+						<Route
+							path='/tariffs'
+							element={<Tariff />}
+						/>
+					)}
+					{userRole !== 1 && (
+						<Route
+							path='/driver-earning-report'
+							element={<DriverEarningReport />}
+						/>
+					)}
+					{userRole !== 1 && (
+						<Route
+							path='/setting/company-settings'
+							element={<CompanySetting />}
+						/>
+					)}
+					{userRole !== 1 && (
+						<Route
+							path='/setting/msg-settings'
+							element={<MsgSettings />}
+						/>
+					)}
 
-					<Route
+					{/* <Route
 						path='/public-profile/profiles/default'
 						element={<ProfileDefaultPage />}
 					/>
@@ -541,7 +570,7 @@ const AppRoutingSetup = () => {
 					<Route
 						path='/authentication/get-started'
 						element={<AuthenticationGetStartedPage />}
-					/>
+					/> */}
 				</Route>
 			</Route>
 			<Route
