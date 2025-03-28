@@ -46,7 +46,7 @@ const DriverExpenses = () => {
 		driverExpenses: { data, total },
 		loading,
 	} = useSelector((state) => state.driver);
-	const [driverNumber, setDriverNumber] = useState();
+	const [driverNumber, setDriverNumber] = useState(0);
 	const [dateRange, setDateRange] = useState({
 		from: subDays(new Date(), 30), // December 28, 2024
 		to: new Date(), // January 28, 2025
@@ -101,6 +101,18 @@ const DriverExpenses = () => {
 		);
 	};
 
+	const categoryEnum = {
+		0: 'Fuel',
+		1: 'Parts',
+		2: 'Insurance',
+		3: 'MOT',
+		4: 'DBS',
+		5: 'VehicleBadge',
+		6: 'Maintanence',
+		7: 'Certification',
+		8: 'Other',
+	};
+
 	const columns = useMemo(
 		() => [
 			{
@@ -153,7 +165,7 @@ const DriverExpenses = () => {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={`font-medium ${row.original.color}`}>
-						{row.original.category ? row.original.category : '-'}
+						{categoryEnum[row.original.category]}
 					</span>
 				),
 				meta: { headerClassName: 'min-w-[200px]' },
@@ -251,6 +263,7 @@ const DriverExpenses = () => {
 													<SelectValue placeholder='Select' />
 												</SelectTrigger>
 												<SelectContent className='w-36'>
+													<SelectItem value={0}>All</SelectItem>
 													{drivers?.length > 0 &&
 														drivers?.map((driver) => (
 															<>

@@ -4,7 +4,7 @@ export const MENU_SIDEBAR = [
 	{
 		title: 'Dashboards',
 		icon: 'element-11',
-		iconLightColor: 'text-red-600',
+		iconLightColor: 'text-red-400',
 		iconDarkColor: 'text-red-500',
 		roles: [1, 2, 3],
 		path: '/',
@@ -23,15 +23,15 @@ export const MENU_SIDEBAR = [
 	{
 		title: 'Booking & Dispatch',
 		icon: 'chart-simple-3',
-		iconLightColor: 'text-blue-600',
-		iconDarkColor: 'text-blue-500',
+		iconLightColor: 'text-blue-300',
+		iconDarkColor: 'text-blue-400',
 		roles: [1, 2, 3],
 		path: '/bookings/booking-dispatch',
 	},
 	{
 		title: 'Tracking',
 		icon: 'focus',
-		iconLightColor: 'text-cyan-600',
+		iconLightColor: 'text-cyan-400',
 		iconDarkColor: 'text-cyan-400',
 		roles: [1, 2, 3],
 		path: '/booking/driver-tracking',
@@ -39,7 +39,7 @@ export const MENU_SIDEBAR = [
 	{
 		title: 'Availability',
 		icon: 'chart-simple-3',
-		iconLightColor: 'text-green-600',
+		iconLightColor: 'text-green-400',
 		iconDarkColor: 'text-green-500',
 		roles: [1, 2, 3],
 		path: '/booking/availability',
@@ -47,7 +47,7 @@ export const MENU_SIDEBAR = [
 	{
 		title: 'Availability Logs',
 		icon: 'graph',
-		iconLightColor: 'text-purple-600',
+		iconLightColor: 'text-purple-400',
 		iconDarkColor: 'text-purple-500',
 		roles: [1, 2, 3],
 		path: '/booking/availability-logs',
@@ -55,7 +55,7 @@ export const MENU_SIDEBAR = [
 	{
 		title: 'Availability Report',
 		icon: 'graph-up',
-		iconLightColor: 'text-yellow-600',
+		iconLightColor: 'text-yellow-400',
 		iconDarkColor: 'text-yellow-500',
 		roles: [1, 2, 3],
 		path: '/booking/availability-report',
@@ -63,7 +63,7 @@ export const MENU_SIDEBAR = [
 	{
 		title: 'Local POIs',
 		icon: 'geolocation',
-		iconLightColor: 'text-green-600',
+		iconLightColor: 'text-green-400',
 		iconDarkColor: 'text-green-500',
 		roles: [1, 2, 3],
 		path: '/localPOIs/list-local-Poi',
@@ -71,7 +71,7 @@ export const MENU_SIDEBAR = [
 	{
 		title: 'Bookings',
 		icon: 'car',
-		iconLightColor: 'text-orange-600',
+		iconLightColor: 'text-orange-400',
 		iconDarkColor: 'text-orange-500',
 		roles: [1, 2, 3],
 		children: [
@@ -158,7 +158,7 @@ export const MENU_SIDEBAR = [
 	{
 		title: 'Accounts',
 		icon: 'book-open',
-		iconLightColor: 'text-blue-600',
+		iconLightColor: 'text-blue-400',
 		iconDarkColor: 'text-blue-500',
 		roles: [1],
 		path: '/accounts/list-account',
@@ -166,7 +166,7 @@ export const MENU_SIDEBAR = [
 	{
 		title: 'Driver',
 		icon: 'users',
-		iconLightColor: 'text-cyan-600',
+		iconLightColor: 'text-cyan-400',
 		iconDarkColor: 'text-cyan-400',
 		roles: [1],
 		children: [
@@ -177,7 +177,7 @@ export const MENU_SIDEBAR = [
 	{
 		title: 'Drivers Expenses',
 		icon: 'two-credit-cart',
-		iconLightColor: 'text-green-600',
+		iconLightColor: 'text-green-400',
 		iconDarkColor: 'text-green-500',
 		roles: [1],
 		path: '/driver-expenses',
@@ -185,7 +185,7 @@ export const MENU_SIDEBAR = [
 	{
 		title: 'Tariffs',
 		icon: 'simcard',
-		iconLightColor: 'text-purple-600',
+		iconLightColor: 'text-purple-400',
 		iconDarkColor: 'text-purple-500',
 		roles: [1],
 		path: '/tariffs',
@@ -193,7 +193,7 @@ export const MENU_SIDEBAR = [
 	{
 		title: 'Billing & Payments',
 		icon: 'bitcoin',
-		iconLightColor: 'text-yellow-600',
+		iconLightColor: 'text-yellow-400',
 		iconDarkColor: 'text-yellow-500',
 		roles: [1],
 		children: [
@@ -299,7 +299,7 @@ export const MENU_SIDEBAR = [
 	{
 		title: 'Driver Earning Report',
 		icon: 'euro',
-		iconLightColor: 'text-green-600',
+		iconLightColor: 'text-green-400',
 		iconDarkColor: 'text-green-500',
 		roles: [1, 3],
 		path: '/driver-earning-report',
@@ -308,7 +308,7 @@ export const MENU_SIDEBAR = [
 	{
 		title: 'Company Settings',
 		icon: 'setting-3',
-		iconLightColor: 'text-blue-600',
+		iconLightColor: 'text-blue-400',
 		iconDarkColor: 'text-blue-500',
 		roles: [1],
 		path: '/setting/company-settings',
@@ -317,7 +317,7 @@ export const MENU_SIDEBAR = [
 	{
 		title: 'Message Settings',
 		icon: 'social-media',
-		iconLightColor: 'text-cyan-600',
+		iconLightColor: 'text-cyan-400',
 		iconDarkColor: 'text-cyan-400',
 		roles: [1],
 		path: '/setting/msg-settings',
