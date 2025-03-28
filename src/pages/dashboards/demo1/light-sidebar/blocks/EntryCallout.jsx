@@ -11,6 +11,7 @@ const EntryCallout = () => {
 	const { driverWeeksEarnings } = useSelector((state) => state.dashboard);
 	const [searchQuery, setSearchQuery] = useState('');
 	const [tableData, setTableData] = useState([]);
+	const userRole = JSON.parse(localStorage.getItem('userData'))?.roleId || 0;
 	console.log(driverWeeksEarnings);
 
 	useEffect(() => {
@@ -19,8 +20,8 @@ const EntryCallout = () => {
 		}
 	}, [driverWeeksEarnings]);
 
-	const columns = useMemo(
-		() => [
+	const columns = useMemo(() => {
+		const allColumns = [
 			{
 				accessorKey: 'identifier',
 				header: <span className='font-bold'>Driver</span>,
@@ -171,9 +172,26 @@ const EntryCallout = () => {
 				// ),
 				meta: { headerClassName: 'w-12' },
 			},
-		],
-		[]
-	);
+		];
+		const roleBasedColumns = {
+			1: allColumns, // Admin sees all columns
+			2: allColumns.filter(
+				(col) =>
+					col.accessorKey !== 'cashEarned' &&
+					col.accessorKey !== 'rankEarned' &&
+					col.accessorKey !== 'commissionCash' &&
+					col.accessorKey !== 'commissionRank' &&
+					col.accessorKey !== 'takeHome' &&
+					col.accessorKey !== 'commission'
+			), // Manager sees all except 'commission'
+			3: allColumns.filter(
+				(col) =>
+					col.accessorKey === 'identifier' || col.accessorKey === 'jobsCount'
+			), // Driver sees only 'Driver' & 'Jobs'
+		};
+
+		return roleBasedColumns[userRole] || [];
+	}, [userRole]);
 
 	const totalSum =
 		tableData?.reduce((acc, curr) => acc + (curr.takeHome || 0), 0) || 0;
@@ -243,18 +261,20 @@ const EntryCallout = () => {
 				}}
 				applyRowColor={true}
 			/>
-			<div className='flex justify-end items-center mt-4 p-4 bg-gray-100 rounded-lg'>
-				<div className='font-bold text-lg text-gray-800 flex gap-4'>
-					<span>Total Earnings:</span>
-					<div className='flex items-center gap-1'>
-						<span>£{totalSum.toFixed(2)}</span>
-					</div>
-					<span>Total Commissions:</span>
-					<div className='flex items-center gap-1'>
-						<span>£{totalCommsSum.toFixed(2)}</span>
+			{userRole === 1 && (
+				<div className='flex justify-end items-center mt-4 p-4 bg-gray-100 rounded-lg'>
+					<div className='font-bold text-lg text-gray-800 flex gap-4'>
+						<span>Total Earnings:</span>
+						<div className='flex items-center gap-1'>
+							<span>£{totalSum.toFixed(2)}</span>
+						</div>
+						<span>Total Commissions:</span>
+						<div className='flex items-center gap-1'>
+							<span>£{totalCommsSum.toFixed(2)}</span>
+						</div>
 					</div>
 				</div>
-			</div>
+			)}
 		</>
 	);
 };
