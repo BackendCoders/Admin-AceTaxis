@@ -212,87 +212,87 @@ const AppRoutingSetup = () => {
 						path='/localPOIs/list-local-Poi'
 						element={<ListLocalPoi />}
 					/>
-					{userRole !== 1 && (
+					{userRole !== 2 && (
 						<Route
 							path='/accounts/list-account'
 							element={<ListAccounts />}
 						/>
 					)}
 
-					{userRole !== 1 && (
+					{userRole !== 2 && (
 						<Route
 							path='/drivers/expires'
 							element={<DriverExpiryList />}
 						/>
 					)}
-					{userRole !== 1 && (
+					{userRole !== 2 && (
 						<Route
 							path='/drivers/list-driver'
 							element={<ListDriver />}
 						/>
 					)}
-					{userRole !== 1 && (
+					{userRole !== 2 && (
 						<Route
 							path='/driver-expenses'
 							element={<DriverExpenses />}
 						/>
 					)}
 
-					{userRole !== 1 && (
+					{userRole !== 2 && (
 						<Route
 							path='/billing/driver/statement-processing'
 							element={<StateProcessing />}
 						/>
 					)}
-					{userRole !== 1 && (
+					{userRole !== 2 && (
 						<Route
 							path='/billing/driver/statement-history'
 							element={<StatementHistory />}
 						/>
 					)}
-					{userRole !== 1 && (
+					{userRole !== 2 && (
 						<Route
 							path='/billing/account/invoice-processor'
 							element={<InvoiceProcessor />}
 						/>
 					)}
-					{userRole !== 1 && (
+					{userRole !== 2 && (
 						<Route
 							path='/billing/account/invoice-history'
 							element={<InvoiceHistory />}
 						/>
 					)}
-					{userRole !== 1 && (
+					{userRole !== 2 && (
 						<Route
 							path='/billing/account/invoice-delete'
 							element={<InvoiceDelete />}
 						/>
 					)}
-					{userRole !== 1 && (
+					{userRole !== 2 && (
 						<Route
 							path='/billing/vat-outputs'
 							element={<VatOutputs />}
 						/>
 					)}
-					{userRole !== 1 && (
+					{userRole !== 2 && (
 						<Route
 							path='/tariffs'
 							element={<Tariff />}
 						/>
 					)}
-					{userRole !== 1 && (
+					{userRole !== 2 && (
 						<Route
 							path='/driver-earning-report'
 							element={<DriverEarningReport />}
 						/>
 					)}
-					{userRole !== 1 && (
+					{userRole !== 2 && (
 						<Route
 							path='/setting/company-settings'
 							element={<CompanySetting />}
 						/>
 					)}
-					{userRole !== 1 && (
+					{userRole !== 2 && (
 						<Route
 							path='/setting/msg-settings'
 							element={<MsgSettings />}
