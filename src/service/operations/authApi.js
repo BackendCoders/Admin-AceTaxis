@@ -102,7 +102,7 @@ export function getUser(navigate) {
 			dispatch(setIsAuth(false));
 			dispatch(setUser(null));
 			dispatch(setGetUser(null));
-			navigate('/auth/login'); // Redirect to login
+			navigate('/auth/login'); // Redirect to login again
 			return;
 		}
 		dispatch(setLoading(true));
