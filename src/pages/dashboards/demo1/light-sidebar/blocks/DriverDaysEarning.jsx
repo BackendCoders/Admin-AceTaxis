@@ -118,13 +118,10 @@ function DayEarning() {
 			1: allColumns, // Admin sees all columns
 			2: allColumns.filter(
 				(col) =>
-					col.accessorKey !== 'cashEarned' &&
-					col.accessorKey !== 'rankEarned' &&
-					col.accessorKey !== 'commissionCash' &&
-					col.accessorKey !== 'commissionRank' &&
-					col.accessorKey !== 'takeHome' &&
-					col.accessorKey !== 'commission'
-			), // Manager sees all except 'commission'
+					col.accessorKey === 'identifier' ||
+					col.accessorKey === 'jobsCount' ||
+					col.accessorKey === 'accEarned'
+			), // User sees only 'Driver', 'Jobs', 'Acc'
 			3: allColumns.filter(
 				(col) =>
 					col.accessorKey === 'identifier' || col.accessorKey === 'jobsCount'
