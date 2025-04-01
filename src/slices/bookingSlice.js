@@ -113,8 +113,8 @@ export function refreshAirportRuns(month) {
 			const response = await getAirportRuns(month);
 			console.log(response);
 			if (response.status === 'success') {
-				dispatch(setAirportRuns(response.data.lastAirports));
-				dispatch(setLastJourney(response.lastJourneys));
+				dispatch(setAirportRuns(response.lastJourneys));
+				dispatch(setLastJourney(response.data.lastAirports));
 			}
 		} catch (error) {
 			console.error('Failed to refresh airport runs:', error);
