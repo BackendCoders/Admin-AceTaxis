@@ -21,7 +21,6 @@ import {
 } from '@mui/icons-material';
 import { format } from 'date-fns';
 import MoneyIcon from '@mui/icons-material/Money';
-// import { Container } from '@/components/container';
 import {
 	Select,
 	SelectTrigger,
@@ -741,9 +740,6 @@ function StateProcessing() {
 				toast.info('No jobs available to post.');
 				return;
 			}
-
-			console.log(driverChargeableJobs.priced);
-
 			// API expects { jobs: [...] }, so we wrap the array inside an object
 			const payload = driverChargeableJobs.priced.map((job) => ({
 				accNo: job.accNo || 0,
@@ -778,9 +774,6 @@ function StateProcessing() {
 				postedForStatement: job.postedForStatement || false,
 				miles: job.miles || 0,
 			}));
-
-			console.log('Sending Payload:', payload); // Debugging
-
 			// Call API with the wrapped payload
 			const response = await driverCreateStatements(payload);
 
@@ -1251,7 +1244,6 @@ function PriceBase({ open, onOpenChange, bookingId, handleShow }) {
 
 	const booking = notPriced?.find((job) => job?.bookingId === bookingId);
 
-	console.log({ bookingId, booking, userData });
 	const initialValues = {
 		priceFromBase: booking?.priceFromBase || false,
 	};
@@ -1281,7 +1273,6 @@ function PriceBase({ open, onOpenChange, bookingId, handleShow }) {
 					durationText: '', // No duration available in provided object
 				};
 				const response = await driverPriceJobByMileage(payload);
-				console.log('Response:', response);
 				if (response.status === 'success') {
 					toast.success('Charge From Base Updated Successfully');
 					handleShow();
