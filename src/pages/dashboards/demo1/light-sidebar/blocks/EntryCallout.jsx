@@ -5,7 +5,6 @@ import { toast } from 'sonner';
 import { useState, useMemo, useEffect } from 'react';
 
 import { useSelector } from 'react-redux';
-import { DayEarning } from './DriverDaysEarning';
 
 const EntryCallout = () => {
 	const { driverWeeksEarnings } = useSelector((state) => state.dashboard);
@@ -242,8 +241,6 @@ const EntryCallout = () => {
 
 	return (
 		<>
-			<DayEarning />
-
 			<DataGrid
 				columns={columns}
 				data={filteredData}
