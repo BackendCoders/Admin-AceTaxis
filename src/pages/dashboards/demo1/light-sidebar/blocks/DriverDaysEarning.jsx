@@ -196,7 +196,7 @@ function DayEarning() {
 				applyRowColor={true}
 			/>
 			{userRole === 1 && (
-				<div className='flex justify-end items-center mt-4 p-4 bg-gray-100 rounded-lg mb-4'>
+				<div className='flex justify-end items-center mt-4 p-4 bg-gray-100 rounded-lg'>
 					<div className='font-bold text-lg text-gray-800 flex gap-4'>
 						<span>Total Earnings:</span>
 						<div className='flex items-center gap-1'>

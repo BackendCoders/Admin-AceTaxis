@@ -36,13 +36,6 @@ const EntryCallout = () => {
 				accessorKey: 'jobsCount',
 				header: <span className='font-bold'>Jobs</span>,
 				enableSorting: true,
-				cell: ({ getValue }) => {
-					return (
-						<div className='p-1 rounded text-center font-semibold'>
-							{getValue()}
-						</div>
-					);
-				},
 				meta: { headerClassName: 'w-12' },
 			},
 			{
@@ -51,16 +44,11 @@ const EntryCallout = () => {
 				enableSorting: true,
 				cell: ({ getValue }) => {
 					return (
-						<div className='p-1 rounded text-center font-semibold'>
-							£{getValue()?.toFixed(2)}
+						<div className='flex items-center gap-1'>
+							<span>£{getValue()?.toFixed(2)}</span>
 						</div>
 					);
 				},
-				// cell: (info) => (
-				// 	<div className='flex items-center gap-1'>
-				// 		<span>{info.getValue()}</span>
-				// 	</div>
-				// ),
 				meta: { headerClassName: 'min-w-[80px]' },
 			},
 			{
@@ -69,16 +57,11 @@ const EntryCallout = () => {
 				enableSorting: true,
 				cell: ({ getValue }) => {
 					return (
-						<div className='p-1 rounded text-center font-semibold'>
-							£{getValue()?.toFixed(2)}
+						<div className='flex items-center gap-1'>
+							<span>£{getValue()?.toFixed(2)}</span>
 						</div>
 					);
 				},
-				// cell: (info) => (
-				// 	<div className='flex items-center gap-1'>
-				// 		<span>£{info.getValue()?.toFixed(2)}</span>
-				// 	</div>
-				// ),
 				meta: { headerClassName: 'w-12' },
 			},
 			{
@@ -87,16 +70,11 @@ const EntryCallout = () => {
 				enableSorting: true,
 				cell: ({ getValue }) => {
 					return (
-						<div className='p-1 rounded text-center font-semibold'>
-							£{getValue()?.toFixed(2)}
+						<div className='flex items-center gap-1'>
+							<span>£{getValue()?.toFixed(2)}</span>
 						</div>
 					);
 				},
-				// cell: (info) => (
-				// 	<div className='flex items-center gap-1'>
-				// 		<span>£{info.getValue()?.toFixed(2)}</span>
-				// 	</div>
-				// ),
 				meta: { headerClassName: 'w-12' },
 			},
 			{
@@ -105,16 +83,11 @@ const EntryCallout = () => {
 				enableSorting: true,
 				cell: ({ getValue }) => {
 					return (
-						<div className='p-1 rounded text-center font-semibold'>
-							£{getValue()?.toFixed(2)}
+						<div className='flex items-center gap-1'>
+							<span>£{getValue()?.toFixed(2)}</span>
 						</div>
 					);
 				},
-				// cell: (info) => (
-				// 	<div className='flex items-center gap-1'>
-				// 		<span>£{info.getValue()?.toFixed(2)}</span>
-				// 	</div>
-				// ),
 				meta: { headerClassName: 'w-12' },
 			},
 			{
@@ -123,16 +96,11 @@ const EntryCallout = () => {
 				enableSorting: true,
 				cell: ({ getValue }) => {
 					return (
-						<div className='p-1 rounded text-center font-semibold'>
-							£{getValue()?.toFixed(2)}
+						<div className='flex items-center gap-1'>
+							<span>£{getValue()?.toFixed(2)}</span>
 						</div>
 					);
 				},
-				// cell: (info) => (
-				// 	<div className='flex items-center gap-1'>
-				// 		<span>£{info.getValue()?.toFixed(2)}</span>
-				// 	</div>
-				// ),
 				meta: { headerClassName: 'w-12' },
 			},
 			{
@@ -141,16 +109,11 @@ const EntryCallout = () => {
 				enableSorting: true,
 				cell: ({ getValue }) => {
 					return (
-						<div className='p-1 rounded text-center font-semibold'>
-							£{getValue()?.toFixed(2)}
+						<div className='flex items-center gap-1'>
+							<span>£{getValue()?.toFixed(2)}</span>
 						</div>
 					);
 				},
-				// cell: (info) => (
-				// 	<div className='flex items-center gap-1'>
-				// 		<span>£{info.getValue()?.toFixed(2)}</span>
-				// 	</div>
-				// ),
 				meta: { headerClassName: 'w-12' },
 			},
 			{
@@ -159,16 +122,11 @@ const EntryCallout = () => {
 				enableSorting: true,
 				cell: ({ getValue }) => {
 					return (
-						<div className='p-1 rounded text-center font-semibold'>
-							£{getValue()?.toFixed(2)}
+						<div className='flex items-center gap-1'>
+							<span>£{getValue()?.toFixed(2)}</span>
 						</div>
 					);
 				},
-				// cell: (info) => (
-				// 	<div className='flex items-center gap-1'>
-				// 		<span>£{info.getValue()?.toFixed(2)}</span>
-				// 	</div>
-				// ),
 				meta: { headerClassName: 'w-12' },
 			},
 		];
