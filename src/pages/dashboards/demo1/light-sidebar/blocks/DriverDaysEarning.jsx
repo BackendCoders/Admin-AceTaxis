@@ -9,7 +9,6 @@ function DayEarning() {
 	const [searchQuery, setSearchQuery] = useState('');
 	const [tableData, setTableData] = useState([]);
 	const userRole = JSON.parse(localStorage.getItem('userData'))?.roleId || 0;
-	console.log(driverDaysEarnings);
 
 	useEffect(() => {
 		if (driverDaysEarnings) {

@@ -54,7 +54,6 @@ const DriverTracking = () => {
 	const fetchGPSData = async () => {
 		try {
 			const response = await gstAllGPS(); // Fetch data
-			console.log('API Response:', response);
 
 			if (response?.status === 'success') {
 				// Map the API response to match the drivers structure
@@ -62,7 +61,6 @@ const DriverTracking = () => {
 					(item) => typeof item === 'object'
 				);
 				setDrivers(mappedDrivers);
-				console.log('Mapped Drivers:', mappedDrivers);
 			} else {
 				console.error('Failed to fetch GPS data:', response);
 			}

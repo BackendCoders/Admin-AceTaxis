@@ -57,7 +57,6 @@ export function refreshDashboard() {
 	return async (dispatch) => {
 		try {
 			const response = await dashboard();
-			console.log(response);
 
 			if (response.status === 'success') {
 				dispatch(setData(response));

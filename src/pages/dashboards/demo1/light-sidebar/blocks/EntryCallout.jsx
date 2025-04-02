@@ -11,7 +11,6 @@ const EntryCallout = () => {
 	const [searchQuery, setSearchQuery] = useState('');
 	const [tableData, setTableData] = useState([]);
 	const userRole = JSON.parse(localStorage.getItem('userData'))?.roleId || 0;
-	console.log(driverWeeksEarnings);
 
 	useEffect(() => {
 		if (driverWeeksEarnings) {

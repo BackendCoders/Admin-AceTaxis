@@ -28,7 +28,6 @@ const SelectedAvailabilityTable = ({ selectedDriver, selectedDate }) => {
 	const { availability } = useSelector((state) => state.availability);
 
 	const handleDelete = async (driver) => {
-		console.log(driver);
 		try {
 			const response = await deleteAvailability(driver?.id);
 			if (response.status === 'success') {

@@ -1252,7 +1252,6 @@ function PriceBase({ open, onOpenChange, bookingId, handleShow }) {
 		initialValues,
 		validationSchema: addLocalSchema,
 		onSubmit: async (values, { setSubmitting }) => {
-			console.log('Submitted Values:', values);
 			try {
 				const payload = {
 					pickupPostcode: booking?.pickupPostcode || '',
