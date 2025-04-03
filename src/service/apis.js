@@ -43,6 +43,7 @@ export const accountEndpoints = {
 export const bookingsEndpoints = {
 	GET_CARD_BOOKINGS: `${BASE}/api/AdminUI/CardBookings`,
 	CANCEL_BOOKING_DATE_RANGE: `${BASE}/api/AdminUI/CancelBookingsInRange`,
+	CANCEL_REPORT_DATE_RANGE: `${BASE}/api/AdminUI/CancelBookingsInRangeReport`,
 	SEND_REMINDER_CARD_PAYMENT: `${BASE}/api/AdminUI/SendCardPaymentReminder`,
 	BOOKING_AUDIT: (id) => `${BASE}/api/AdminUI/BookingAudit?bookingId=${id}`,
 	BOOKING_STATUS: (date, scope, status) =>

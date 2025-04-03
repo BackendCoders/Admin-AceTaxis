@@ -88,6 +88,7 @@ import {
 	AmendmentBookings,
 	AuditBooking,
 	CancelByRange,
+	CancelByRangeReport,
 	Tariff,
 	TurndownBookings,
 } from '@/pages/booking';
@@ -179,6 +180,10 @@ const AppRoutingSetup = () => {
 					<Route
 						path='/bookings/cancelbyrange'
 						element={<CancelByRange />}
+					/>
+					<Route
+						path='/bookings/cancelbyrangereport'
+						element={<CancelByRangeReport />}
 					/>
 					<Route
 						path='/bookings/turndown'

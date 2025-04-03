@@ -126,6 +126,11 @@ export const MENU_SIDEBAR = [
 				roles: [1, 2, 3],
 			},
 			{
+				title: 'Cancel Range Report',
+				path: '/bookings/cancelbyrangereport',
+				roles: [1, 2, 3],
+			},
+			{
 				title: 'Turndown History',
 				path: '/bookings/turndown',
 				roles: [1, 2, 3],

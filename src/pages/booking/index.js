@@ -15,4 +15,5 @@ export * from './availability';
 export * from './availabilitylogs';
 export * from './availabilityreport';
 export * from './cancelbyrange';
+export * from './cancelbyrangereport';
 export * from './turndownBookings';

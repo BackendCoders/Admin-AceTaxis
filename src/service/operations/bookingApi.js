@@ -6,6 +6,7 @@ import { bookingsEndpoints } from '../apis';
 
 const {
 	CANCEL_BOOKING_DATE_RANGE,
+	CANCEL_REPORT_DATE_RANGE,
 	GET_CARD_BOOKINGS,
 	SEND_REMINDER_CARD_PAYMENT,
 	ALLOCATE_BOOKING,
@@ -20,6 +21,26 @@ export async function cancelBookingByDateRange(data) {
 	const response = await handlePostReq(CANCEL_BOOKING_DATE_RANGE, data);
 
 	console.log('CANCEL BOOKING API RESPONSE.........', response);
+
+	if (response.status === 'success') {
+		// sendLogs(
+		// 	{
+		// 		url: GET_ALL_GPS,
+		// 		reqBody: null,
+		// 		headers: setHeaders(),
+		// 		response: response,
+		// 	},
+		// 	'info'
+		// );
+		return response;
+	}
+}
+
+export async function cancelReportByDateRange(data) {
+	// Fetch current user details using token
+	const response = await handlePostReq(CANCEL_REPORT_DATE_RANGE, data);
+
+	console.log('CANCEL REPORT API RESPONSE.........', response);
 
 	if (response.status === 'success') {
 		// sendLogs(
