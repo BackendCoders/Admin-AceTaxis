@@ -4,7 +4,7 @@
  * @format
  */
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
 	DataGrid,
 	DataGridColumnHeader,
@@ -19,14 +19,25 @@ import toast from 'react-hot-toast';
 
 const Tariff = () => {
 	const [tariffData, setTariffData] = useState([]);
-	const [lastUpdatedTariff, setLastUpdatedTariff] = useState(null);
+	const inputRefs = useRef({});
+	const changedTariffs = useRef(new Set());
+
 	const handleInputChange = (id, field, value) => {
+		const inputKey = `${id}-${field}`;
+
+		// Store the currently focused input
+		inputRefs.current[inputKey] = document.activeElement;
 		const updatedTariffs = tariffData.map((tariff) =>
 			tariff.id === id ? { ...tariff, [field]: parseFloat(value) || 0 } : tariff
 		);
 		setTariffData(updatedTariffs);
-		const updatedTariff = updatedTariffs.find((tariff) => tariff.id === id);
-		setLastUpdatedTariff(updatedTariff);
+		// const updatedTariff = updatedTariffs.find((tariff) => tariff.id === id);
+		changedTariffs.current.add(id);
+		setTimeout(() => {
+			if (inputRefs.current[inputKey]) {
+				inputRefs.current[inputKey].focus();
+			}
+		}, 0);
 	};
 
 	const ColumnInputFilter = ({ column }) => {
@@ -93,6 +104,12 @@ const Tariff = () => {
 								e.target.value
 							)
 						}
+						ref={(input) => {
+							if (input) {
+								const key = `${row.original.id}-initialCharge`;
+								inputRefs.current[key] = input;
+							}
+						}}
 					/>
 				),
 				meta: { headerClassName: 'min-w-[20px] text-center' },
@@ -119,6 +136,12 @@ const Tariff = () => {
 								e.target.value
 							)
 						}
+						ref={(input) => {
+							if (input) {
+								const key = `${row.original.id}-firstMileCharge`;
+								inputRefs.current[key] = input;
+							}
+						}}
 					/>
 				),
 				meta: { headerClassName: 'min-w-[20px] text-center' },
@@ -145,6 +168,12 @@ const Tariff = () => {
 								e.target.value
 							)
 						}
+						ref={(input) => {
+							if (input) {
+								const key = `${row.original.id}-additionalMileCharge`;
+								inputRefs.current[key] = input;
+							}
+						}}
 					/>
 				),
 				meta: { headerClassName: 'min-w-[20px] text-center' },
@@ -154,18 +183,28 @@ const Tariff = () => {
 	);
 
 	const handleUpdateTariffs = async () => {
-		if (!lastUpdatedTariff) {
+		const updatedTariffs = tariffData.filter((tariff) =>
+			changedTariffs.current.has(tariff.id)
+		);
+		if (updatedTariffs.length === 0) {
 			toast.error('No changes detected.');
 			return;
 		}
 		try {
-			console.log('updated tariff data', lastUpdatedTariff);
-			const response = await setTariffConfig(lastUpdatedTariff);
-			if (response.status === 'success') {
+			console.log('updated tariff data', updatedTariffs);
+			const updatePromises = updatedTariffs.map((tariff) =>
+				setTariffConfig(tariff)
+			);
+			const responses = await Promise.all(updatePromises);
+			const allSuccess = responses.every(
+				(response) => response.status === 'success'
+			);
+			if (allSuccess) {
 				toast.success('Tariff Updated Successfully');
+				changedTariffs.current.clear();
 			} else {
 				toast.error('Unable to update Tariff');
-				console.error('Failed to update Tariff Data:', response.message);
+				console.error('Failed to update Tariff Data:', responses);
 			}
 		} catch (error) {
 			console.log(error);
