@@ -1,7 +1,7 @@
 /** @format */
 
 import { createSlice } from '@reduxjs/toolkit';
-import { dashboard } from '../service/operations/dashboardApi';
+import { dashboard, getSmaHeartBeat } from '../service/operations/dashboardApi';
 
 const initialState = {
 	loading: false,
@@ -65,7 +65,25 @@ export function refreshDashboard() {
 				dispatch(setJobsBookedToday(response?.jobsBookedToday));
 				dispatch(setAllocationReplys(response?.allocationReplys));
 				dispatch(setAllocationStatus(response?.allocationStatus || []));
-				dispatch(setSmsHeartBeat(response?.smsHeartBeat));
+			}
+		} catch (error) {
+			console.error('Failed to refresh users:', error);
+		}
+	};
+}
+
+export function refreshSmsHeartBeat() {
+	return async (dispatch) => {
+		try {
+			const response = await getSmaHeartBeat();
+
+			if (response.status === 'success') {
+				const result = Object.keys(response)
+					.filter((key) => key !== 'status') // Exclude 'status' field
+					.map((key) => response[key])
+					.join('');
+
+				dispatch(setSmsHeartBeat(result));
 			}
 		} catch (error) {
 			console.error('Failed to refresh users:', error);

@@ -4,14 +4,37 @@
 import { handleGetReq, handlePostReq } from '../apiRequestHandler';
 import { dashBoardEndpoints, driverEarningEndpoints } from '../apis';
 
-const { GET_DASHBOARD, SEND_DIRECT_MSG_TO_DRIVER, SEND_GLOBAL_MSG_TO_DRIVER } =
-	dashBoardEndpoints;
+const {
+	GET_DASHBOARD,
+	GET_SMS_HEART_BEAT,
+	SEND_DIRECT_MSG_TO_DRIVER,
+	SEND_GLOBAL_MSG_TO_DRIVER,
+} = dashBoardEndpoints;
 const { GET_DRIVER_EARNINGS_REPORT } = driverEarningEndpoints;
 
 export async function dashboard() {
 	const response = await handleGetReq(GET_DASHBOARD);
 
 	console.log('GET DASHBOARD API RESPONSE.........', response);
+
+	if (response.status === 'success') {
+		// sendLogs(
+		// 	{
+		// 		url: GET_DASHBOARD,
+		// 		reqBody: null,
+		// 		headers: setHeaders(),
+		// 		response: response,
+		// 	},
+		// 	'info'
+		// );
+		return response;
+	}
+}
+
+export async function getSmaHeartBeat() {
+	const response = await handleGetReq(GET_SMS_HEART_BEAT);
+
+	console.log('GET GET_SMS_HEART_BEAT API RESPONSE.........', response);
 
 	if (response.status === 'success') {
 		// sendLogs(

@@ -11,7 +11,7 @@ import { DropdownChat } from '@/partials/dropdowns/chat';
 // import { ModalSearch } from '@/partials/modals/search/ModalSearch';
 import { useLanguage } from '@/i18n';
 import { useDispatch, useSelector } from 'react-redux';
-import { refreshDashboard } from '../../../slices/dashboardSlice';
+import { refreshSmsHeartBeat } from '../../../slices/dashboardSlice';
 import { clearUnreadCount } from '../../../slices/notificationSlice';
 const HeaderTopbar = () => {
 	const dispatch = useDispatch();
@@ -33,9 +33,13 @@ const HeaderTopbar = () => {
 	// };
 
 	useEffect(() => {
+		dispatch(refreshSmsHeartBeat());
+	}, [dispatch]);
+
+	useEffect(() => {
 		const interval = setInterval(() => {
-			dispatch(refreshDashboard());
-		}, 60000); // 1 minute interval
+			dispatch(refreshSmsHeartBeat());
+		}, 15000); // 1 minute interval
 		return () => clearInterval(interval); // Cleanup on unmount
 	}, [dispatch]);
 
@@ -117,13 +121,15 @@ const HeaderTopbar = () => {
 				</MenuItem>
 			</Menu>
 
-			<div
-				className={`flex justify-center items-center ${smsHeartBeatColor?.light} dark:${smsHeartBeatColor?.dark} text-2xs sm:text-sm text-white px-2 sm:px-3 py-1 sm:py-2 rounded-md`}
-			>
-				SMS HEARTBEAT{' '}
-				{new Date(smsHeartBeat?.split('T')[0]).toLocaleDateString('en-GB')}{' '}
-				{smsHeartBeat?.split('T')[1].split('.')[0]}
-			</div>
+			{smsHeartBeat && (
+				<div
+					className={`flex justify-center items-center ${smsHeartBeatColor?.light} dark:${smsHeartBeatColor?.dark} text-2xs sm:text-sm text-white px-2 sm:px-3 py-1 sm:py-2 rounded-md`}
+				>
+					SMS HEARTBEAT{' '}
+					{new Date(smsHeartBeat?.split('T')[0]).toLocaleDateString('en-GB')}{' '}
+					{smsHeartBeat?.split('T')[1].split('.')[0]}
+				</div>
+			)}
 
 			<Menu>
 				<MenuItem

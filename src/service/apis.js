@@ -63,6 +63,7 @@ export const gpsEndpoints = {
 
 export const dashBoardEndpoints = {
 	GET_DASHBOARD: `${BASE}/api/AdminUI/Dashboard`,
+	GET_SMS_HEART_BEAT: `${BASE}/api/AdminUI/GetSMSHeartBeat`,
 	SEND_DIRECT_MSG_TO_DRIVER: (driver, msg) =>
 		`${BASE}/api/AdminUI/SendMessageToDriver?driver=${driver}&message=${encodeURIComponent(msg)}`,
 	SEND_GLOBAL_MSG_TO_DRIVER: (msg) =>
