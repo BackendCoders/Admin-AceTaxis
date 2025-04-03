@@ -53,7 +53,10 @@ const CancelByRangeReport = () => {
 			console.log('cancel report ---', response);
 			if (response.status === 'success') {
 				toast.success('Reports Cancelled Successfully');
-				setData(response);
+				const result = Object.keys(response)
+					.filter((key) => key !== 'status')
+					.map((key) => response[key]);
+				setData(result);
 			}
 		} catch (error) {
 			console.error('Error canceling reports by date range:', error);
