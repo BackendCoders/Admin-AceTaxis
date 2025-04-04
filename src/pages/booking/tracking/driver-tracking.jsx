@@ -2,21 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
-import {
-	Typography,
-	// TextField,
-	// Button,
-	// Table,
-	// TableBody,
-	// TableCell,
-	// TableContainer,
-	// TableHead,
-	// TableRow,
-	// Paper,
-	// Select,
-	// MenuItem,
-	Box,
-} from '@mui/material';
+import { Typography, Box } from '@mui/material';
 import {
 	Select,
 	SelectContent,
@@ -24,16 +10,9 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
-import {
-	DataGrid,
-	DataGridColumnHeader,
-	// useDataGrid,
-	// DataGridRowSelectAll,
-	// DataGridRowSelect,
-} from '@/components';
+import { DataGrid, DataGridColumnHeader } from '@/components';
 
 import { gstAllGPS } from '../../../service/operations/gpsApi';
-// import carImg from '../../../../public/media/images/car/gps-navigation.png';
 
 const DriverTracking = () => {
 	const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;

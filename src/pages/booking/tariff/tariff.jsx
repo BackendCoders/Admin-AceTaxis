@@ -68,7 +68,6 @@ const Tariff = () => {
 			},
 			{
 				accessorKey: 'description',
-				// header: "Description",
 				header: ({ column }) => (
 					<DataGridColumnHeader
 						title=<span className='font-bold'>Description</span>
@@ -84,7 +83,6 @@ const Tariff = () => {
 			},
 			{
 				accessorKey: 'initialCharge',
-				// header: "Initial Charge",
 				header: ({ column }) => (
 					<DataGridColumnHeader
 						title=<span className='font-bold'>Initial Charge</span>
@@ -116,7 +114,6 @@ const Tariff = () => {
 			},
 			{
 				accessorKey: 'firstMileCharge',
-				// header: "First Mile Charge",
 				header: ({ column }) => (
 					<DataGridColumnHeader
 						title=<span className='font-bold'>First Mile Charge</span>
@@ -148,7 +145,6 @@ const Tariff = () => {
 			},
 			{
 				accessorKey: 'additionalMileCharge',
-				// header: "Additional Mile Charge",
 				header: ({ column }) => (
 					<DataGridColumnHeader
 						title=<span className='font-bold'>Additional Mile Charge</span>

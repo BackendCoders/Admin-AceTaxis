@@ -24,13 +24,7 @@ import {
 import { Calendar } from '@/components/ui/calendar';
 import { format, subDays } from 'date-fns';
 import { cn } from '@/lib/utils';
-import {
-	DataGrid,
-	DataGridColumnHeader,
-	// useDataGrid,
-	// DataGridRowSelectAll,
-	// DataGridRowSelect,
-} from '@/components';
+import { DataGrid, DataGridColumnHeader } from '@/components';
 import { Input } from '@/components/ui/input';
 import { getTurndownBookings } from '../../../service/operations/bookingApi';
 // import toast from 'react-hot-toast';
