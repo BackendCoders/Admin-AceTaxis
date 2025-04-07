@@ -1407,6 +1407,8 @@ function PriceBase({ open, onOpenChange, bookingId, handleShow }) {
 		priceFromBase: booking?.priceFromBase || false,
 	};
 
+	// console.log('accNo---', booking);
+
 	const formik = useFormik({
 		initialValues,
 		validationSchema: addLocalSchema,
@@ -1432,10 +1434,7 @@ function PriceBase({ open, onOpenChange, bookingId, handleShow }) {
 					durationText: '', // No duration available in provided object
 				};
 				let response;
-				if (
-					payload?.pickupPostcode?.includes('DT9 4DN') ||
-					payload?.destinationPostcode?.includes('DT9 4DN')
-				) {
+				if (booking?.accNo === 10026 || booking?.accNo === 9014) {
 					response = await accountPriceJobHVS(payload);
 				} else {
 					response = await accountPriceJobByMileage(payload);
