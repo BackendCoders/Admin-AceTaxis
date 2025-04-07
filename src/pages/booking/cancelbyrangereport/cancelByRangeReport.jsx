@@ -1,7 +1,5 @@
 /** @format */
 import { useEffect, useMemo, useState } from 'react';
-// import { IoChevronUpSharp } from 'react-icons/io5';
-// import { IoChevronDownSharp } from 'react-icons/io5';
 import { Input } from '@/components/ui/input';
 import {
 	Popover,
