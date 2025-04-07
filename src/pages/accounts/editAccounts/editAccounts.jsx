@@ -69,7 +69,7 @@ function EditAccounts({ open, onOpenChange }) {
 		initialValues,
 		validationSchema: editLocalSchema,
 		onSubmit: async (values, { setSubmitting }) => {
-			console.log('Submitted Values:', values);
+			// console.log('Submitted Values:', values);
 			const payload = {
 				...values,
 				accNo: account?.accNo,

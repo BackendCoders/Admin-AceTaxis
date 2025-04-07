@@ -158,7 +158,7 @@ function RowNotPriced({ row, setPriceBaseModal, handlePostButton }) {
 
 			if (response?.status === 'success') {
 				toast.success('Value Updated');
-				console.log(response);
+				// console.log(response);
 			}
 		} catch (error) {
 			console.error('Error updating charges:', error);
@@ -533,7 +533,7 @@ function StateProcessing() {
 	const [search, setSearch] = useState('');
 	const [order, setOrder] = useState('asc'); // Sort order
 	const [orderBy, setOrderBy] = useState(''); // Default sorted column
-	console.log(driverChargeableJobs);
+	// console.log(driverChargeableJobs);
 
 	const handleDateSelect = (date) => {
 		setDate(date); // Update the date range
@@ -701,7 +701,7 @@ function StateProcessing() {
 				(job) => Number(job.driverFare) > 0
 			);
 
-			console.log({ formattedNotPricedBookings, jobsToPost });
+			// console.log({ formattedNotPricedBookings, jobsToPost });
 
 			if (jobsToPost.length === 0) {
 				toast.error('No jobs available to post.');

@@ -153,7 +153,7 @@ function RowNotPriced({ row, setPriceBaseModal, handlePostButton }) {
 			const response = await accountUpdateChargesData(payload);
 
 			if (response?.status === 'success') {
-				console.log(response);
+				// console.log(response);
 				toast.success('Value Updated');
 			}
 		} catch (error) {
@@ -722,7 +722,7 @@ function InvoiceProcessor() {
 				(job) => Number(job.driverFare) > 0
 			);
 
-			console.log({ formattedNotPricedBookings, jobsToPost });
+			// console.log({ formattedNotPricedBookings, jobsToPost });
 
 			if (jobsToPost.length === 0) {
 				toast.error('No jobs available to post.');
@@ -796,7 +796,7 @@ function InvoiceProcessor() {
 				miles: job.miles || 0,
 			}));
 
-			console.log('Sending Payload:', payload); // Debugging
+			// console.log('Sending Payload:', payload); // Debugging
 
 			const response = await accountCreateInvoice(autoEmailInvoices, payload);
 
@@ -1402,7 +1402,7 @@ function PriceBase({ open, onOpenChange, bookingId, handleShow }) {
 
 	const booking = notPriced?.find((job) => job?.bookingId === bookingId);
 
-	console.log({ bookingId, booking, userData });
+	// console.log({ bookingId, booking, userData });
 	const initialValues = {
 		priceFromBase: booking?.priceFromBase || false,
 	};
@@ -1411,7 +1411,7 @@ function PriceBase({ open, onOpenChange, bookingId, handleShow }) {
 		initialValues,
 		validationSchema: addLocalSchema,
 		onSubmit: async (values, { setSubmitting }) => {
-			console.log('Submitted Values:', values);
+			// console.log('Submitted Values:', values);
 			try {
 				const payload = {
 					pickupPostcode: booking?.pickupPostcode || '',
@@ -1440,7 +1440,7 @@ function PriceBase({ open, onOpenChange, bookingId, handleShow }) {
 				} else {
 					response = await accountPriceJobByMileage(payload);
 				}
-				console.log('Response:', response);
+				// console.log('Response:', response);
 				if (response.status === 'success') {
 					toast.success('Charge From Base Updated Successfully');
 					handleShow();

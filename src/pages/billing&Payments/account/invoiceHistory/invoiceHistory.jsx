@@ -434,7 +434,7 @@ function InvoiceHistory() {
 		}
 	};
 
-	console.log(invoiceHistory);
+	// console.log(invoiceHistory);
 
 	const formattedBookings = (invoiceHistory || []).map((booking) => ({
 		id: booking?.invoiceNumber,
