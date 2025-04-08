@@ -155,3 +155,24 @@ export const driverEndpoints = {
 	GET_DRIVER_EXPIRYS: `${BASE}/api/AdminUI/GetDriverExpirys`,
 	UPDATE_DRIVER_EXPIRYS: `${BASE}/api/AdminUI/UpdateDriverExpiry`,
 };
+
+export const reportsEndpoints = {
+	DUPLICATE_BOOKINGS: (startDate) =>
+		`${BASE}/api/Reporting/DuplicateBookingsReport?startDate=${startDate}`,
+	GET_BOOKING_SCOPE_BREAKDOWN: (from, to, period, compare) =>
+		`${BASE}/api/Reporting/GetBookingScopeBreakdown?from=${from}&to=${to}&period=${period}${compare ? `&compare=${compare}` : ''}`,
+	GET_TOP_CUSTOMER: (from, to, scope, depth) =>
+		`${BASE}/api/Reporting/GetTopCustomers?from=${from}&to=${to}&scope=${scope}${depth ? `&depth=${depth}` : ''}`,
+	GET_PICKUP_POSTCODES: (from, to, scope) =>
+		`${BASE}/api/Reporting/GetPickupPostcodes?from=${from}&to=${to}&scope=${scope}`,
+	GET_VEHICLE_TYPE_COUNTS: (from, to, scope) =>
+		`${BASE}/api/Reporting/GetVehicleTypeCounts?from=${from}&to=${to}&scope=${scope}`,
+	GET_AVERAGE_DURATION: (from, to, period, scope) =>
+		`${BASE}/api/Reporting/GetAverageDuration?from=${from}&to=${to}&period=${period}&scope=${scope}`,
+	GET_GROWTH_BY_PERIOD: (startMonth, startYear, endMonth, endYear, viewBy) =>
+		`${BASE}/api/Reporting/GetGrowthByPeriod?startMonth=${startMonth}&startYear=${startYear}&endMonth=${endMonth}&endYear=${endYear}&viewBy=${viewBy}`,
+	GET_REVENUE_BY_MONTH: (from, to) =>
+		`${BASE}/api/Reporting/RevenueByMonth?from=${from}&to=${to}`,
+	GET_PAYOUTS_BY_MONTH: (from, to) =>
+		`${BASE}/api/Reporting/PayoutsByMonth?from=${from}&to=${to}`,
+};

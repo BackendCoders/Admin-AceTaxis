@@ -1,0 +1,204 @@
+/** @format */
+
+// import { sendLogs } from '../../utils/getLogs';
+import { handlePostReq } from '../apiRequestHandler';
+import { reportsEndpoints } from '../apis';
+
+const {
+	DUPLICATE_BOOKINGS,
+	GET_BOOKING_SCOPE_BREAKDOWN,
+	GET_TOP_CUSTOMER,
+	GET_PICKUP_POSTCODES,
+	GET_VEHICLE_TYPE_COUNTS,
+	GET_AVERAGE_DURATION,
+	GET_GROWTH_BY_PERIOD,
+	GET_REVENUE_BY_MONTH,
+	GET_PAYOUTS_BY_MONTH,
+} = reportsEndpoints;
+
+export async function duplicateBookings(startDate) {
+	const response = await handlePostReq(DUPLICATE_BOOKINGS(startDate));
+
+	console.log('DUPLICATE_BOOKINGS API RESPONSE.........', response);
+
+	if (response.status === 'success') {
+		// sendLogs(
+		// 	{
+		// 		url: UPDATE_MSG_CONFIG,
+		// 		reqBody: data,
+		// 		headers: setHeaders(),
+		// 		response: response,
+		// 	},
+		// 	'info'
+		// );
+		return response;
+	}
+}
+
+export async function getBookingScopeBreakdown(from, to, period, compare) {
+	const response = await handlePostReq(
+		GET_BOOKING_SCOPE_BREAKDOWN(from, to, period, compare)
+	);
+
+	console.log('GET_BOOKING_SCOPE_BREAKDOWN API RESPONSE.........', response);
+
+	if (response.status === 'success') {
+		// sendLogs(
+		// 	{
+		// 		url: UPDATE_MSG_CONFIG,
+		// 		reqBody: data,
+		// 		headers: setHeaders(),
+		// 		response: response,
+		// 	},
+		// 	'info'
+		// );
+		return response;
+	}
+}
+
+export async function getTopCustomer(from, to, scope, depth) {
+	const response = await handlePostReq(
+		GET_TOP_CUSTOMER(from, to, scope, depth)
+	);
+
+	console.log('GET_TOP_CUSTOMER API RESPONSE.........', response);
+
+	if (response.status === 'success') {
+		// sendLogs(
+		// 	{
+		// 		url: UPDATE_MSG_CONFIG,
+		// 		reqBody: data,
+		// 		headers: setHeaders(),
+		// 		response: response,
+		// 	},
+		// 	'info'
+		// );
+		return response;
+	}
+}
+
+export async function getPickupPostcodes(from, to, scope) {
+	const response = await handlePostReq(GET_PICKUP_POSTCODES(from, to, scope));
+
+	console.log('GET_PICKUP_POSTCODES API RESPONSE.........', response);
+
+	if (response.status === 'success') {
+		// sendLogs(
+		// 	{
+		// 		url: UPDATE_MSG_CONFIG,
+		// 		reqBody: data,
+		// 		headers: setHeaders(),
+		// 		response: response,
+		// 	},
+		// 	'info'
+		// );
+		return response;
+	}
+}
+
+export async function getVehicleTypeCounts(from, to, scope) {
+	const response = await handlePostReq(
+		GET_VEHICLE_TYPE_COUNTS(from, to, scope)
+	);
+
+	console.log('GET_VEHICLE_TYPE_COUNTS API RESPONSE.........', response);
+
+	if (response.status === 'success') {
+		// sendLogs(
+		// 	{
+		// 		url: UPDATE_MSG_CONFIG,
+		// 		reqBody: data,
+		// 		headers: setHeaders(),
+		// 		response: response,
+		// 	},
+		// 	'info'
+		// );
+		return response;
+	}
+}
+
+export async function getAverageDuration(from, to, period, scope) {
+	const response = await handlePostReq(
+		GET_AVERAGE_DURATION(from, to, period, scope)
+	);
+
+	console.log('GET_AVERAGE_DURATION API RESPONSE.........', response);
+
+	if (response.status === 'success') {
+		// sendLogs(
+		// 	{
+		// 		url: UPDATE_MSG_CONFIG,
+		// 		reqBody: data,
+		// 		headers: setHeaders(),
+		// 		response: response,
+		// 	},
+		// 	'info'
+		// );
+		return response;
+	}
+}
+
+export async function getGrowthByPeriod(
+	startMonth,
+	startYear,
+	endMonth,
+	endYear,
+	viewBy
+) {
+	const response = await handlePostReq(
+		GET_GROWTH_BY_PERIOD(startMonth, startYear, endMonth, endYear, viewBy)
+	);
+
+	console.log('GET_GROWTH_BY_PERIOD API RESPONSE.........', response);
+
+	if (response.status === 'success') {
+		// sendLogs(
+		// 	{
+		// 		url: UPDATE_MSG_CONFIG,
+		// 		reqBody: data,
+		// 		headers: setHeaders(),
+		// 		response: response,
+		// 	},
+		// 	'info'
+		// );
+		return response;
+	}
+}
+
+export async function getRevenueByMonth(from, to) {
+	const response = await handlePostReq(GET_REVENUE_BY_MONTH(from, to));
+
+	console.log('GET_REVENUE_BY_MONTH API RESPONSE.........', response);
+
+	if (response.status === 'success') {
+		// sendLogs(
+		// 	{
+		// 		url: UPDATE_MSG_CONFIG,
+		// 		reqBody: data,
+		// 		headers: setHeaders(),
+		// 		response: response,
+		// 	},
+		// 	'info'
+		// );
+		return response;
+	}
+}
+
+export async function getPayoutsByMonth(from, to) {
+	const response = await handlePostReq(GET_PAYOUTS_BY_MONTH(from, to));
+
+	console.log('GET_PAYOUTS_BY_MONTH API RESPONSE.........', response);
+
+	if (response.status === 'success') {
+		// sendLogs(
+		// 	{
+		// 		url: UPDATE_MSG_CONFIG,
+		// 		reqBody: data,
+		// 		headers: setHeaders(),
+		// 		response: response,
+		// 	},
+		// 	'info'
+		// );
+		return response;
+	}
+}
