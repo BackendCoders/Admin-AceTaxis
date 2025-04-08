@@ -12,6 +12,7 @@ import webBookingReducer from '../slices/webBookingSlice';
 import notificationReducer from '../slices/notificationSlice';
 import driverReducer from '../slices/driverSlice';
 import billingReducer from '../slices/billingSlice';
+import reportReducer from '../slices/reportSlice';
 
 const rootReducer = combineReducers({
 	auth: authReducer,
@@ -24,6 +25,7 @@ const rootReducer = combineReducers({
 	notification: notificationReducer,
 	driver: driverReducer,
 	billing: billingReducer,
+	reports: reportReducer,
 });
 
 export default rootReducer;
