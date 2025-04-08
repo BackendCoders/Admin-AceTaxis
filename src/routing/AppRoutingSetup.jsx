@@ -117,6 +117,16 @@ import { DriverEarningReport } from '@/pages/driverEarningReport';
 import { CompanySetting, MsgSettings } from '@/pages/bookingSettings';
 import { DriverExpenses } from '@/pages/driverExpenses';
 import { DriverExpiryList } from '@/pages/drivers/driverExpiry';
+import {
+	AvergeDuration,
+	ByVehicleType,
+	CountByScope,
+	DuplicateBookings,
+	PayoutsByMonth,
+	PickupsByPostcode,
+	RevenueByMonth,
+	TopCustomer,
+} from '../pages/reports';
 
 const AppRoutingSetup = () => {
 	const userRole = JSON.parse(localStorage.getItem('userData'))?.roleId || 0;
@@ -289,6 +299,54 @@ const AppRoutingSetup = () => {
 						<Route
 							path='/driver-earning-report'
 							element={<DriverEarningReport />}
+						/>
+					)}
+					{userRole !== 2 && (
+						<Route
+							path='/bookings/duplicate-bookings'
+							element={<DuplicateBookings />}
+						/>
+					)}
+					{userRole !== 2 && (
+						<Route
+							path='/bookings/count-by-scope'
+							element={<CountByScope />}
+						/>
+					)}
+					{userRole !== 2 && (
+						<Route
+							path='/bookings/top-customer'
+							element={<TopCustomer />}
+						/>
+					)}
+					{userRole !== 2 && (
+						<Route
+							path='/bookings/pickups-by-postcode'
+							element={<PickupsByPostcode />}
+						/>
+					)}
+					{userRole !== 2 && (
+						<Route
+							path='/bookings/by-vehicle-type'
+							element={<ByVehicleType />}
+						/>
+					)}
+					{userRole !== 2 && (
+						<Route
+							path='/bookings/average-duration'
+							element={<AvergeDuration />}
+						/>
+					)}
+					{userRole !== 2 && (
+						<Route
+							path='/financial/payouts-by-month'
+							element={<PayoutsByMonth />}
+						/>
+					)}
+					{userRole !== 2 && (
+						<Route
+							path='/financial/revenue-by-month'
+							element={<RevenueByMonth />}
 						/>
 					)}
 					{userRole !== 2 && (

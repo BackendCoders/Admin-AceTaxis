@@ -52,14 +52,7 @@ export const MENU_SIDEBAR = [
 		roles: [1, 2, 3],
 		path: '/booking/availability-logs',
 	},
-	{
-		title: 'Availability Report',
-		icon: 'graph-up',
-		iconLightColor: 'text-yellow-400',
-		iconDarkColor: 'text-yellow-400',
-		roles: [1, 2, 3],
-		path: '/booking/availability-report',
-	},
+
 	{
 		title: 'Local POIs',
 		icon: 'geolocation',
@@ -110,11 +103,7 @@ export const MENU_SIDEBAR = [
 				path: '/bookings/audit-view',
 				roles: [1, 2, 3],
 			},
-			{
-				title: 'Airport Runs',
-				path: '/bookings/airport-runs',
-				roles: [1, 2, 3],
-			},
+
 			{
 				title: 'Card Bookings',
 				path: '/bookings/card-bookings',
@@ -130,11 +119,7 @@ export const MENU_SIDEBAR = [
 				path: '/bookings/cancelbyrangereport',
 				roles: [1, 2, 3],
 			},
-			{
-				title: 'Turndown History',
-				path: '/bookings/turndown',
-				roles: [1, 2, 3],
-			},
+
 			// {
 			// 	title: 'More',
 			// 	collapse: true,
@@ -179,14 +164,7 @@ export const MENU_SIDEBAR = [
 			{ title: `Expiry's`, path: '/drivers/expires', roles: [1] },
 		],
 	},
-	{
-		title: 'Drivers Expenses',
-		icon: 'two-credit-cart',
-		iconLightColor: 'text-green-400',
-		iconDarkColor: 'text-green-400',
-		roles: [1],
-		path: '/driver-expenses',
-	},
+
 	{
 		title: 'Tariffs',
 		icon: 'simcard',
@@ -300,14 +278,98 @@ export const MENU_SIDEBAR = [
 			},
 		],
 	},
-
 	{
-		title: 'Driver Earning Report',
-		icon: 'euro',
+		title: 'Reports',
+		icon: 'ranking',
 		iconLightColor: 'text-green-400',
 		iconDarkColor: 'text-green-400',
-		roles: [1, 3],
-		path: '/driver-earning-report',
+		roles: [1, 2, 3],
+		children: [
+			{
+				title: 'Driver Reports',
+				roles: [1],
+				children: [
+					{
+						title: 'Availability Report',
+						roles: [1],
+						path: '/booking/availability-report',
+					},
+					{
+						title: 'Expenses Report',
+						roles: [1],
+						path: '/driver-expenses',
+					},
+					{
+						title: 'Earning Report',
+						roles: [1, 3],
+						path: '/driver-earning-report',
+					},
+				],
+			},
+			{
+				title: 'Bookings',
+				roles: [1, 2, 3],
+				children: [
+					{
+						title: 'Turndown History',
+						path: '/bookings/turndown',
+						roles: [1, 2, 3],
+					},
+					{
+						title: 'Airport Runs',
+						path: '/bookings/airport-runs',
+						roles: [1, 2, 3],
+					},
+					{
+						title: 'Duplicate Bookings',
+						path: '/bookings/duplicate-bookings',
+						roles: [1, 2, 3],
+					},
+					{
+						title: 'Count By Scope',
+						path: '/bookings/count-by-scope',
+						roles: [1, 2, 3],
+					},
+					{
+						title: 'Top Customer',
+						path: '/bookings/top-customer',
+						roles: [1, 2, 3],
+					},
+					{
+						title: 'Pickups By Postcode',
+						path: '/bookings/pickups-by-postcode',
+						roles: [1, 2, 3],
+					},
+
+					{
+						title: 'By Vehicle Type',
+						path: '/bookings/by-vehicle-type',
+						roles: [1, 2, 3],
+					},
+					{
+						title: 'Average Duration',
+						path: '/bookings/average-duration',
+						roles: [1, 2, 3],
+					},
+				],
+			},
+			{
+				title: 'Financial',
+				roles: [1, 2, 3],
+				children: [
+					{
+						title: 'Payouts By Month',
+						path: '/financial/payouts-by-month',
+						roles: [1, 2, 3],
+					},
+					{
+						title: 'Revenue By Month',
+						path: '/financial/revenue-by-month',
+						roles: [1, 2, 3],
+					},
+				],
+			},
+		],
 	},
 
 	{
