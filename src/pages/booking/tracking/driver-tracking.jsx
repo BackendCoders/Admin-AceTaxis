@@ -1,7 +1,7 @@
 /** @format */
 
 import { useState, useEffect } from 'react';
-import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
+import { GoogleMap, Marker } from '@react-google-maps/api';
 import { Typography, Box } from '@mui/material';
 import {
 	Select,
@@ -11,15 +11,11 @@ import {
 	SelectValue,
 } from '@/components/ui/select';
 import { DataGrid, DataGridColumnHeader } from '@/components';
-
+import { useGoogleMapsLoader } from '@/utils/GoogleMapLoader';
 import { gstAllGPS } from '../../../service/operations/gpsApi';
 
 const DriverTracking = () => {
-	const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
-
-	const { isLoaded } = useJsApiLoader({
-		googleMapsApiKey: `${apiKey}`, // Replace with your actual API key
-	});
+	const { isLoaded } = useGoogleMapsLoader();
 
 	const search = '';
 	const [selectedDriver, setSelectedDriver] = useState('all');

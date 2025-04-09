@@ -34,14 +34,24 @@ import {
 } from '@/components';
 import { Input } from '@/components/ui/input';
 import { useDispatch, useSelector } from 'react-redux';
+import { Circle, GoogleMap } from '@react-google-maps/api';
 import {
 	refreshPickupPostcodes,
 	setPickupPostcodes,
 } from '../../../../slices/reportSlice';
-import ReactApexChart from 'react-apexcharts';
+import { useGoogleMapsLoader } from '@/utils/GoogleMapLoader';
+const apiKey = import.meta.env.VITE_GOOGLE_API_KEY;
 function PickupsByPostcode() {
+	const { isLoaded } = useGoogleMapsLoader();
 	const dispatch = useDispatch();
 	const { pickupPostcodes } = useSelector((state) => state.reports);
+	// const [heatmapData, setHeatmapData] = useState([]);
+	const [bubbleData, setBubbleData] = useState([]);
+	// const [loading, setLoading] = useState(true);
+	const mapCenter = { lat: 51.0397, lng: -2.2863 };
+	const mapZoom = 14;
+	const [isFullScreen, setIsFullScreen] = useState(false); // ✅ Full-screen state
+
 	// const [searchInput, setSearchInput] = useState('');
 	const [openDate, setOpenDate] = useState(false);
 	const [date, setDate] = useState({
@@ -57,6 +67,57 @@ function PickupsByPostcode() {
 			setTempRange({ from: null, to: null });
 		}
 	}, [openDate]);
+
+	const getLatLngFromPostcode = async (postcode, apiKey) => {
+		try {
+			const response = await fetch(
+				`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(postcode)}&key=${apiKey}`
+			);
+			const data = await response.json();
+			if (data.status === 'OK') {
+				const location = data.results[0].geometry.location;
+				return { lat: location.lat, lng: location.lng };
+			} else {
+				console.warn('Geocode error:', data.status);
+				return null;
+			}
+		} catch (error) {
+			console.error('Geocode fetch error:', error);
+			return null;
+		}
+	};
+
+	useEffect(() => {
+		const fetchLatLngData = async () => {
+			const bubbleDataArray = [];
+
+			for (const item of pickupPostcodes) {
+				const location = await getLatLngFromPostcode(
+					item.pickupPostCode,
+					apiKey
+				);
+				if (location) {
+					bubbleDataArray.push({
+						center: { lat: location.lat, lng: location.lng },
+						radius: item.count * 50, // Adjust radius based on count (e.g., 50 meters per count)
+						options: {
+							fillColor: `rgba(0, 128, 0, ${Math.min(0.7, item.count / 100)})`, // Green with opacity based on count
+							fillOpacity: 0.7,
+							strokeColor: '#000',
+							strokeOpacity: 0.8,
+							strokeWeight: 1,
+						},
+					});
+				}
+			}
+
+			setBubbleData(bubbleDataArray);
+		};
+
+		if (pickupPostcodes.length && isLoaded) {
+			fetchLatLngData();
+		}
+	}, [pickupPostcodes, isLoaded]);
 
 	const handleDateSelect = (range) => {
 		setTempRange(range);
@@ -135,81 +196,6 @@ function PickupsByPostcode() {
 		return baseColumns;
 	}, []);
 
-	const heatmapOptions = {
-		chart: {
-			type: 'heatmap',
-			toolbar: { show: false },
-		},
-		dataLabels: {
-			enabled: false,
-		},
-		colors: ['#008FFB'],
-		title: {
-			// text: 'Pickups by Postcode Heatmap',
-			align: 'left',
-			style: {
-				fontSize: '16px',
-				fontWeight: 'bold',
-				color: '#9A9CAE',
-			},
-		},
-		xaxis: {
-			type: 'category',
-			title: {
-				text: 'Postcodes',
-				style: {
-					// fontSize: '16px',
-					// fontWeight: 'bold',
-					color: '#9A9CAE',
-				},
-			},
-			labels: {
-				rotate: -45,
-				style: {
-					// fontSize: '16px',
-					// fontWeight: 'bold',
-					colors: '#9A9CAE',
-				},
-			},
-		},
-		yaxis: {
-			title: {
-				text: 'Count Groups',
-				style: {
-					// fontSize: '16px',
-					// fontWeight: 'bold',
-					color: '#9A9CAE',
-				},
-			},
-			labels: {
-				style: {
-					colors: '#9A9CAE', // darken y-axis labels
-				},
-			},
-		},
-		legend: {
-			labels: {
-				colors: '#9A9CAE', // <- This changes the "Pickups" series label color
-			},
-		},
-	};
-
-	const heatmapSeries = useMemo(() => {
-		if (!pickupPostcodes || pickupPostcodes.length === 0) return [];
-
-		const grouped = [
-			{
-				name: 'Pickups',
-				data: pickupPostcodes.map((item) => ({
-					x: item.pickupPostCode,
-					y: item.count,
-				})),
-			},
-		];
-
-		return grouped;
-	}, [pickupPostcodes]);
-
 	const handleRowSelection = (state) => {
 		const selectedRowIds = Object.keys(state);
 		if (selectedRowIds.length > 0) {
@@ -222,6 +208,32 @@ function PickupsByPostcode() {
 			dispatch(setPickupPostcodes([])); // Clear table data
 		};
 	}, [dispatch]);
+
+	useEffect(() => {
+		const handleKeyDown = (event) => {
+			if (event.key === 'F12') {
+				event.preventDefault();
+				setIsFullScreen((prevState) => !prevState); // Toggle full-screen
+			}
+			if (event.key === 'Escape' && isFullScreen) {
+				setIsFullScreen(false); // Exit full-screen on Escape key
+			}
+		};
+
+		window.addEventListener('keydown', handleKeyDown);
+		return () => window.removeEventListener('keydown', handleKeyDown);
+	}, [isFullScreen]);
+
+	const containerStyle = {
+		width: isFullScreen ? '100vw' : '100%',
+		height: isFullScreen ? '100vh' : '100%',
+		position: isFullScreen ? 'fixed' : 'relative',
+		top: isFullScreen ? 0 : 'auto',
+		left: isFullScreen ? 0 : 'auto',
+		zIndex: isFullScreen ? 9999 : 'auto',
+	};
+
+	// console.log('heatmapData:', heatmapData, isLoaded);
 	return (
 		<Fragment>
 			<div className='pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1580px] w-full'>
@@ -342,21 +354,32 @@ function PickupsByPostcode() {
 							<div className='card-body'>
 								{pickupPostcodes.length ? (
 									<>
-										<div className='rounded-xl shadow p-4 mb-6 text-gray-400'>
-											<ReactApexChart
-												options={heatmapOptions}
-												series={heatmapSeries}
-												type='heatmap'
-												height={350}
-											/>
-										</div>
+										{isLoaded && (
+											<div className='my-6 h-[500px]'>
+												<GoogleMap
+													mapContainerStyle={containerStyle}
+													center={mapCenter}
+													zoom={mapZoom}
+												>
+													{bubbleData.map((circle, index) => (
+														<Circle
+															key={index}
+															center={circle.center}
+															radius={circle.radius}
+															options={circle.options}
+														/>
+													))}
+												</GoogleMap>
+											</div>
+										)}
+
 										<DataGrid
 											columns={columns}
 											data={pickupPostcodes}
 											rowSelection={true}
 											onRowSelectionChange={handleRowSelection}
 											pagination={{ size: 10 }}
-											sorting={[{ id: 'id', desc: false }]}
+											sorting={[{ id: 'pickupPostCode', desc: false }]}
 											layout={{ card: true }}
 										/>
 									</>
