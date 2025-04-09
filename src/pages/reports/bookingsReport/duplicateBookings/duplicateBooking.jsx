@@ -221,7 +221,7 @@ function DuplicateBookings() {
 											<KeenIcon icon='magnifier' />
 											<input
 												type='text'
-												placeholder='Search Jobs'
+												placeholder='Search'
 												value={searchInput}
 												onChange={(e) => setSearchInput(e.target.value)}
 											/>

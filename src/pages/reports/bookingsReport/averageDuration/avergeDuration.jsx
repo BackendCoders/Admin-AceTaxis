@@ -41,7 +41,7 @@ import {
 function AvergeDuration() {
 	const dispatch = useDispatch();
 	const { averageDuration } = useSelector((state) => state.reports);
-	const [searchInput, setSearchInput] = useState('');
+	// const [searchInput, setSearchInput] = useState('');
 	const [openDate, setOpenDate] = useState(false);
 	const [date, setDate] = useState({
 		from: new Date(),
@@ -100,22 +100,7 @@ function AvergeDuration() {
 	const columns = useMemo(() => {
 		let baseColumns = [
 			{
-				accessorKey: 'id',
-				header: ({ column }) => (
-					<DataGridColumnHeader
-						title=<span className='font-bold'># id</span>
-						filter={<ColumnInputFilter column={column} />}
-						column={column}
-					/>
-				),
-				enableSorting: true,
-				cell: ({ row }) => (
-					<span className={`p-2 rounded-md`}>{row.original.id}</span>
-				),
-				meta: { headerClassName: 'w-20' },
-			},
-			{
-				accessorKey: 'pickupDateTime',
+				accessorKey: 'periodLabel',
 				header: ({ column }) => (
 					<DataGridColumnHeader
 						title=<span className='font-bold'>Date</span>
@@ -126,25 +111,18 @@ function AvergeDuration() {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={`font-medium ${row.original.color}`}>
-						{row.original.pickupDateTime
-							? new Date(row.original.pickupDateTime).toLocaleDateString(
-									'en-GB'
-								) +
-								' ' +
-								row.original.pickupDateTime
-									.split('T')[1]
-									?.split('.')[0]
-									?.slice(0, 5)
+						{row.original.periodLabel
+							? new Date(row.original.periodLabel).toLocaleDateString('en-GB')
 							: '-'}
 					</span>
 				),
 				meta: { headerClassName: 'min-w-[120px]' },
 			},
 			{
-				accessorKey: 'pickupAddress',
+				accessorKey: 'averageDurationMinutes',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title=<span className='font-bold'>Pickup</span>
+						title=<span className='font-bold'>Avg. Duration (min.)</span>
 						filter={<ColumnInputFilter column={column} />}
 						column={column}
 					/>
@@ -152,56 +130,24 @@ function AvergeDuration() {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={`font-medium ${row.original.color}`}>
-						{row.original.pickupAddress}, {row.original.pickupPostCode}
+						{row.original.averageDurationMinutes}
 					</span>
 				),
 				meta: { headerClassName: 'min-w-[200px]' },
 			},
 			{
-				accessorKey: 'destinationAddress',
+				accessorKey: 'totalBookings',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title=<span className='font-bold'>Destination</span>
-						filter={<ColumnInputFilter column={column} />}
-						column={column}
-					/>
-				),
-				enableSorting: true,
-				cell: ({ row }) => (
-					<span className={`font-medium ${row.original.color}`}>
-						{row.original.destinationAddress},{' '}
-						{row.original.destinationPostCode}
-					</span>
-				),
-				meta: { headerClassName: 'min-w-[200px]' },
-			},
-			{
-				accessorKey: 'passengerName',
-				header: ({ column }) => (
-					<DataGridColumnHeader
-						title=<span className='font-bold'>Passenger</span>
+						title=<span className='font-bold'>Total Bookings</span>
 						column={column}
 					/>
 				),
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={row.original.color}>
-						{row.original.passengerName}
+						{row.original.totalBookings}
 					</span>
-				),
-				meta: { headerClassName: 'min-w-[80px]' },
-			},
-			{
-				accessorKey: 'passengers',
-				header: ({ column }) => (
-					<DataGridColumnHeader
-						title=<span className='font-bold'>Pax</span>
-						column={column}
-					/>
-				),
-				enableSorting: true,
-				cell: ({ row }) => (
-					<span className={row.original.color}>{row.original.passengers}</span>
 				),
 				meta: { headerClassName: 'min-w-[80px]' },
 			},
@@ -216,18 +162,6 @@ function AvergeDuration() {
 			alert(`Selected Drivers: ${selectedRowIds.join(', ')}`);
 		}
 	};
-
-	const filteredBookings = useMemo(() => {
-		return averageDuration.filter((booking) => {
-			const search = searchInput.toLowerCase();
-			return (
-				booking.id?.toString().includes(search) || // Search by Booking ID
-				booking.passengerName?.toLowerCase().includes(search) || // Search by Passenger Name
-				booking.pickupAddress?.toLowerCase().includes(search) || // Search by Pickup Address
-				booking.destinationAddress?.toLowerCase().includes(search) // Search by Destination
-			);
-		});
-	}, [averageDuration, searchInput]);
 
 	useEffect(() => {
 		return () => {
@@ -252,7 +186,7 @@ function AvergeDuration() {
 						<div className='card card-grid min-w-full'>
 							<div className='card-header flex-wrap gap-2'>
 								<div className='flex flex-wrap gap-2 lg:gap-5'>
-									<div className='flex'>
+									{/* <div className='flex'>
 										<label
 											className='input input-sm'
 											style={{ height: '40px', marginTop: '1rem' }}
@@ -265,7 +199,7 @@ function AvergeDuration() {
 												onChange={(e) => setSearchInput(e.target.value)}
 											/>
 										</label>
-									</div>
+									</div> */}
 									<div className='flex flex-wrap items-center gap-2.5'>
 										<div className='flex flex-col'>
 											<label className='form-label'>Date Range</label>
@@ -376,14 +310,14 @@ function AvergeDuration() {
 								</div>
 							</div>
 							<div className='card-body'>
-								{filteredBookings.length ? (
+								{averageDuration.length ? (
 									<DataGrid
 										columns={columns}
-										data={filteredBookings}
+										data={averageDuration}
 										rowSelection={true}
 										onRowSelectionChange={handleRowSelection}
 										pagination={{ size: 10 }}
-										sorting={[{ id: 'id', desc: false }]}
+										sorting={[{ id: 'periodLabel', desc: true }]}
 										layout={{ card: true }}
 									/>
 								) : (

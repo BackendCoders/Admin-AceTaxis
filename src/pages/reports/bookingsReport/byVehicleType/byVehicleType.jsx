@@ -32,7 +32,7 @@ import {
 	// DataGridRowSelectAll,
 	// DataGridRowSelect,
 } from '@/components';
-import { Input } from '@/components/ui/input';
+// import { Input } from '@/components/ui/input';
 import { useDispatch, useSelector } from 'react-redux';
 import {
 	refreshVehicleTypeCounts,
@@ -85,122 +85,46 @@ function ByVehicleType() {
 		);
 	}, [date, scope, dispatch]);
 
-	const ColumnInputFilter = ({ column }) => {
-		return (
-			<Input
-				placeholder='Filter...'
-				value={column.getFilterValue() ?? ''}
-				onChange={(event) => column.setFilterValue(event.target.value)}
-				className='h-9 w-full max-w-40'
-			/>
-		);
-	};
+	// const ColumnInputFilter = ({ column }) => {
+	// 	return (
+	// 		<Input
+	// 			placeholder='Filter...'
+	// 			value={column.getFilterValue() ?? ''}
+	// 			onChange={(event) => column.setFilterValue(event.target.value)}
+	// 			className='h-9 w-full max-w-40'
+	// 		/>
+	// 	);
+	// };
 
 	const columns = useMemo(() => {
 		let baseColumns = [
 			{
-				accessorKey: 'id',
+				accessorKey: 'vehicleTypeText',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title=<span className='font-bold'># id</span>
-						filter={<ColumnInputFilter column={column} />}
-						column={column}
-					/>
-				),
-				enableSorting: true,
-				cell: ({ row }) => (
-					<span className={`p-2 rounded-md`}>{row.original.id}</span>
-				),
-				meta: { headerClassName: 'w-20' },
-			},
-			{
-				accessorKey: 'pickupDateTime',
-				header: ({ column }) => (
-					<DataGridColumnHeader
-						title=<span className='font-bold'>Date</span>
-						filter={<ColumnInputFilter column={column} />}
-						column={column}
-					/>
-				),
-				enableSorting: true,
-				cell: ({ row }) => (
-					<span className={`font-medium ${row.original.color}`}>
-						{row.original.pickupDateTime
-							? new Date(row.original.pickupDateTime).toLocaleDateString(
-									'en-GB'
-								) +
-								' ' +
-								row.original.pickupDateTime
-									.split('T')[1]
-									?.split('.')[0]
-									?.slice(0, 5)
-							: '-'}
-					</span>
-				),
-				meta: { headerClassName: 'min-w-[120px]' },
-			},
-			{
-				accessorKey: 'pickupAddress',
-				header: ({ column }) => (
-					<DataGridColumnHeader
-						title=<span className='font-bold'>Pickup</span>
-						filter={<ColumnInputFilter column={column} />}
-						column={column}
-					/>
-				),
-				enableSorting: true,
-				cell: ({ row }) => (
-					<span className={`font-medium ${row.original.color}`}>
-						{row.original.pickupAddress}, {row.original.pickupPostCode}
-					</span>
-				),
-				meta: { headerClassName: 'min-w-[200px]' },
-			},
-			{
-				accessorKey: 'destinationAddress',
-				header: ({ column }) => (
-					<DataGridColumnHeader
-						title=<span className='font-bold'>Destination</span>
-						filter={<ColumnInputFilter column={column} />}
-						column={column}
-					/>
-				),
-				enableSorting: true,
-				cell: ({ row }) => (
-					<span className={`font-medium ${row.original.color}`}>
-						{row.original.destinationAddress},{' '}
-						{row.original.destinationPostCode}
-					</span>
-				),
-				meta: { headerClassName: 'min-w-[200px]' },
-			},
-			{
-				accessorKey: 'passengerName',
-				header: ({ column }) => (
-					<DataGridColumnHeader
-						title=<span className='font-bold'>Passenger</span>
+						title=<span className='font-bold'>Vehicle Type</span>
 						column={column}
 					/>
 				),
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={row.original.color}>
-						{row.original.passengerName}
+						{row.original.vehicleTypeText}
 					</span>
 				),
 				meta: { headerClassName: 'min-w-[80px]' },
 			},
 			{
-				accessorKey: 'passengers',
+				accessorKey: 'count',
 				header: ({ column }) => (
 					<DataGridColumnHeader
-						title=<span className='font-bold'>Pax</span>
+						title=<span className='font-bold'>Count</span>
 						column={column}
 					/>
 				),
 				enableSorting: true,
 				cell: ({ row }) => (
-					<span className={row.original.color}>{row.original.passengers}</span>
+					<span className={row.original.color}>{row.original.count}</span>
 				),
 				meta: { headerClassName: 'min-w-[80px]' },
 			},
@@ -220,10 +144,8 @@ function ByVehicleType() {
 		return vehicleTypesCounts.filter((booking) => {
 			const search = searchInput.toLowerCase();
 			return (
-				booking.id?.toString().includes(search) || // Search by Booking ID
-				booking.passengerName?.toLowerCase().includes(search) || // Search by Passenger Name
-				booking.pickupAddress?.toLowerCase().includes(search) || // Search by Pickup Address
-				booking.destinationAddress?.toLowerCase().includes(search) // Search by Destination
+				booking.count?.toString().includes(search) || // Search by Booking ID
+				booking.vehicleTypeText?.toLowerCase().includes(search) // Search by vehicleTypeText
 			);
 		});
 	}, [vehicleTypesCounts, searchInput]);
@@ -259,7 +181,7 @@ function ByVehicleType() {
 											<KeenIcon icon='magnifier' />
 											<input
 												type='text'
-												placeholder='Search Jobs'
+												placeholder='Search'
 												value={searchInput}
 												onChange={(e) => setSearchInput(e.target.value)}
 											/>
