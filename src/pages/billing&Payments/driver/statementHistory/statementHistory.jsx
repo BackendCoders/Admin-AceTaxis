@@ -50,11 +50,18 @@ import {
 	Paper,
 	TableSortLabel,
 } from '@mui/material';
-import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
+import {
+	EmailOutlined,
+	KeyboardArrowDown,
+	KeyboardArrowUp,
+} from '@mui/icons-material';
 import MoneyIcon from '@mui/icons-material/Money';
 // import { Container } from '@/components/container';
 import { refreshAllDrivers } from '../../../../slices/driverSlice';
-import { markStatementAsPaid } from '../../../../service/operations/billing&Payment';
+import {
+	markStatementAsPaid,
+	resendDriverStatement,
+} from '../../../../service/operations/billing&Payment';
 import toast from 'react-hot-toast';
 import isLightColor from '../../../../utils/isLight';
 // Collapsible Row Component
@@ -260,6 +267,20 @@ function RowNotPriced({ row, handlePostButton }) {
 		}
 	};
 
+	const handleResendDriverStatement = async (row) => {
+		try {
+			const response = await resendDriverStatement(row?.id);
+			if (response?.status === 'success') {
+				toast.success('Driver Statement resent successfully');
+			} else {
+				toast.error('Failed to resend driver statement');
+			}
+		} catch (error) {
+			console.error('Failed to resend driver statement:', error);
+			toast.error('Failed to resend driver statement');
+		}
+	};
+
 	return (
 		<>
 			{/* Main Table Row */}
@@ -365,6 +386,29 @@ function RowNotPriced({ row, handlePostButton }) {
 									toast.error('Driver Price Should not be 0'); // Show error if price is 0
 								} else {
 									handlePostButton(row); // Post the job if valid
+								}
+							}}
+						/>
+					</IconButton>
+				</TableCell>
+				<TableCell>
+					<IconButton
+						size='small'
+						disabled={row?.paid}
+					>
+						<EmailOutlined
+							className={`${
+								row.paid
+									? 'text-gray-400 dark:text-gray-500' // Blur effect when disabled
+									: row?.coa
+										? 'text-blue-600 dark:text-blue-600'
+										: 'text-blue-500 dark:text-blue-400'
+							}`}
+							onClick={() => {
+								if (row.driverFare === 0 && !row?.paid) {
+									toast.error('Driver Price Should not be 0'); // Show error if price is 0
+								} else {
+									handleResendDriverStatement(row); // Post the job if valid
 								}
 							}}
 						/>
@@ -712,6 +756,7 @@ function StatementHistory() {
 															Paid
 														</TableSortLabel>
 													</TableCell>
+													<TableCell className='text-gray-900 dark:text-gray-700'></TableCell>
 													<TableCell className='text-gray-900 dark:text-gray-700'></TableCell>
 												</TableRow>
 											</TableHead>

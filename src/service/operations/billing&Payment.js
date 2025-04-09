@@ -13,6 +13,7 @@ const {
 	DRIVER_UPDATE_CHARGES_DATA,
 	DRIVER_CREATE_STATEMENTS,
 	DRIVER_GET_STATEMENTS,
+	RESEND_DRIVER_STATEMENT,
 	MARK_STATEMENT_AS_PAID,
 	ACCOUNT_PRICE_MANUALLY,
 	ACCOUNT_PRICE_JOB_BY_MILEAGE,
@@ -166,6 +167,25 @@ export async function driverGetStatements(from, to, userId) {
 		// );
 		return response;
 	}
+}
+export async function resendDriverStatement(statementNo) {
+	const response = await handleGetReq(RESEND_DRIVER_STATEMENT(statementNo));
+
+	console.log('GET RESEND_DRIVER_STATEMENT API RESPONSE.........', response);
+
+	if (response.status === 'success') {
+		// sendLogs(
+		// 	{
+		// 		url: GET_VATOUTPUTS,
+		// 		reqBody: null,
+		// 		headers: setHeaders(),
+		// 		response: response,
+		// 	},
+		// 	'info'
+		// );
+		return response;
+	}
+	return response;
 }
 export async function markStatementAsPaid(statementNo) {
 	const response = await handleGetReq(MARK_STATEMENT_AS_PAID(statementNo));

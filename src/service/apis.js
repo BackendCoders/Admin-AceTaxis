@@ -94,6 +94,8 @@ export const billingAndPaymentEndpoints = {
 	DRIVER_CREATE_STATEMENTS: `${BASE}/api/Accounts/DriverCreateStatments`,
 	DRIVER_GET_STATEMENTS: (from, to, userId) =>
 		`${BASE}/api/Accounts/DriverGetStatments?from=${from}&to=${to}${userId ? `&userId=${userId}` : ''}`,
+	RESEND_DRIVER_STATEMENT: (statementNo) =>
+		`${BASE}/api/Accounts/ResendDriverStatement?statementNo=${statementNo}`,
 	MARK_STATEMENT_AS_PAID: (statementNo) =>
 		`${BASE}/api/Accounts/MarkStatementAsPaid?statementNo=${statementNo}`,
 	ACCOUNT_PRICE_MANUALLY: `${BASE}/api/Accounts/AccountPriceManually`,
