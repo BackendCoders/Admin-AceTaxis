@@ -20,14 +20,12 @@ const BookingDispatch = () => {
 	}, [url, token, username, userData]);
 
 	return (
-		<div>
-			<iframe
-				id='bookingDispatch'
-				src={url}
-				title='Booking Dispatch Iframe'
-				className='w-full h-[790px] bg-white'
-			></iframe>
-		</div>
+		<iframe
+			id='bookingDispatch'
+			src={url}
+			title='Booking Dispatch Iframe'
+			className='w-full h-[865px] bg-white'
+		></iframe>
 	);
 };
 
