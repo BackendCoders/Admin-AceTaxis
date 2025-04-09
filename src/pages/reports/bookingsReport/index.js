@@ -6,3 +6,4 @@ export * from './countByScope';
 export * from './duplicateBookings';
 export * from './pickupsByPostcode';
 export * from './topCustomer';
+export * from './growthByPeriod';

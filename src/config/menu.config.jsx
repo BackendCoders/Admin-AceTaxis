@@ -351,6 +351,11 @@ export const MENU_SIDEBAR = [
 						path: '/bookings/average-duration',
 						roles: [1, 2, 3],
 					},
+					{
+						title: 'Growth By Period',
+						path: '/bookings/growth-by-period',
+						roles: [1, 2, 3],
+					},
 				],
 			},
 			{

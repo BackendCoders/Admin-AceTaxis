@@ -122,6 +122,7 @@ import {
 	ByVehicleType,
 	CountByScope,
 	DuplicateBookings,
+	GrowthByPeriod,
 	PayoutsByMonth,
 	PickupsByPostcode,
 	RevenueByMonth,
@@ -317,6 +318,12 @@ const AppRoutingSetup = () => {
 						<Route
 							path='/bookings/top-customer'
 							element={<TopCustomer />}
+						/>
+					)}
+					{userRole !== 2 && (
+						<Route
+							path='/bookings/growth-by-period'
+							element={<GrowthByPeriod />}
 						/>
 					)}
 					{userRole !== 2 && (
