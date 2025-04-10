@@ -35,7 +35,7 @@ import {
 } from "@/components";
 import { Input } from "@/components/ui/input";
 import { useDispatch, useSelector } from "react-redux";
-import { Circle, GoogleMap } from "@react-google-maps/api";
+import { Circle, GoogleMap, Marker } from "@react-google-maps/api";
 import {
   refreshPickupPostcodes,
   setPickupPostcodes,
@@ -52,7 +52,7 @@ function PickupsByPostcode() {
   const mapCenter = { lat: 51.0397, lng: -2.2863 };
   const mapZoom = 14;
   const [isFullScreen, setIsFullScreen] = useState(false); // ✅ Full-screen state
-
+  const [lastUpdated, setLastUpdated] = useState(0);
   // const [searchInput, setSearchInput] = useState('');
   const [openDate, setOpenDate] = useState(false);
   const [date, setDate] = useState({
@@ -61,6 +61,17 @@ function PickupsByPostcode() {
   });
   const [tempRange, setTempRange] = useState(date);
   const [scope, setScope] = useState(3);
+  const [pickupHash, setPickupHash] = useState("");
+  const hashPostcodes = (arr) =>
+    JSON.stringify(arr.map((p) => `${p.pickupPostCode}-${p.count}`));
+
+  useEffect(() => {
+    const newHash = hashPostcodes(pickupPostcodes);
+    if (newHash !== pickupHash) {
+      setPickupHash(newHash);
+      setLastUpdated(Date.now()); // Force re-fetch bubbles
+    }
+  }, [pickupPostcodes]);
 
   console.log(pickupPostcodes);
   useEffect(() => {
@@ -89,6 +100,8 @@ function PickupsByPostcode() {
   };
 
   useEffect(() => {
+    if (!isLoaded || !pickupPostcodes.length) return;
+
     const fetchLatLngData = async () => {
       const bubbleDataArray = [];
 
@@ -97,16 +110,44 @@ function PickupsByPostcode() {
           item.pickupPostCode,
           apiKey
         );
+
         if (location) {
           bubbleDataArray.push({
+            type: "circle",
             center: { lat: location.lat, lng: location.lng },
-            radius: item.count * 50, // Adjust radius based on count (e.g., 50 meters per count)
+            radius: 100,
             options: {
-              fillColor: `rgba(0, 128, 0, ${Math.min(0.7, item.count / 100)})`, // Green with opacity based on count
+              fillColor: "rgba(0, 128, 0, 0.4)",
               fillOpacity: 0.7,
-              strokeColor: "#000",
+              strokeColor: "rgba(0, 128, 0, 0.4)",
               strokeOpacity: 0.8,
               strokeWeight: 1,
+            },
+          });
+
+          //   if (item.count > 10) {
+          //     bubbleDataArray.push({
+          //       type: "circle",
+          //       center: { lat: location.lat, lng: location.lng },
+          //       radius: 30,
+          //       options: {
+          //         fillColor: "rgba(128, 0 , 128, 0.7)",
+          //         fillOpacity: 0.8,
+          //         strokeColor: "rgba(128, 0 , 128, 0.7)",
+          //         strokeOpacity: 0.9,
+          //         strokeWeight: 1,
+          //       },
+          //     });
+          //   }
+
+          bubbleDataArray.push({
+            type: "label",
+            position: { lat: location.lat, lng: location.lng },
+            label: {
+              text: item.count.toString(),
+              color: "#000",
+              fontSize: "14px",
+              fontWeight: "bold",
             },
           });
         }
@@ -115,10 +156,8 @@ function PickupsByPostcode() {
       setBubbleData(bubbleDataArray);
     };
 
-    if (pickupPostcodes.length && isLoaded) {
-      fetchLatLngData();
-    }
-  }, [pickupPostcodes, isLoaded]);
+    fetchLatLngData();
+  }, [lastUpdated, isLoaded]);
 
   const handleDateSelect = (range) => {
     setTempRange(range);
@@ -147,6 +186,12 @@ function PickupsByPostcode() {
       )
     );
   }, [date, scope, dispatch]);
+
+  useEffect(() => {
+    if (pickupPostcodes.length) {
+      setLastUpdated(Date.now()); // Trigger a map update whenever postcodes change
+    }
+  }, [pickupPostcodes]);
 
   const ColumnInputFilter = ({ column }) => {
     return (
@@ -353,14 +398,34 @@ function PickupsByPostcode() {
                           center={mapCenter}
                           zoom={mapZoom}
                         >
-                          {bubbleData.map((circle, index) => (
-                            <Circle
-                              key={index}
-                              center={circle.center}
-                              radius={circle.radius}
-                              options={circle.options}
-                            />
-                          ))}
+                          {bubbleData.map((item, index) => {
+                            if (item.type === "circle") {
+                              return (
+                                <Circle
+                                  key={index}
+                                  center={item.center}
+                                  radius={item.radius}
+                                  options={item.options}
+                                />
+                              );
+                            }
+
+                            if (item.type === "label") {
+                              return (
+                                <Marker
+                                  key={index}
+                                  position={item.position}
+                                  label={item.label}
+                                  icon={{
+                                    path: window.google.maps.SymbolPath.CIRCLE,
+                                    scale: 0, // Hides the marker icon itself
+                                  }}
+                                />
+                              );
+                            }
+
+                            return null;
+                          })}
                         </GoogleMap>
                       </div>
                     )}
