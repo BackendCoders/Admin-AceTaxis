@@ -80,21 +80,24 @@ function PickupsByPostcode() {
     }
   }, [openDate]);
 
-  const getLatLngFromPostcode = async (postcode, apiKey) => {
+  const getLatLngFromPostcode = async (postcode) => {
     try {
       const response = await fetch(
-        `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(postcode)}&key=${apiKey}`
+        `https://api.postcodes.io/postcodes/${encodeURIComponent(postcode)}`
       );
       const data = await response.json();
-      if (data.status === "OK") {
-        const location = data.results[0].geometry.location;
-        return { lat: location.lat, lng: location.lng };
+
+      if (data.status === 200 && data.result) {
+        return {
+          lat: data.result.latitude,
+          lng: data.result.longitude,
+        };
       } else {
-        console.warn("Geocode error:", data.status);
+        console.warn("Postcodes.io error:", data.status, data.error);
         return null;
       }
     } catch (error) {
-      console.error("Geocode fetch error:", error);
+      console.error("Postcodes.io fetch error:", error);
       return null;
     }
   };
