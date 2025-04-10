@@ -11,8 +11,8 @@ import {
 	SelectValue,
 } from '@/components/ui/select';
 import { DataGrid, DataGridColumnHeader } from '@/components';
-import { useGoogleMapsLoader } from '@/utils/GoogleMapLoader';
 import { gstAllGPS } from '../../../service/operations/gpsApi';
+import useGoogleMapsLoader from '../../../utils/googleMapLoader';
 
 const DriverTracking = () => {
 	const { isLoaded } = useGoogleMapsLoader();
