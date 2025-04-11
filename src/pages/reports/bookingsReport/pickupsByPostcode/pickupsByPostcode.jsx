@@ -61,7 +61,7 @@ function PickupsByPostcode() {
 	const [heatmapData, setHeatmapData] = useState([]);
 	// const [loading, setLoading] = useState(true);
 	const mapCenter = { lat: 51.0397, lng: -2.2863 };
-	const mapZoom = 14;
+	const mapZoom = 10;
 	const [isFullScreen, setIsFullScreen] = useState(false); // ✅ Full-screen state
 	const [lastUpdated, setLastUpdated] = useState(0);
 	// const [searchInput, setSearchInput] = useState('');
