@@ -50,6 +50,7 @@ import { refreshAllAccounts } from '../../../../slices/accountSlice';
 import {
 	downloadInvoice,
 	markInvoiceAsPaid,
+	resendAccountInvoice,
 } from '../../../../service/operations/billing&Payment';
 import toast from 'react-hot-toast';
 import {
@@ -57,7 +58,11 @@ import {
 	setInvoiceHistory,
 } from '../../../../slices/billingSlice';
 import MoneyIcon from '@mui/icons-material/Money';
-import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
+import {
+	EmailOutlined,
+	KeyboardArrowDown,
+	KeyboardArrowUp,
+} from '@mui/icons-material';
 import DownloadOutlinedIcon from '@mui/icons-material/DownloadOutlined';
 function RowNotPriced({ row, handlePostButton }) {
 	const [open, setOpen] = useState(false);
@@ -276,6 +281,20 @@ function RowNotPriced({ row, handlePostButton }) {
 		}
 	};
 
+	const handleResendButton = async (row) => {
+		try {
+			const response = await resendAccountInvoice(row?.id);
+			if (response?.status === 'success') {
+				toast.success('Account Invoice resent successfully');
+			} else {
+				toast.error('Failed to resend account invoice');
+			}
+		} catch (error) {
+			console.error('Failed to resend account invoice:', error);
+			toast.error('Failed to resend account invoice');
+		}
+	};
+
 	return (
 		<>
 			{/* Main Table Row */}
@@ -335,6 +354,16 @@ function RowNotPriced({ row, handlePostButton }) {
 					>
 						<DownloadOutlinedIcon
 							className={`${row?.coa ? `text-red-500 dark:text-red-900 ` : `text-red-500 dark:text-red-600`}`}
+						/>
+					</IconButton>
+				</TableCell>
+				<TableCell>
+					<IconButton
+						size='small'
+						onClick={() => handleResendButton(row)}
+					>
+						<EmailOutlined
+							className={`${row?.coa ? `text-blue-500 dark:text-white` : `text-blue-500 dark:text-cyan-400`}`}
 						/>
 					</IconButton>
 				</TableCell>
@@ -677,6 +706,9 @@ function InvoiceHistory() {
 												</TableCell>
 												<TableCell className='text-gray-900 dark:text-gray-700'>
 													Download
+												</TableCell>
+												<TableCell className='text-gray-900 dark:text-gray-700'>
+													Resend
 												</TableCell>
 												<TableCell className='text-gray-900 dark:text-gray-700'>
 													<TableSortLabel

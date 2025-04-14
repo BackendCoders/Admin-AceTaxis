@@ -116,6 +116,8 @@ export const billingAndPaymentEndpoints = {
 		`${BASE}/api/Accounts/ClearInvoice?invoiceNo=${invoiceNo}`,
 	GET_INVOICES: (from, to, accno) =>
 		`${BASE}/api/Accounts/GetInvoices?from=${from}&to=${to}${accno ? `&accno=${accno}` : ''}`,
+	RESEND_ACCOUNT_INVOICE: (invoiceNo) =>
+		`${BASE}/api/Accounts/ResendInvoice?invoiceNo=${invoiceNo}`,
 	DOWNLOAD_INVOICE: (invoiceNo) =>
 		`${BASE}/api/Accounts/DownloadInvoice?invoiceNo=${invoiceNo}`,
 };

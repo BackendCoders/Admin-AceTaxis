@@ -27,6 +27,7 @@ const {
 	CLEAR_INVOICE,
 	GET_INVOICES,
 	DOWNLOAD_INVOICE,
+	RESEND_ACCOUNT_INVOICE,
 } = billingAndPaymentEndpoints;
 
 export async function getVATOutputs(data) {
@@ -474,4 +475,24 @@ export async function downloadInvoice(invoiceNo) {
 		console.error('Error fetching invoice:', error);
 		throw error;
 	}
+}
+
+export async function resendAccountInvoice(invoiceNo) {
+	const response = await handleGetReq(RESEND_ACCOUNT_INVOICE(invoiceNo));
+
+	console.log('GET RESEND_ACCOUNT_INVOICE API RESPONSE.........', response);
+
+	if (response.status === 'success') {
+		// sendLogs(
+		// 	{
+		// 		url: GET_VATOUTPUTS,
+		// 		reqBody: null,
+		// 		headers: setHeaders(),
+		// 		response: response,
+		// 	},
+		// 	'info'
+		// );
+		return response;
+	}
+	return response;
 }
