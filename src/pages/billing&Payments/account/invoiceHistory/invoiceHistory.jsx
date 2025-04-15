@@ -49,6 +49,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { refreshAllAccounts } from '../../../../slices/accountSlice';
 import {
 	downloadInvoice,
+	downloadInvoiceCSV,
 	markInvoiceAsPaid,
 	resendAccountInvoice,
 } from '../../../../service/operations/billing&Payment';
@@ -64,6 +65,7 @@ import {
 	KeyboardArrowUp,
 } from '@mui/icons-material';
 import DownloadOutlinedIcon from '@mui/icons-material/DownloadOutlined';
+import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
 function RowNotPriced({ row, handlePostButton }) {
 	const [open, setOpen] = useState(false);
 	const ColumnInputFilter = ({ column }) => {
@@ -281,6 +283,29 @@ function RowNotPriced({ row, handlePostButton }) {
 		}
 	};
 
+	const downloadInvoiceCSVClick = async (row) => {
+		try {
+			const response = await downloadInvoiceCSV(row?.id);
+
+			if (!response || response.size === 0) {
+				console.error('Invalid or empty file received from API.');
+				alert('Failed to download: Received an empty file.');
+				return;
+			}
+
+			const blob = new Blob([response], { type: 'text/csv;charset=utf-8;' });
+			const link = document.createElement('a');
+			link.href = URL.createObjectURL(blob);
+			link.setAttribute('download', `invoice-${row.id}.csv`);
+			document.body.appendChild(link);
+			link.click();
+			document.body.removeChild(link);
+		} catch (error) {
+			console.error('Error handling invoice download:', error);
+			toast.error('Error downloading invoice. Please try again.');
+		}
+	};
+
 	const handleResendButton = async (row) => {
 		try {
 			const response = await resendAccountInvoice(row?.id);
@@ -353,6 +378,16 @@ function RowNotPriced({ row, handlePostButton }) {
 						onClick={() => downloadInvoiceClick(row)}
 					>
 						<DownloadOutlinedIcon
+							className={`${row?.coa ? `text-red-500 dark:text-red-900 ` : `text-red-500 dark:text-red-600`}`}
+						/>
+					</IconButton>
+				</TableCell>
+				<TableCell>
+					<IconButton
+						size='small'
+						onClick={() => downloadInvoiceCSVClick(row)}
+					>
+						<DescriptionOutlinedIcon
 							className={`${row?.coa ? `text-red-500 dark:text-red-900 ` : `text-red-500 dark:text-red-600`}`}
 						/>
 					</IconButton>
@@ -706,6 +741,9 @@ function InvoiceHistory() {
 												</TableCell>
 												<TableCell className='text-gray-900 dark:text-gray-700'>
 													Download
+												</TableCell>
+												<TableCell className='text-gray-900 dark:text-gray-700'>
+													Download CSV
 												</TableCell>
 												<TableCell className='text-gray-900 dark:text-gray-700'>
 													Resend
