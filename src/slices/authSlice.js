@@ -8,7 +8,9 @@ const initialState = {
 		? localStorage?.getItem('authToken')
 		: null,
 	isAuth: localStorage?.getItem('authToken') ? true : false,
-	user: null,
+	user: localStorage?.getItem('userData')
+		? JSON.parse(localStorage.getItem('userData'))
+		: null,
 	getUser: null,
 };
 
