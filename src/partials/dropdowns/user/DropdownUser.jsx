@@ -25,6 +25,8 @@ import { useSelector, useDispatch } from 'react-redux'; // Import useSelector
 import { logout } from '../../../service/operations/authApi';
 import { useNavigate } from 'react-router-dom'; // Import useLocation
 import { setIsNotifications } from '../../../slices/authSlice';
+import { removeFCM } from '../../../service/operations/gpsApi';
+import toast from 'react-hot-toast';
 const DropdownUser = ({ menuItemRef }) => {
 	const { user, isNotifications } = useSelector((state) => state.auth);
 	const { settings, storeSettings } = useSettings();
@@ -43,6 +45,24 @@ const DropdownUser = ({ menuItemRef }) => {
 
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
+
+	const handleNotificationToggle = async () => {
+		const newValue = !isNotifications;
+		dispatch(setIsNotifications(newValue));
+		localStorage.setItem('FCM', newValue);
+		if (!newValue) {
+			// user just turned notifications OFF
+			try {
+				const response = await removeFCM();
+				if (response.status === 'success') {
+					toast.success('Notifications turned off successfully');
+				}
+			} catch (error) {
+				console.log(error);
+				toast.error('Failed to turn off notifications');
+			}
+		}
+	};
 
 	// 🔹 Fetch user data from Redux
 
@@ -278,7 +298,7 @@ const DropdownUser = ({ menuItemRef }) => {
 								name='theme'
 								type='checkbox'
 								checked={isNotifications}
-								onChange={() => dispatch(setIsNotifications(!isNotifications))}
+								onChange={handleNotificationToggle}
 								value='1'
 							/>
 						</label>
