@@ -24,10 +24,12 @@ import {
 import { useSelector, useDispatch } from 'react-redux'; // Import useSelector
 import { logout } from '../../../service/operations/authApi';
 import { useNavigate } from 'react-router-dom'; // Import useLocation
+import { setIsNotifications } from '../../../slices/authSlice';
 const DropdownUser = ({ menuItemRef }) => {
+	const { user, isNotifications } = useSelector((state) => state.auth);
 	const { settings, storeSettings } = useSettings();
 	const [isDarkSidebar, setIsDarkSidebar] = useState(false);
-	const [isNotifications, setIsNotifications] = useState(false);
+
 	// const {
 	//   logout
 	// } = logout();
@@ -43,15 +45,13 @@ const DropdownUser = ({ menuItemRef }) => {
 	const navigate = useNavigate();
 
 	// 🔹 Fetch user data from Redux
-	const user = useSelector((state) => state.auth.user);
 
 	// 🔹 Safely get fullName (fallback if undefined)
 	const fullName = user?.fullName || 'Guest User';
 	const email = user?.email || '';
 
 	const handleNotificationSwitch = () => {
-		setIsNotifications((prev) => !prev);
-		
+		dispatch(setIsNotifications((prev) => !prev));
 	};
 
 	const buildHeader = () => {
@@ -272,7 +272,7 @@ const DropdownUser = ({ menuItemRef }) => {
 				<div className='menu-item mb-0.5'>
 					<div className='menu-link'>
 						<span className='menu-icon'>
-							<KeenIcon icon='element-3' />
+							<KeenIcon icon='notification-bing' />
 						</span>
 						<span className='menu-title'>
 							<FormattedMessage id='Notifications' />

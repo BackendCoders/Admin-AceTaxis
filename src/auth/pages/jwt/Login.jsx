@@ -12,6 +12,7 @@ import { Alert } from '@/components';
 import { getFirebaseToken } from '../../../firebase';
 import toast from 'react-hot-toast';
 import { updateFCM } from '../../../service/operations/gpsApi';
+import { setIsNotifications } from '../../../slices/authSlice';
 
 // Validation schema
 const loginSchema = Yup.object().shape({
@@ -55,6 +56,8 @@ const Login = () => {
 				const response = await updateFCM(token);
 				console.log('FCM token sent to API successfully:', response);
 				toast.success('FCM token updated successfully!');
+				localStorage.setItem('isNotification', true);
+				dispatch(setIsNotifications(true));
 			}
 		} catch (error) {
 			console.error('Error updating FCM token:', error);

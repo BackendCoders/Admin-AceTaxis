@@ -12,6 +12,9 @@ const initialState = {
 		? JSON.parse(localStorage.getItem('userData'))
 		: null,
 	getUser: null,
+	isNotifications: localStorage?.getItem('isNotification')
+		? localStorage?.getItem('isNotification')
+		: false,
 };
 
 const authSlice = createSlice({
@@ -34,9 +37,18 @@ const authSlice = createSlice({
 		setIsAuth(state, action) {
 			state.isAuth = action.payload;
 		},
+		setIsNotifications(state, action) {
+			state.isNotifications = action.payload;
+		},
 	},
 });
 
-export const { setToken, setLoading, setUser, setGetUser, setIsAuth } =
-	authSlice.actions;
+export const {
+	setToken,
+	setLoading,
+	setUser,
+	setGetUser,
+	setIsAuth,
+	setIsNotifications,
+} = authSlice.actions;
 export default authSlice.reducer;

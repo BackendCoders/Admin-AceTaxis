@@ -240,7 +240,7 @@ export function logout(navigate) {
 		localStorage.removeItem('authToken');
 		localStorage.removeItem('username');
 		localStorage.removeItem('userData');
-
+		localStorage.removeItem('isNotification');
 		toast.success('Logged Out');
 		navigate('/auth/login');
 	};
