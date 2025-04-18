@@ -55,9 +55,12 @@ const Login = () => {
 				setFcmToken(token);
 				const response = await updateFCM(token);
 				console.log('FCM token sent to API successfully:', response);
-				toast.success('FCM token updated successfully!');
-				localStorage.setItem('isNotification', true);
-				dispatch(setIsNotifications(true));
+				if (response?.status === "success") {
+					toast.success('FCM token updated successfully!');
+					localStorage.setItem('isNotification', true);
+					dispatch(setIsNotifications(true));
+				}
+				
 			}
 		} catch (error) {
 			console.error('Error updating FCM token:', error);

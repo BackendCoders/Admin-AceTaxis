@@ -54,7 +54,7 @@ const DropdownUser = ({ menuItemRef }) => {
 			// user just turned notifications OFF
 			try {
 				const response = await removeFCM();
-				if (response.status === 'success') {
+				if (response?.status === 'success') {
 					toast.success('Notifications turned off successfully');
 				}
 			} catch (error) {

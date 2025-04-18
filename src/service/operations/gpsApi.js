@@ -41,7 +41,7 @@ export async function updateFCM(fcm) {
 		// 	},
 		// 	'info'
 		// );
-		return response;
+		return { response: response, status: 'success' };
 	}
 }
 
@@ -61,6 +61,6 @@ export async function removeFCM() {
 		// 	},
 		// 	'info'
 		// );
-		return response;
+		return { response, status: 'success' };
 	}
 }
