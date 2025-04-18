@@ -46,7 +46,7 @@ const DropdownUser = ({ menuItemRef }) => {
 
 	// 🔹 Safely get fullName (fallback if undefined)
 	const fullName = user?.fullName || 'Guest User';
-	const email = user?.email || 'guest@example.com';
+	const email = user?.email || '';
 
 	const buildHeader = () => {
 		return (
