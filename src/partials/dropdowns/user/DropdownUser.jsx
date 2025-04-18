@@ -27,6 +27,7 @@ import { useNavigate } from 'react-router-dom'; // Import useLocation
 const DropdownUser = ({ menuItemRef }) => {
 	const { settings, storeSettings } = useSettings();
 	const [isDarkSidebar, setIsDarkSidebar] = useState(false);
+	const [isNotifications, setIsNotifications] = useState(false);
 	// const {
 	//   logout
 	// } = logout();
@@ -47,6 +48,11 @@ const DropdownUser = ({ menuItemRef }) => {
 	// 🔹 Safely get fullName (fallback if undefined)
 	const fullName = user?.fullName || 'Guest User';
 	const email = user?.email || '';
+
+	const handleNotificationSwitch = () => {
+		setIsNotifications((prev) => !prev);
+		
+	};
 
 	const buildHeader = () => {
 		return (
@@ -257,6 +263,26 @@ const DropdownUser = ({ menuItemRef }) => {
 									setIsDarkSidebar((prev) => !prev);
 									!isDarkSidebar ? navigate('/dark-sidebar') : navigate('/');
 								}}
+								value='1'
+							/>
+						</label>
+					</div>
+				</div>
+
+				<div className='menu-item mb-0.5'>
+					<div className='menu-link'>
+						<span className='menu-icon'>
+							<KeenIcon icon='element-3' />
+						</span>
+						<span className='menu-title'>
+							<FormattedMessage id='Notifications' />
+						</span>
+						<label className='switch switch-sm'>
+							<input
+								name='theme'
+								type='checkbox'
+								checked={isNotifications}
+								onChange={handleNotificationSwitch}
 								value='1'
 							/>
 						</label>

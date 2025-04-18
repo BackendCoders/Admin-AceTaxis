@@ -9,6 +9,9 @@ import { KeenIcon } from '@/components';
 import { useDispatch, useSelector } from 'react-redux'; // Import Redux hooks
 import { login } from '../../../service/operations/authApi'; // Redux login action
 import { Alert } from '@/components';
+import { getFirebaseToken } from '../../../firebase';
+import toast from 'react-hot-toast';
+import { updateFCM } from '../../../service/operations/gpsApi';
 
 // Validation schema
 const loginSchema = Yup.object().shape({
@@ -36,7 +39,28 @@ const Login = () => {
 	const dispatch = useDispatch(); // Hook to dispatch Redux actions
 	const navigate = useNavigate(); // Hook for navigation
 	const { error } = useSelector((state) => state.auth); // Extract auth state from Redux
+	const [fcmToken, setFcmToken] = useState(null);
 
+	const handleFCMUpdate = async () => {
+		try {
+			const permission = await Notification.requestPermission();
+			if (permission !== 'granted') {
+				toast.error('Notification permission denied.');
+				return;
+			}
+
+			const token = await getFirebaseToken();
+			if (token && token !== fcmToken) {
+				setFcmToken(token);
+				const response = await updateFCM(token);
+				console.log('FCM token sent to API successfully:', response);
+				toast.success('FCM token updated successfully!');
+			}
+		} catch (error) {
+			console.error('Error updating FCM token:', error);
+			toast.error('Error updating FCM token.');
+		}
+	};
 	// Formik for form handling
 	const formik = useFormik({
 		initialValues,
@@ -54,6 +78,7 @@ const Login = () => {
 					navigate // Pass navigate to handle navigation after login
 				)
 			);
+			await handleFCMUpdate();
 
 			// Handle remember me logic
 			if (values.remember) {
