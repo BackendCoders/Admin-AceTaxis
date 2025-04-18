@@ -50,10 +50,6 @@ const DropdownUser = ({ menuItemRef }) => {
 	const fullName = user?.fullName || 'Guest User';
 	const email = user?.email || '';
 
-	const handleNotificationSwitch = () => {
-		dispatch(setIsNotifications((prev) => !prev));
-	};
-
 	const buildHeader = () => {
 		return (
 			<div className='flex items-center justify-between px-5 py-1.5 gap-1.5'>
@@ -260,7 +256,7 @@ const DropdownUser = ({ menuItemRef }) => {
 								type='checkbox'
 								checked={isDarkSidebar}
 								onChange={() => {
-									setIsDarkSidebar((prev) => !prev);
+									setIsDarkSidebar(!isDarkSidebar);
 									!isDarkSidebar ? navigate('/dark-sidebar') : navigate('/');
 								}}
 								value='1'
@@ -282,7 +278,7 @@ const DropdownUser = ({ menuItemRef }) => {
 								name='theme'
 								type='checkbox'
 								checked={isNotifications}
-								onChange={handleNotificationSwitch}
+								onChange={() => dispatch(setIsNotifications(!isNotifications))}
 								value='1'
 							/>
 						</label>
