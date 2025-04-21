@@ -13,7 +13,6 @@ import {
 import { DataGrid, DataGridColumnHeader } from '@/components';
 import { gstAllGPS } from '../../../service/operations/gpsApi';
 import useGoogleMapsLoader from '../../../utils/googleMapLoader';
-
 const DriverTracking = () => {
 	const { isLoaded } = useGoogleMapsLoader();
 
@@ -128,6 +127,17 @@ const DriverTracking = () => {
 		zIndex: isFullScreen ? 9999 : 'auto',
 	};
 
+	const getColoredCarIcon = (color) =>
+		`data:image/svg+xml;charset=UTF-8,${encodeURIComponent(`
+		  <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="${color}">
+			<path fill="${color}" d="M5 16c-.55 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1zm13 0c-.55 0-1 
+			  .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1zm-13.65-2.5l1.45-4.5h11.4l1.45 
+			  4.5H4.35zM20 8h-1.26l-1.6-4.79A1.99 1.99 0 0015.21 2H8.79c-.84 0-1.59.52-1.89 
+			  1.31L5.26 8H4c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h1c0 1.1.9 2 2 2s2-.9 
+			  2-2h6c0 1.1.9 2 2 2s2-.9 2-2h1c1.1 0 2-.9 2-2v-8c0-1.1-.9-2-2-2z"/>
+		  </svg>
+		`)}`;
+
 	return (
 		<Box className='p-4 space-y-6'>
 			{/* Header Section */}
@@ -235,8 +245,9 @@ const DriverTracking = () => {
 										driver.speed.toFixed(2) || 'N/A'
 									} km/h`}
 									icon={{
-										url: '/media/images/car/gps-navigation.png',
-										scaledSize: new window.google.maps.Size(40, 40), // Adjust size of the icon
+										// url: '/media/images/car/gps-navigation.png',
+										url: getColoredCarIcon(driver.htmlColor || '#000000'),
+										scaledSize: new window.google.maps.Size(25, 25), // Adjust size of the icon
 									}}
 									animation={
 										isBouncing === 'all' || isBouncing === driver.regNo
