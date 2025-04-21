@@ -534,6 +534,7 @@ function StateProcessing() {
 	const [order, setOrder] = useState('asc'); // Sort order
 	const [orderBy, setOrderBy] = useState(''); // Default sorted column
 	// console.log(driverChargeableJobs);
+	const scrollRef = useRef(null);
 
 	const handleDateSelect = (date) => {
 		setDate(date); // Update the date range
@@ -799,6 +800,47 @@ function StateProcessing() {
 		dispatch(setDriverChargeableJobs({ priced: [], notPriced: [] }));
 	}, [dispatch]);
 
+	useEffect(() => {
+		const scrollContainer = scrollRef.current;
+		if (!scrollContainer) return;
+
+		let isDown = false;
+		let startX;
+		let scrollLeft;
+
+		const mouseDownHandler = (e) => {
+			isDown = true;
+			scrollContainer.classList.add('cursor-grabbing');
+			startX = e.pageX - scrollContainer.offsetLeft;
+			scrollLeft = scrollContainer.scrollLeft;
+		};
+
+		const mouseUpHandler = () => {
+			isDown = false;
+			scrollContainer.classList.remove('cursor-grabbing');
+		};
+
+		const mouseMoveHandler = (e) => {
+			if (!isDown) return;
+			e.preventDefault();
+			const x = e.pageX - scrollContainer.offsetLeft;
+			const walk = (x - startX) * 1;
+			scrollContainer.scrollLeft = scrollLeft - walk;
+		};
+
+		scrollContainer.addEventListener('mousedown', mouseDownHandler);
+		scrollContainer.addEventListener('mouseup', mouseUpHandler);
+		scrollContainer.addEventListener('mouseleave', mouseUpHandler);
+		scrollContainer.addEventListener('mousemove', mouseMoveHandler);
+
+		return () => {
+			scrollContainer.removeEventListener('mousedown', mouseDownHandler);
+			scrollContainer.removeEventListener('mouseup', mouseUpHandler);
+			scrollContainer.removeEventListener('mouseleave', mouseUpHandler);
+			scrollContainer.removeEventListener('mousemove', mouseMoveHandler);
+		};
+	}, []);
+
 	return (
 		<Fragment>
 			<div className='pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1580px] w-full'>
@@ -938,7 +980,8 @@ function StateProcessing() {
 									{sortedBookings?.length > 0 ? (
 										<TableContainer
 											component={Paper}
-											className='shadow-none bg-white dark:bg-[#14151A] overflow-x-auto'
+											ref={scrollRef}
+											className='shadow-none bg-white dark:bg-[#14151A] overflow-x-auto table-one'
 										>
 											<Table className='text-[#14151A] dark:text-gray-100'>
 												<TableHead
