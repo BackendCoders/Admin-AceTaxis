@@ -51,7 +51,7 @@ const AvailabilityReport = () => {
 	} = useSelector((state) => state.availability);
 	const [open, setOpen] = useState(false); // State to control Popover open/close
 	const [selectedTab, setSelectedTab] = useState('dayHours');
-	const [driverNumber, setDriverNumber] = useState();
+	const [driverNumber, setDriverNumber] = useState(0);
 	const { drivers } = useSelector((state) => state.driver);
 	const [dateRange, setDateRange] = useState({
 		from: subDays(new Date(), 30), // December 28, 2024
@@ -161,6 +161,17 @@ const AvailabilityReport = () => {
 							column={column}
 						/>
 					),
+					cell: ({ row }) => {
+						const userId = row.original.userId;
+						const driver = drivers.find((d) => d?.id === userId);
+						return (
+							<span className={`font-medium ${row.original.color}`}>
+								{driver
+									? `${driver.id.toString().padStart(2, '0')} - ${driver.fullName}`
+									: '-'}
+							</span>
+						);
+					},
 				},
 				{
 					accessorKey: 'date',
@@ -191,6 +202,17 @@ const AvailabilityReport = () => {
 							column={column}
 						/>
 					),
+					cell: ({ row }) => {
+						const userId = row.original.userId;
+						const driver = drivers.find((d) => d?.id === userId);
+						return (
+							<span className={`font-medium ${row.original.color}`}>
+								{driver
+									? `${driver.id.toString().padStart(2, '0')} - ${driver.fullName}`
+									: '-'}
+							</span>
+						);
+					},
 				},
 				{
 					accessorKey: 'month',
@@ -221,6 +243,17 @@ const AvailabilityReport = () => {
 							column={column}
 						/>
 					),
+					cell: ({ row }) => {
+						const userId = row.original.userId;
+						const driver = drivers.find((d) => d?.id === userId);
+						return (
+							<span className={`font-medium ${row.original.color}`}>
+								{driver
+									? `${driver.id.toString().padStart(2, '0')} - ${driver.fullName}`
+									: '-'}
+							</span>
+						);
+					},
 				},
 				{
 					accessorKey: 'week',
@@ -251,6 +284,17 @@ const AvailabilityReport = () => {
 							column={column}
 						/>
 					),
+					cell: ({ row }) => {
+						const userId = row.original.userId;
+						const driver = drivers.find((d) => d?.id === userId);
+						return (
+							<span className={`font-medium ${row.original.color}`}>
+								{driver
+									? `${driver.id.toString().padStart(2, '0')} - ${driver.fullName}`
+									: '-'}
+							</span>
+						);
+					},
 				},
 				{
 					accessorKey: 'day',
@@ -281,6 +325,17 @@ const AvailabilityReport = () => {
 							column={column}
 						/>
 					),
+					cell: ({ row }) => {
+						const userId = row.original.userId;
+						const driver = drivers.find((d) => d?.id === userId);
+						return (
+							<span className={`font-medium ${row.original.color}`}>
+								{driver
+									? `${driver.id.toString().padStart(2, '0')} - ${driver.fullName}`
+									: '-'}
+							</span>
+						);
+					},
 				},
 				{
 					accessorKey: 'weekendDay',
@@ -311,6 +366,17 @@ const AvailabilityReport = () => {
 							column={column}
 						/>
 					),
+					cell: ({ row }) => {
+						const userId = row.original.userId;
+						const driver = drivers.find((d) => d?.id === userId);
+						return (
+							<span className={`font-medium ${row.original.color}`}>
+								{driver
+									? `${driver.id.toString().padStart(2, '0')} - ${driver.fullName}`
+									: '-'}
+							</span>
+						);
+					},
 					meta: { headerClassName: 'min-w-[10px]' },
 				},
 				{
@@ -436,6 +502,7 @@ const AvailabilityReport = () => {
 													<SelectValue placeholder='Select' />
 												</SelectTrigger>
 												<SelectContent className='w-36'>
+													<SelectItem value={0}>All</SelectItem>
 													{drivers?.length > 0 &&
 														drivers?.map((driver) => (
 															<>
