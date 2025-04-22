@@ -93,10 +93,10 @@ const DriverTracking = () => {
 			// Bounce all markers
 			setIsBouncing('all');
 
-			// Stop bounce after 2 seconds
+			// Stop bounce after 30 seconds
 			setTimeout(() => {
 				setIsBouncing(null); // Reset bounce state
-			}, 2000);
+			}, 30000);
 
 			// Reset to default map center and zoom
 			setMapCenter({ lat: 51.0397, lng: -2.2863 });
@@ -113,15 +113,15 @@ const DriverTracking = () => {
 					lat: selectedDriverData.latitude,
 					lng: selectedDriverData.longitude,
 				});
-				setMapZoom(18); // Zoom in
+				setMapZoom(20); // Zoom in
 
 				// Bounce the selected driver's marker
 				setIsBouncing(driverReg);
 
-				// Stop bounce after 2 seconds
+				// Stop bounce after 30 seconds
 				setTimeout(() => {
 					setIsBouncing(null); // Reset bounce state
-				}, 2000);
+				}, 30000);
 			}
 		}
 	};
