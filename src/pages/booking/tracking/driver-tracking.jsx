@@ -24,7 +24,7 @@ const DriverTracking = () => {
 	const [mapZoom, setMapZoom] = useState(14); // Default zoom level
 	const [isBouncing, setIsBouncing] = useState(false); // Track bounce state
 	const [isFullScreen, setIsFullScreen] = useState(false); // ✅ Full-screen state
-
+	const [returnView, setReturnView] = useState(false);
 	// Function to fetch GPS data
 	const fetchGPSData = async () => {
 		try {
@@ -42,6 +42,12 @@ const DriverTracking = () => {
 		} catch (error) {
 			console.error('Error fetching GPS data:', error);
 		}
+	};
+
+	const startTracking = () => {
+		setSelectedDriver('all');
+		setMapCenter({ lat: 51.0397, lng: -2.2863 });
+		setMapZoom(14);
 	};
 
 	// Fetch GPS data on component mount and every 10 seconds
@@ -68,6 +74,18 @@ const DriverTracking = () => {
 		return () => window.removeEventListener('keydown', handleKeyDown);
 	}, [isFullScreen]);
 
+	useEffect(() => {
+		if (returnView) {
+			const timeout = setTimeout(() => {
+				startTracking(); // Your tracking logic
+				setReturnView(false); // Optional: reset the toggle
+			}, 30000); // 30,000 ms = 30 seconds
+
+			// Cleanup the timeout if component unmounts or returnView changes before 30s
+			return () => clearTimeout(timeout);
+		}
+	}, [returnView]);
+
 	const handleDriverSelection = (driverReg) => {
 		setSelectedDriver(driverReg);
 
@@ -81,7 +99,7 @@ const DriverTracking = () => {
 			}, 2000);
 
 			// Reset to default map center and zoom
-			setMapCenter({ lat: 51.075, lng: -1.8 });
+			setMapCenter({ lat: 51.0397, lng: -2.2863 });
 			setMapZoom(2);
 		} else {
 			// Find the selected driver's data
@@ -219,6 +237,20 @@ const DriverTracking = () => {
 							))}
 						</SelectContent>
 					</Select>
+				</Box>
+
+				<Box>
+					<div className='flex items-center gap-2'>
+						<label className='switch switch-md flex-1 sm:flex-none mt-4'>
+							<span className='switch-label'>Return View</span>
+							<input
+								type='checkbox'
+								name='check'
+								checked={returnView} // Controlled value
+								onChange={(e) => setReturnView(e.target.checked)} // Update state on change
+							/>
+						</label>
+					</div>
 				</Box>
 			</Box>
 
