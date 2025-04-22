@@ -380,7 +380,7 @@ const DriverTracking = () => {
 											<span className='font-medium'>
 												{row.original.speed
 													? `${parseFloat(row.original.speed).toFixed(2)} mph`
-													: '0 mph'}
+													: '0.00 mph'}
 											</span>
 										),
 										meta: { headerClassName: 'min-w-[100px]' },
