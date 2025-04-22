@@ -219,16 +219,16 @@ const MegaMenuInner = () => {
 			multipleExpand={true}
 			disabled={disabled}
 			highlight={true}
-			className='flex-col lg:flex-row gap-5 lg:gap-7.5 p-5 lg:p-0'
+			className='flex-col lg:flex-row gap-5 lg:gap-7.5 p-5 lg:p-0 items-center'
 		>
 			<button
-				className='text-gray-800 text-sm leading-none rounded hover:text-blue-600'
+				className='rounded-lg transition-all duration-200 btn btn-primary px-4 py-4'
 				onClick={() => dispatch(setIsDirectMsgModal(true))}
 			>
 				Direct Message
 			</button>
 			<button
-				className='text-gray-800 text-sm leading-none rounded hover:text-blue-600'
+				className='rounded-lg transition-all duration-200 btn btn-secondary px-4 py-4'
 				onClick={() => dispatch(setIsGlobalMsgModal(true))}
 			>
 				Global Message

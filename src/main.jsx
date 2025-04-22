@@ -40,7 +40,36 @@ root.render(
 		<ProvidersWrapper>
 			<Provider store={store}>
 				<App />
-				<Toaster />
+				<Toaster
+					position='top-right'
+					toastOptions={{
+						success: {
+							style: {
+								background: '#22c55e', // green-500
+								color: '#fff',
+							},
+							iconTheme: {
+								primary: '#ffffff',
+								secondary: '#16a34a', // green-600
+							},
+						},
+						error: {
+							style: {
+								background: '#ef4444', // red-500
+								color: '#fff',
+							},
+							iconTheme: {
+								primary: '#ffffff',
+								secondary: '#dc2626', // red-600
+							},
+						},
+						style: {
+							padding: '12px 16px',
+							borderRadius: '8px',
+							fontSize: '14px',
+						},
+					}}
+				/>
 			</Provider>
 		</ProvidersWrapper>
 	</React.StrictMode>
