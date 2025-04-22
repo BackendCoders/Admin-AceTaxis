@@ -60,7 +60,8 @@ function RegisterDriver({ open, onOpenChange }) {
 					setSubmitting(false);
 					onOpenChange(); // Reset Formik's submitting state
 				} else {
-					console.error('Failed to register driver', response.error);
+					toast.error(response.data);
+					console.error('Failed to register driver', response.data);
 				}
 			} catch (error) {
 				console.error('Error registering driver', error);
