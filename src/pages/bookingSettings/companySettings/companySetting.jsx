@@ -24,6 +24,7 @@ const CompanySetting = () => {
 		vatNumber: '',
 		cardTopupRate: 0,
 		revoluttSecretKey: '',
+		browserFCMs: [],
 	});
 
 	async function fetchCompanySettings() {
@@ -61,6 +62,7 @@ const CompanySetting = () => {
 				vatNumber: companyData?.vatNumber || '',
 				cardTopupRate: companyData?.cardTopupRate || 0,
 				revoluttSecretKey: companyData?.revoluttSecretKey || '',
+				browserFCMs: companyData?.browserFCMs || [],
 			};
 			const response = await setCompanyConfig(payload);
 			if (response?.status === 'success') {
