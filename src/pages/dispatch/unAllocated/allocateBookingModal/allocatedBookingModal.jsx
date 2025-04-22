@@ -63,7 +63,7 @@ function AllocateBookingModal({ open, onOpenChange, date, scope, status }) {
 						refreshBookingsByStatus(
 							format(new Date(date), "yyyy-MM-dd'T'00:00:00'Z'"),
 							scope,
-							status || ''
+							status
 						)
 					);
 					// You can handle the API call here if needed.
