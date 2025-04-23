@@ -65,7 +65,12 @@ import {
 import toast from 'react-hot-toast';
 import isLightColor from '../../../../utils/isLight';
 // Collapsible Row Component
-function RowNotPriced({ row, handlePostButton }) {
+function RowNotPriced({
+	row,
+	handlePostButton,
+	buttonLoading,
+	setButtonLoading,
+}) {
 	const [open, setOpen] = useState(false);
 	const ColumnInputFilter = ({ column }) => {
 		return (
@@ -268,6 +273,7 @@ function RowNotPriced({ row, handlePostButton }) {
 	};
 
 	const handleResendDriverStatement = async (row) => {
+		setButtonLoading({ rowId: row?.id, button: 'resend' });
 		try {
 			const response = await resendDriverStatement(row?.id);
 			if (response?.status === 'success') {
@@ -278,6 +284,8 @@ function RowNotPriced({ row, handlePostButton }) {
 		} catch (error) {
 			console.error('Failed to resend driver statement:', error);
 			toast.error('Failed to resend driver statement');
+		} finally {
+			setButtonLoading({ rowId: null, button: 'resend' });
 		}
 	};
 
@@ -371,11 +379,17 @@ function RowNotPriced({ row, handlePostButton }) {
 				<TableCell>
 					<IconButton
 						size='small'
-						disabled={row?.paid}
+						disabled={
+							row?.paid ||
+							(buttonLoading.rowId === row?.id &&
+								buttonLoading.button === 'post')
+						}
 					>
 						<MoneyIcon
 							className={`${
-								row.paid
+								row.paid ||
+								(buttonLoading.rowId === row?.id &&
+									buttonLoading.button === 'post')
 									? 'text-gray-400 dark:text-gray-500' // Blur effect when disabled
 									: row?.coa
 										? 'text-green-600 dark:text-green-600'
@@ -394,11 +408,17 @@ function RowNotPriced({ row, handlePostButton }) {
 				<TableCell>
 					<IconButton
 						size='small'
-						disabled={row?.paid}
+						disabled={
+							row?.paid ||
+							(buttonLoading.rowId === row?.id &&
+								buttonLoading.button === 'resend')
+						}
 					>
 						<EmailOutlined
 							className={`${
-								row.paid
+								row.paid ||
+								(buttonLoading.rowId === row?.id &&
+									buttonLoading.button === 'resend')
 									? 'text-gray-400 dark:text-gray-500' // Blur effect when disabled
 									: row?.coa
 										? 'text-blue-600 dark:text-blue-600'
@@ -462,6 +482,10 @@ function StatementHistory() {
 	const [order, setOrder] = useState('desc'); // Sort order
 	const [orderBy, setOrderBy] = useState('id'); // Default sorted column
 	const [openDate, setOpenDate] = useState(false);
+	const [buttonLoading, setButtonLoading] = useState({
+		rowId: null,
+		button: null,
+	});
 	const [date, setDate] = useState({
 		from: new Date(),
 		to: addDays(new Date(), 20),
@@ -529,6 +553,7 @@ function StatementHistory() {
 
 	const handlePostButton = async (row) => {
 		try {
+			setButtonLoading({ rowId: row?.id, button: 'post' });
 			const response = await markStatementAsPaid(row?.id);
 			if (response?.status === 'success') {
 				toast.success('Job marked as paid successfully');
@@ -539,6 +564,8 @@ function StatementHistory() {
 		} catch (error) {
 			console.error('Failed to post job:', error);
 			toast.error('Failed to post job');
+		} finally {
+			setButtonLoading({ rowId: null, button: null });
 		}
 	};
 
@@ -774,6 +801,8 @@ function StatementHistory() {
 															key={row.id}
 															row={row}
 															handlePostButton={handlePostButton}
+															buttonLoading={buttonLoading}
+															setButtonLoading={setButtonLoading}
 														/>
 													</>
 												))}

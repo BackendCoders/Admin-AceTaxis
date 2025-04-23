@@ -66,7 +66,12 @@ import {
 } from '@mui/icons-material';
 import DownloadOutlinedIcon from '@mui/icons-material/DownloadOutlined';
 import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
-function RowNotPriced({ row, handlePostButton }) {
+function RowNotPriced({
+	row,
+	handlePostButton,
+	buttonLoading,
+	setButtonLoading,
+}) {
 	const [open, setOpen] = useState(false);
 	const ColumnInputFilter = ({ column }) => {
 		return (
@@ -261,6 +266,7 @@ function RowNotPriced({ row, handlePostButton }) {
 	};
 
 	const downloadInvoiceClick = async (row) => {
+		setButtonLoading({ rowId: row?.id, button: 'downloadPdf' });
 		try {
 			const response = await downloadInvoice(row?.id);
 
@@ -280,10 +286,13 @@ function RowNotPriced({ row, handlePostButton }) {
 		} catch (error) {
 			console.error('Error handling invoice download:', error);
 			toast.error('Error downloading invoice. Please try again.');
+		} finally {
+			setButtonLoading({ rowId: null, button: null });
 		}
 	};
 
 	const downloadInvoiceCSVClick = async (row) => {
+		setButtonLoading({ rowId: row?.id, button: 'downloadCSV' });
 		try {
 			const response = await downloadInvoiceCSV(row?.id);
 
@@ -303,20 +312,25 @@ function RowNotPriced({ row, handlePostButton }) {
 		} catch (error) {
 			console.error('Error handling invoice download:', error);
 			toast.error('Error downloading invoice. Please try again.');
+		} finally {
+			setButtonLoading({ rowId: null, button: null });
 		}
 	};
 
 	const handleResendButton = async (row) => {
+		setButtonLoading({ rowId: row?.id, button: 'resend' });
 		try {
 			const response = await resendAccountInvoice(row?.id);
 			if (response?.status === 'success') {
 				toast.success('Account Invoice resent successfully');
 			} else {
-				toast.error('Failed to resend account invoice');
+				toast.error(response.data.message);
 			}
 		} catch (error) {
 			console.error('Failed to resend account invoice:', error);
 			toast.error('Failed to resend account invoice');
+		} finally {
+			setButtonLoading({ rowId: null, button: null });
 		}
 	};
 
@@ -376,6 +390,10 @@ function RowNotPriced({ row, handlePostButton }) {
 					<IconButton
 						size='small'
 						onClick={() => downloadInvoiceClick(row)}
+						disabled={
+							buttonLoading.rowId === row?.id &&
+							buttonLoading.button === 'downloadPdf'
+						}
 					>
 						<DownloadOutlinedIcon
 							className={`${row?.coa ? `text-red-500 dark:text-red-900 ` : `text-red-500 dark:text-red-600`}`}
@@ -386,6 +404,10 @@ function RowNotPriced({ row, handlePostButton }) {
 					<IconButton
 						size='small'
 						onClick={() => downloadInvoiceCSVClick(row)}
+						disabled={
+							buttonLoading.rowId === row?.id &&
+							buttonLoading.button === 'downloadCSV'
+						}
 					>
 						<DescriptionOutlinedIcon
 							className={`${row?.coa ? `text-red-500 dark:text-red-900 ` : `text-red-500 dark:text-red-600`}`}
@@ -396,9 +418,21 @@ function RowNotPriced({ row, handlePostButton }) {
 					<IconButton
 						size='small'
 						onClick={() => handleResendButton(row)}
+						disabled={
+							buttonLoading.rowId === row?.id &&
+							buttonLoading.button === 'resend'
+						}
 					>
 						<EmailOutlined
-							className={`${row?.coa ? `text-blue-500 dark:text-white` : `text-blue-500 dark:text-cyan-400`}`}
+							className={`${
+								row.paid ||
+								(buttonLoading.rowId === row?.id &&
+									buttonLoading.button === 'resend')
+									? 'text-gray-400 dark:text-gray-500' // Blur effect when disabled
+									: row?.coa
+										? `text-blue-500 dark:text-white`
+										: `text-blue-500 dark:text-cyan-400`
+							}`}
 						/>
 					</IconButton>
 				</TableCell>
@@ -410,11 +444,17 @@ function RowNotPriced({ row, handlePostButton }) {
 				<TableCell>
 					<IconButton
 						size='small'
-						disabled={row.paid}
+						disabled={
+							row.paid ||
+							(buttonLoading.rowId === row?.id &&
+								buttonLoading.button === 'post')
+						}
 					>
 						<MoneyIcon
 							className={`${
-								row.paid
+								row.paid ||
+								(buttonLoading.rowId === row?.id &&
+									buttonLoading.button === 'post')
 									? 'text-gray-400 dark:text-gray-500' // Blur effect when disabled
 									: row?.coa
 										? 'text-green-600 dark:text-green-600'
@@ -477,6 +517,10 @@ function InvoiceHistory() {
 	const [search, setSearch] = useState('');
 	const [order, setOrder] = useState('asc'); // Sort order
 	const [orderBy, setOrderBy] = useState(''); // Default sorted column
+	const [buttonLoading, setButtonLoading] = useState({
+		rowId: null,
+		button: null,
+	});
 	const [date, setDate] = useState({
 		from: new Date(),
 		to: addDays(new Date(), 20),
@@ -540,17 +584,20 @@ function InvoiceHistory() {
 	});
 
 	const handlePostButton = async (row) => {
+		setButtonLoading({ rowId: row?.id, button: 'post' });
 		try {
 			const response = await markInvoiceAsPaid(row?.id);
 			if (response?.status === 'success') {
 				toast.success('Mark Invoice As Paid Successfully');
 				handleSearch();
 			} else {
-				toast.error('Failed to mark as paid invoice');
+				toast.error(response.data?.message);
 			}
 		} catch (error) {
 			console.error('Failed to post job:', error);
 			toast.error('Failed to post job');
+		} finally {
+			setButtonLoading({ rowId: null, button: null });
 		}
 	};
 
@@ -783,6 +830,8 @@ function InvoiceHistory() {
 														key={row.id}
 														row={row}
 														handlePostButton={handlePostButton}
+														buttonLoading={buttonLoading}
+														setButtonLoading={setButtonLoading}
 													/>
 												</>
 											))}
