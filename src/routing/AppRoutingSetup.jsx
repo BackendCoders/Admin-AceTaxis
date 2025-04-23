@@ -128,6 +128,7 @@ import {
 	RevenueByMonth,
 	TopCustomer,
 } from '../pages/reports';
+import { HvsAccountChanges } from '@/pages/bookingUtilities';
 
 const AppRoutingSetup = () => {
 	const userRole = JSON.parse(localStorage.getItem('userData'))?.roleId || 0;
@@ -366,6 +367,12 @@ const AppRoutingSetup = () => {
 						<Route
 							path='/setting/msg-settings'
 							element={<MsgSettings />}
+						/>
+					)}
+					{userRole !== 2 && (
+						<Route
+							path='/utilities/hvs-account-changes'
+							element={<HvsAccountChanges />}
 						/>
 					)}
 

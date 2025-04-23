@@ -60,6 +60,8 @@ export const gpsEndpoints = {
 	GET_ALL_GPS: `${BASE}/api/UserProfile/GetAllGPS`,
 	UPDATE_FCM: (fcm) => `${BASE}/api/AdminUI/UpdateBrowserFCM?fcm=${fcm}`,
 	REMOVE_FCM: `${BASE}/api/AdminUI/RemoveBrowserFCM`,
+	HVS_ACCOUNT_CHANGES: (from, to, action) =>
+		`${BASE}/api/AdminUI/Move9014To10026?from=${from}&to=${to}&action=${action}`,
 };
 
 export const dashBoardEndpoints = {

@@ -394,6 +394,20 @@ export const MENU_SIDEBAR = [
 		roles: [1],
 		path: '/setting/msg-settings',
 	},
+	{
+		title: 'Utilities',
+		icon: 'abstract-26',
+		iconLightColor: 'text-yellow-400',
+		iconDarkColor: 'text-yellow-400',
+		roles: [1],
+		children: [
+			{
+				title: 'HVS Account Changes',
+				path: '/utilities/hvs-account-changes',
+				roles: [1],
+			},
+		],
+	},
 	// {
 	// 	title: 'Settings',
 	// 	icon: 'setting-2',
