@@ -543,6 +543,8 @@ function InvoiceProcessor() {
 		to: new Date(), // Same default date
 	});
 	const [tempRange, setTempRange] = useState(dateRange);
+	const [processLoading, setProcessLoading] = useState(false);
+
 	const scrollRef = useRef(null);
 	useEffect(() => {
 		if (open) {
@@ -754,6 +756,7 @@ function InvoiceProcessor() {
 
 	const handleProcessDriver = async () => {
 		try {
+			setProcessLoading(true);
 			if (
 				!accountChargeableJobs?.priced ||
 				accountChargeableJobs.priced.length === 0
@@ -801,9 +804,7 @@ function InvoiceProcessor() {
 			const response = await accountCreateInvoice(autoEmailInvoices, payload);
 
 			if (response?.status === 'success') {
-				toast.success(
-					`${accountChargeableJobs?.priced?.length} jobs processed successfully!`
-				);
+				toast.success(`Invoice Account Processed!`);
 				handleShow();
 			} else {
 				toast.error('Some jobs failed to process.');
@@ -811,6 +812,8 @@ function InvoiceProcessor() {
 		} catch (error) {
 			console.error('Error processing all jobs:', error);
 			toast.error('Failed to process all jobs.');
+		} finally {
+			setProcessLoading(false);
 		}
 	};
 
@@ -1418,8 +1421,10 @@ function InvoiceProcessor() {
 										<button
 											className='btn btn-success flex justify-center mt-5 w-full'
 											onClick={handleProcessDriver}
+											disabled={processLoading}
 										>
-											Process Driver {accountChargeableJobs?.priced?.length}
+											Invoice {selectedAccount === 0 && 'All'} Account{' '}
+											{selectedAccount !== 0 && selectedAccount}
 										</button>
 									)}
 								</div>

@@ -526,13 +526,14 @@ function StateProcessing() {
 		(state) => state.billing
 	);
 	const [selectedDriver, setSelectedDriver] = useState(0);
-	const [selectedScope, setSelectedScope] = useState('3');
+	const [selectedScope, setSelectedScope] = useState('1');
 	const [priceBaseModal, setPriceBaseModal] = useState(false);
 	const [date, setDate] = useState(new Date());
 	const [openDate, setOpenDate] = useState(false);
 	const [search, setSearch] = useState('');
 	const [order, setOrder] = useState('asc'); // Sort order
 	const [orderBy, setOrderBy] = useState(''); // Default sorted column
+	const [processLoading, setProcessLoading] = useState(false);
 	// console.log(driverChargeableJobs);
 	const scrollRef = useRef(null);
 
@@ -734,6 +735,7 @@ function StateProcessing() {
 
 	const handleProcessDriver = async () => {
 		try {
+			setProcessLoading(true);
 			if (
 				!driverChargeableJobs?.priced ||
 				driverChargeableJobs.priced.length === 0
@@ -780,7 +782,7 @@ function StateProcessing() {
 
 			if (response?.status === 'success') {
 				toast.success(
-					`${driverChargeableJobs?.priced?.length} jobs processed successfully!`
+					`Job(s) processed successfully!`
 				);
 				handleShow();
 			} else {
@@ -789,6 +791,8 @@ function StateProcessing() {
 		} catch (error) {
 			console.error('Error processing all jobs:', error);
 			toast.error('Failed to process all jobs.');
+		} finally {
+			setProcessLoading(false);
 		}
 	};
 
@@ -1261,8 +1265,10 @@ function StateProcessing() {
 										<button
 											className='btn btn-success flex mt-5 justify-center w-full'
 											onClick={handleProcessDriver}
+											disabled={processLoading}
 										>
-											Process Driver {driverChargeableJobs?.priced?.length}
+											Process {selectedDriver === 0 && 'All'} Driver{' '}
+											{selectedDriver !== 0 && selectedDriver}
 										</button>
 									)}
 								</div>
