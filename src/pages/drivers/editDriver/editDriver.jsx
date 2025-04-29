@@ -38,7 +38,7 @@ function EditDriver({ open, onOpenChange }) {
 		role: driver?.role || 0,
 		colorCode: driver?.colorRGB || '#000000',
 		vehicleType: driver?.vehicleType || 0,
-		sendMessageOfType: driver?.sendMessageOfType || 0,
+		comms: driver?.comms || 0,
 		showAllBookings: driver?.showAllBookings || false,
 		nonAce: driver?.nonAce || false,
 	};
@@ -366,12 +366,12 @@ function EditDriver({ open, onOpenChange }) {
 						</div>
 						<div className='flex flex-col gap-1 pb-2 w-full'>
 							<label className='form-label text-gray-900'>
-								Notification Preference
+								Communication Method
 							</label>
 							<Select
-								value={formik.values.sendMessageOfType.toString()}
+								value={formik.values.comms.toString()}
 								onValueChange={(value) =>
-									formik.setFieldValue('sendMessageOfType', Number(value))
+									formik.setFieldValue('comms', Number(value))
 								}
 							>
 								<SelectTrigger className='w-full'>
@@ -384,15 +384,14 @@ function EditDriver({ open, onOpenChange }) {
 									<SelectItem value='3'>Push</SelectItem>
 								</SelectContent>
 							</Select>
-							{formik.touched.sendMessageOfType &&
-								formik.errors.sendMessageOfType && (
-									<span
-										color='alert'
-										className='text-danger text-xs mt-1'
-									>
-										{formik.errors.sendMessageOfType}
-									</span>
-								)}
+							{formik.touched.comms && formik.errors.comms && (
+								<span
+									color='alert'
+									className='text-danger text-xs mt-1'
+								>
+									{formik.errors.comms}
+								</span>
+							)}
 						</div>
 
 						<div className='flex justify-start items-center gap-2'>
