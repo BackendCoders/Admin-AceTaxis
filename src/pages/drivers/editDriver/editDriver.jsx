@@ -38,6 +38,7 @@ function EditDriver({ open, onOpenChange }) {
 		role: driver?.role || 0,
 		colorCode: driver?.colorRGB || '#000000',
 		vehicleType: driver?.vehicleType || 0,
+		sendMessageOfType: driver?.sendMessageOfType || 0,
 		showAllBookings: driver?.showAllBookings || false,
 		nonAce: driver?.nonAce || false,
 	};
@@ -362,6 +363,36 @@ function EditDriver({ open, onOpenChange }) {
 									</span>
 								)}
 							</div>
+						</div>
+						<div className='flex flex-col gap-1 pb-2 w-full'>
+							<label className='form-label text-gray-900'>
+								Notification Preference
+							</label>
+							<Select
+								value={formik.values.sendMessageOfType.toString()}
+								onValueChange={(value) =>
+									formik.setFieldValue('sendMessageOfType', Number(value))
+								}
+							>
+								<SelectTrigger className='w-full'>
+									<SelectValue placeholder='Select' />
+								</SelectTrigger>
+								<SelectContent>
+									<SelectItem value='0'>None</SelectItem>
+									<SelectItem value='1'>WhatsApp</SelectItem>
+									<SelectItem value='2'>SMS</SelectItem>
+									<SelectItem value='3'>Push</SelectItem>
+								</SelectContent>
+							</Select>
+							{formik.touched.sendMessageOfType &&
+								formik.errors.sendMessageOfType && (
+									<span
+										color='alert'
+										className='text-danger text-xs mt-1'
+									>
+										{formik.errors.sendMessageOfType}
+									</span>
+								)}
 						</div>
 
 						<div className='flex justify-start items-center gap-2'>
