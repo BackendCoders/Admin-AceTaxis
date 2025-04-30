@@ -409,9 +409,8 @@ function RowNotPriced({
 					<IconButton
 						size='small'
 						disabled={
-							row?.paid ||
-							(buttonLoading.rowId === row?.id &&
-								buttonLoading.button === 'resend')
+							buttonLoading.rowId === row?.id &&
+							buttonLoading.button === 'resend'
 						}
 					>
 						<EmailOutlined
