@@ -83,10 +83,7 @@ function RowNotPriced({ row, setPriceBaseModal, handlePostButton }) {
 	const [parking, setParking] = useState(row.parking);
 
 	const calculatedTotal =
-		Number(driverFare) +
-		Number(parking) +
-		Number(waiting) +
-		Number(journeyCharge);
+		Number(parking) + Number(waiting) + Number(journeyCharge);
 
 	const [debouncedValue, setDebouncedValue] = useState(null);
 
@@ -303,7 +300,7 @@ function RowNotPriced({ row, setPriceBaseModal, handlePostButton }) {
 					<IconButton
 						size='small'
 						onClick={() => {
-							if (driverFare === 0) {
+							if (journeyCharge === 0) {
 								toast.error('Driver Price Should not be 0'); // Show error if price is 0
 							} else {
 								handlePostButton(row); // Post the job if valid
@@ -688,7 +685,7 @@ function InvoiceProcessor() {
 
 	const handlePostButton = async (row) => {
 		try {
-			const postJob = row?.driverFare > 0 && true;
+			const postJob = row?.journeyCharge > 0 && true;
 			const response = await accountPostOrUnpostJobs(postJob, row?.id);
 			if (response?.status === 'success') {
 				toast.success('Job posted successfully');

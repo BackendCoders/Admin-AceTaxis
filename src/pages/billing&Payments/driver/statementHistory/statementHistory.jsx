@@ -415,21 +415,16 @@ function RowNotPriced({
 					>
 						<EmailOutlined
 							className={`${
-								row.paid ||
-								(buttonLoading.rowId === row?.id &&
-									buttonLoading.button === 'resend')
+								buttonLoading.rowId === row?.id &&
+								buttonLoading.button === 'resend'
 									? 'text-gray-400 dark:text-gray-500' // Blur effect when disabled
 									: row?.coa
 										? 'text-blue-600 dark:text-blue-600'
 										: 'text-blue-500 dark:text-blue-400'
 							}`}
-							onClick={() => {
-								if (row.driverFare === 0 && !row?.paid) {
-									toast.error('Driver Price Should not be 0'); // Show error if price is 0
-								} else {
-									handleResendDriverStatement(row); // Post the job if valid
-								}
-							}}
+							onClick={
+								() => handleResendDriverStatement(row) // Post the job if valid
+							}
 						/>
 					</IconButton>
 				</TableCell>
