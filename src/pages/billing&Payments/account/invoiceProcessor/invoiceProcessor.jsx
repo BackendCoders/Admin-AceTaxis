@@ -75,7 +75,12 @@ import {
 } from '@/partials/toolbar';
 import { refreshAccountChargeableJobs } from '../../../../slices/billingSlice';
 // Collapsible Row Component
-function RowNotPriced({ row, setPriceBaseModal, handlePostButton }) {
+function RowNotPriced({
+	row,
+	setPriceBaseModal,
+	setSelectedBooking,
+	handlePostButton,
+}) {
 	const [open, setOpen] = useState(false);
 	const [waiting, setWaiting] = useState(row.waiting);
 	const [journeyCharge, setJourneyCharge] = useState(row.journeyCharge);
@@ -111,6 +116,10 @@ function RowNotPriced({ row, setPriceBaseModal, handlePostButton }) {
 		// Set debounced value for API call
 		setDebouncedValue({ field, value: newValue });
 	};
+
+	useEffect(() => {
+		setJourneyCharge(row.journeyCharge);
+	}, [row.journeyCharge]);
 
 	useEffect(() => {
 		if (!debouncedValue) return;
@@ -288,7 +297,10 @@ function RowNotPriced({ row, setPriceBaseModal, handlePostButton }) {
 				<TableCell>
 					<IconButton
 						size='small'
-						onClick={() => setPriceBaseModal(true)}
+						onClick={() => {
+							setSelectedBooking(row);
+							setPriceBaseModal(true);
+						}}
 					>
 						<MoneyIcon
 							className={`${row?.coa ? 'text-green-600 dark:text-green-600' : 'text-green-500 dark:text-green-400'}  `}
@@ -530,6 +542,7 @@ function InvoiceProcessor() {
 	);
 	const [selectedAccount, setSelectedAccount] = useState(0);
 	const [priceBaseModal, setPriceBaseModal] = useState(false);
+	const [selectedBooking, setSelectedBooking] = useState(null);
 	const [autoEmailInvoices, setAutoEmailInvoices] = useState(true);
 	const [search, setSearch] = useState('');
 	const [order, setOrder] = useState('asc'); // Sort order
@@ -1192,23 +1205,24 @@ function InvoiceProcessor() {
 												>
 													{sortedBookings.map((row) => (
 														<>
-															{priceBaseModal && (
-																<PriceBase
-																	open={priceBaseModal}
-																	onOpenChange={handleClose}
-																	bookingId={row?.id}
-																	handleShow={handleShow}
-																/>
-															)}
 															<RowNotPriced
 																key={row.id}
 																row={row}
 																setPriceBaseModal={setPriceBaseModal}
+																setSelectedBooking={setSelectedBooking}
 																handlePostButton={handlePostButton}
 															/>
 														</>
 													))}
 												</TableBody>
+												{priceBaseModal && (
+													<PriceBase
+														open={priceBaseModal}
+														bookingId={selectedBooking?.id}
+														onOpenChange={handleClose}
+														handleShow={handleShow}
+													/>
+												)}
 											</Table>
 										</TableContainer>
 									) : (
@@ -1448,7 +1462,7 @@ function PriceBase({ open, onOpenChange, bookingId, handleShow }) {
 
 	// console.log({ bookingId, booking, userData });
 	const initialValues = {
-		priceFromBase: booking?.priceFromBase || false,
+		priceFromBase: booking?.priceFromBase || true,
 	};
 
 	// console.log('accNo---', booking);
