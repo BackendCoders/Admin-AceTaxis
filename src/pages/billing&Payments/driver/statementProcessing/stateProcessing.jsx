@@ -68,7 +68,12 @@ import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import { cancelBooking } from '../../../../service/operations/webBookingsApi';
 
 // Collapsible Row Component
-function RowNotPriced({ row, setPriceBaseModal, handlePostButton }) {
+function RowNotPriced({
+	row,
+	setPriceBaseModal,
+	setSelectedBooking,
+	handlePostButton,
+}) {
 	const [open, setOpen] = useState(false);
 	const [waiting, setWaiting] = useState(row.waiting);
 	const [driverFare, setDriverFare] = useState(row.driverFare);
@@ -282,7 +287,10 @@ function RowNotPriced({ row, setPriceBaseModal, handlePostButton }) {
 				<TableCell>
 					<IconButton
 						size='small'
-						onClick={() => setPriceBaseModal(true)}
+						onClick={() => {
+							setPriceBaseModal(true);
+							setSelectedBooking(row);
+						}}
 					>
 						<MoneyIcon
 							className={`${row?.coa ? 'text-green-600 dark:text-green-600' : 'text-green-500 dark:text-green-400'}  `}
@@ -528,6 +536,8 @@ function StateProcessing() {
 	const [selectedDriver, setSelectedDriver] = useState(0);
 	const [selectedScope, setSelectedScope] = useState('1');
 	const [priceBaseModal, setPriceBaseModal] = useState(false);
+	const [selectedBooking, setSelectedBooking] = useState(null);
+
 	const [date, setDate] = useState(new Date());
 	const [openDate, setOpenDate] = useState(false);
 	const [search, setSearch] = useState('');
@@ -781,9 +791,7 @@ function StateProcessing() {
 			const response = await driverCreateStatements(payload);
 
 			if (response?.status === 'success') {
-				toast.success(
-					`Job(s) processed successfully!`
-				);
+				toast.success(`Job(s) processed successfully!`);
 				handleShow();
 			} else {
 				toast.error('Some jobs failed to process.');
@@ -1102,23 +1110,24 @@ function StateProcessing() {
 												>
 													{sortedBookings.map((row) => (
 														<>
-															{priceBaseModal && (
-																<PriceBase
-																	open={priceBaseModal}
-																	onOpenChange={handleClose}
-																	bookingId={row?.id}
-																	handleShow={handleShow}
-																/>
-															)}
 															<RowNotPriced
 																key={row.id}
 																row={row}
 																setPriceBaseModal={setPriceBaseModal}
+																setSelectedBooking={setSelectedBooking}
 																handlePostButton={handlePostButton}
 															/>
 														</>
 													))}
 												</TableBody>
+												{priceBaseModal && (
+													<PriceBase
+														open={priceBaseModal}
+														onOpenChange={handleClose}
+														bookingId={selectedBooking?.id}
+														handleShow={handleShow}
+													/>
+												)}
 											</Table>
 										</TableContainer>
 									) : (
@@ -1294,7 +1303,7 @@ function PriceBase({ open, onOpenChange, bookingId, handleShow }) {
 	const booking = notPriced?.find((job) => job?.bookingId === bookingId);
 
 	const initialValues = {
-		priceFromBase: booking?.priceFromBase || false,
+		priceFromBase: booking?.priceFromBase || true,
 	};
 
 	const formik = useFormik({
