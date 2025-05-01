@@ -88,7 +88,7 @@ function RowNotPriced({
 	const [parking, setParking] = useState(row.parking);
 
 	const calculatedTotal =
-		Number(parking) + Number(waiting) + Number(journeyCharge);
+		Number(parking) + Number(row?.waitingCharge) + Number(journeyCharge);
 
 	const [debouncedValue, setDebouncedValue] = useState(null);
 
@@ -117,9 +117,9 @@ function RowNotPriced({
 		setDebouncedValue({ field, value: newValue });
 	};
 
-	useEffect(() => {
-		setJourneyCharge(row.journeyCharge);
-	}, [row.journeyCharge]);
+	// useEffect(() => {
+	// 	setJourneyCharge(row.journeyCharge);
+	// }, [row.journeyCharge]);
 
 	useEffect(() => {
 		if (!debouncedValue) return;
@@ -234,7 +234,7 @@ function RowNotPriced({
 					<input
 						type='number'
 						className='w-16 text-center border rounded p-1 bg-inherit ring-inherit dark:bg-inherit dark:ring-inherit'
-						value='waiting'
+						value={waiting}
 						name={`waiting-${row.id}`}
 						onChange={(e) => handleInputChange('waiting', +e.target.value)}
 						onKeyDown={(e) => handleKeyPress(e, `driverFare-${row.id}`)}
@@ -313,7 +313,7 @@ function RowNotPriced({
 						size='small'
 						onClick={() => {
 							if (journeyCharge === 0) {
-								toast.error('Driver Price Should not be 0'); // Show error if price is 0
+								toast.error('Journey Charge Should not be 0'); // Show error if price is 0
 							} else {
 								handlePostButton(row); // Post the job if valid
 							}
