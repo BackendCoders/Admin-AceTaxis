@@ -70,11 +70,15 @@ import { cancelBooking } from '../../../../service/operations/webBookingsApi';
 // Collapsible Row Component
 function RowNotPriced({
 	row,
-	setPriceBaseModal,
+	// setPriceBaseModal,
 	setSelectedBooking,
 	handlePostButton,
 	handleShow,
 }) {
+	const userData = JSON.parse(localStorage.getItem('userData'));
+	const { driverChargeableJobs } = useSelector((state) => state.billing);
+	const notPriced = driverChargeableJobs?.notPriced;
+	const booking = notPriced?.find((job) => job?.bookingId === row?.id);
 	const [open, setOpen] = useState(false);
 	const [waiting, setWaiting] = useState(row.waiting);
 	const [driverFare, setDriverFare] = useState(row.driverFare);
@@ -104,6 +108,38 @@ function RowNotPriced({
 		} catch (error) {
 			console.error('Failed to cancel invoice:', error);
 			toast.error('Failed to cancel invoice');
+		}
+	};
+
+	const handlePriceFromBaseButton = async () => {
+		try {
+			const payload = {
+				pickupPostcode: booking?.pickupPostcode || '',
+				viaPostcodes: booking?.vias?.length
+					? booking.vias.map((via) => via.postCode)
+					: [], // Map via postcodes
+				destinationPostcode: booking?.destinationPostcode || '',
+				pickupDateTime: booking?.date || new Date().toISOString(), // Use booking date if available
+				passengers: booking?.passengers || 0,
+				priceFromBase: true, // Use form value
+				bookingId: booking?.bookingId || 0,
+				actionByUserId: userData?.userId || 0,
+				updatedByName: userData?.fullName || '', // Change as needed
+				price: booking?.price || 0,
+				priceAccount: booking?.priceAccount || 0,
+				mileage: booking?.miles || 0,
+				mileageText: `${booking?.miles || 0} miles`, // Convert miles to string
+				durationText: '', // No duration available in provided object
+			};
+			const response = await driverPriceJobByMileage(payload);
+			if (response.status === 'success') {
+				toast.success('Charge From Base Updated Successfully');
+				handleShow();
+			} else {
+				toast.error('Failed to Update Charge From Base');
+			}
+		} catch (error) {
+			console.log(error);
 		}
 	};
 
@@ -291,8 +327,9 @@ function RowNotPriced({
 					<IconButton
 						size='small'
 						onClick={() => {
-							setPriceBaseModal(true);
 							setSelectedBooking(row);
+							// setPriceBaseModal(true);
+							handlePriceFromBaseButton();
 						}}
 					>
 						<MoneyIcon
@@ -1116,7 +1153,7 @@ function StateProcessing() {
 															<RowNotPriced
 																key={row.id}
 																row={row}
-																setPriceBaseModal={setPriceBaseModal}
+																// setPriceBaseModal={setPriceBaseModal}
 																setSelectedBooking={setSelectedBooking}
 																handlePostButton={handlePostButton}
 																handleShow={handleShow}
