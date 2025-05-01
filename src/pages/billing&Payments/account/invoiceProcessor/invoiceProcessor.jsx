@@ -80,6 +80,7 @@ function RowNotPriced({
 	setPriceBaseModal,
 	setSelectedBooking,
 	handlePostButton,
+	handleShow,
 }) {
 	const [open, setOpen] = useState(false);
 	const [waiting, setWaiting] = useState(row.waiting);
@@ -97,6 +98,7 @@ function RowNotPriced({
 			const response = await clearInvoice(row?.id);
 			if (response?.status === 'success') {
 				toast.success('Invoice Cancellation Successful');
+				handleShow();
 			}
 		} catch (error) {
 			console.error('Failed to cancel invoice:', error);
@@ -161,6 +163,7 @@ function RowNotPriced({
 			if (response?.status === 'success') {
 				// console.log(response);
 				toast.success('Value Updated');
+				handleShow();
 			}
 		} catch (error) {
 			console.error('Error updating charges:', error);
@@ -1211,6 +1214,7 @@ function InvoiceProcessor() {
 																setPriceBaseModal={setPriceBaseModal}
 																setSelectedBooking={setSelectedBooking}
 																handlePostButton={handlePostButton}
+																handleShow={handleShow}
 															/>
 														</>
 													))}

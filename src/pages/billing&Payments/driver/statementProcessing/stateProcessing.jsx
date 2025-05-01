@@ -73,6 +73,7 @@ function RowNotPriced({
 	setPriceBaseModal,
 	setSelectedBooking,
 	handlePostButton,
+	handleShow,
 }) {
 	const [open, setOpen] = useState(false);
 	const [waiting, setWaiting] = useState(row.waiting);
@@ -82,7 +83,7 @@ function RowNotPriced({
 	const waitingRef = useRef(null);
 
 	const calculatedTotal =
-		Number(driverFare) + Number(parking) + Number(waiting);
+		Number(driverFare) + Number(parking) + Number(row?.waitingCharge);
 
 	const [debouncedValue, setDebouncedValue] = useState(null);
 
@@ -98,6 +99,7 @@ function RowNotPriced({
 			const response = await cancelBooking(payload);
 			if (response?.status === 'success') {
 				toast.success('Invoice Cancellation Successful');
+				handleShow(); // Refresh the data after cancellation
 			}
 		} catch (error) {
 			console.error('Failed to cancel invoice:', error);
@@ -163,6 +165,7 @@ function RowNotPriced({
 
 			if (response?.status === 'success') {
 				toast.success('Value Updated');
+				handleShow(); // Refresh the data after updating
 				// console.log(response);
 			}
 		} catch (error) {
@@ -1116,6 +1119,7 @@ function StateProcessing() {
 																setPriceBaseModal={setPriceBaseModal}
 																setSelectedBooking={setSelectedBooking}
 																handlePostButton={handlePostButton}
+																handleShow={handleShow}
 															/>
 														</>
 													))}
