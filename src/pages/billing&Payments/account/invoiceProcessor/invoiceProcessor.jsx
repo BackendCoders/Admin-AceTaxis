@@ -77,16 +77,20 @@ import { refreshAccountChargeableJobs } from '../../../../slices/billingSlice';
 // Collapsible Row Component
 function RowNotPriced({
 	row,
-	setPriceBaseModal,
+	// setPriceBaseModal,
 	setSelectedBooking,
 	handlePostButton,
 	handleShow,
 }) {
+	const userData = JSON.parse(localStorage.getItem('userData'));
 	const [open, setOpen] = useState(false);
 	const [waiting, setWaiting] = useState(row.waiting);
 	const [journeyCharge, setJourneyCharge] = useState(row.journeyCharge);
 	const [driverFare, setDriverFare] = useState(row.driverFare);
 	const [parking, setParking] = useState(row.parking);
+	const { accountChargeableJobs } = useSelector((state) => state.billing);
+	const notPriced = accountChargeableJobs?.notPriced;
+	const booking = notPriced?.find((job) => job?.bookingId === row?.id);
 
 	const calculatedTotal =
 		Number(parking) + Number(row?.waitingCharge) + Number(journeyCharge);
@@ -117,6 +121,44 @@ function RowNotPriced({
 
 		// Set debounced value for API call
 		setDebouncedValue({ field, value: newValue });
+	};
+
+	const handlePriceFromBaseButton = async () => {
+		try {
+			const payload = {
+				pickupPostcode: booking?.pickupPostcode || '',
+				viaPostcodes: booking?.vias?.length
+					? booking.vias.map((via) => via.postCode)
+					: [], // Map via postcodes
+				destinationPostcode: booking?.destinationPostcode || '',
+				pickupDateTime: booking?.date || new Date().toISOString(), // Use booking date if available
+				passengers: booking?.passengers || 0,
+				priceFromBase: true, // Use form value
+				bookingId: booking?.bookingId || 0,
+				actionByUserId: userData?.userId || 0,
+				updatedByName: userData?.fullName || '', // Change as needed
+				price: booking?.price || 0,
+				priceAccount: booking?.priceAccount || 0,
+				mileage: booking?.miles || 0,
+				mileageText: `${booking?.miles || 0} miles`, // Convert miles to string
+				durationText: '', // No duration available in provided object
+			};
+			let response;
+			if (booking?.accNo === 10026 || booking?.accNo === 9014) {
+				response = await accountPriceJobHVS(payload);
+			} else {
+				response = await accountPriceJobByMileage(payload);
+			}
+			// console.log('Response:', response);
+			if (response.status === 'success') {
+				toast.success('Charge From Base Updated Successfully');
+				handleShow();
+			} else {
+				toast.error('Failed to Update Charge From Base');
+			}
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 	// useEffect(() => {
@@ -302,7 +344,8 @@ function RowNotPriced({
 						size='small'
 						onClick={() => {
 							setSelectedBooking(row);
-							setPriceBaseModal(true);
+							// setPriceBaseModal(true);
+							handlePriceFromBaseButton();
 						}}
 					>
 						<MoneyIcon
@@ -1211,7 +1254,7 @@ function InvoiceProcessor() {
 															<RowNotPriced
 																key={row.id}
 																row={row}
-																setPriceBaseModal={setPriceBaseModal}
+																// setPriceBaseModal={setPriceBaseModal}
 																setSelectedBooking={setSelectedBooking}
 																handlePostButton={handlePostButton}
 																handleShow={handleShow}
