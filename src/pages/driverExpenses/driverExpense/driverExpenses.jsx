@@ -215,6 +215,25 @@ const DriverExpenses = () => {
 		}
 	};
 
+	const totalByCategory = useMemo(() => {
+		if (!data) return [];
+		const totals = data?.reduce((acc, item) => {
+			const category = categoryEnum[item.category];
+			if (!acc[category]) {
+				acc[category] = 0;
+			}
+			acc[category] += item.amount;
+			return acc;
+		}, {});
+
+		return Object.entries(totals).map(([category, total]) => ({
+			category,
+			total,
+		}));
+	}, [categoryEnum, data]);
+
+	console.log('totalByCategory', totalByCategory);
+
 	return (
 		<Fragment>
 			<div className='pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1580px] w-full'>
@@ -339,15 +358,37 @@ const DriverExpenses = () => {
 							</div>
 							<div className='card-body'>
 								{data?.length > 0 ? (
-									<DataGrid
-										columns={columns}
-										data={data}
-										rowSelection={true}
-										onRowSelectionChange={handleRowSelection}
-										pagination={{ size: 10 }}
-										sorting={[{ id: 'date', desc: false }]}
-										layout={{ card: true }}
-									/>
+									<>
+										<DataGrid
+											columns={columns}
+											data={data}
+											rowSelection={true}
+											onRowSelectionChange={handleRowSelection}
+											pagination={{ size: 10 }}
+											sorting={[{ id: 'date', desc: false }]}
+											layout={{ card: true }}
+										/>
+										<div className='flex justify-end gap-6 dark:bg-[#14151A] font-semibold p-3 mt-2'>
+											{totalByCategory?.length > 0 &&
+												totalByCategory.map((item) => {
+													return (
+														<div
+															className=''
+															key={item.category}
+														>
+															<div className='flex gap-2'>
+																<span className=' font-medium text-gray-600'>
+																	{item.category} :
+																</span>
+																<span className=' font-bold text-gray-800'>
+																	£ {item.total?.toFixed(2)}
+																</span>
+															</div>
+														</div>
+													);
+												})}
+										</div>
+									</>
 								) : (
 									<div className='text-center py-10 text-gray-500'>
 										No data found
