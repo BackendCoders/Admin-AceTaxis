@@ -63,7 +63,7 @@ const DriverTracking = () => {
 		const handleKeyDown = (event) => {
 			if (event.key === 'F12') {
 				event.preventDefault();
-				setIsFullScreen((prevState) => !prevState); // Toggle full-screen
+				setIsFullScreen((prevState) => !prevState);
 			}
 			if (event.key === 'Escape' && isFullScreen) {
 				setIsFullScreen(false); // Exit full-screen on Escape key
