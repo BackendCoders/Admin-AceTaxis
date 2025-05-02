@@ -150,6 +150,10 @@ function RowNotPriced({
 		}
 	}, []);
 
+	useEffect(() => {
+		setDriverFare(row.driverFare);
+	}, [row.driverFare]);
+
 	const handleInputChange = async (field, value) => {
 		const newValue = value < 0 ? 0 : value;
 

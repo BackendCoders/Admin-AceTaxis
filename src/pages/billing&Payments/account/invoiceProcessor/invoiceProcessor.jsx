@@ -151,8 +151,8 @@ function RowNotPriced({
 			}
 			// console.log('Response:', response);
 			if (response.status === 'success') {
-				toast.success('Charge From Base Updated Successfully');
 				handleShow();
+				toast.success('Charge From Base Updated Successfully');
 			} else {
 				toast.error('Failed to Update Charge From Base');
 			}
@@ -161,9 +161,9 @@ function RowNotPriced({
 		}
 	};
 
-	// useEffect(() => {
-	// 	setJourneyCharge(row.journeyCharge);
-	// }, [row.journeyCharge]);
+	useEffect(() => {
+		setJourneyCharge(row.journeyCharge);
+	}, [row.journeyCharge]);
 
 	useEffect(() => {
 		if (!debouncedValue) return;
@@ -204,8 +204,8 @@ function RowNotPriced({
 
 			if (response?.status === 'success') {
 				// console.log(response);
-				toast.success('Value Updated');
 				handleShow();
+				toast.success('Value Updated');
 			}
 		} catch (error) {
 			console.error('Error updating charges:', error);
@@ -639,7 +639,7 @@ function InvoiceProcessor() {
 		driverFare: booking?.price || 0,
 		journeyCharge: booking?.priceAccount || 0,
 		parking: booking?.parkingCharge || 0,
-		total: booking?.totalCost || 0,
+		total: booking?.totalCharge || 0,
 		postedForStatement: booking?.postedForStatement,
 		postedForInvoicing: booking?.postedForInvoicing,
 		details: {
