@@ -113,7 +113,7 @@ const DriverTracking = () => {
 					lat: selectedDriverData.latitude,
 					lng: selectedDriverData.longitude,
 				});
-				setMapZoom(20); // Zoom in
+				setMapZoom(16); // Zoom in
 
 				// Bounce the selected driver's marker
 				setIsBouncing(driverReg);
@@ -127,15 +127,16 @@ const DriverTracking = () => {
 	};
 
 	const filteredDrivers =
-		selectedDriver === 'all'
-			? drivers.filter((driver) =>
-					driver.regNo?.toLowerCase().includes(search.toLowerCase())
-				)
-			: drivers.filter(
-					(driver) =>
-						driver.regNo === selectedDriver &&
-						driver.regNo?.toLowerCase().includes(search.toLowerCase())
-				);
+		// selectedDriver === 'all'
+		// ?
+		drivers.filter((driver) =>
+			driver.regNo?.toLowerCase().includes(search.toLowerCase())
+		);
+	// : drivers.filter(
+	// 		(driver) =>
+	// 			driver.regNo === selectedDriver &&
+	// 			driver.regNo?.toLowerCase().includes(search.toLowerCase())
+	// 	);
 
 	const containerStyle = {
 		width: isFullScreen ? '100vw' : '100%',
