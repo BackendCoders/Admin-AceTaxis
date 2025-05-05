@@ -578,7 +578,7 @@ function StateProcessing() {
 		(state) => state.billing
 	);
 	const [selectedDriver, setSelectedDriver] = useState(0);
-	const [selectedScope, setSelectedScope] = useState('1');
+	const [selectedScope, setSelectedScope] = useState('3');
 	const [priceBaseModal, setPriceBaseModal] = useState(false);
 	const [selectedBooking, setSelectedBooking] = useState(null);
 
