@@ -1176,7 +1176,7 @@ function StateProcessing() {
 											</Table>
 										</TableContainer>
 									) : (
-										<div className='text-start ml-4  text-gray-500'>
+										<div className='text-start ml-4  text-yellow-600 bg-yellow-100 p-2 mr-4'>
 											⚠️ No data found
 										</div>
 									)}
@@ -1310,7 +1310,7 @@ function StateProcessing() {
 											</Table>
 										</TableContainer>
 									) : (
-										<div className='text-start ml-4 text-gray-500'>
+										<div className='text-start ml-4  text-yellow-600 bg-yellow-100 p-2 mr-4 mb-2'>
 											⚠️ No data found
 										</div>
 									)}
