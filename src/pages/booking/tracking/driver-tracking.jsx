@@ -126,6 +126,8 @@ const DriverTracking = () => {
 		}
 	};
 
+	// Filter drivers based on selected driver and search input removed for now
+
 	const filteredDrivers =
 		// selectedDriver === 'all'
 		// ?
