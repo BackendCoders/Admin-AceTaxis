@@ -371,7 +371,7 @@ function RowNotPriced({
 			{/* Collapsible Booking Details Row */}
 			<TableRow>
 				<TableCell
-					colSpan={16}
+					colSpan={18}
 					style={{ paddingBottom: 0, paddingTop: 0 }}
 				>
 					<Collapse
@@ -1044,7 +1044,7 @@ function StateProcessing() {
 													className='bg-gray-100 dark:bg-[#14151A]'
 													sx={{
 														'& .MuiTableCell-root': {
-															borderBottom: '1px solid #464852',
+															// borderBottom: '1px solid #464852',
 															fontWeight: 'bold', // Ensures header text stands out
 														},
 													}}
@@ -1052,7 +1052,7 @@ function StateProcessing() {
 													<TableRow>
 														<TableCell className='w-8' />{' '}
 														{/* Empty Cell for Expand Button */}
-														<TableCell className='text-gray-900 dark:text-gray-700'>
+														<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
 															<TableSortLabel
 																active={orderBy === 'id'}
 																direction={order}
@@ -1068,7 +1068,7 @@ function StateProcessing() {
 																#
 															</TableSortLabel>
 														</TableCell>
-														<TableCell className='text-gray-900 dark:text-gray-700'>
+														<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
 															<TableSortLabel
 																active={orderBy === 'date'}
 																direction={order}
@@ -1084,34 +1084,34 @@ function StateProcessing() {
 																Date
 															</TableSortLabel>
 														</TableCell>
-														<TableCell className='text-gray-900 dark:text-gray-700'>
+														<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
 															Acc #
 														</TableCell>
-														<TableCell className='text-gray-900 dark:text-gray-700'>
+														<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
 															Driver
 														</TableCell>
-														<TableCell className='text-gray-900 dark:text-gray-700'>
+														<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
 															Pickup
 														</TableCell>
-														<TableCell className='text-gray-900 dark:text-gray-700'>
+														<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
 															Destination
 														</TableCell>
-														<TableCell className='text-gray-900 dark:text-gray-700'>
+														<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
 															Passenger
 														</TableCell>
-														<TableCell className='text-gray-900 dark:text-gray-700'>
+														<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
 															Has Vias
 														</TableCell>
-														<TableCell className='text-gray-900 dark:text-gray-700'>
+														<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
 															Waiting
 														</TableCell>
-														<TableCell className='text-gray-900 dark:text-gray-700'>
+														<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
 															Waiting Charge
 														</TableCell>
-														<TableCell className='text-gray-900 dark:text-gray-700'>
+														<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
 															Actual Miles
 														</TableCell>
-														<TableCell className='text-gray-900 dark:text-gray-700'>
+														<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
 															<TableSortLabel
 																active={orderBy === 'driverFare'}
 																direction={order}
@@ -1127,19 +1127,19 @@ function StateProcessing() {
 																Driver Price
 															</TableSortLabel>
 														</TableCell>
-														<TableCell className='text-gray-900 dark:text-gray-700'>
+														<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
 															Parking
 														</TableCell>
-														<TableCell className='text-gray-900 dark:text-gray-700'>
+														<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
 															Total
 														</TableCell>
-														<TableCell className='text-gray-900 dark:text-gray-700'>
+														<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
 															£
 														</TableCell>
-														<TableCell className='text-gray-900 dark:text-gray-700'>
+														<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
 															Post
 														</TableCell>
-														<TableCell className='text-gray-900 dark:text-gray-700'>
+														<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
 															Cancel
 														</TableCell>
 													</TableRow>
@@ -1148,7 +1148,7 @@ function StateProcessing() {
 												<TableBody
 													sx={{
 														'& .MuiTableCell-root': {
-															borderBottom: '1px solid #464852',
+															// borderBottom: '1px solid #464852',
 														},
 													}}
 												>
@@ -1177,7 +1177,7 @@ function StateProcessing() {
 										</TableContainer>
 									) : (
 										<div className='text-start ml-4  text-yellow-600 bg-yellow-100 p-2 mr-4'>
-											⚠️ No data found
+											⚠️ No Data Available
 										</div>
 									)}
 								</div>
@@ -1197,7 +1197,7 @@ function StateProcessing() {
 													className='bg-gray-100 dark:bg-[#14151A]'
 													sx={{
 														'& .MuiTableCell-root': {
-															borderBottom: '1px solid #464852',
+															// borderBottom: '1px solid #464852',
 															fontWeight: 'bold', // Ensures header text stands out
 														},
 													}}
@@ -1205,7 +1205,7 @@ function StateProcessing() {
 													<TableRow>
 														<TableCell className='w-8' />{' '}
 														{/* Empty Cell for Expand Button */}
-														<TableCell className='text-gray-900 dark:text-gray-700'>
+														<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
 															<TableSortLabel
 																active={orderBy === 'id'}
 																direction={order}
@@ -1221,7 +1221,7 @@ function StateProcessing() {
 																#
 															</TableSortLabel>
 														</TableCell>
-														<TableCell className='text-gray-900 dark:text-gray-700'>
+														<TableCell className='text-gray-900 dark:text-gray-700 border-e '>
 															<TableSortLabel
 																active={orderBy === 'date'}
 																direction={order}
@@ -1237,34 +1237,34 @@ function StateProcessing() {
 																Date
 															</TableSortLabel>
 														</TableCell>
-														<TableCell className='text-gray-900 dark:text-gray-700'>
+														<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
 															Acc #
 														</TableCell>
-														<TableCell className='text-gray-900 dark:text-gray-700'>
+														<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
 															Driver
 														</TableCell>
-														<TableCell className='text-gray-900 dark:text-gray-700'>
+														<TableCell className='text-gray-900 dark:text-gray-700 border-e '>
 															Pickup
 														</TableCell>
-														<TableCell className='text-gray-900 dark:text-gray-700'>
+														<TableCell className='text-gray-900 dark:text-gray-700 border-e '>
 															Destination
 														</TableCell>
-														<TableCell className='text-gray-900 dark:text-gray-700'>
+														<TableCell className='text-gray-900 dark:text-gray-700 border-e '>
 															Passenger
 														</TableCell>
-														<TableCell className='text-gray-900 dark:text-gray-700'>
+														<TableCell className='text-gray-900 dark:text-gray-700 border-e '>
 															Has Vias
 														</TableCell>
-														<TableCell className='text-gray-900 dark:text-gray-700'>
+														<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
 															Waiting
 														</TableCell>
-														<TableCell className='text-gray-900 dark:text-gray-700'>
+														<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
 															Waiting Charge
 														</TableCell>
-														<TableCell className='text-gray-900 dark:text-gray-700'>
+														<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
 															Actual Miles
 														</TableCell>
-														<TableCell className='text-gray-900 dark:text-gray-700'>
+														<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
 															<TableSortLabel
 																active={orderBy === 'driverFare'}
 																direction={order}
@@ -1280,13 +1280,13 @@ function StateProcessing() {
 																Driver Price
 															</TableSortLabel>
 														</TableCell>
-														<TableCell className='text-gray-900 dark:text-gray-700'>
+														<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
 															Parking
 														</TableCell>
-														<TableCell className='text-gray-900 dark:text-gray-700'>
+														<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
 															Total
 														</TableCell>
-														<TableCell className='text-gray-900 dark:text-gray-700'>
+														<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
 															Revert
 														</TableCell>
 													</TableRow>
@@ -1295,7 +1295,7 @@ function StateProcessing() {
 												<TableBody
 													sx={{
 														'& .MuiTableCell-root': {
-															borderBottom: '1px solid #464852',
+															// borderBottom: '1px solid #464852',
 														},
 													}}
 												>
@@ -1311,7 +1311,7 @@ function StateProcessing() {
 										</TableContainer>
 									) : (
 										<div className='text-start ml-4  text-yellow-600 bg-yellow-100 p-2 mr-4 mb-2'>
-											⚠️ No data found
+											⚠️ No Data Available
 										</div>
 									)}
 

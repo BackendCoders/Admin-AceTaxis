@@ -738,106 +738,115 @@ function InvoiceHistory() {
 								</div>
 							</div>
 							<div className='card-body'>
-								<TableContainer
-									component={Paper}
-									className='shadow-none bg-white dark:bg-[#14151A] overflow-x-auto'
-								>
-									<Table className='text-[#14151A] dark:text-gray-100'>
-										<TableHead
-											className='bg-gray-100 dark:bg-[#14151A]'
-											sx={{
-												'& .MuiTableCell-root': {
-													borderBottom: '1px solid #464852',
-													fontWeight: 'bold', // Ensures header text stands out
-												},
-											}}
-										>
-											<TableRow>
-												<TableCell className='w-8' />{' '}
-												{/* Empty Cell for Expand Button */}
-												<TableCell className='text-gray-900 dark:text-gray-700'>
-													<TableSortLabel
-														active={orderBy === 'id'}
-														direction={order}
-														onClick={() => handleSort('id')}
-														sx={{
-															'&:hover': { color: '#9A9CAE' }, // Change color on hover
-															'&.Mui-active': { color: '#9A9CAE' },
-															'&.Mui-active .MuiTableSortLabel-icon': {
-																color: '#9A9CAE',
-															}, // Change to blue when active
-														}}
-													>
-														Invoice #
-													</TableSortLabel>
-												</TableCell>
-												<TableCell className='text-gray-900 dark:text-gray-700'>
-													Acc No.
-												</TableCell>
-												<TableCell className='text-gray-900 dark:text-gray-700'>
-													Date
-												</TableCell>
-												<TableCell className='text-gray-900 dark:text-gray-700'>
-													NET
-												</TableCell>
-												<TableCell className='text-gray-900 dark:text-gray-700'>
-													VAT
-												</TableCell>
-												<TableCell className='text-gray-900 dark:text-gray-700'>
-													Total
-												</TableCell>
-												<TableCell className='text-gray-900 dark:text-gray-700'>
-													Download
-												</TableCell>
-												<TableCell className='text-gray-900 dark:text-gray-700'>
-													Download CSV
-												</TableCell>
-												<TableCell className='text-gray-900 dark:text-gray-700'>
-													Resend
-												</TableCell>
-												<TableCell className='text-gray-900 dark:text-gray-700'>
-													<TableSortLabel
-														active={orderBy === 'paid'}
-														direction={order}
-														onClick={() => handleSort('paid')}
-														sx={{
-															'&:hover': { color: '#9A9CAE' }, // Change color on hover
-															'&.Mui-active': { color: '#9A9CAE' },
-															'&.Mui-active .MuiTableSortLabel-icon': {
-																color: '#9A9CAE',
-															}, // Change to blue when active
-														}}
-													>
-														Paid
-													</TableSortLabel>
-												</TableCell>
-												<TableCell className='text-gray-900 dark:text-gray-700'>
-													Mark Paid
-												</TableCell>
-											</TableRow>
-										</TableHead>
+								<div className='flex justify-start items-center gap-4 ml-4 mt-2 mb-2'>
+									Available Invoices
+								</div>
+								{sortedBookings?.length > 0 ? (
+									<TableContainer
+										component={Paper}
+										className='shadow-none bg-white dark:bg-[#14151A] overflow-x-auto'
+									>
+										<Table className='text-[#14151A] dark:text-gray-100'>
+											<TableHead
+												className='bg-gray-100 dark:bg-[#14151A]'
+												sx={{
+													'& .MuiTableCell-root': {
+														// borderBottom: '1px solid #464852',
+														fontWeight: 'bold', // Ensures header text stands out
+													},
+												}}
+											>
+												<TableRow>
+													<TableCell className='w-8' />{' '}
+													{/* Empty Cell for Expand Button */}
+													<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
+														<TableSortLabel
+															active={orderBy === 'id'}
+															direction={order}
+															onClick={() => handleSort('id')}
+															sx={{
+																'&:hover': { color: '#9A9CAE' }, // Change color on hover
+																'&.Mui-active': { color: '#9A9CAE' },
+																'&.Mui-active .MuiTableSortLabel-icon': {
+																	color: '#9A9CAE',
+																}, // Change to blue when active
+															}}
+														>
+															Invoice #
+														</TableSortLabel>
+													</TableCell>
+													<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
+														Acc No.
+													</TableCell>
+													<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
+														Date
+													</TableCell>
+													<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
+														NET
+													</TableCell>
+													<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
+														VAT
+													</TableCell>
+													<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
+														Total
+													</TableCell>
+													<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
+														Download
+													</TableCell>
+													<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
+														Download CSV
+													</TableCell>
+													<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
+														Resend
+													</TableCell>
+													<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
+														<TableSortLabel
+															active={orderBy === 'paid'}
+															direction={order}
+															onClick={() => handleSort('paid')}
+															sx={{
+																'&:hover': { color: '#9A9CAE' }, // Change color on hover
+																'&.Mui-active': { color: '#9A9CAE' },
+																'&.Mui-active .MuiTableSortLabel-icon': {
+																	color: '#9A9CAE',
+																}, // Change to blue when active
+															}}
+														>
+															Paid
+														</TableSortLabel>
+													</TableCell>
+													<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
+														Mark Paid
+													</TableCell>
+												</TableRow>
+											</TableHead>
 
-										<TableBody
-											sx={{
-												'& .MuiTableCell-root': {
-													borderBottom: '1px solid #464852',
-												},
-											}}
-										>
-											{sortedBookings.map((row) => (
-												<>
-													<RowNotPriced
-														key={row.id}
-														row={row}
-														handlePostButton={handlePostButton}
-														buttonLoading={buttonLoading}
-														setButtonLoading={setButtonLoading}
-													/>
-												</>
-											))}
-										</TableBody>
-									</Table>
-								</TableContainer>
+											<TableBody
+												sx={{
+													'& .MuiTableCell-root': {
+														// borderBottom: '1px solid #464852',
+													},
+												}}
+											>
+												{sortedBookings.map((row) => (
+													<>
+														<RowNotPriced
+															key={row.id}
+															row={row}
+															handlePostButton={handlePostButton}
+															buttonLoading={buttonLoading}
+															setButtonLoading={setButtonLoading}
+														/>
+													</>
+												))}
+											</TableBody>
+										</Table>
+									</TableContainer>
+								) : (
+									<div className='text-start ml-4  text-yellow-600 bg-yellow-100 p-2 mr-4 mb-2'>
+										⚠️ No Data Available
+									</div>
+								)}
 							</div>
 						</div>
 					</div>

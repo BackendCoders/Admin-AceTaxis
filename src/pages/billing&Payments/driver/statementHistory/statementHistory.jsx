@@ -698,111 +698,120 @@ function StatementHistory() {
 									</div>
 								</div>
 								<div className='card-body'>
-									<TableContainer
-										component={Paper}
-										className='shadow-none bg-white dark:bg-[#14151A] overflow-x-auto'
-									>
-										<Table className='text-[#14151A] dark:text-gray-100'>
-											<TableHead
-												className='bg-gray-100 dark:bg-[#14151A]'
-												sx={{
-													'& .MuiTableCell-root': {
-														borderBottom: '1px solid #464852',
-														fontWeight: 'bold', // Ensures header text stands out
-													},
-												}}
-											>
-												<TableRow>
-													<TableCell className='w-8' />{' '}
-													{/* Empty Cell for Expand Button */}
-													<TableCell className='text-gray-900 dark:text-gray-700'>
-														<TableSortLabel
-															active={orderBy === 'id'}
-															direction={order}
-															onClick={() => handleSort('id')}
-															sx={{
-																'&:hover': { color: '#9A9CAE' }, // Change color on hover
-																'&.Mui-active': { color: '#9A9CAE' },
-																'&.Mui-active .MuiTableSortLabel-icon': {
-																	color: '#9A9CAE',
-																}, // Change to blue when active
-															}}
-														>
-															Statement #
-														</TableSortLabel>
-													</TableCell>
-													<TableCell className='text-gray-900 dark:text-gray-700'>
-														Driver #
-													</TableCell>
-													<TableCell className='text-gray-900 dark:text-gray-700'>
-														Generated
-													</TableCell>
-													<TableCell className='text-gray-900 dark:text-gray-700'>
-														Account
-													</TableCell>
-													<TableCell className='text-gray-900 dark:text-gray-700'>
-														Cash
-													</TableCell>
-													<TableCell className='text-gray-900 dark:text-gray-700'>
-														Card
-													</TableCell>
-													<TableCell className='text-gray-900 dark:text-gray-700'>
-														Rank
-													</TableCell>
-													<TableCell className='text-gray-900 dark:text-gray-700'>
-														Card Fees
-													</TableCell>
-													<TableCell className='text-gray-900 dark:text-gray-700'>
-														Total Earned
-													</TableCell>
-													<TableCell className='text-gray-900 dark:text-gray-700'>
-														Total Comms
-													</TableCell>
-													<TableCell className='text-gray-900 dark:text-gray-700'>
-														Payment Due
-													</TableCell>
-													<TableCell className='text-gray-900 dark:text-gray-700'>
-														<TableSortLabel
-															active={orderBy === 'paid'}
-															direction={order}
-															onClick={() => handleSort('paid')}
-															sx={{
-																'&:hover': { color: '#9A9CAE' }, // Change color on hover
-																'&.Mui-active': { color: '#9A9CAE' },
-																'&.Mui-active .MuiTableSortLabel-icon': {
-																	color: '#9A9CAE',
-																}, // Change to blue when active
-															}}
-														>
-															Paid
-														</TableSortLabel>
-													</TableCell>
-													<TableCell className='text-gray-900 dark:text-gray-700'></TableCell>
-													<TableCell className='text-gray-900 dark:text-gray-700'></TableCell>
-												</TableRow>
-											</TableHead>
+									<div className='flex justify-start items-center gap-4 ml-4 mt-2 mb-2'>
+										Available Statements
+									</div>
+									{sortedBookings?.length > 0 ? (
+										<TableContainer
+											component={Paper}
+											className='shadow-none bg-white dark:bg-[#14151A] overflow-x-auto'
+										>
+											<Table className='text-[#14151A] dark:text-gray-100'>
+												<TableHead
+													className='bg-gray-100 dark:bg-[#14151A]'
+													sx={{
+														'& .MuiTableCell-root': {
+															// borderBottom: '1px solid #464852',
+															fontWeight: 'bold', // Ensures header text stands out
+														},
+													}}
+												>
+													<TableRow>
+														<TableCell className='w-8' />{' '}
+														{/* Empty Cell for Expand Button */}
+														<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
+															<TableSortLabel
+																active={orderBy === 'id'}
+																direction={order}
+																onClick={() => handleSort('id')}
+																sx={{
+																	'&:hover': { color: '#9A9CAE' }, // Change color on hover
+																	'&.Mui-active': { color: '#9A9CAE' },
+																	'&.Mui-active .MuiTableSortLabel-icon': {
+																		color: '#9A9CAE',
+																	}, // Change to blue when active
+																}}
+															>
+																Statement #
+															</TableSortLabel>
+														</TableCell>
+														<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
+															Driver #
+														</TableCell>
+														<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
+															Generated
+														</TableCell>
+														<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
+															Account
+														</TableCell>
+														<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
+															Cash
+														</TableCell>
+														<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
+															Card
+														</TableCell>
+														<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
+															Rank
+														</TableCell>
+														<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
+															Card Fees
+														</TableCell>
+														<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
+															Total Earned
+														</TableCell>
+														<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
+															Total Comms
+														</TableCell>
+														<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
+															Payment Due
+														</TableCell>
+														<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
+															<TableSortLabel
+																active={orderBy === 'paid'}
+																direction={order}
+																onClick={() => handleSort('paid')}
+																sx={{
+																	'&:hover': { color: '#9A9CAE' }, // Change color on hover
+																	'&.Mui-active': { color: '#9A9CAE' },
+																	'&.Mui-active .MuiTableSortLabel-icon': {
+																		color: '#9A9CAE',
+																	}, // Change to blue when active
+																}}
+															>
+																Paid
+															</TableSortLabel>
+														</TableCell>
+														<TableCell className='text-gray-900 dark:text-gray-700'></TableCell>
+														<TableCell className='text-gray-900 dark:text-gray-700'></TableCell>
+													</TableRow>
+												</TableHead>
 
-											<TableBody
-												sx={{
-													'& .MuiTableCell-root': {
-														borderBottom: '1px solid #464852',
-													},
-												}}
-											>
-												{sortedBookings.map((row) => (
-													<>
-														<RowNotPriced
-															key={row.id}
-															row={row}
-															handlePostButton={handlePostButton}
-															buttonLoading={buttonLoading}
-															setButtonLoading={setButtonLoading}
-														/>
-													</>
-												))}
-											</TableBody>
-										</Table>
-									</TableContainer>
+												<TableBody
+													sx={{
+														'& .MuiTableCell-root': {
+															// borderBottom: '1px solid #464852',
+														},
+													}}
+												>
+													{sortedBookings.map((row) => (
+														<>
+															<RowNotPriced
+																key={row.id}
+																row={row}
+																handlePostButton={handlePostButton}
+																buttonLoading={buttonLoading}
+																setButtonLoading={setButtonLoading}
+															/>
+														</>
+													))}
+												</TableBody>
+											</Table>
+										</TableContainer>
+									) : (
+										<div className='text-start ml-4  text-yellow-600 bg-yellow-100 p-2 mr-4 mb-2'>
+											⚠️ No Data Available
+										</div>
+									)}
 								</div>
 							</div>
 						</div>

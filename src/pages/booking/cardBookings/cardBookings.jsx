@@ -109,7 +109,7 @@ function Row({ row }) {
 			</TableRow>
 			<TableRow>
 				<TableCell
-					colSpan={9}
+					colSpan={10}
 					style={{ paddingBottom: 0, paddingTop: 0 }}
 				>
 					<Collapse
@@ -358,13 +358,13 @@ function CardBookings() {
 							className='bg-gray-100 dark:bg-[#14151A]'
 							sx={{
 								'& .MuiTableCell-root': {
-									borderBottom: '1px solid #464852',
+									// borderBottom: '1px solid #464852',
 								},
 							}}
 						>
 							<TableRow>
 								<TableCell />
-								<TableCell className='text-[#14151A] dark:text-gray-700'>
+								<TableCell className='text-[#14151A] dark:text-gray-700 border-e'>
 									<TableSortLabel
 										active={orderBy === 'id'}
 										direction={order}
@@ -381,7 +381,7 @@ function CardBookings() {
 										#
 									</TableSortLabel>
 								</TableCell>
-								<TableCell className='text-[#14151A] dark:text-gray-700'>
+								<TableCell className='text-[#14151A] dark:text-gray-700 border-e'>
 									<TableSortLabel
 										active={orderBy === 'date'}
 										direction={order}
@@ -398,7 +398,7 @@ function CardBookings() {
 										Date
 									</TableSortLabel>
 								</TableCell>
-								<TableCell className='text-[#14151A] dark:text-gray-700'>
+								<TableCell className='text-[#14151A] dark:text-gray-700 border-e'>
 									<TableSortLabel
 										active={orderBy === 'driver'}
 										direction={order}
@@ -416,19 +416,19 @@ function CardBookings() {
 									</TableSortLabel>
 								</TableCell>
 								<TableCell
-									className='text-[#14151A] dark:text-gray-700'
+									className='text-[#14151A] dark:text-gray-700 border-e'
 									sx={{ fontWeight: 'bold' }}
 								>
 									Pickup
 								</TableCell>
 								<TableCell
-									className='text-[#14151A] dark:text-gray-700'
+									className='text-[#14151A] dark:text-gray-700 border-e'
 									sx={{ fontWeight: 'bold' }}
 								>
 									Passenger
 								</TableCell>
 								<TableCell
-									className='text-[#14151A] dark:text-gray-700'
+									className='text-[#14151A] dark:text-gray-700 border-e'
 									sx={{ fontWeight: 'bold' }}
 								>
 									<TableSortLabel
@@ -447,7 +447,7 @@ function CardBookings() {
 									</TableSortLabel>
 								</TableCell>
 								<TableCell
-									className='text-[#14151A] dark:text-gray-700'
+									className='text-[#14151A] dark:text-gray-700 border-e'
 									sx={{ fontWeight: 'bold' }}
 								>
 									<TableSortLabel
@@ -466,13 +466,13 @@ function CardBookings() {
 									</TableSortLabel>
 								</TableCell>
 								<TableCell
-									className='text-[#14151A] dark:text-gray-700'
+									className='text-[#14151A] dark:text-gray-700 border-e'
 									sx={{ fontWeight: 'bold' }}
 								>
 									Payment #
 								</TableCell>
 								<TableCell
-									className='text-[#14151A] dark:text-gray-700'
+									className='text-[#14151A] dark:text-gray-700 border-e'
 									sx={{ fontWeight: 'bold' }}
 								>
 									Reminder
@@ -482,7 +482,7 @@ function CardBookings() {
 						<TableBody
 							sx={{
 								'& .MuiTableCell-root': {
-									borderBottom: '1px solid #464852',
+									// borderBottom: '1px solid #464852',
 								},
 							}}
 						>

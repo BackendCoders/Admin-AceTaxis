@@ -382,7 +382,7 @@ function RowNotPriced({
 			</TableRow>
 			<TableRow>
 				<TableCell
-					colSpan={16}
+					colSpan={19}
 					style={{ paddingBottom: 0, paddingTop: 0 }}
 				>
 					<Collapse
@@ -1073,14 +1073,14 @@ function InvoiceProcessor() {
 													className='bg-gray-100 dark:bg-[#14151A]'
 													sx={{
 														'& .MuiTableCell-root': {
-															borderBottom: '1px solid #464852',
+															// borderBottom: '1px solid #464852',
 														},
 													}}
 												>
 													<TableRow>
 														<TableCell />
 														<TableCell
-															className='text-[#14151A] dark:text-gray-700'
+															className='text-[#14151A] dark:text-gray-700 border-e'
 															sx={{ fontWeight: 'bold' }}
 														>
 															<TableSortLabel
@@ -1099,7 +1099,7 @@ function InvoiceProcessor() {
 															</TableSortLabel>
 														</TableCell>
 														<TableCell
-															className='text-[#14151A] dark:text-gray-700'
+															className='text-[#14151A] dark:text-gray-700 border-e'
 															sx={{ fontWeight: 'bold' }}
 														>
 															<TableSortLabel
@@ -1118,61 +1118,61 @@ function InvoiceProcessor() {
 															</TableSortLabel>
 														</TableCell>
 														<TableCell
-															className='text-[#14151A] dark:text-gray-700'
+															className='text-[#14151A] dark:text-gray-700 border-e'
 															sx={{ fontWeight: 'bold' }}
 														>
 															Acc #
 														</TableCell>
 														<TableCell
-															className='text-[#14151A] dark:text-gray-700'
+															className='text-[#14151A] dark:text-gray-700 border-e'
 															sx={{ fontWeight: 'bold' }}
 														>
 															Driver #
 														</TableCell>
 														<TableCell
-															className='text-[#14151A] dark:text-gray-700'
+															className='text-[#14151A] dark:text-gray-700 border-e'
 															sx={{ fontWeight: 'bold' }}
 														>
 															Pickup
 														</TableCell>
 														<TableCell
-															className='text-[#14151A] dark:text-gray-700'
+															className='text-[#14151A] dark:text-gray-700 border-e'
 															sx={{ fontWeight: 'bold' }}
 														>
 															Destination
 														</TableCell>
 														<TableCell
-															className='text-[#14151A] dark:text-gray-700'
+															className='text-[#14151A] dark:text-gray-700 border-e'
 															sx={{ fontWeight: 'bold' }}
 														>
 															Passenger
 														</TableCell>
 														<TableCell
-															className='text-[#14151A] dark:text-gray-700'
+															className='text-[#14151A] dark:text-gray-700 border-e'
 															sx={{ fontWeight: 'bold' }}
 														>
 															Has Vias
 														</TableCell>
 														<TableCell
-															className='text-[#14151A] dark:text-gray-700'
+															className='text-[#14151A] dark:text-gray-700 border-e'
 															sx={{ fontWeight: 'bold' }}
 														>
 															Waiting
 														</TableCell>
 														<TableCell
-															className='text-[#14151A] dark:text-gray-700'
+															className='text-[#14151A] dark:text-gray-700 border-e'
 															sx={{ fontWeight: 'bold' }}
 														>
 															Waiting Charge
 														</TableCell>
 														<TableCell
-															className='text-[#14151A] dark:text-gray-700'
+															className='text-[#14151A] dark:text-gray-700 border-e'
 															sx={{ fontWeight: 'bold' }}
 														>
 															Actual Miles
 														</TableCell>
 														<TableCell
-															className='text-[#14151A] dark:text-gray-700'
+															className='text-[#14151A] dark:text-gray-700 border-e'
 															sx={{ fontWeight: 'bold' }}
 														>
 															<TableSortLabel
@@ -1191,7 +1191,7 @@ function InvoiceProcessor() {
 															</TableSortLabel>
 														</TableCell>
 														<TableCell
-															className='text-[#14151A] dark:text-gray-700'
+															className='text-[#14151A] dark:text-gray-700 border-e'
 															sx={{ fontWeight: 'bold' }}
 														>
 															<TableSortLabel
@@ -1210,31 +1210,31 @@ function InvoiceProcessor() {
 															</TableSortLabel>
 														</TableCell>
 														<TableCell
-															className='text-[#14151A] dark:text-gray-700'
+															className='text-[#14151A] dark:text-gray-700 border-e'
 															sx={{ fontWeight: 'bold' }}
 														>
 															Parking
 														</TableCell>
 														<TableCell
-															className='text-[#14151A] dark:text-gray-700 font-semibold'
+															className='text-[#14151A] dark:text-gray-700 font-semibold border-e'
 															sx={{ fontWeight: 'bold' }}
 														>
 															Total
 														</TableCell>
 														<TableCell
-															className='text-gray-900 dark:text-gray-700'
+															className='text-gray-900 dark:text-gray-700 border-e'
 															sx={{ fontWeight: 'bold' }}
 														>
 															Price
 														</TableCell>
 														<TableCell
-															className='text-gray-900 dark:text-gray-700'
+															className='text-gray-900 dark:text-gray-700 border-e'
 															sx={{ fontWeight: 'bold' }}
 														>
 															Post
 														</TableCell>
 														<TableCell
-															className='text-gray-900 dark:text-gray-700'
+															className='text-gray-900 dark:text-gray-700 border-e'
 															sx={{ fontWeight: 'bold' }}
 														>
 															Cancel
@@ -1245,7 +1245,7 @@ function InvoiceProcessor() {
 												<TableBody
 													sx={{
 														'& .MuiTableCell-root': {
-															borderBottom: '1px solid #464852',
+															// borderBottom: '1px solid #464852',
 														},
 													}}
 												>
@@ -1274,7 +1274,7 @@ function InvoiceProcessor() {
 										</TableContainer>
 									) : (
 										<div className='text-start ml-4  text-yellow-600 bg-yellow-100 p-2 mr-4'>
-											⚠️ No data found
+											⚠️ No Data Available
 										</div>
 									)}
 								</div>
@@ -1471,7 +1471,7 @@ function InvoiceProcessor() {
 										</TableContainer>
 									) : (
 										<div className='text-start ml-4  text-yellow-600 bg-yellow-100 p-2 mr-4 mb-2'>
-											⚠️ No data found
+											⚠️ No Data Available
 										</div>
 									)}
 
