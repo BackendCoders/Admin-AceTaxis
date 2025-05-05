@@ -87,6 +87,9 @@ function Row({ row }) {
 					{row.passenger}
 				</TableCell>
 				<TableCell className='text-[#14151A] dark:text-gray-700'>
+					£{row.price.toFixed(2)}
+				</TableCell>
+				<TableCell className='text-[#14151A] dark:text-gray-700'>
 					{row.status}
 				</TableCell>
 				<TableCell className='text-[#14151A] dark:text-gray-700'>
@@ -199,6 +202,7 @@ function CardBookings() {
 		pickup: `${booking?.pickupAddress}, ${booking?.pickupPostCode}`,
 		passenger: booking?.passengerName || 'Unknown',
 		phoneNumber: booking?.phoneNumber || '',
+		price: booking?.price || 0,
 		status:
 			booking?.paymentStatus === 0
 				? 'Unpaid'
@@ -232,7 +236,8 @@ function CardBookings() {
 
 		const isMatch =
 			booking?.pickup?.toLowerCase().includes(search?.toLowerCase()) ||
-			booking?.passenger?.toLowerCase().includes(search?.toLowerCase());
+			booking?.passenger?.toLowerCase().includes(search?.toLowerCase()) ||
+			booking?.price?.toString().includes(search?.toLowerCase());
 		const bookingDateParts = booking.date.split(' ')[0].split('/'); // ['DD', 'MM', 'YYYY']
 		const formattedBookingDate = `${bookingDateParts[2]}-${bookingDateParts[1]}-${bookingDateParts[0]}`; // YYYY-MM-DD
 
@@ -421,6 +426,25 @@ function CardBookings() {
 									sx={{ fontWeight: 'bold' }}
 								>
 									Passenger
+								</TableCell>
+								<TableCell
+									className='text-[#14151A] dark:text-gray-700'
+									sx={{ fontWeight: 'bold' }}
+								>
+									<TableSortLabel
+										active={orderBy === 'price'}
+										direction={order}
+										onClick={() => handleSort('price')}
+										sx={{
+											'&:hover': { color: '#9A9CAE' }, // Change color on hover
+											'&.Mui-active': { color: '#9A9CAE' },
+											'&.Mui-active .MuiTableSortLabel-icon': {
+												color: '#9A9CAE',
+											}, // Change to blue when active
+										}}
+									>
+										Price
+									</TableSortLabel>
 								</TableCell>
 								<TableCell
 									className='text-[#14151A] dark:text-gray-700'
