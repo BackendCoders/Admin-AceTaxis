@@ -270,7 +270,7 @@ function RowNotPriced({
 		try {
 			const response = await downloadInvoice(row?.id);
 
-			if (!response || response.size === 0 || response.status !== "success") {
+			if (!response || response.size === 0) {
 				console.error('Invalid or empty file received from API.');
 				toast.error('Failed to download: Received an empty file.');
 				return;
@@ -296,7 +296,7 @@ function RowNotPriced({
 		try {
 			const response = await downloadInvoiceCSV(row?.id);
 
-			if (!response || response.size === 0 || response.status !== "success") {
+			if (!response || response.size === 0) {
 				console.error('Invalid or empty file received from API.');
 				toast.error('Failed to download: Received an empty file.');
 				return;

@@ -91,11 +91,9 @@ function CreditNotes() {
 			const response = await downloadCreditNotes(row?.id);
 			console.log('downloadCreditNotesPDF', response);
 
-			if (!response || response.size === 0 || response.status !== 'success') {
+			if (!response || response.size === 0) {
 				console.error('Invalid or empty file received from API.');
-				toast.error(
-					response?.data?.message || 'Error downloading credit notes.'
-				);
+				toast.error('Error downloading credit notes.');
 				return;
 			}
 
@@ -465,7 +463,7 @@ function CreditNotes() {
 									rowSelection={true}
 									onRowSelectionChange={handleRowSelection}
 									pagination={{ size: 10 }}
-									sorting={[{ id: 'bookingId', desc: false }]}
+									sorting={[{ id: 'id', desc: false }]}
 									layout={{ card: true }}
 								/>
 							</div>

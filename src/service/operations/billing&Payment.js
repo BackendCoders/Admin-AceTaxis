@@ -451,23 +451,34 @@ export async function getCreditNotes(accno) {
 }
 
 export async function downloadCreditNotes(creditnoteId) {
-	const response = await handleGetReq(DOWNLOAD_CREDIT_NOTES(creditnoteId));
+	try {
+		const response = await axios.get(DOWNLOAD_CREDIT_NOTES(creditnoteId), {
+			responseType: 'blob',
+			headers: {
+				Accept: 'application/pdf',
+				...setHeaders(), // Include other necessary headers
+			},
+		});
 
-	console.log('GET DOWNLOAD_CREDIT_NOTES API RESPONSE.........', response);
+		console.log('GET DOWNLOAD_CREDIT_NOTES API RESPONSE.........', response);
 
-	if (response.status === 'success') {
-		// sendLogs(
-		// 	{
-		// 		url: GET_VATOUTPUTS,
-		// 		reqBody: null,
-		// 		headers: setHeaders(),
-		// 		response: response,
-		// 	},
-		// 	'info'
-		// );
-		return response;
+		if (response.status === 200) {
+			// sendLogs(
+			// 	{
+			// 		url: GET_VATOUTPUTS,
+			// 		reqBody: null,
+			// 		headers: setHeaders(),
+			// 		response: response,
+			// 	},
+			// 	'info'
+			// );
+			return response.data;
+		}
+		throw new Error('Failed to download invoice. Response was not 200.');
+	} catch (error) {
+		console.error('Error fetching invoice:', error);
+		throw error;
 	}
-	return response;
 }
 
 export async function clearInvoice(invoiceNo) {
