@@ -24,6 +24,9 @@ const {
 	ACCOUNT_CREATE_INVOICE,
 	MARK_INVOICE_AS_PAID,
 	DELETE_INVOICE,
+	CREDIT_INVOICE,
+	GET_CREDIT_NOTES,
+	DOWNLOAD_CREDIT_NOTES,
 	CLEAR_INVOICE,
 	GET_INVOICES,
 	DOWNLOAD_INVOICE,
@@ -391,6 +394,66 @@ export async function deleteInvoice(invoiceNo) {
 	const response = await handleGetReq(DELETE_INVOICE(invoiceNo));
 
 	console.log('GET DELETE_INVOICE API RESPONSE.........', response);
+
+	if (response.status === 'success') {
+		// sendLogs(
+		// 	{
+		// 		url: GET_VATOUTPUTS,
+		// 		reqBody: null,
+		// 		headers: setHeaders(),
+		// 		response: response,
+		// 	},
+		// 	'info'
+		// );
+		return response;
+	}
+	return response;
+}
+
+export async function creditInvoice(invoiceNo, reason) {
+	const response = await handleGetReq(CREDIT_INVOICE(invoiceNo, reason));
+
+	console.log('GET CREDIT_INVOICE API RESPONSE.........', response);
+
+	if (response.status === 'success') {
+		// sendLogs(
+		// 	{
+		// 		url: GET_VATOUTPUTS,
+		// 		reqBody: null,
+		// 		headers: setHeaders(),
+		// 		response: response,
+		// 	},
+		// 	'info'
+		// );
+		return response;
+	}
+	return response;
+}
+
+export async function getCreditNotes(accno) {
+	const response = await handleGetReq(GET_CREDIT_NOTES(accno));
+
+	console.log('GET GET_CREDIT_NOTES API RESPONSE.........', response);
+
+	if (response.status === 'success') {
+		// sendLogs(
+		// 	{
+		// 		url: GET_VATOUTPUTS,
+		// 		reqBody: null,
+		// 		headers: setHeaders(),
+		// 		response: response,
+		// 	},
+		// 	'info'
+		// );
+		return response;
+	}
+	return response;
+}
+
+export async function downloadCreditNotes(creditnoteId) {
+	const response = await handleGetReq(DOWNLOAD_CREDIT_NOTES(creditnoteId));
+
+	console.log('GET DOWNLOAD_CREDIT_NOTES API RESPONSE.........', response);
 
 	if (response.status === 'success') {
 		// sendLogs(

@@ -270,9 +270,9 @@ function RowNotPriced({
 		try {
 			const response = await downloadInvoice(row?.id);
 
-			if (!response || response.size === 0) {
+			if (!response || response.size === 0 || response.status !== "success") {
 				console.error('Invalid or empty file received from API.');
-				alert('Failed to download: Received an empty file.');
+				toast.error('Failed to download: Received an empty file.');
 				return;
 			}
 
@@ -296,9 +296,9 @@ function RowNotPriced({
 		try {
 			const response = await downloadInvoiceCSV(row?.id);
 
-			if (!response || response.size === 0) {
+			if (!response || response.size === 0 || response.status !== "success") {
 				console.error('Invalid or empty file received from API.');
-				alert('Failed to download: Received an empty file.');
+				toast.error('Failed to download: Received an empty file.');
 				return;
 			}
 
@@ -515,8 +515,8 @@ function InvoiceHistory() {
 	const { invoiceHistory, loading } = useSelector((state) => state.billing);
 	const [selectedAccount, setSelectedAccount] = useState(0);
 	const [search, setSearch] = useState('');
-	const [order, setOrder] = useState('asc'); // Sort order
-	const [orderBy, setOrderBy] = useState(''); // Default sorted column
+	const [order, setOrder] = useState('desc'); // Sort order
+	const [orderBy, setOrderBy] = useState('date'); // Default sorted column
 	const [buttonLoading, setButtonLoading] = useState({
 		rowId: null,
 		button: null,
@@ -779,7 +779,20 @@ function InvoiceHistory() {
 														Acc No.
 													</TableCell>
 													<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
-														Date
+														<TableSortLabel
+															active={orderBy === 'date'}
+															direction={order}
+															onClick={() => handleSort('date')}
+															sx={{
+																'&:hover': { color: '#9A9CAE' }, // Change color on hover
+																'&.Mui-active': { color: '#9A9CAE' },
+																'&.Mui-active .MuiTableSortLabel-icon': {
+																	color: '#9A9CAE',
+																}, // Change to blue when active
+															}}
+														>
+															Date
+														</TableSortLabel>
 													</TableCell>
 													<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
 														NET

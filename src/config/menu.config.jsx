@@ -240,8 +240,13 @@ export const MENU_SIDEBAR = [
 						roles: [1],
 					},
 					{
-						title: 'Invoice Delete',
-						path: '/billing/account/invoice-delete',
+						title: 'Credit Invoice',
+						path: '/billing/account/credit-invoice',
+						roles: [1],
+					},
+					{
+						title: 'Credit Notes',
+						path: '/billing/account/credit-notes',
 						roles: [1],
 					},
 					// {

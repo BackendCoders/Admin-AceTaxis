@@ -5,6 +5,7 @@ import {
 	accountGetChargeableJobs,
 	driverGetChargeableJobs,
 	driverGetStatements,
+	getCreditNotes,
 	getInvoices,
 } from '../service/operations/billing&Payment';
 
@@ -15,6 +16,7 @@ const initialState = {
 	invoiceHistory: [],
 	driverChargeableJobs: { priced: [], notPriced: [] },
 	accountChargeableJObs: { priced: [], notPriced: [] },
+	creditNotes: [],
 };
 
 const billingSlice = createSlice({
@@ -38,6 +40,9 @@ const billingSlice = createSlice({
 		},
 		setAccountChargeableJobs(state, action) {
 			state.accountChargeableJobs = action.payload;
+		},
+		setCreditNotes(state, action) {
+			state.creditNotes = action.payload;
 		},
 	},
 });
@@ -151,6 +156,28 @@ export function refreshAccountChargeableJobs(accno, from, to) {
 	};
 }
 
+export function refreshCreditNotes(accno) {
+	return async (dispatch) => {
+		dispatch(setLoading(true));
+		try {
+			const response = await getCreditNotes(accno);
+			console.log(response);
+
+			if (response.status === 'success') {
+				const credits = Object.keys(response)
+					.filter((key) => key !== 'status') // Exclude 'status' field
+					.map((key) => response[key]);
+
+				dispatch(setCreditNotes(credits));
+			}
+		} catch (error) {
+			console.error('Failed to refresh:', error);
+		} finally {
+			dispatch(setLoading(false));
+		}
+	};
+}
+
 export const {
 	setLoading,
 	setAllInvoicesData,
@@ -158,6 +185,7 @@ export const {
 	setInvoiceHistory,
 	setDriverChargeableJobs,
 	setAccountChargeableJobs,
+	setCreditNotes,
 } = billingSlice.actions;
 
 export default billingSlice.reducer;

@@ -1293,14 +1293,14 @@ function InvoiceProcessor() {
 													className='bg-gray-100 dark:bg-[#14151A]'
 													sx={{
 														'& .MuiTableCell-root': {
-															borderBottom: '1px solid #464852',
+															// borderBottom: '1px solid #464852',
 														},
 													}}
 												>
 													<TableRow>
 														<TableCell />
 														<TableCell
-															className='text-[#14151A] dark:text-gray-700'
+															className='text-[#14151A] dark:text-gray-700 border-e'
 															sx={{ fontWeight: 'bold' }}
 														>
 															<TableSortLabel
@@ -1319,7 +1319,7 @@ function InvoiceProcessor() {
 															</TableSortLabel>
 														</TableCell>
 														<TableCell
-															className='text-[#14151A] dark:text-gray-700'
+															className='text-[#14151A] dark:text-gray-700 border-e'
 															sx={{ fontWeight: 'bold' }}
 														>
 															<TableSortLabel
@@ -1338,61 +1338,61 @@ function InvoiceProcessor() {
 															</TableSortLabel>
 														</TableCell>
 														<TableCell
-															className='text-[#14151A] dark:text-gray-700'
+															className='text-[#14151A] dark:text-gray-700 border-e'
 															sx={{ fontWeight: 'bold' }}
 														>
 															Acc #
 														</TableCell>
 														<TableCell
-															className='text-[#14151A] dark:text-gray-700'
+															className='text-[#14151A] dark:text-gray-700 border-e'
 															sx={{ fontWeight: 'bold' }}
 														>
 															Driver #
 														</TableCell>
 														<TableCell
-															className='text-[#14151A] dark:text-gray-700'
+															className='text-[#14151A] dark:text-gray-700 border-e'
 															sx={{ fontWeight: 'bold' }}
 														>
 															Pickup
 														</TableCell>
 														<TableCell
-															className='text-[#14151A] dark:text-gray-700'
+															className='text-[#14151A] dark:text-gray-700 border-e'
 															sx={{ fontWeight: 'bold' }}
 														>
 															Destination
 														</TableCell>
 														<TableCell
-															className='text-[#14151A] dark:text-gray-700'
+															className='text-[#14151A] dark:text-gray-700 border-e'
 															sx={{ fontWeight: 'bold' }}
 														>
 															Passenger
 														</TableCell>
 														<TableCell
-															className='text-[#14151A] dark:text-gray-700'
+															className='text-[#14151A] dark:text-gray-700 border-e'
 															sx={{ fontWeight: 'bold' }}
 														>
 															Has Vias
 														</TableCell>
 														<TableCell
-															className='text-[#14151A] dark:text-gray-700'
+															className='text-[#14151A] dark:text-gray-700 border-e'
 															sx={{ fontWeight: 'bold' }}
 														>
 															Waiting
 														</TableCell>
 														<TableCell
-															className='text-[#14151A] dark:text-gray-700'
+															className='text-[#14151A] dark:text-gray-700 border-e'
 															sx={{ fontWeight: 'bold' }}
 														>
 															Waiting Charge
 														</TableCell>
 														<TableCell
-															className='text-[#14151A] dark:text-gray-700'
+															className='text-[#14151A] dark:text-gray-700 border-e'
 															sx={{ fontWeight: 'bold' }}
 														>
 															Actual Miles
 														</TableCell>
 														<TableCell
-															className='text-[#14151A] dark:text-gray-700'
+															className='text-[#14151A] dark:text-gray-700 border-e'
 															sx={{ fontWeight: 'bold' }}
 														>
 															<TableSortLabel
@@ -1411,7 +1411,7 @@ function InvoiceProcessor() {
 															</TableSortLabel>
 														</TableCell>
 														<TableCell
-															className='text-[#14151A] dark:text-gray-700'
+															className='text-[#14151A] dark:text-gray-700 border-e'
 															sx={{ fontWeight: 'bold' }}
 														>
 															<TableSortLabel
@@ -1430,19 +1430,19 @@ function InvoiceProcessor() {
 															</TableSortLabel>
 														</TableCell>
 														<TableCell
-															className='text-[#14151A] dark:text-gray-700'
+															className='text-[#14151A] dark:text-gray-700 border-e'
 															sx={{ fontWeight: 'bold' }}
 														>
 															Parking
 														</TableCell>
 														<TableCell
-															className='text-[#14151A] dark:text-gray-700 font-semibold'
+															className='text-[#14151A] dark:text-gray-700 font-semibold border-e'
 															sx={{ fontWeight: 'bold' }}
 														>
 															Total
 														</TableCell>
 														<TableCell
-															className='text-gray-900 dark:text-gray-700'
+															className='text-gray-900 dark:text-gray-700 border-e'
 															sx={{ fontWeight: 'bold' }}
 														>
 															Revert
@@ -1453,7 +1453,7 @@ function InvoiceProcessor() {
 												<TableBody
 													sx={{
 														'& .MuiTableCell-root': {
-															borderBottom: '1px solid #464852',
+															// borderBottom: '1px solid #464852',
 														},
 													}}
 												>

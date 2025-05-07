@@ -115,6 +115,12 @@ export const billingAndPaymentEndpoints = {
 		`${BASE}/api/Accounts/MarkInvoiceAsPaid?invoiceNo=${invoiceNo}`,
 	DELETE_INVOICE: (invoiceNo) =>
 		`${BASE}/api/Accounts/DeleteInvoice?invoiceNo=${invoiceNo}`,
+	CREDIT_INVOICE: (invoiceNo, reason) =>
+		`${BASE}/api/Accounts/CreditInvoice?invoiceNo=${invoiceNo}&reason=${encodeURIComponent(reason)}`,
+	GET_CREDIT_NOTES: (accno) =>
+		`${BASE}/api/Accounts/GetCreditNotes?accno=${accno}`,
+	DOWNLOAD_CREDIT_NOTES: (creditnoteId) =>
+		`${BASE}/api/Accounts/DownloadCreditNote?creditnoteId=${creditnoteId}`,
 	CLEAR_INVOICE: (invoiceNo) =>
 		`${BASE}/api/Accounts/ClearInvoice?invoiceNo=${invoiceNo}`,
 	GET_INVOICES: (from, to, accno) =>

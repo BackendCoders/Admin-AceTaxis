@@ -111,6 +111,7 @@ import {
 	InvoiceProcessor,
 	InvoiceHistory,
 	InvoiceDelete,
+	CreditNotes,
 	VatOutputs,
 } from '@/pages/billing&Payments';
 import { DriverEarningReport } from '@/pages/driverEarningReport';
@@ -281,8 +282,14 @@ const AppRoutingSetup = () => {
 					)}
 					{userRole !== 2 && (
 						<Route
-							path='/billing/account/invoice-delete'
+							path='/billing/account/credit-invoice'
 							element={<InvoiceDelete />}
+						/>
+					)}
+					{userRole !== 2 && (
+						<Route
+							path='/billing/account/credit-notes'
+							element={<CreditNotes />}
 						/>
 					)}
 					{userRole !== 2 && (
