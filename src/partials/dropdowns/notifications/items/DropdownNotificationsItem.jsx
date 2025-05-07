@@ -16,6 +16,10 @@ const DropdownNotificationsItem = ({ notification, markAsRead }) => {
 			const driverMatch = msg.match(/From '(.+?)'/);
 			if (driverMatch)
 				driverName = driverMatch ? driverMatch[1] : 'Unknown Driver';
+		} else if (msg.includes('No Contact from')) {
+			const driverMatch = msg.match(/No Contact from '(.+?)'/);
+			if (driverMatch)
+				driverName = driverMatch ? driverMatch[1] : 'Unknown Driver';
 		} else {
 			const driverMatchAll = msg.match(/Driver '(.+?)'/);
 			if (driverMatchAll)
@@ -78,6 +82,13 @@ const DropdownNotificationsItem = ({ notification, markAsRead }) => {
 					<>
 						<span className='text-blue-600'>{driverName}</span> Rejected{' '}
 						<span className='text-red-600'>Booking #{bookingNumber}</span>
+					</>
+				);
+			} else if (msg.includes('No Contact from ')) {
+				heading = (
+					<>
+						<span className='text-blue-600'>{driverName}</span>{' '}
+						{msg.replace(/No Contact from '\d+\s-\s[^']+'/, '')}
 					</>
 				);
 			} else {
