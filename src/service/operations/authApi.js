@@ -241,6 +241,16 @@ export function logout(navigate) {
 		localStorage.removeItem('username');
 		localStorage.removeItem('userData');
 		localStorage.removeItem('isNotification');
+
+		// ✅ Send logout message to headless iframe
+		const iframe = document.getElementById('bookingDispatch');
+		if (iframe) {
+			iframe.contentWindow.postMessage(
+				{ action: 'logout' },
+				import.meta.env.VITE_IFRAME_URL
+			);
+		}
+
 		toast.success('Logged Out');
 		navigate('/auth/login');
 	};
