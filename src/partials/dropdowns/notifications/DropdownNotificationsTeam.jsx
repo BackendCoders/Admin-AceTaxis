@@ -41,7 +41,7 @@ const DropdownNotificationsTeam = () => {
 	};
 
 	const markAsAllRead = () => {
-		const type = 3;
+		const type = 2;
 		dispatch(markAsAllReadNotifications(type));
 	};
 
