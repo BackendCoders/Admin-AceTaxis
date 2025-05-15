@@ -22,7 +22,7 @@ export const Sidebar = () => {
 	const selfRef = useRef(null);
 	const headerRef = useRef(null);
 	const [scrollableHeight, setScrollableHeight] = useState(0);
-	const scrollableOffset = 40;
+	const scrollableOffset = 0;
 	const [viewportHeight] = useViewport();
 	const { pathname, prevPathname } = usePathname();
 	useEffect(() => {
@@ -52,6 +52,8 @@ export const Sidebar = () => {
 	const handleMouseLeave = () => {
 		setSidebarMouseLeave(true);
 	};
+
+	console.log('scroll height', scrollableHeight);
 	const renderContent = () => {
 		return (
 			<div
