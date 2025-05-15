@@ -101,23 +101,23 @@ export const MENU_SIDEBAR = [
 			{
 				title: 'Audit View',
 				path: '/bookings/audit-view',
-				roles: [1, 2, 3],
+				roles: [1],
 			},
 
 			{
 				title: 'Card Bookings',
 				path: '/bookings/card-bookings',
-				roles: [1, 2, 3],
+				roles: [1],
 			},
 			{
 				title: 'Cancel Range',
 				path: '/bookings/cancelbyrange',
-				roles: [1, 2, 3],
+				roles: [1],
 			},
 			{
 				title: 'Cancel Range Report',
 				path: '/bookings/cancelbyrangereport',
-				roles: [1, 2, 3],
+				roles: [1],
 			},
 
 			// {

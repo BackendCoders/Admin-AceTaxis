@@ -186,18 +186,24 @@ const AppRoutingSetup = () => {
 						path='/bookings/search-booking'
 						element={<SearchBooking />}
 					/> */}
-					<Route
-						path='/bookings/audit-view'
-						element={<AuditBooking />}
-					/>
-					<Route
-						path='/bookings/cancelbyrange'
-						element={<CancelByRange />}
-					/>
-					<Route
-						path='/bookings/cancelbyrangereport'
-						element={<CancelByRangeReport />}
-					/>
+					{userRole === 1 && (
+						<Route
+							path='/bookings/audit-view'
+							element={<AuditBooking />}
+						/>
+					)}
+					{userRole === 1 && (
+						<Route
+							path='/bookings/cancelbyrange'
+							element={<CancelByRange />}
+						/>
+					)}
+					{userRole === 1 && (
+						<Route
+							path='/bookings/cancelbyrangereport'
+							element={<CancelByRangeReport />}
+						/>
+					)}
 					<Route
 						path='/bookings/turndown'
 						element={<TurndownBookings />}
@@ -206,10 +212,12 @@ const AppRoutingSetup = () => {
 						path='/bookings/airport-runs'
 						element={<AirportRuns />}
 					/>
-					<Route
-						path='/bookings/card-bookings'
-						element={<CardBookings />}
-					/>
+					{userRole === 1 && (
+						<Route
+							path='/bookings/card-bookings'
+							element={<CardBookings />}
+						/>
+					)}
 					<Route
 						path='/bookings/global-search'
 						element={<UnAllocated />}
