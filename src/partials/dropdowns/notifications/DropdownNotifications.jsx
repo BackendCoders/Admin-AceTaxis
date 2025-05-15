@@ -9,12 +9,61 @@ import { DropdownNotificationsAll } from './DropdownNotificationsAll';
 import { DropdownNotificationsInbox } from './DropdownNotificationsInbox';
 import { DropdownNotificationsTeam } from './DropdownNotificationsTeam';
 import { DropdownNotificationsFollowing } from './DropdownNotificationsFollowing';
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { refreshNotifications } from '../../../slices/notificationSlice';
 const DropdownNotifications = ({ menuTtemRef }) => {
 	const dispatch = useDispatch();
+	const { systemNotifications, driverNotifications } = useSelector(
+		(state) => state.notification
+	);
+
+	const lastSystemId = useRef(null);
+	const lastDriverId = useRef(null);
+
+	const systemAudio = useRef(new Audio('/media/audio/system_audio.mp3'));
+	const driverAudio = useRef(new Audio('/media/audio/driver_audio.mp3'));
 	// const { isRTL } = useLanguage();
+
+	// play sound helper
+	const playSound = (type) => {
+		if (type === 'system') {
+			systemAudio.current
+				.play()
+				.catch((e) => console.log('System audio failed', e));
+		} else if (type === 'driver') {
+			driverAudio.current
+				.play()
+				.catch((e) => console.log('Driver audio failed', e));
+		}
+	};
+
+	const checkNewNotifications = () => {
+		if (systemNotifications?.length > 0) {
+			const newestSystem = [...systemNotifications]
+				.filter((n) => n.status === 0)
+				.sort(
+					(a, b) => new Date(b.dateTimeStamp) - new Date(a.dateTimeStamp)
+				)[0];
+			if (newestSystem && newestSystem.id !== lastSystemId.current) {
+				lastSystemId.current = newestSystem.id;
+				playSound('system');
+			}
+		}
+
+		if (driverNotifications?.length > 0) {
+			const newestDriver = [...driverNotifications]
+				.filter((n) => n.status === 0)
+				.sort(
+					(a, b) => new Date(b.dateTimeStamp) - new Date(a.dateTimeStamp)
+				)[0];
+			if (newestDriver && newestDriver.id !== lastDriverId.current) {
+				lastDriverId.current = newestDriver.id;
+				playSound('driver');
+			}
+		}
+	};
+
 	const handleClose = () => {
 		if (menuTtemRef.current) {
 			menuTtemRef.current.hide(); // Call the closeMenu method to hide the submenu
@@ -32,6 +81,10 @@ const DropdownNotifications = ({ menuTtemRef }) => {
 
 		return () => clearInterval(intervalId); // Cleanup function to clear timeout on unmount
 	}, [dispatch]);
+
+	useEffect(() => {
+		checkNewNotifications();
+	}, [systemNotifications, driverNotifications]);
 
 	const buildHeader = () => {
 		return (
