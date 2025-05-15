@@ -10,14 +10,14 @@ const DataGridTable = () => {
 	const headCellSpacingOptions = {
 		xs: 'px-2.5',
 		sm: 'px-3',
-		md: 'px-4',
-		lg: 'px-6',
+		md: 'px-3',
+		lg: 'px-5',
 	};
 	const bodyCellSpacingOptions = {
 		xs: 'p-2.5',
 		sm: 'p-3',
-		md: 'p-4',
-		lg: 'p-6',
+		md: 'p-3',
+		lg: 'p-5',
 	};
 	const headCellSpacing = props.layout?.cellSpacing
 		? headCellSpacingOptions[props.layout?.cellSpacing]
