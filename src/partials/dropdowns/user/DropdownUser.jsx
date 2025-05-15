@@ -27,8 +27,10 @@ import { useNavigate } from 'react-router-dom'; // Import useLocation
 import { setIsNotifications } from '../../../slices/authSlice';
 import { removeFCM } from '../../../service/operations/gpsApi';
 import toast from 'react-hot-toast';
+import { setMuteNotification } from '../../../slices/notificationSlice';
 const DropdownUser = ({ menuItemRef }) => {
 	const { user, isNotifications } = useSelector((state) => state.auth);
+	const { muteNotification } = useSelector((state) => state.notification);
 	const { settings, storeSettings } = useSettings();
 	const [isDarkSidebar, setIsDarkSidebar] = useState(false);
 
@@ -299,6 +301,28 @@ const DropdownUser = ({ menuItemRef }) => {
 								type='checkbox'
 								checked={isNotifications}
 								onChange={handleNotificationToggle}
+								value='1'
+							/>
+						</label>
+					</div>
+				</div>
+
+				<div className='menu-item mb-0.5'>
+					<div className='menu-link'>
+						<span className='menu-icon'>
+							<KeenIcon icon='notification-on' />
+						</span>
+						<span className='menu-title'>
+							<FormattedMessage id='Mute Notifications' />
+						</span>
+						<label className='switch switch-sm'>
+							<input
+								name='theme'
+								type='checkbox'
+								checked={muteNotification}
+								onChange={() =>
+									dispatch(setMuteNotification(!muteNotification))
+								}
 								value='1'
 							/>
 						</label>

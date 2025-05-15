@@ -10,6 +10,7 @@ import {
 
 const initialState = {
 	loading: false,
+	muteNotification: true,
 	allNotifications: [],
 	systemNotifications: [],
 	driverNotifications: [],
@@ -39,6 +40,9 @@ const notificationSlice = createSlice({
 		},
 		clearUnreadCount(state) {
 			state.unreadCount = 0;
+		},
+		setMuteNotification(state, action) {
+			state.muteNotification = action.payload;
 		},
 	},
 });
@@ -107,6 +111,7 @@ export const {
 	setSystemNotifications,
 	setDriverNotifications,
 	clearUnreadCount,
+	setMuteNotification,
 } = notificationSlice.actions;
 
 export default notificationSlice.reducer;

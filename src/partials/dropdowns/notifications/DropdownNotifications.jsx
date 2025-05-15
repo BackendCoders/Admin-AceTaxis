@@ -14,9 +14,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { refreshNotifications } from '../../../slices/notificationSlice';
 const DropdownNotifications = ({ menuTtemRef }) => {
 	const dispatch = useDispatch();
-	const { systemNotifications, driverNotifications } = useSelector(
-		(state) => state.notification
-	);
+	const { systemNotifications, driverNotifications, muteNotification } =
+		useSelector((state) => state.notification);
 
 	const lastSystemId = useRef(null);
 	const lastDriverId = useRef(null);
@@ -47,7 +46,7 @@ const DropdownNotifications = ({ menuTtemRef }) => {
 				)[0];
 			if (newestSystem && newestSystem.id !== lastSystemId.current) {
 				lastSystemId.current = newestSystem.id;
-				playSound('system');
+				if (muteNotification) playSound('system');
 			}
 		}
 
@@ -59,7 +58,7 @@ const DropdownNotifications = ({ menuTtemRef }) => {
 				)[0];
 			if (newestDriver && newestDriver.id !== lastDriverId.current) {
 				lastDriverId.current = newestDriver.id;
-				playSound('driver');
+				if (muteNotification) playSound('driver');
 			}
 		}
 	};

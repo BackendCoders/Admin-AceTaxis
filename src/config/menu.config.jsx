@@ -338,7 +338,7 @@ export const MENU_SIDEBAR = [
 					{
 						title: 'Top Customer',
 						path: '/bookings/top-customer',
-						roles: [1, 2, 3],
+						roles: [1],
 					},
 					{
 						title: 'Pickups By Postcode',
@@ -359,23 +359,23 @@ export const MENU_SIDEBAR = [
 					{
 						title: 'Growth By Period',
 						path: '/bookings/growth-by-period',
-						roles: [1, 2, 3],
+						roles: [1],
 					},
 				],
 			},
 			{
 				title: 'Financial',
-				roles: [1, 2, 3],
+				roles: [1],
 				children: [
 					{
 						title: 'Payouts By Month',
 						path: '/financial/payouts-by-month',
-						roles: [1, 2, 3],
+						roles: [1],
 					},
 					{
 						title: 'Revenue By Month',
 						path: '/financial/revenue-by-month',
-						roles: [1, 2, 3],
+						roles: [1],
 					},
 				],
 			},

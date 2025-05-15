@@ -318,13 +318,13 @@ const AppRoutingSetup = () => {
 							element={<DriverEarningReport />}
 						/>
 					)}
-					{userRole !== 2 && (
+					{
 						<Route
 							path='/bookings/duplicate-bookings'
 							element={<DuplicateBookings />}
 						/>
-					)}
-					{userRole !== 2 && (
+					}
+					{(
 						<Route
 							path='/bookings/count-by-scope'
 							element={<CountByScope />}
@@ -342,19 +342,19 @@ const AppRoutingSetup = () => {
 							element={<GrowthByPeriod />}
 						/>
 					)}
-					{userRole !== 2 && (
+					{(
 						<Route
 							path='/bookings/pickups-by-postcode'
 							element={<PickupsByPostcode />}
 						/>
 					)}
-					{userRole !== 2 && (
+					{(
 						<Route
 							path='/bookings/by-vehicle-type'
 							element={<ByVehicleType />}
 						/>
 					)}
-					{userRole !== 2 && (
+					{(
 						<Route
 							path='/bookings/average-duration'
 							element={<AvergeDuration />}
