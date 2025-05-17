@@ -53,7 +53,6 @@ export const Sidebar = () => {
 		setSidebarMouseLeave(true);
 	};
 
-	console.log('scroll height', scrollableHeight);
 	const renderContent = () => {
 		return (
 			<div

@@ -51,7 +51,6 @@ function AddAccounts({ open, onOpenChange }) {
 		initialValues,
 		validationSchema: addLocalSchema,
 		onSubmit: async (values, { setSubmitting }) => {
-			console.log('Submitted Values:', values);
 			const response = await createAccounts(values);
 			if (response.status === 'success') {
 				dispatch(refreshAllAccounts());

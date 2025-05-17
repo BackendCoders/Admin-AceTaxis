@@ -54,7 +54,6 @@ const Login = () => {
 			if (token && token !== fcmToken) {
 				setFcmToken(token);
 				const response = await updateFCM(token);
-				console.log('FCM token sent to API successfully:', response);
 				if (response?.status === "success") {
 					toast.success('FCM token updated successfully!');
 					localStorage.setItem('isNotification', true);
