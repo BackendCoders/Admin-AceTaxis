@@ -119,10 +119,13 @@ function ListDriver() {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={`p-2 rounded-md whitespace-nowrap`}>
-						{new Date(
-							row.original.lastLogin?.split('T')[0]
-						)?.toLocaleDateString('en-GB')}{' '}
-						{row.original.lastLogin?.split('T')[1].split('.')[0]?.slice(0, 5)}
+						{row.original.lastLogin
+							? new Date(
+									row.original.lastLogin?.split('T')[0]
+								)?.toLocaleDateString('en-GB') +
+								' ' +
+								row.original.lastLogin?.split('T')[1].split('.')[0]?.slice(0, 5)
+							: '-'}
 					</span>
 				),
 				meta: { headerClassName: 'w-25' },
