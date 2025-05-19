@@ -2,15 +2,23 @@
 
 'use client';
 
-import * as React from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { DayPicker } from 'react-day-picker';
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
+import { enUS } from 'date-fns/locale';
 function Calendar({ className, classNames, showOutsideDays = true, ...props }) {
+	const customLocale = {
+		...enUS,
+		options: {
+			...enUS.options,
+			weekStartsOn: 1, // 👈 0 = Sunday, 1 = Monday
+		},
+	};
 	return (
 		<DayPicker
 			showOutsideDays={showOutsideDays}
+			locale={customLocale}
 			className={cn('p-3', className)}
 			classNames={{
 				months: 'flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0',
