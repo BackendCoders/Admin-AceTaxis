@@ -93,7 +93,7 @@ function ListAccounts() {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={`font-medium ${row.original.color}`}>
-						{row.original.address1}
+						{row.original.address1 ? row.original?.address1 : '-'}
 					</span>
 				),
 				meta: { headerClassName: 'min-w-[80px]' },
@@ -110,7 +110,7 @@ function ListAccounts() {
 				enableSorting: true,
 				cell: ({ row }) => (
 					<span className={`font-medium ${row.original.color}`}>
-						{row.original.postcode}
+						{row.original.postcode ? row.original.postcode : '-'}
 					</span>
 				),
 				meta: { headerClassName: 'min-w-[120px]' },
