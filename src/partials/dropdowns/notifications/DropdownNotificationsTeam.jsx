@@ -89,7 +89,7 @@ const DropdownNotificationsTeam = () => {
 						className='btn btn-sm btn-light justify-center'
 						onClick={markAsAllRead}
 					>
-						Mark all as read
+						Mark all as Read
 					</button>
 				</div>
 			</>
