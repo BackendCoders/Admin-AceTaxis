@@ -22,12 +22,6 @@ const DropdownNotificationsTeam = () => {
 		(a, b) => new Date(b?.dateTimeStamp) - new Date(a?.dateTimeStamp)
 	);
 
-	// console.log(
-	// 	'notifications---',
-	// 	driverNotifications,
-	// 	latestDriverNotification
-	// );
-
 	useEffect(() => {
 		if (footerRef.current) {
 			const footerHeight = getHeight(footerRef.current);
