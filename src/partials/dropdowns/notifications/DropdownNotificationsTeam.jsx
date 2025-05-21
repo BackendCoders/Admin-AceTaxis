@@ -22,12 +22,6 @@ const DropdownNotificationsTeam = () => {
 		(a, b) => new Date(b?.dateTimeStamp) - new Date(a?.dateTimeStamp)
 	);
 
-	// console.log(
-	// 	'notifications---',
-	// 	driverNotifications,
-	// 	latestDriverNotification
-	// );
-
 	useEffect(() => {
 		if (footerRef.current) {
 			const footerHeight = getHeight(footerRef.current);
@@ -89,7 +83,7 @@ const DropdownNotificationsTeam = () => {
 						className='btn btn-sm btn-light justify-center'
 						onClick={markAsAllRead}
 					>
-						Mark all as read
+						Mark all as Read
 					</button>
 				</div>
 			</>
