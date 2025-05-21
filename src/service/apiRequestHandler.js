@@ -15,7 +15,6 @@ export function setHeaders() {
 
 export async function handleGetReq(URL) {
 	try {
-		// console.log(URL);
 		const response = await axios.get(URL, { headers: setHeaders() });
 		if (response.status >= 200 && response.status < 300) {
 			return { ...response.data, status: 'success' };

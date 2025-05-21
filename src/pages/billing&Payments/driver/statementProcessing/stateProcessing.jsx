@@ -206,7 +206,6 @@ function RowNotPriced({
 			if (response?.status === 'success') {
 				toast.success('Value Updated');
 				handleShow(); // Refresh the data after updating
-				// console.log(response);
 			}
 		} catch (error) {
 			console.error('Error updating charges:', error);
