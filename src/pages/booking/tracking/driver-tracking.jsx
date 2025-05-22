@@ -192,7 +192,7 @@ const DriverTracking = () => {
 
 					{/* Date */}
 					<Typography className='text-gray-700 font-medium text-sm sm:text-base'>
-						{new Date().toLocaleDateString('en-US', {
+						{new Date().toLocaleDateString('en-GB', {
 							weekday: 'long',
 							year: 'numeric',
 							month: 'long',
@@ -202,7 +202,7 @@ const DriverTracking = () => {
 
 					{/* Time */}
 					<Typography className='text-gray-900 font-semibold text-sm sm:text-lg'>
-						{new Date().toLocaleTimeString('en-US', {
+						{new Date().toLocaleTimeString('en-GB', {
 							hour: '2-digit',
 							minute: '2-digit',
 							second: '2-digit',
