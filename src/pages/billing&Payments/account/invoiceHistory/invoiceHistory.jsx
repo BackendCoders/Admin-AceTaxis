@@ -576,6 +576,9 @@ function InvoiceHistory() {
 	};
 
 	const sortedBookings = [...filteredBookings].sort((a, b) => {
+		if (a.paid !== b.paid) {
+			return a.paid ? 1 : -1; // unpaid (false) comes first
+		}
 		if (order === 'asc') {
 			return a[orderBy] > b[orderBy] ? 1 : -1;
 		} else {
