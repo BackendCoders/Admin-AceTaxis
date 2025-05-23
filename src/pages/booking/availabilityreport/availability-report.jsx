@@ -453,6 +453,17 @@ const AvailabilityReport = () => {
 		return [];
 	}, [dataByTab, monthNames, selectedTab, weekDayNames]);
 
+	const formatedTotalsByTab = useMemo(() => {
+		if (!Array.isArray(dataByTab)) return 0;
+
+		if (selectedTab === 'weekdayHours' || selectedTab === 'weekendHours') {
+			return dataByTab.reduce((total, curr) => {
+				return total + (curr.totalHours || 0);
+			}, 0);
+		}
+		return 0;
+	}, [dataByTab, selectedTab]);
+
 	useEffect(() => {
 		dispatch(refreshAllDrivers());
 	}, [dispatch]);
@@ -640,6 +651,24 @@ const AvailabilityReport = () => {
 										/>
 									</div>
 								</div>
+
+								{(selectedTab === 'weekdayHours' ||
+									selectedTab === 'weekendHours') && (
+									<div className='flex justify-end items-center mt-4 p-4 bg-gray-100 rounded-lg'>
+										<div className='font-bold text-lg text-gray-800 flex gap-4'>
+											<span>
+												{selectedTab === 'weekdayHours'
+													? 'Total Weekday Hours'
+													: selectedTab === 'weekendHours'
+														? 'Total Weekend Hours:'
+														: ''}
+											</span>
+											<div className='flex items-center gap-1'>
+												<span>£{formatedTotalsByTab.toFixed(2)}</span>
+											</div>
+										</div>
+									</div>
+								)}
 							</div>
 						</div>
 					</div>
