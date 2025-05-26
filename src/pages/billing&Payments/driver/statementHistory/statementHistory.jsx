@@ -49,6 +49,7 @@ import {
 	TableRow,
 	Paper,
 	TableSortLabel,
+	TablePagination,
 } from '@mui/material';
 import {
 	EmailOutlined,
@@ -485,6 +486,8 @@ function StatementHistory() {
 		to: addDays(new Date(), 20),
 	});
 	const [tempRange, setTempRange] = useState(date);
+	const [page, setPage] = useState(0);
+	const [rowsPerPage, setRowsPerPage] = useState(10);
 
 	useEffect(() => {
 		if (openDate) {
@@ -498,6 +501,15 @@ function StatementHistory() {
 			setDate(range);
 			setOpenDate(false);
 		}
+	};
+
+	const handleChangePage = (e, newPage) => {
+		setPage(newPage);
+	};
+
+	const handleChangeRowsPerPage = (e) => {
+		setRowsPerPage(parseInt(e.target.value, 10));
+		setPage(0); // Reset to first page when rows per page changes
 	};
 
 	const formattedBookings = (statementHistory || []).map((booking) => ({
@@ -793,19 +805,68 @@ function StatementHistory() {
 														},
 													}}
 												>
-													{sortedBookings.map((row) => (
-														<>
-															<RowNotPriced
-																key={row.id}
-																row={row}
-																handlePostButton={handlePostButton}
-																buttonLoading={buttonLoading}
-																setButtonLoading={setButtonLoading}
-															/>
-														</>
-													))}
+													{sortedBookings
+														?.slice(
+															page * rowsPerPage,
+															page * rowsPerPage + rowsPerPage
+														)
+														.map((row) => (
+															<>
+																<RowNotPriced
+																	key={row.id}
+																	row={row}
+																	handlePostButton={handlePostButton}
+																	buttonLoading={buttonLoading}
+																	setButtonLoading={setButtonLoading}
+																/>
+															</>
+														))}
 												</TableBody>
 											</Table>
+											<TablePagination
+												component='div'
+												count={sortedBookings.length}
+												page={page}
+												onPageChange={handleChangePage}
+												rowsPerPage={rowsPerPage}
+												onRowsPerPageChange={handleChangeRowsPerPage}
+												rowsPerPageOptions={[5, 10, 25, 50]}
+												className='text-sm text-gray-900 dark:text-gray-700 px-4'
+												SelectProps={{
+													MenuProps: {
+														PaperProps: {
+															sx: {
+																'& .MuiMenuItem-root': {
+																	'fontSize': '0.875rem',
+																	'&:hover': {
+																		backgroundColor: 'transparent', // Tailwind's gray-100
+																		color: '#071437', // Tailwind's blue-800
+																	},
+																	'&.Mui-selected': {
+																		backgroundColor: '#F1F1F4', // selected bg
+																		color: '#071437', // selected text (blue-800)
+																	},
+																},
+																// Dark mode styles (optional)
+																'@media (prefers-color-scheme: dark)': {
+																	'backgroundColor': 'transparent', // dark gray bg
+																	'color': '#9A9CAE',
+																	'& .MuiMenuItem-root': {
+																		'&:hover': {
+																			backgroundColor: '#374151', // hover dark gray
+																			color: '#9A9CAE',
+																		},
+																		'&.Mui-selected': {
+																			backgroundColor: '#0D0E12',
+																			color: '#9A9CAE',
+																		},
+																	},
+																},
+															},
+														},
+													},
+												}}
+											/>
 										</TableContainer>
 									) : (
 										<div className='text-start ml-4  text-yellow-600 dark:border dark:border-yellow-400 dark:opacity-50 dark:bg-transparent rounded-md bg-yellow-100 p-2 mr-4 mb-2'>
