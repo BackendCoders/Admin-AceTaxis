@@ -369,7 +369,7 @@ function RowNotPriced({
 				<TableCell
 					className={`${row?.coa ? 'dark:text-white' : 'dark:text-gray-700'} text-gray-900`}
 				>
-					-£{row.paymentDue.toFixed(2)}
+					£{row.paymentDue.toFixed(2)}
 				</TableCell>
 				<TableCell
 					className={`${row?.coa ? 'dark:text-white' : 'dark:text-gray-700'} text-gray-900 font-semibold`}
