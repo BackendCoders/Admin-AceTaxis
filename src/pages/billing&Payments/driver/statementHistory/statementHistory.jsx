@@ -515,7 +515,7 @@ function StatementHistory() {
 		rank: booking?.earningsRank || 0,
 		cardFess: booking?.cardFees || 0,
 		totalEarned: booking?.totalEarned || 0,
-		totalComms: booking?.subTotal || 0,
+		totalComms: booking?.commissionDue || 0,
 		paymentDue: booking?.paymentDue || 0,
 		paid: booking?.paidInFull || false,
 		items: booking?.jobs || [],
