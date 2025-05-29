@@ -13,6 +13,7 @@ import {
 	Paper,
 	Typography,
 	TableSortLabel,
+	TablePagination,
 } from '@mui/material';
 import {
 	KeyboardArrowDown,
@@ -184,11 +185,20 @@ function CardBookings() {
 	const [openDate, setOpenDate] = useState(false);
 	const [order, setOrder] = useState('asc'); // Sort order
 	const [orderBy, setOrderBy] = useState(''); // Default sorted column
-	console.log('card bookings', cardBookings);
-
+	const [page, setPage] = useState(0);
+	const [rowPerPage, setRowPerPage] = useState(10);
 	const handleDateSelect = (date) => {
 		setDate(date);
 		setOpenDate(false);
+	};
+
+	const handleChangePage = (e, newPage) => {
+		setPage(newPage);
+	};
+
+	const handleChangeRowsPerPage = (e) => {
+		setRowPerPage(parseInt(e.target.value, 10));
+		setPage(0);
 	};
 
 	const formattedBookings = (cardBookings || []).map((booking) => ({
@@ -486,14 +496,60 @@ function CardBookings() {
 								},
 							}}
 						>
-							{sortedBookings.map((row) => (
-								<Row
-									key={row.id}
-									row={row}
-								/>
-							))}
+							{sortedBookings
+								?.slice(page * rowPerPage, page * rowPerPage + rowPerPage)
+								.map((row) => (
+									<Row
+										key={row.id}
+										row={row}
+									/>
+								))}
 						</TableBody>
 					</Table>
+					<TablePagination
+						component='div'
+						count={sortedBookings.length}
+						page={page}
+						onPageChange={handleChangePage}
+						rowsPerPage={rowPerPage}
+						onRowsPerPageChange={handleChangeRowsPerPage}
+						rowsPerPageOptions={[5, 10, 25, 50]}
+						className='text-sm text-gray-900 dark:text-gray-700 px-4'
+						SelectProps={{
+							MenuProps: {
+								PaperProps: {
+									sx: {
+										'& .MuiMenuItem-root': {
+											'fontSize': '0.875rem',
+											'&:hover': {
+												backgroundColor: 'transparent', // Tailwind's gray-100
+												color: '#071437', // Tailwind's blue-800
+											},
+											'&.Mui-selected': {
+												backgroundColor: '#F1F1F4', // selected bg
+												color: '#071437', // selected text (blue-800)
+											},
+										},
+										// Dark mode styles (optional)
+										'@media (prefers-color-scheme: dark)': {
+											'backgroundColor': 'transparent', // dark gray bg
+											'color': '#9A9CAE',
+											'& .MuiMenuItem-root': {
+												'&:hover': {
+													backgroundColor: '#374151', // hover dark gray
+													color: '#9A9CAE',
+												},
+												'&.Mui-selected': {
+													backgroundColor: '#0D0E12',
+													color: '#9A9CAE',
+												},
+											},
+										},
+									},
+								},
+							},
+						}}
+					/>
 				</TableContainer>
 			</div>
 		</Fragment>
