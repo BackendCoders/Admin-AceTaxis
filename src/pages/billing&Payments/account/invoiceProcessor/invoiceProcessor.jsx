@@ -32,7 +32,7 @@ import {
 } from '@mui/icons-material';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import MoneyIcon from '@mui/icons-material/Money';
-
+import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
 import { format, subDays } from 'date-fns';
 // import { Container } from '@/components/container';
 // import {
@@ -75,6 +75,8 @@ import {
 	ToolbarPageTitle,
 } from '@/partials/toolbar';
 import { refreshAccountChargeableJobs } from '../../../../slices/billingSlice';
+import TableFilterPopover from '../../tableFilterBar/tableFilterBar';
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
 // Collapsible Row Component
 function RowNotPriced({
 	row,
@@ -606,6 +608,9 @@ function InvoiceProcessor() {
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const [pageB, setPageB] = useState(0);
 	const [rowsPerPageB, setRowsPerPageB] = useState(10);
+	const [anchorEl, setAnchorEl] = useState(null);
+    const [activeColumn, setActiveColumn] = useState(null);
+    const [filters, setFilters] = useState([]);
 
 	const scrollRef = useRef(null);
 	useEffect(() => {
@@ -678,19 +683,95 @@ function InvoiceProcessor() {
 		},
 	}));
 
-	const filteredNotPricedBookings = formattedNotPricedBookings?.filter(
-		(booking) => {
-			if (!search?.trim()) return true;
+	const handleFilterClick = (event, column) => {
+		setAnchorEl(event.currentTarget);
+		setActiveColumn(column);
+	  
+		// Set initial filter row if column is newly selected
+		setFilters((prevFilters) => {
+			const existing = prevFilters.find((f) => f.column === column.value);
+			// If this column already has a filter, don't reset it
+			if (existing) return prevFilters;
+		
+			// Else, add a new default filter for this column
+			return [
+			  ...prevFilters,
+			  {
+				column: column.value,
+				operator: 'contains',
+				value: '',
+			  },
+			];
+		  });
+	  };
 
-			const isMatch =
-				booking?.pickup?.toLowerCase().includes(search?.toLowerCase()) ||
-				booking?.destination?.toLowerCase().includes(search?.toLowerCase()) ||
-				booking?.passenger?.toLowerCase().includes(search?.toLowerCase()) ||
-				String(booking?.id)?.toLowerCase().includes(search?.toLowerCase());
+	  const isFilterApplied = (columnKey) => {
+		return filters.some(
+		  (f) =>
+			f.column === columnKey &&
+			typeof f.value === 'string' &&
+			f.value.trim() !== ''
+		);
+	  };
+	  
+	  const handleFilterClose = () => {
+		setAnchorEl(null);
+		setActiveColumn(null);
+	  };
+	 
+	  
+	  
 
-			return isMatch;
+	// const filteredNotPricedBookings = formattedNotPricedBookings?.filter(
+	// 	(booking) => {
+	// 		// if (!search?.trim()) return true;
+
+	// 		// const isMatch =
+	// 		// 	booking?.pickup?.toLowerCase().includes(search?.toLowerCase()) ||
+	// 		// 	booking?.destination?.toLowerCase().includes(search?.toLowerCase()) ||
+	// 		// 	booking?.passenger?.toLowerCase().includes(search?.toLowerCase()) ||
+	// 		// 	String(booking?.id)?.toLowerCase().includes(search?.toLowerCase());
+
+	// 		// return isMatch; 
+	// 		}
+	// );
+
+	const columns = [
+		{ label: '#', value: 'id' },
+		{ label: 'Date', value: 'date' },
+		{ label: 'Pickup', value: 'pickup' },
+		{ label: 'Destination', value: 'destination' },
+		{ label: 'Passenger', value: 'passenger' },
+		{ label: 'Driver Price', value: 'driverFare' },
+	  ];
+
+	  const operators = {
+		'contains': (cell, value) => cell.includes(value),
+		'equals': (cell, value) => cell === value,
+		'starts with': (cell, value) => cell.startsWith(value),
+		'ends with': (cell, value) => cell.endsWith(value),
+	  };
+
+	  const filterObject = filters.reduce((acc, curr) => {
+		if (curr.column) {
+		  acc[curr.column] = { operator: curr.operator, value: curr.value };
 		}
-	);
+		return acc;
+	  }, {});
+	  
+	  
+	  const filteredNotPricedBookings = formattedNotPricedBookings?.filter((row) => {
+		return Object.entries(filterObject).every(([colKey, filterObj]) => {
+		  if (!filterObj || !filterObj.operator || typeof filterObj.value !== 'string') return true;
+	  
+		  const cell = row[colKey]?.toString().toLowerCase() || '';
+		  const value = filterObj.value.toLowerCase();
+	  
+		  const operatorFn = operators[filterObj.operator];
+		  return operatorFn ? operatorFn(cell, value) : true;
+		});
+	  });
+	  
 
 	const handleSort = (property) => {
 		const isAscending = orderBy === property && order === 'asc';
@@ -1086,7 +1167,7 @@ function InvoiceProcessor() {
 											Post All Priced
 										</button>
 									</div>
-									{sortedBookings?.length > 0 ? (
+									{formattedNotPricedBookings?.length > 0 ? (
 										<TableContainer
 											component={Paper}
 											ref={scrollRef}
@@ -1157,6 +1238,8 @@ function InvoiceProcessor() {
 															className='text-[#14151A] dark:text-gray-700 border-e'
 															sx={{ fontWeight: 'bold' }}
 														>
+														<div className="flex gap-1">
+
 															<TableSortLabel
 																active={orderBy === 'pickup'}
 																direction={order}
@@ -1171,12 +1254,27 @@ function InvoiceProcessor() {
 															>
 																Pickup
 															</TableSortLabel>
+															<IconButton
+                                                             size="small"
+															 onClick={(e) =>
+    handleFilterClick(e, { label: 'Pickup', value: 'pickup' })
+  }
+  className='text-[#14151A] dark:text-gray-700'
+                                                            >
+                                                            {isFilterApplied('pickup') ? (
+    <FilterAltIcon fontSize="small" />
+  ) : (
+    <FilterAltOutlinedIcon fontSize="small" />
+  )}
+                                                         </IconButton>
+														</div>
 														</TableCell>
 														<TableCell
 															className='text-[#14151A] dark:text-gray-700 border-e'
 															sx={{ fontWeight: 'bold' }}
 														>
-															<TableSortLabel
+														<div className="flex gap-1">
+														<TableSortLabel
 																active={orderBy === 'destination'}
 																direction={order}
 																onClick={() => handleSort('destination')}
@@ -1190,12 +1288,28 @@ function InvoiceProcessor() {
 															>
 																Destination
 															</TableSortLabel>
+															<IconButton
+                                                             size="small"
+															 onClick={(e) =>
+    handleFilterClick(e, { label: 'Destination', value: 'destination' })
+  }
+  className='text-[#14151A] dark:text-gray-700'
+                                                            >
+                                                            {isFilterApplied('destination') ? (
+    <FilterAltIcon fontSize="small" />
+  ) : (
+    <FilterAltOutlinedIcon fontSize="small" />
+  )}
+                                                         </IconButton>
+														</div>
+															
 														</TableCell>
 														<TableCell
 															className='text-[#14151A] dark:text-gray-700 border-e'
 															sx={{ fontWeight: 'bold' }}
 														>
-															<TableSortLabel
+														<div className="flex gap-1">
+														<TableSortLabel
 																active={orderBy === 'passenger'}
 																direction={order}
 																onClick={() => handleSort('passenger')}
@@ -1209,6 +1323,21 @@ function InvoiceProcessor() {
 															>
 																Passenger
 															</TableSortLabel>
+															<IconButton
+                                                             size="small"
+															 onClick={(e) =>
+    handleFilterClick(e, { label: 'Passenger', value: 'passenger' })
+  }
+  className='text-[#14151A] dark:text-gray-700'
+                                                            >
+                                                            {isFilterApplied('passenger') ? (
+    <FilterAltIcon fontSize="small" />
+  ) : (
+    <FilterAltOutlinedIcon fontSize="small" />
+  )}
+                                                         </IconButton>
+														</div>
+															
 														</TableCell>
 														<TableCell
 															className='text-[#14151A] dark:text-gray-700 border-e'
@@ -1383,6 +1512,20 @@ function InvoiceProcessor() {
 													},
 												}}
 											/>
+											<TableFilterPopover
+  anchorEl={anchorEl}
+  onClose={handleFilterClose}
+  column={activeColumn}
+  columns={columns}
+  filters={filters.filter(f => f.column === activeColumn?.value)}
+  setFilters={(updated) => {
+    setFilters(prev => {
+      // Keep filters from other columns, replace only this one
+      const other = prev.filter(f => f.column !== activeColumn?.value);
+      return [...other, ...updated];
+    });
+  }}
+/>
 										</TableContainer>
 									) : (
 										<div className='text-start ml-4  text-yellow-600 dark:border dark:border-yellow-400 dark:opacity-50 dark:bg-transparent rounded-md bg-yellow-100 p-2 mr-4'>
