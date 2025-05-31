@@ -281,7 +281,7 @@ function RowNotPriced({
 					<input
 						type='number'
 						name={`waiting-${row.id}`}
-						className='w-16 text-center border rounded p-1 bg-inherit ring-inherit dark:bg-inherit dark:ring-inherit'
+						className='w-20 text-center border rounded p-1 bg-inherit ring-inherit dark:bg-inherit dark:ring-inherit'
 						value={waiting}
 						onChange={(e) => handleInputChange('waiting', +e.target.value)}
 						onKeyDown={(e) => handleKeyPress(e, `driverFare-${row.id}`)}
@@ -304,7 +304,7 @@ function RowNotPriced({
 					<input
 						type='number'
 						name={`driverFare-${row.id}`}
-						className='w-16 text-center border rounded p-1 bg-inherit ring-inherit dark:bg-inherit dark:ring-inherit'
+						className='w-20 text-center border rounded p-1 bg-inherit ring-inherit dark:bg-inherit dark:ring-inherit'
 						value={driverFare}
 						onChange={(e) => handleInputChange('driverFare', +e.target.value)}
 						onKeyDown={(e) => handleKeyPress(e, `parking-${row.id}`)}
@@ -316,7 +316,7 @@ function RowNotPriced({
 					<input
 						type='number'
 						name={`parking-${row.id}`}
-						className='w-16 text-center border rounded p-1 bg-inherit ring-inherit dark:bg-inherit dark:ring-inherit'
+						className='w-20 text-center border rounded p-1 bg-inherit ring-inherit dark:bg-inherit dark:ring-inherit'
 						value={parking}
 						onChange={(e) => handleInputChange('parking', +e.target.value)}
 						onKeyDown={(e) => handleKeyPress(e, null)}
@@ -418,7 +418,8 @@ function RowNotPriced({
 
 function RowPriced({ row, handleRevert }) {
 	const [open, setOpen] = useState(false);
-
+	const calculatedTotal =
+	Number(row?.driverFare) + Number(row?.parking) + Number(row?.waitingCharge);
 	return (
 		<>
 			{/* Main Table Row */}
@@ -509,7 +510,7 @@ function RowPriced({ row, handleRevert }) {
 				<TableCell
 					className={`${row?.coa ? 'dark:text-white' : 'dark:text-gray-700'} text-gray-900 font-semibold`}
 				>
-					£{row.total.toFixed(2)}
+					£{calculatedTotal?.toFixed(2)}
 				</TableCell>
 
 				<TableCell>
@@ -1113,13 +1114,52 @@ function StateProcessing() {
 															Driver
 														</TableCell>
 														<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
-															Pickup
+														<TableSortLabel
+																active={orderBy === 'pickup'}
+																direction={order}
+																onClick={() => handleSort('pickup')}
+																sx={{
+																	'&:hover': { color: '#9A9CAE' }, // Change color on hover
+																	'&.Mui-active': { color: '#9A9CAE' },
+																	'&.Mui-active .MuiTableSortLabel-icon': {
+																		color: '#9A9CAE',
+																	}, // Change to blue when active
+																}}
+															>
+																Pickup
+															</TableSortLabel>
 														</TableCell>
 														<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
-															Destination
+														<TableSortLabel
+																active={orderBy === 'destination'}
+																direction={order}
+																onClick={() => handleSort('destination')}
+																sx={{
+																	'&:hover': { color: '#9A9CAE' }, // Change color on hover
+																	'&.Mui-active': { color: '#9A9CAE' },
+																	'&.Mui-active .MuiTableSortLabel-icon': {
+																		color: '#9A9CAE',
+																	}, // Change to blue when active
+																}}
+															>
+																Destination
+															</TableSortLabel>
 														</TableCell>
 														<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
-															Passenger
+														<TableSortLabel
+																active={orderBy === 'passenger'}
+																direction={order}
+																onClick={() => handleSort('passenger')}
+																sx={{
+																	'&:hover': { color: '#9A9CAE' }, // Change color on hover
+																	'&.Mui-active': { color: '#9A9CAE' },
+																	'&.Mui-active .MuiTableSortLabel-icon': {
+																		color: '#9A9CAE',
+																	}, // Change to blue when active
+																}}
+															>
+																Passenger
+															</TableSortLabel>
 														</TableCell>
 														<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
 															Has Vias
@@ -1315,13 +1355,52 @@ function StateProcessing() {
 															Driver
 														</TableCell>
 														<TableCell className='text-gray-900 dark:text-gray-700 border-e '>
-															Pickup
+														<TableSortLabel
+																active={orderBy === 'pickup'}
+																direction={order}
+																onClick={() => handleSort('pickup')}
+																sx={{
+																	'&:hover': { color: '#9A9CAE' }, // Change color on hover
+																	'&.Mui-active': { color: '#9A9CAE' },
+																	'&.Mui-active .MuiTableSortLabel-icon': {
+																		color: '#9A9CAE',
+																	}, // Change to blue when active
+																}}
+															>
+																Pickup
+															</TableSortLabel>
 														</TableCell>
 														<TableCell className='text-gray-900 dark:text-gray-700 border-e '>
-															Destination
+														<TableSortLabel
+																active={orderBy === 'destination'}
+																direction={order}
+																onClick={() => handleSort('destination')}
+																sx={{
+																	'&:hover': { color: '#9A9CAE' }, // Change color on hover
+																	'&.Mui-active': { color: '#9A9CAE' },
+																	'&.Mui-active .MuiTableSortLabel-icon': {
+																		color: '#9A9CAE',
+																	}, // Change to blue when active
+																}}
+															>
+																Destination
+															</TableSortLabel>
 														</TableCell>
 														<TableCell className='text-gray-900 dark:text-gray-700 border-e '>
-															Passenger
+														<TableSortLabel
+																active={orderBy === 'passenger'}
+																direction={order}
+																onClick={() => handleSort('passenger')}
+																sx={{
+																	'&:hover': { color: '#9A9CAE' }, // Change color on hover
+																	'&.Mui-active': { color: '#9A9CAE' },
+																	'&.Mui-active .MuiTableSortLabel-icon': {
+																		color: '#9A9CAE',
+																	}, // Change to blue when active
+																}}
+															>
+																Passenger
+															</TableSortLabel>
 														</TableCell>
 														<TableCell className='text-gray-900 dark:text-gray-700 border-e '>
 															Has Vias
