@@ -612,6 +612,10 @@ function InvoiceProcessor() {
     const [activeColumn, setActiveColumn] = useState(null);
     const [filters, setFilters] = useState([]);
 
+	const [anchorE2, setAnchorE2] = useState(null);
+    const [activeColumn2, setActiveColumn2] = useState(null);
+    const [filters2, setFilters2] = useState([]);
+
 	const scrollRef = useRef(null);
 	useEffect(() => {
 		if (open) {
@@ -705,8 +709,39 @@ function InvoiceProcessor() {
 		  });
 	  };
 
+	  const handleFilterClick2 = (event, column) => {
+		setAnchorE2(event.currentTarget);
+		setActiveColumn2(column);
+	  
+		// Set initial filter row if column is newly selected
+		setFilters2((prevFilters) => {
+			const existing = prevFilters.find((f) => f.column === column.value);
+			// If this column already has a filter, don't reset it
+			if (existing) return prevFilters;
+		
+			// Else, add a new default filter for this column
+			return [
+			  ...prevFilters,
+			  {
+				column: column.value,
+				operator: 'contains',
+				value: '',
+			  },
+			];
+		  });
+	  };
+
 	  const isFilterApplied = (columnKey) => {
 		return filters.some(
+		  (f) =>
+			f.column === columnKey &&
+			typeof f.value === 'string' &&
+			f.value.trim() !== ''
+		);
+	  };
+
+	  const isFilterApplied2 = (columnKey) => {
+		return filters2.some(
 		  (f) =>
 			f.column === columnKey &&
 			typeof f.value === 'string' &&
@@ -717,6 +752,11 @@ function InvoiceProcessor() {
 	  const handleFilterClose = () => {
 		setAnchorEl(null);
 		setActiveColumn(null);
+	  };
+
+	  const handleFilterClose2 = () => {
+		setAnchorE2(null);
+		setActiveColumn2(null);
 	  };
 	 
 	  
@@ -753,6 +793,13 @@ function InvoiceProcessor() {
 	  };
 
 	  const filterObject = filters.reduce((acc, curr) => {
+		if (curr.column) {
+		  acc[curr.column] = { operator: curr.operator, value: curr.value };
+		}
+		return acc;
+	  }, {});
+
+	  const filterObject2 = filters2.reduce((acc, curr) => {
 		if (curr.column) {
 		  acc[curr.column] = { operator: curr.operator, value: curr.value };
 		}
@@ -825,7 +872,19 @@ function InvoiceProcessor() {
 		})
 	);
 
-	const sortedPricedBookings = [...formattedPricedBookings].sort((a, b) => {
+	const filterPricedBookings = formattedPricedBookings?.filter((row) => {
+		return Object.entries(filterObject2).every(([colKey, filterObj]) => {
+		  if (!filterObj || !filterObj.operator || typeof filterObj.value !== 'string') return true;
+	  
+		  const cell = row[colKey]?.toString().toLowerCase() || '';
+		  const value = filterObj.value.toLowerCase();
+	  
+		  const operatorFn = operators[filterObj.operator];
+		  return operatorFn ? operatorFn(cell, value) : true;
+		});
+	  });
+
+	const sortedPricedBookings = [...filterPricedBookings].sort((a, b) => {
 		if (order === 'asc') {
 			return a[orderBy] > b[orderBy] ? 1 : -1;
 		} else {
@@ -1517,14 +1576,8 @@ function InvoiceProcessor() {
   onClose={handleFilterClose}
   column={activeColumn}
   columns={columns}
-  filters={filters.filter(f => f.column === activeColumn?.value)}
-  setFilters={(updated) => {
-    setFilters(prev => {
-      // Keep filters from other columns, replace only this one
-      const other = prev.filter(f => f.column !== activeColumn?.value);
-      return [...other, ...updated];
-    });
-  }}
+  filters={filters}
+  setFilters={setFilters}
 />
 										</TableContainer>
 									) : (
@@ -1538,7 +1591,7 @@ function InvoiceProcessor() {
 										Ready for Invoicing -{' '}
 										{accountChargeableJobs?.priced?.length}
 									</div>
-									{sortedPricedBookings.length > 0 ? (
+									{formattedPricedBookings.length > 0 ? (
 										<TableContainer
 											component={Paper}
 											className='shadow-none bg-white dark:bg-[#14151A] overflow-x-auto'
@@ -1608,7 +1661,8 @@ function InvoiceProcessor() {
 															className='text-[#14151A] dark:text-gray-700 border-e'
 															sx={{ fontWeight: 'bold' }}
 														>
-															<TableSortLabel
+														<div className="flex gap-1">
+<TableSortLabel
 																active={orderBy === 'pickup'}
 																direction={order}
 																onClick={() => handleSort('pickup')}
@@ -1622,11 +1676,28 @@ function InvoiceProcessor() {
 															>
 																Pickup
 															</TableSortLabel>
+															<IconButton
+                                                             size="small"
+															 onClick={(e) =>
+    handleFilterClick2(e, { label: 'Pickup', value: 'pickup' })
+  }
+  className='text-[#14151A] dark:text-gray-700'
+                                                            >
+                                                            {isFilterApplied2('pickup') ? (
+    <FilterAltIcon fontSize="small" />
+  ) : (
+    <FilterAltOutlinedIcon fontSize="small" />
+  )}
+                                                         </IconButton>
+														</div>
+															
 														</TableCell>
 														<TableCell
 															className='text-[#14151A] dark:text-gray-700 border-e'
 															sx={{ fontWeight: 'bold' }}
 														>
+														<div className="flex gap-1">
+
 															<TableSortLabel
 																active={orderBy === 'destination'}
 																direction={order}
@@ -1641,11 +1712,27 @@ function InvoiceProcessor() {
 															>
 																Destination
 															</TableSortLabel>
+															<IconButton
+                                                             size="small"
+															 onClick={(e) =>
+    handleFilterClick2(e, { label: 'Destination', value: 'destination' })
+  }
+  className='text-[#14151A] dark:text-gray-700'
+                                                            >
+                                                            {isFilterApplied2('destination') ? (
+    <FilterAltIcon fontSize="small" />
+  ) : (
+    <FilterAltOutlinedIcon fontSize="small" />
+  )}
+                                                         </IconButton>
+														</div>
 														</TableCell>
 														<TableCell
 															className='text-[#14151A] dark:text-gray-700 border-e'
 															sx={{ fontWeight: 'bold' }}
 														>
+														<div className='flex gap-1'>
+
 															<TableSortLabel
 																active={orderBy === 'passenger'}
 																direction={order}
@@ -1660,6 +1747,20 @@ function InvoiceProcessor() {
 															>
 																Passenger
 															</TableSortLabel>
+															<IconButton
+                                                             size="small"
+															 onClick={(e) =>
+    handleFilterClick2(e, { label: 'Passenger', value: 'passenger' })
+  }
+  className='text-[#14151A] dark:text-gray-700'
+                                                            >
+                                                            {isFilterApplied2('passenger') ? (
+    <FilterAltIcon fontSize="small" />
+  ) : (
+    <FilterAltOutlinedIcon fontSize="small" />
+  )}
+                                                         </IconButton>
+														</div>
 														</TableCell>
 														<TableCell
 															className='text-[#14151A] dark:text-gray-700 border-e'
@@ -1811,6 +1912,16 @@ function InvoiceProcessor() {
 													},
 												}}
 											/>
+											<TableFilterPopover
+  anchorEl={anchorE2}
+  onClose={handleFilterClose2}
+  column={activeColumn2}
+  columns={columns}
+  filters={filters2}
+  setFilters={
+    setFilters2
+  }
+/>
 										</TableContainer>
 									) : (
 										<div className='text-start ml-4  text-yellow-600 dark:border dark:border-yellow-400 dark:opacity-50 dark:bg-transparent rounded-md bg-yellow-100 p-2 mr-4 mb-2'>
