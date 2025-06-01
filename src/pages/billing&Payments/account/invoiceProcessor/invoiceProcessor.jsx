@@ -594,7 +594,7 @@ function InvoiceProcessor() {
 	const [priceBaseModal, setPriceBaseModal] = useState(false);
 	const [selectedBooking, setSelectedBooking] = useState(null);
 	const [autoEmailInvoices, setAutoEmailInvoices] = useState(true);
-	const [search, setSearch] = useState('');
+	// const [search, setSearch] = useState('');
 	const [order, setOrder] = useState('asc'); // Sort order
 	const [orderBy, setOrderBy] = useState(''); // Default sorted column
 	const [open, setOpen] = useState(false);
@@ -1098,7 +1098,7 @@ function InvoiceProcessor() {
 							<div className='card card-grid min-w-full'>
 								<div className='card-header flex-wrap gap-2'>
 									<div className='flex flex-wrap gap-2 lg:gap-5'>
-										<div className='flex'>
+										{/* <div className='flex'>
 											<label
 												className='input input-sm hover:shadow-lg mt-4'
 												style={{ height: '40px' }}
@@ -1111,7 +1111,7 @@ function InvoiceProcessor() {
 													onChange={(e) => setSearch(e.target.value)}
 												/>
 											</label>
-										</div>
+										</div> */}
 										<div className='flex flex-wrap items-center gap-2.5'>
 											<div className='flex flex-col'>
 												<label className='form-label'>Accounts</label>

@@ -67,6 +67,9 @@ import {
 import toast from 'react-hot-toast';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import { cancelBooking } from '../../../../service/operations/webBookingsApi';
+import TableFilterPopover from '../../tableFilterBar/tableFilterBar';
+import FilterAltOutlinedIcon from '@mui/icons-material/FilterAltOutlined';
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
 
 // Collapsible Row Component
 function RowNotPriced({
@@ -589,10 +592,17 @@ function StateProcessing() {
 
 	const [date, setDate] = useState(new Date());
 	const [openDate, setOpenDate] = useState(false);
-	const [search, setSearch] = useState('');
+	// const [search, setSearch] = useState('');
 	const [order, setOrder] = useState('asc'); // Sort order
 	const [orderBy, setOrderBy] = useState(''); // Default sorted column
 	const [processLoading, setProcessLoading] = useState(false);
+	const [anchorEl, setAnchorEl] = useState(null);
+		const [activeColumn, setActiveColumn] = useState(null);
+		const [filters, setFilters] = useState([]);
+	
+		const [anchorE2, setAnchorE2] = useState(null);
+		const [activeColumn2, setActiveColumn2] = useState(null);
+		const [filters2, setFilters2] = useState([]);
 	// console.log(driverChargeableJobs);
 	const scrollRef = useRef(null);
 
@@ -656,19 +666,120 @@ function StateProcessing() {
 		},
 	}));
 
-	const filteredNotPricedBookings = formattedNotPricedBookings?.filter(
-		(booking) => {
-			if (!search?.trim()) return true;
+	const handleFilterClick = (event, column) => {
+		setAnchorEl(event.currentTarget);
+		setActiveColumn(column);
+	  
+		// Set initial filter row if column is newly selected
+		setFilters((prevFilters) => {
+			const existing = prevFilters.find((f) => f.column === column.value);
+			// If this column already has a filter, don't reset it
+			if (existing) return prevFilters;
+		
+			// Else, add a new default filter for this column
+			return [
+			  ...prevFilters,
+			  {
+				column: column.value,
+				operator: 'contains',
+				value: '',
+			  },
+			];
+		  });
+	  };
 
-			const isMatch =
-				booking?.pickup?.toLowerCase().includes(search?.toLowerCase()) ||
-				booking?.destination?.toLowerCase().includes(search?.toLowerCase()) ||
-				booking?.passenger?.toLowerCase().includes(search?.toLowerCase()) ||
-				String(booking?.id)?.toLowerCase().includes(search?.toLowerCase());
+	  const handleFilterClick2 = (event, column) => {
+		setAnchorE2(event.currentTarget);
+		setActiveColumn2(column);
+	  
+		// Set initial filter row if column is newly selected
+		setFilters2((prevFilters) => {
+			const existing = prevFilters.find((f) => f.column === column.value);
+			// If this column already has a filter, don't reset it
+			if (existing) return prevFilters;
+		
+			// Else, add a new default filter for this column
+			return [
+			  ...prevFilters,
+			  {
+				column: column.value,
+				operator: 'contains',
+				value: '',
+			  },
+			];
+		  });
+	  };
 
-			return isMatch;
+	  const isFilterApplied = (columnKey) => {
+		return filters.some(
+		  (f) =>
+			f.column === columnKey &&
+			typeof f.value === 'string' &&
+			f.value.trim() !== ''
+		);
+	  };
+
+	  const isFilterApplied2 = (columnKey) => {
+		return filters2.some(
+		  (f) =>
+			f.column === columnKey &&
+			typeof f.value === 'string' &&
+			f.value.trim() !== ''
+		);
+	  };
+	  
+	  const handleFilterClose = () => {
+		setAnchorEl(null);
+		setActiveColumn(null);
+	  };
+
+	  const handleFilterClose2 = () => {
+		setAnchorE2(null);
+		setActiveColumn2(null);
+	  };
+
+	  const columns = [
+			{ label: '#', value: 'id' },
+			{ label: 'Date', value: 'date' },
+			{ label: 'Pickup', value: 'pickup' },
+			{ label: 'Destination', value: 'destination' },
+			{ label: 'Passenger', value: 'passenger' },
+			{ label: 'Driver Price', value: 'driverFare' },
+		  ];
+	  
+		  const operators = {
+			'contains': (cell, value) => cell.includes(value),
+			'equals': (cell, value) => cell === value,
+			'starts with': (cell, value) => cell.startsWith(value),
+			'ends with': (cell, value) => cell.endsWith(value),
+		  };
+	  
+	  const filterObject = filters.reduce((acc, curr) => {
+		if (curr.column) {
+		  acc[curr.column] = { operator: curr.operator, value: curr.value };
 		}
-	);
+		return acc;
+	  }, {});
+
+	  const filterObject2 = filters2.reduce((acc, curr) => {
+		if (curr.column) {
+		  acc[curr.column] = { operator: curr.operator, value: curr.value };
+		}
+		return acc;
+	  }, {});
+	  
+
+	const filteredNotPricedBookings = formattedNotPricedBookings?.filter((row) => {
+		return Object.entries(filterObject).every(([colKey, filterObj]) => {
+		  if (!filterObj || !filterObj.operator || typeof filterObj.value !== 'string') return true;
+	  
+		  const cell = row[colKey]?.toString().toLowerCase() || '';
+		  const value = filterObj.value.toLowerCase();
+	  
+		  const operatorFn = operators[filterObj.operator];
+		  return operatorFn ? operatorFn(cell, value) : true;
+		});
+	  });
 
 	const handleSort = (property) => {
 		const isAscending = orderBy === property && order === 'asc';
@@ -720,7 +831,19 @@ function StateProcessing() {
 		})
 	);
 
-	const sortedPricedBookings = [...formattedPricedBookings].sort((a, b) => {
+	const filterPricedBookings = formattedPricedBookings?.filter((row) => {
+		return Object.entries(filterObject2).every(([colKey, filterObj]) => {
+		  if (!filterObj || !filterObj.operator || typeof filterObj.value !== 'string') return true;
+	  
+		  const cell = row[colKey]?.toString().toLowerCase() || '';
+		  const value = filterObj.value.toLowerCase();
+	  
+		  const operatorFn = operators[filterObj.operator];
+		  return operatorFn ? operatorFn(cell, value) : true;
+		});
+	  });
+
+	const sortedPricedBookings = [...filterPricedBookings].sort((a, b) => {
 		if (order === 'asc') {
 			return a[orderBy] > b[orderBy] ? 1 : -1;
 		} else {
@@ -936,7 +1059,7 @@ function StateProcessing() {
 							<div className='card card-grid min-w-full'>
 								<div className='card-header flex-wrap gap-2'>
 									<div className='flex flex-wrap gap-2 lg:gap-5'>
-										<div className='flex'>
+										{/* <div className='flex'>
 											<label
 												className='input input-sm hover:shadow-lg mt-5'
 												style={{ height: '40px' }}
@@ -949,7 +1072,7 @@ function StateProcessing() {
 													onChange={(e) => setSearch(e.target.value)}
 												/>
 											</label>
-										</div>
+										</div> */}
 										<div className='flex flex-wrap items-center gap-2.5'>
 											<div className='flex flex-col'>
 												<label className='form-label'>Last Date Included</label>
@@ -1056,7 +1179,7 @@ function StateProcessing() {
 											Post All Priced
 										</button>
 									</div>
-									{sortedBookings?.length > 0 ? (
+									{formattedNotPricedBookings?.length > 0 ? (
 										<TableContainer
 											component={Paper}
 											ref={scrollRef}
@@ -1114,6 +1237,8 @@ function StateProcessing() {
 															Driver
 														</TableCell>
 														<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
+														<div className="flex gap-1">
+
 														<TableSortLabel
 																active={orderBy === 'pickup'}
 																direction={order}
@@ -1128,8 +1253,24 @@ function StateProcessing() {
 															>
 																Pickup
 															</TableSortLabel>
+															<IconButton
+																														 size="small"
+																														 onClick={(e) =>
+																handleFilterClick(e, { label: 'Pickup', value: 'pickup' })
+															  }
+															  className='text-[#14151A] dark:text-gray-700'
+																														>
+																														{isFilterApplied('pickup') ? (
+																<FilterAltIcon fontSize="small" />
+															  ) : (
+																<FilterAltOutlinedIcon fontSize="small" />
+															  )}
+																													 </IconButton>
+														</div>
 														</TableCell>
 														<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
+														<div className="flex gap-1">
+
 														<TableSortLabel
 																active={orderBy === 'destination'}
 																direction={order}
@@ -1144,8 +1285,24 @@ function StateProcessing() {
 															>
 																Destination
 															</TableSortLabel>
+															<IconButton
+																														 size="small"
+																														 onClick={(e) =>
+																handleFilterClick(e, { label: 'Destination', value: 'destination' })
+															  }
+															  className='text-[#14151A] dark:text-gray-700'
+																														>
+																														{isFilterApplied('destination') ? (
+																<FilterAltIcon fontSize="small" />
+															  ) : (
+																<FilterAltOutlinedIcon fontSize="small" />
+															  )}
+																													 </IconButton>
+														</div>
 														</TableCell>
 														<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
+														<div className="flex gap-1">
+
 														<TableSortLabel
 																active={orderBy === 'passenger'}
 																direction={order}
@@ -1160,6 +1317,20 @@ function StateProcessing() {
 															>
 																Passenger
 															</TableSortLabel>
+															<IconButton
+																														 size="small"
+																														 onClick={(e) =>
+																handleFilterClick(e, { label: 'Passenger', value: 'passenger' })
+															  }
+															  className='text-[#14151A] dark:text-gray-700'
+																														>
+																														{isFilterApplied('passenger') ? (
+																<FilterAltIcon fontSize="small" />
+															  ) : (
+																<FilterAltOutlinedIcon fontSize="small" />
+															  )}
+																													 </IconButton>
+														</div>
 														</TableCell>
 														<TableCell className='text-gray-900 dark:text-gray-700 border-e'>
 															Has Vias
@@ -1285,6 +1456,14 @@ function StateProcessing() {
 													},
 												}}
 											/>
+											<TableFilterPopover
+											  anchorEl={anchorEl}
+											  onClose={handleFilterClose}
+											  column={activeColumn}
+											  columns={columns}
+											  filters={filters}
+											  setFilters={setFilters}
+											/>
 										</TableContainer>
 									) : (
 										<div className='text-start ml-4  text-yellow-600 dark:border dark:border-yellow-400 dark:opacity-50 dark:bg-transparent rounded-md bg-yellow-100 p-2 mr-4'>
@@ -1298,7 +1477,7 @@ function StateProcessing() {
 										Ready for Processing -{' '}
 										{driverChargeableJobs?.priced?.length}
 									</div>
-									{sortedPricedBookings?.length > 0 ? (
+									{formattedPricedBookings?.length > 0 ? (
 										<TableContainer
 											component={Paper}
 											className='shadow-none bg-white dark:bg-[#14151A] overflow-x-auto'
@@ -1355,6 +1534,8 @@ function StateProcessing() {
 															Driver
 														</TableCell>
 														<TableCell className='text-gray-900 dark:text-gray-700 border-e '>
+														<div className='flex gap-1'>
+
 														<TableSortLabel
 																active={orderBy === 'pickup'}
 																direction={order}
@@ -1369,8 +1550,24 @@ function StateProcessing() {
 															>
 																Pickup
 															</TableSortLabel>
+															<IconButton
+																														 size="small"
+																														 onClick={(e) =>
+																handleFilterClick2(e, { label: 'Pickup', value: 'pickup' })
+															  }
+															  className='text-[#14151A] dark:text-gray-700'
+																														>
+																														{isFilterApplied2('pickup') ? (
+																<FilterAltIcon fontSize="small" />
+															  ) : (
+																<FilterAltOutlinedIcon fontSize="small" />
+															  )}
+																													 </IconButton>
+														</div>
 														</TableCell>
 														<TableCell className='text-gray-900 dark:text-gray-700 border-e '>
+														<div className='flex gap-1'>
+
 														<TableSortLabel
 																active={orderBy === 'destination'}
 																direction={order}
@@ -1385,8 +1582,24 @@ function StateProcessing() {
 															>
 																Destination
 															</TableSortLabel>
+															<IconButton
+																														 size="small"
+																														 onClick={(e) =>
+																handleFilterClick2(e, { label: 'Destination', value: 'destination' })
+															  }
+															  className='text-[#14151A] dark:text-gray-700'
+																														>
+																														{isFilterApplied2('destination') ? (
+																<FilterAltIcon fontSize="small" />
+															  ) : (
+																<FilterAltOutlinedIcon fontSize="small" />
+															  )}
+																													 </IconButton>
+														</div>
 														</TableCell>
 														<TableCell className='text-gray-900 dark:text-gray-700 border-e '>
+														<div className='flex gap-1'>
+
 														<TableSortLabel
 																active={orderBy === 'passenger'}
 																direction={order}
@@ -1401,6 +1614,20 @@ function StateProcessing() {
 															>
 																Passenger
 															</TableSortLabel>
+															<IconButton
+																														 size="small"
+																														 onClick={(e) =>
+																handleFilterClick2(e, { label: 'Passenger', value: 'passenger' })
+															  }
+															  className='text-[#14151A] dark:text-gray-700'
+																														>
+																														{isFilterApplied2('passenger') ? (
+																<FilterAltIcon fontSize="small" />
+															  ) : (
+																<FilterAltOutlinedIcon fontSize="small" />
+															  )}
+																													 </IconButton>
+														</div>
 														</TableCell>
 														<TableCell className='text-gray-900 dark:text-gray-700 border-e '>
 															Has Vias
@@ -1506,6 +1733,16 @@ function StateProcessing() {
 														},
 													},
 												}}
+											/>
+											<TableFilterPopover
+											  anchorEl={anchorE2}
+											  onClose={handleFilterClose2}
+											  column={activeColumn2}
+											  columns={columns}
+											  filters={filters2}
+											  setFilters={
+												setFilters2
+											  }
 											/>
 										</TableContainer>
 									) : (
