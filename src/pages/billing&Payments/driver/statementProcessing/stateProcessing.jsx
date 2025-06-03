@@ -603,7 +603,6 @@ function StateProcessing() {
 		const [anchorE2, setAnchorE2] = useState(null);
 		const [activeColumn2, setActiveColumn2] = useState(null);
 		const [filters2, setFilters2] = useState([]);
-	// console.log(driverChargeableJobs);
 	const scrollRef = useRef(null);
 
 	const handleDateSelect = (date) => {
