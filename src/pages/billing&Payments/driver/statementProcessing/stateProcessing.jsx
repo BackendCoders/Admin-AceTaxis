@@ -902,8 +902,6 @@ function StateProcessing() {
 				(job) => Number(job.driverFare) > 0
 			);
 
-			// console.log({ formattedNotPricedBookings, jobsToPost });
-
 			if (jobsToPost.length === 0) {
 				toast.error('No jobs available to post.');
 				return;
