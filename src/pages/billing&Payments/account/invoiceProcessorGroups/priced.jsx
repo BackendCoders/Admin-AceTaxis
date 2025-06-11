@@ -78,6 +78,9 @@ export default function Priced({ handleShow }) {
 							Driver #
 						</th>
 						<th className='border border-gray-300 text-start px-4 py-2 text-gray-700'>
+							Pax
+						</th>
+						<th className='border border-gray-300 text-start px-4 py-2 text-gray-700'>
 							Vias
 						</th>
 						<th className='border border-gray-300 text-start px-4 py-2 text-gray-700'>
@@ -229,6 +232,9 @@ export default function Priced({ handleShow }) {
 																					</td>
 																					<td className='border border-gray-300 px-4 py-2'>
 																						{booking.userId}
+																					</td>
+																					<td className='border border-gray-300 px-4 py-2'>
+																						{booking.passengers}
 																					</td>
 																					<td className='border border-gray-300 px-4 py-2'>
 																						{(booking.vias.length > 0 &&

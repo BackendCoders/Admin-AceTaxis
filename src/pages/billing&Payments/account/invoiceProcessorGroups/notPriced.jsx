@@ -295,6 +295,9 @@ export default function NotPriced({ handleShow }) {
 							Driver #
 						</th>
 						<th className='border border-gray-300 text-start px-4 py-2 text-gray-700'>
+							Pax
+						</th>
+						<th className='border border-gray-300 text-start px-4 py-2 text-gray-700'>
 							Vias
 						</th>
 						<th className='border border-gray-300 text-start px-4 py-2 text-gray-700'>
@@ -420,19 +423,23 @@ export default function NotPriced({ handleShow }) {
 																			</span>
 																			<button
 																				className='btn btn-primary bg-green-600 flex justify-center'
-																				onClick={() =>
-																					handleAllPriced(destinationGroup.jobs)
-																				}
+																				onClick={(e) => {
+																					e.stopPropagation();
+																					handleAllPriced(
+																						destinationGroup.jobs
+																					);
+																				}}
 																			>
 																				Price All
 																			</button>
 																			<button
 																				className='btn btn-primary flex justify-center'
-																				onClick={() =>
+																				onClick={(e) => {
+																					e.stopPropagation();
 																					handlePostAllPriced(
 																						destinationGroup.jobs
-																					)
-																				}
+																					);
+																				}}
 																			>
 																				Post All Priced
 																			</button>
@@ -472,6 +479,9 @@ export default function NotPriced({ handleShow }) {
 																					</td>
 																					<td className='border border-gray-300 px-4 py-2'>
 																						{booking.userId}
+																					</td>
+																					<td className='border border-gray-300 px-4 py-2'>
+																						{booking.passengers}
 																					</td>
 																					<td className='border border-gray-300 px-4 py-2'>
 																						{(booking.vias.length > 0 &&
