@@ -74,7 +74,7 @@ const CompanySetting = () => {
 	};
 
 	return (
-		<div className='pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1580px] w-full'>
+		<div className='pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1850px] w-full'>
 			{/* ✅ Card Header */}
 			<div className=' pb-4'>
 				<h3 className='text-xl leading-none font-medium text-gray-900'>

@@ -278,7 +278,7 @@ function CardBookings() {
 
 	return (
 		<Fragment>
-			<div className='pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1580px] w-full'>
+			<div className='pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1850px] w-full'>
 				<Typography
 					variant='h5'
 					fontWeight='medium'

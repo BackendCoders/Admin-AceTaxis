@@ -91,7 +91,7 @@ const MsgSettings = () => {
 	};
 
 	return (
-		<div className='px-4 md:px-[1.875rem] ms-auto me-auto max-w-[1580px] w-full'>
+		<div className='px-4 md:px-[1.875rem] ms-auto me-auto max-w-[1850px] w-full'>
 			{/* ✅ Page Header */}
 			<h3 className='text-xl leading-none font-medium text-gray-900 mb-4'>
 				Message Settings

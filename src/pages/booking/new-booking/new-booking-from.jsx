@@ -328,7 +328,7 @@ function NewBooking() {
 
 	return (
 		<Fragment>
-			<div className='pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1580px] w-full'>
+			<div className='pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1850px] w-full'>
 				<Toolbar>
 					<ToolbarHeading>
 						<ToolbarPageTitle />
@@ -345,7 +345,7 @@ function NewBooking() {
 					</ToolbarActions>
 				</Toolbar>
 			</div>
-			<div className='pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1580px] w-full'>
+			<div className='pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1850px] w-full'>
 				<div className='flex flex-col items-stretch gap-5 lg:gap-7.5'>
 					<div className='flex flex-wrap items-center gap-5 justify-between'>
 						<div className='card card-grid min-w-full'>

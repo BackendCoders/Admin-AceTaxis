@@ -159,7 +159,7 @@ const AirportRuns = () => {
 	}, [dispatch, month]);
 
 	return (
-		<div className='max-w-[1580px] w-full mx-auto px-6 py-4'>
+		<div className='max-w-[1850px] w-full mx-auto px-6 py-4'>
 			{/* Header Section */}
 			<div className='mb-4'>
 				<h2 className='text-xl leading-none font-medium text-gray-900 '>

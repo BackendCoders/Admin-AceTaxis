@@ -40,7 +40,7 @@ const CreditJourneys = () => {
     }
   };
   return (
-    <div className="px-6 py-4 ms-auto me-auto max-w-[1580px] w-full">
+    <div className="px-6 py-4 ms-auto me-auto max-w-[1850px] w-full">
       {/* Header Section */}
       <h2 className="text-xl leading-none font-medium text-gray-900">
         Credit Journeys

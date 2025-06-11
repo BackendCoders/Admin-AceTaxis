@@ -231,7 +231,7 @@ const Tariff = () => {
 	}, []);
 
 	return (
-		<div className='pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1580px] w-full'>
+		<div className='pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1850px] w-full'>
 			<h2 className='text-xl leading-none font-medium text-gray-900 mb-8'>
 				Tariff Configuration
 			</h2>

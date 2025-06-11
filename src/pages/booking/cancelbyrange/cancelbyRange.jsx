@@ -57,7 +57,7 @@ const CancelByRange = () => {
 	const today = startOfDay(new Date());
 
 	return (
-		<div className='pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1580px] w-full'>
+		<div className='pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1850px] w-full'>
 			{/* Header Section */}
 			<h2 className='text-xl leading-none font-medium text-gray-900 '>
 				Cancel Bookings By Date Range

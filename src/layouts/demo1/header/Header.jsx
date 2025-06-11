@@ -49,7 +49,7 @@ const Header = () => {
 			)}
 		>
 			{/* Container component jo flexbox layout maintain karega */}
-			<div className='pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1580px] w-full flex justify-between items-stretch lg:gap-4'>
+			<div className='pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1850px] w-full flex justify-between items-stretch lg:gap-4'>
 				{/* Header ka logo */}
 				<HeaderLogo />
 

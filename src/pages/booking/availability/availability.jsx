@@ -222,7 +222,7 @@ const Availability = () => {
 	}, [date, dispatch, selectedDriver]);
 
 	return (
-		<div className='pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1580px] w-full'>
+		<div className='pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1850px] w-full'>
 			{/* Header Section */}
 			<div className='flex justify-between items-center'>
 				<h2 className='text-xl leading-none font-medium text-gray-900 '>

@@ -1,6 +1,6 @@
 /** @format */
 
-import { Fragment, } from 'react';
+import { Fragment } from 'react';
 // import { Container } from '@/components/container';
 import {
 	Toolbar,
@@ -24,7 +24,7 @@ const Demo1DarkSidebarPage = () => {
 	// });
 	return (
 		<Fragment>
-			<div className=' pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1580px] w-full'>
+			<div className=' pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1850px] w-full'>
 				<Toolbar>
 					<ToolbarHeading
 						title='Dashboard'
@@ -76,7 +76,7 @@ const Demo1DarkSidebarPage = () => {
 				</Toolbar>
 			</div>
 
-			<div className='pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1580px] w-full'>
+			<div className='pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1850px] w-full'>
 				<Demo1LightSidebarContent />
 			</div>
 		</Fragment>

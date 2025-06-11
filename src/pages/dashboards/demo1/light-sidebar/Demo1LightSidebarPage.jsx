@@ -32,7 +32,7 @@ const Demo1LightSidebarPage = () => {
 
 	return (
 		<Fragment>
-			<div className=' pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1580px] w-full'>
+			<div className=' pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1850px] w-full'>
 				<Toolbar>
 					<ToolbarHeading
 						title='Dashboard'
@@ -84,7 +84,7 @@ const Demo1LightSidebarPage = () => {
 				</Toolbar>
 			</div>
 
-			<div className=' pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1580px] w-full'>
+			<div className=' pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1850px] w-full'>
 				<Demo1LightSidebarContent />
 			</div>
 		</Fragment>
