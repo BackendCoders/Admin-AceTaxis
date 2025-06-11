@@ -256,7 +256,7 @@ function InvoiceProcessorGroups() {
 									</div>
 									{notPriced?.length > 0 ? (
 										<>
-											<NotPriced />
+											<NotPriced handleShow={handleShow} />
 										</>
 									) : (
 										<div className='text-start ml-4  text-yellow-600 dark:border dark:border-yellow-400 dark:opacity-50 dark:bg-transparent rounded-md bg-yellow-100 p-2 mr-4'>
@@ -270,7 +270,7 @@ function InvoiceProcessorGroups() {
 									</div>
 									{priced?.length > 0 ? (
 										<>
-											<Priced />
+											<Priced handleShow={handleShow} />
 										</>
 									) : (
 										<div className='text-start ml-4  text-yellow-600 dark:border dark:border-yellow-400 dark:opacity-50 dark:bg-transparent rounded-md bg-yellow-100 p-2 mr-4 mb-2'>

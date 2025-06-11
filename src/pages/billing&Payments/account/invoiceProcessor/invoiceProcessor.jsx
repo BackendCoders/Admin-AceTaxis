@@ -433,7 +433,9 @@ function RowNotPriced({
 function RowPriced({ row, handleRevert }) {
 	const [open, setOpen] = useState(false);
 	const calculatedTotal =
-	Number(row?.parking) + Number(row?.waitingCharge) + Number(row.journeyCharge);
+		Number(row?.parking) +
+		Number(row?.waitingCharge) +
+		Number(row.journeyCharge);
 	return (
 		<>
 			<TableRow
@@ -609,12 +611,12 @@ function InvoiceProcessor() {
 	const [pageB, setPageB] = useState(0);
 	const [rowsPerPageB, setRowsPerPageB] = useState(10);
 	const [anchorEl, setAnchorEl] = useState(null);
-    const [activeColumn, setActiveColumn] = useState(null);
-    const [filters, setFilters] = useState([]);
+	const [activeColumn, setActiveColumn] = useState(null);
+	const [filters, setFilters] = useState([]);
 
 	const [anchorE2, setAnchorE2] = useState(null);
-    const [activeColumn2, setActiveColumn2] = useState(null);
-    const [filters2, setFilters2] = useState([]);
+	const [activeColumn2, setActiveColumn2] = useState(null);
+	const [filters2, setFilters2] = useState([]);
 
 	const scrollRef = useRef(null);
 	useEffect(() => {
@@ -666,7 +668,7 @@ function InvoiceProcessor() {
 		hasVias: booking?.hasVias,
 		coa: booking?.coa,
 		waiting: booking?.waitingMinutes || 0,
-		waitingCharge: booking?.waitingPriceDriver || 0,
+		waitingCharge: booking?.waitingPriceAccount || 0,
 		phoneNumber: booking?.phoneNumber || '',
 		actualMiles: booking?.miles,
 		driverFare: booking?.price || 0,
@@ -690,77 +692,74 @@ function InvoiceProcessor() {
 	const handleFilterClick = (event, column) => {
 		setAnchorEl(event.currentTarget);
 		setActiveColumn(column);
-	  
+
 		// Set initial filter row if column is newly selected
 		setFilters((prevFilters) => {
 			const existing = prevFilters.find((f) => f.column === column.value);
 			// If this column already has a filter, don't reset it
 			if (existing) return prevFilters;
-		
+
 			// Else, add a new default filter for this column
 			return [
-			  ...prevFilters,
-			  {
-				column: column.value,
-				operator: 'contains',
-				value: '',
-			  },
+				...prevFilters,
+				{
+					column: column.value,
+					operator: 'contains',
+					value: '',
+				},
 			];
-		  });
-	  };
+		});
+	};
 
-	  const handleFilterClick2 = (event, column) => {
+	const handleFilterClick2 = (event, column) => {
 		setAnchorE2(event.currentTarget);
 		setActiveColumn2(column);
-	  
+
 		// Set initial filter row if column is newly selected
 		setFilters2((prevFilters) => {
 			const existing = prevFilters.find((f) => f.column === column.value);
 			// If this column already has a filter, don't reset it
 			if (existing) return prevFilters;
-		
+
 			// Else, add a new default filter for this column
 			return [
-			  ...prevFilters,
-			  {
-				column: column.value,
-				operator: 'contains',
-				value: '',
-			  },
+				...prevFilters,
+				{
+					column: column.value,
+					operator: 'contains',
+					value: '',
+				},
 			];
-		  });
-	  };
+		});
+	};
 
-	  const isFilterApplied = (columnKey) => {
+	const isFilterApplied = (columnKey) => {
 		return filters.some(
-		  (f) =>
-			f.column === columnKey &&
-			typeof f.value === 'string' &&
-			f.value.trim() !== ''
+			(f) =>
+				f.column === columnKey &&
+				typeof f.value === 'string' &&
+				f.value.trim() !== ''
 		);
-	  };
+	};
 
-	  const isFilterApplied2 = (columnKey) => {
+	const isFilterApplied2 = (columnKey) => {
 		return filters2.some(
-		  (f) =>
-			f.column === columnKey &&
-			typeof f.value === 'string' &&
-			f.value.trim() !== ''
+			(f) =>
+				f.column === columnKey &&
+				typeof f.value === 'string' &&
+				f.value.trim() !== ''
 		);
-	  };
-	  
-	  const handleFilterClose = () => {
+	};
+
+	const handleFilterClose = () => {
 		setAnchorEl(null);
 		setActiveColumn(null);
-	  };
+	};
 
-	  const handleFilterClose2 = () => {
+	const handleFilterClose2 = () => {
 		setAnchorE2(null);
 		setActiveColumn2(null);
-	  };
-	 
-	  
-	  
+	};
 
 	// const filteredNotPricedBookings = formattedNotPricedBookings?.filter(
 	// 	(booking) => {
@@ -772,7 +771,7 @@ function InvoiceProcessor() {
 	// 		// 	booking?.passenger?.toLowerCase().includes(search?.toLowerCase()) ||
 	// 		// 	String(booking?.id)?.toLowerCase().includes(search?.toLowerCase());
 
-	// 		// return isMatch; 
+	// 		// return isMatch;
 	// 		}
 	// );
 
@@ -783,42 +782,47 @@ function InvoiceProcessor() {
 		{ label: 'Destination', value: 'destination' },
 		{ label: 'Passenger', value: 'passenger' },
 		{ label: 'Driver Price', value: 'driverFare' },
-	  ];
+	];
 
-	  const operators = {
+	const operators = {
 		'contains': (cell, value) => cell.includes(value),
 		'equals': (cell, value) => cell === value,
 		'starts with': (cell, value) => cell.startsWith(value),
 		'ends with': (cell, value) => cell.endsWith(value),
-	  };
+	};
 
-	  const filterObject = filters.reduce((acc, curr) => {
+	const filterObject = filters.reduce((acc, curr) => {
 		if (curr.column) {
-		  acc[curr.column] = { operator: curr.operator, value: curr.value };
+			acc[curr.column] = { operator: curr.operator, value: curr.value };
 		}
 		return acc;
-	  }, {});
+	}, {});
 
-	  const filterObject2 = filters2.reduce((acc, curr) => {
+	const filterObject2 = filters2.reduce((acc, curr) => {
 		if (curr.column) {
-		  acc[curr.column] = { operator: curr.operator, value: curr.value };
+			acc[curr.column] = { operator: curr.operator, value: curr.value };
 		}
 		return acc;
-	  }, {});
-	  
-	  
-	  const filteredNotPricedBookings = formattedNotPricedBookings?.filter((row) => {
-		return Object.entries(filterObject).every(([colKey, filterObj]) => {
-		  if (!filterObj || !filterObj.operator || typeof filterObj.value !== 'string') return true;
-	  
-		  const cell = row[colKey]?.toString().toLowerCase() || '';
-		  const value = filterObj.value.toLowerCase();
-	  
-		  const operatorFn = operators[filterObj.operator];
-		  return operatorFn ? operatorFn(cell, value) : true;
-		});
-	  });
-	  
+	}, {});
+
+	const filteredNotPricedBookings = formattedNotPricedBookings?.filter(
+		(row) => {
+			return Object.entries(filterObject).every(([colKey, filterObj]) => {
+				if (
+					!filterObj ||
+					!filterObj.operator ||
+					typeof filterObj.value !== 'string'
+				)
+					return true;
+
+				const cell = row[colKey]?.toString().toLowerCase() || '';
+				const value = filterObj.value.toLowerCase();
+
+				const operatorFn = operators[filterObj.operator];
+				return operatorFn ? operatorFn(cell, value) : true;
+			});
+		}
+	);
 
 	const handleSort = (property) => {
 		const isAscending = orderBy === property && order === 'asc';
@@ -850,7 +854,7 @@ function InvoiceProcessor() {
 			hasVias: booking?.hasVias,
 			coa: booking?.coa,
 			waiting: booking?.waitingMinutes || 0,
-			waitingCharge: booking?.waitingPriceDriver || 0,
+			waitingCharge: booking?.waitingPriceAccount || 0,
 			phoneNumber: booking?.phoneNumber || '',
 			actualMiles: booking?.miles,
 			driverFare: booking?.price || 0,
@@ -874,15 +878,20 @@ function InvoiceProcessor() {
 
 	const filterPricedBookings = formattedPricedBookings?.filter((row) => {
 		return Object.entries(filterObject2).every(([colKey, filterObj]) => {
-		  if (!filterObj || !filterObj.operator || typeof filterObj.value !== 'string') return true;
-	  
-		  const cell = row[colKey]?.toString().toLowerCase() || '';
-		  const value = filterObj.value.toLowerCase();
-	  
-		  const operatorFn = operators[filterObj.operator];
-		  return operatorFn ? operatorFn(cell, value) : true;
+			if (
+				!filterObj ||
+				!filterObj.operator ||
+				typeof filterObj.value !== 'string'
+			)
+				return true;
+
+			const cell = row[colKey]?.toString().toLowerCase() || '';
+			const value = filterObj.value.toLowerCase();
+
+			const operatorFn = operators[filterObj.operator];
+			return operatorFn ? operatorFn(cell, value) : true;
 		});
-	  });
+	});
 
 	const sortedPricedBookings = [...filterPricedBookings].sort((a, b) => {
 		if (order === 'asc') {
@@ -1297,106 +1306,112 @@ function InvoiceProcessor() {
 															className='text-[#14151A] dark:text-gray-700 border-e'
 															sx={{ fontWeight: 'bold' }}
 														>
-														<div className="flex gap-1">
-
-															<TableSortLabel
-																active={orderBy === 'pickup'}
-																direction={order}
-																onClick={() => handleSort('pickup')}
-																sx={{
-																	'&:hover': { color: '#9A9CAE' }, // Change color on hover
-																	'&.Mui-active': { color: '#9A9CAE' },
-																	'&.Mui-active .MuiTableSortLabel-icon': {
-																		color: '#9A9CAE',
-																	}, // Change to blue when active
-																}}
-															>
-																Pickup
-															</TableSortLabel>
-															<IconButton
-                                                             size="small"
-															 onClick={(e) =>
-    handleFilterClick(e, { label: 'Pickup', value: 'pickup' })
-  }
-  className='text-[#14151A] dark:text-gray-700'
-                                                            >
-                                                            {isFilterApplied('pickup') ? (
-    <FilterAltIcon fontSize="small" />
-  ) : (
-    <FilterAltOutlinedIcon fontSize="small" />
-  )}
-                                                         </IconButton>
-														</div>
+															<div className='flex gap-1'>
+																<TableSortLabel
+																	active={orderBy === 'pickup'}
+																	direction={order}
+																	onClick={() => handleSort('pickup')}
+																	sx={{
+																		'&:hover': { color: '#9A9CAE' }, // Change color on hover
+																		'&.Mui-active': { color: '#9A9CAE' },
+																		'&.Mui-active .MuiTableSortLabel-icon': {
+																			color: '#9A9CAE',
+																		}, // Change to blue when active
+																	}}
+																>
+																	Pickup
+																</TableSortLabel>
+																<IconButton
+																	size='small'
+																	onClick={(e) =>
+																		handleFilterClick(e, {
+																			label: 'Pickup',
+																			value: 'pickup',
+																		})
+																	}
+																	className='text-[#14151A] dark:text-gray-700'
+																>
+																	{isFilterApplied('pickup') ? (
+																		<FilterAltIcon fontSize='small' />
+																	) : (
+																		<FilterAltOutlinedIcon fontSize='small' />
+																	)}
+																</IconButton>
+															</div>
 														</TableCell>
 														<TableCell
 															className='text-[#14151A] dark:text-gray-700 border-e'
 															sx={{ fontWeight: 'bold' }}
 														>
-														<div className="flex gap-1">
-														<TableSortLabel
-																active={orderBy === 'destination'}
-																direction={order}
-																onClick={() => handleSort('destination')}
-																sx={{
-																	'&:hover': { color: '#9A9CAE' }, // Change color on hover
-																	'&.Mui-active': { color: '#9A9CAE' },
-																	'&.Mui-active .MuiTableSortLabel-icon': {
-																		color: '#9A9CAE',
-																	}, // Change to blue when active
-																}}
-															>
-																Destination
-															</TableSortLabel>
-															<IconButton
-                                                             size="small"
-															 onClick={(e) =>
-    handleFilterClick(e, { label: 'Destination', value: 'destination' })
-  }
-  className='text-[#14151A] dark:text-gray-700'
-                                                            >
-                                                            {isFilterApplied('destination') ? (
-    <FilterAltIcon fontSize="small" />
-  ) : (
-    <FilterAltOutlinedIcon fontSize="small" />
-  )}
-                                                         </IconButton>
-														</div>
-															
+															<div className='flex gap-1'>
+																<TableSortLabel
+																	active={orderBy === 'destination'}
+																	direction={order}
+																	onClick={() => handleSort('destination')}
+																	sx={{
+																		'&:hover': { color: '#9A9CAE' }, // Change color on hover
+																		'&.Mui-active': { color: '#9A9CAE' },
+																		'&.Mui-active .MuiTableSortLabel-icon': {
+																			color: '#9A9CAE',
+																		}, // Change to blue when active
+																	}}
+																>
+																	Destination
+																</TableSortLabel>
+																<IconButton
+																	size='small'
+																	onClick={(e) =>
+																		handleFilterClick(e, {
+																			label: 'Destination',
+																			value: 'destination',
+																		})
+																	}
+																	className='text-[#14151A] dark:text-gray-700'
+																>
+																	{isFilterApplied('destination') ? (
+																		<FilterAltIcon fontSize='small' />
+																	) : (
+																		<FilterAltOutlinedIcon fontSize='small' />
+																	)}
+																</IconButton>
+															</div>
 														</TableCell>
 														<TableCell
 															className='text-[#14151A] dark:text-gray-700 border-e'
 															sx={{ fontWeight: 'bold' }}
 														>
-														<div className="flex gap-1">
-														<TableSortLabel
-																active={orderBy === 'passenger'}
-																direction={order}
-																onClick={() => handleSort('passenger')}
-																sx={{
-																	'&:hover': { color: '#9A9CAE' }, // Change color on hover
-																	'&.Mui-active': { color: '#9A9CAE' },
-																	'&.Mui-active .MuiTableSortLabel-icon': {
-																		color: '#9A9CAE',
-																	}, // Change to blue when active
-																}}
-															>
-																Passenger
-															</TableSortLabel>
-															<IconButton
-                                                             size="small"
-															 onClick={(e) =>
-    handleFilterClick(e, { label: 'Passenger', value: 'passenger' })
-  }
-  className='text-[#14151A] dark:text-gray-700'
-                                                            >
-                                                            {isFilterApplied('passenger') ? (
-    <FilterAltIcon fontSize="small" />
-  ) : (
-    <FilterAltOutlinedIcon fontSize="small" />
-  )}
-                                                         </IconButton>
-														</div>
-															
+															<div className='flex gap-1'>
+																<TableSortLabel
+																	active={orderBy === 'passenger'}
+																	direction={order}
+																	onClick={() => handleSort('passenger')}
+																	sx={{
+																		'&:hover': { color: '#9A9CAE' }, // Change color on hover
+																		'&.Mui-active': { color: '#9A9CAE' },
+																		'&.Mui-active .MuiTableSortLabel-icon': {
+																			color: '#9A9CAE',
+																		}, // Change to blue when active
+																	}}
+																>
+																	Passenger
+																</TableSortLabel>
+																<IconButton
+																	size='small'
+																	onClick={(e) =>
+																		handleFilterClick(e, {
+																			label: 'Passenger',
+																			value: 'passenger',
+																		})
+																	}
+																	className='text-[#14151A] dark:text-gray-700'
+																>
+																	{isFilterApplied('passenger') ? (
+																		<FilterAltIcon fontSize='small' />
+																	) : (
+																		<FilterAltOutlinedIcon fontSize='small' />
+																	)}
+																</IconButton>
+															</div>
 														</TableCell>
 														<TableCell
 															className='text-[#14151A] dark:text-gray-700 border-e'
@@ -1572,13 +1587,13 @@ function InvoiceProcessor() {
 												}}
 											/>
 											<TableFilterPopover
-  anchorEl={anchorEl}
-  onClose={handleFilterClose}
-  column={activeColumn}
-  columns={columns}
-  filters={filters}
-  setFilters={setFilters}
-/>
+												anchorEl={anchorEl}
+												onClose={handleFilterClose}
+												column={activeColumn}
+												columns={columns}
+												filters={filters}
+												setFilters={setFilters}
+											/>
 										</TableContainer>
 									) : (
 										<div className='text-start ml-4  text-yellow-600 dark:border dark:border-yellow-400 dark:opacity-50 dark:bg-transparent rounded-md bg-yellow-100 p-2 mr-4'>
@@ -1661,106 +1676,112 @@ function InvoiceProcessor() {
 															className='text-[#14151A] dark:text-gray-700 border-e'
 															sx={{ fontWeight: 'bold' }}
 														>
-														<div className="flex gap-1">
-<TableSortLabel
-																active={orderBy === 'pickup'}
-																direction={order}
-																onClick={() => handleSort('pickup')}
-																sx={{
-																	'&:hover': { color: '#9A9CAE' }, // Change color on hover
-																	'&.Mui-active': { color: '#9A9CAE' },
-																	'&.Mui-active .MuiTableSortLabel-icon': {
-																		color: '#9A9CAE',
-																	}, // Change to blue when active
-																}}
-															>
-																Pickup
-															</TableSortLabel>
-															<IconButton
-                                                             size="small"
-															 onClick={(e) =>
-    handleFilterClick2(e, { label: 'Pickup', value: 'pickup' })
-  }
-  className='text-[#14151A] dark:text-gray-700'
-                                                            >
-                                                            {isFilterApplied2('pickup') ? (
-    <FilterAltIcon fontSize="small" />
-  ) : (
-    <FilterAltOutlinedIcon fontSize="small" />
-  )}
-                                                         </IconButton>
-														</div>
-															
+															<div className='flex gap-1'>
+																<TableSortLabel
+																	active={orderBy === 'pickup'}
+																	direction={order}
+																	onClick={() => handleSort('pickup')}
+																	sx={{
+																		'&:hover': { color: '#9A9CAE' }, // Change color on hover
+																		'&.Mui-active': { color: '#9A9CAE' },
+																		'&.Mui-active .MuiTableSortLabel-icon': {
+																			color: '#9A9CAE',
+																		}, // Change to blue when active
+																	}}
+																>
+																	Pickup
+																</TableSortLabel>
+																<IconButton
+																	size='small'
+																	onClick={(e) =>
+																		handleFilterClick2(e, {
+																			label: 'Pickup',
+																			value: 'pickup',
+																		})
+																	}
+																	className='text-[#14151A] dark:text-gray-700'
+																>
+																	{isFilterApplied2('pickup') ? (
+																		<FilterAltIcon fontSize='small' />
+																	) : (
+																		<FilterAltOutlinedIcon fontSize='small' />
+																	)}
+																</IconButton>
+															</div>
 														</TableCell>
 														<TableCell
 															className='text-[#14151A] dark:text-gray-700 border-e'
 															sx={{ fontWeight: 'bold' }}
 														>
-														<div className="flex gap-1">
-
-															<TableSortLabel
-																active={orderBy === 'destination'}
-																direction={order}
-																onClick={() => handleSort('destination')}
-																sx={{
-																	'&:hover': { color: '#9A9CAE' }, // Change color on hover
-																	'&.Mui-active': { color: '#9A9CAE' },
-																	'&.Mui-active .MuiTableSortLabel-icon': {
-																		color: '#9A9CAE',
-																	}, // Change to blue when active
-																}}
-															>
-																Destination
-															</TableSortLabel>
-															<IconButton
-                                                             size="small"
-															 onClick={(e) =>
-    handleFilterClick2(e, { label: 'Destination', value: 'destination' })
-  }
-  className='text-[#14151A] dark:text-gray-700'
-                                                            >
-                                                            {isFilterApplied2('destination') ? (
-    <FilterAltIcon fontSize="small" />
-  ) : (
-    <FilterAltOutlinedIcon fontSize="small" />
-  )}
-                                                         </IconButton>
-														</div>
+															<div className='flex gap-1'>
+																<TableSortLabel
+																	active={orderBy === 'destination'}
+																	direction={order}
+																	onClick={() => handleSort('destination')}
+																	sx={{
+																		'&:hover': { color: '#9A9CAE' }, // Change color on hover
+																		'&.Mui-active': { color: '#9A9CAE' },
+																		'&.Mui-active .MuiTableSortLabel-icon': {
+																			color: '#9A9CAE',
+																		}, // Change to blue when active
+																	}}
+																>
+																	Destination
+																</TableSortLabel>
+																<IconButton
+																	size='small'
+																	onClick={(e) =>
+																		handleFilterClick2(e, {
+																			label: 'Destination',
+																			value: 'destination',
+																		})
+																	}
+																	className='text-[#14151A] dark:text-gray-700'
+																>
+																	{isFilterApplied2('destination') ? (
+																		<FilterAltIcon fontSize='small' />
+																	) : (
+																		<FilterAltOutlinedIcon fontSize='small' />
+																	)}
+																</IconButton>
+															</div>
 														</TableCell>
 														<TableCell
 															className='text-[#14151A] dark:text-gray-700 border-e'
 															sx={{ fontWeight: 'bold' }}
 														>
-														<div className='flex gap-1'>
-
-															<TableSortLabel
-																active={orderBy === 'passenger'}
-																direction={order}
-																onClick={() => handleSort('passenger')}
-																sx={{
-																	'&:hover': { color: '#9A9CAE' }, // Change color on hover
-																	'&.Mui-active': { color: '#9A9CAE' },
-																	'&.Mui-active .MuiTableSortLabel-icon': {
-																		color: '#9A9CAE',
-																	}, // Change to blue when active
-																}}
-															>
-																Passenger
-															</TableSortLabel>
-															<IconButton
-                                                             size="small"
-															 onClick={(e) =>
-    handleFilterClick2(e, { label: 'Passenger', value: 'passenger' })
-  }
-  className='text-[#14151A] dark:text-gray-700'
-                                                            >
-                                                            {isFilterApplied2('passenger') ? (
-    <FilterAltIcon fontSize="small" />
-  ) : (
-    <FilterAltOutlinedIcon fontSize="small" />
-  )}
-                                                         </IconButton>
-														</div>
+															<div className='flex gap-1'>
+																<TableSortLabel
+																	active={orderBy === 'passenger'}
+																	direction={order}
+																	onClick={() => handleSort('passenger')}
+																	sx={{
+																		'&:hover': { color: '#9A9CAE' }, // Change color on hover
+																		'&.Mui-active': { color: '#9A9CAE' },
+																		'&.Mui-active .MuiTableSortLabel-icon': {
+																			color: '#9A9CAE',
+																		}, // Change to blue when active
+																	}}
+																>
+																	Passenger
+																</TableSortLabel>
+																<IconButton
+																	size='small'
+																	onClick={(e) =>
+																		handleFilterClick2(e, {
+																			label: 'Passenger',
+																			value: 'passenger',
+																		})
+																	}
+																	className='text-[#14151A] dark:text-gray-700'
+																>
+																	{isFilterApplied2('passenger') ? (
+																		<FilterAltIcon fontSize='small' />
+																	) : (
+																		<FilterAltOutlinedIcon fontSize='small' />
+																	)}
+																</IconButton>
+															</div>
 														</TableCell>
 														<TableCell
 															className='text-[#14151A] dark:text-gray-700 border-e'
@@ -1913,15 +1934,13 @@ function InvoiceProcessor() {
 												}}
 											/>
 											<TableFilterPopover
-  anchorEl={anchorE2}
-  onClose={handleFilterClose2}
-  column={activeColumn2}
-  columns={columns}
-  filters={filters2}
-  setFilters={
-    setFilters2
-  }
-/>
+												anchorEl={anchorE2}
+												onClose={handleFilterClose2}
+												column={activeColumn2}
+												columns={columns}
+												filters={filters2}
+												setFilters={setFilters2}
+											/>
 										</TableContainer>
 									) : (
 										<div className='text-start ml-4  text-yellow-600 dark:border dark:border-yellow-400 dark:opacity-50 dark:bg-transparent rounded-md bg-yellow-100 p-2 mr-4 mb-2'>

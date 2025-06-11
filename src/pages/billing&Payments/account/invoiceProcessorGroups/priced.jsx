@@ -6,8 +6,10 @@ import { EmailOutlined } from '@mui/icons-material';
 
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
+import { accountPostOrUnpostJobs } from '../../../../service/operations/billing&Payment';
+import toast from 'react-hot-toast';
 
-export default function Priced() {
+export default function Priced({ handleShow }) {
 	const { accountChargeableGroupJobs } = useSelector((state) => state.billing);
 	const { priced } = accountChargeableGroupJobs;
 	const [expandedPassengers, setExpandedPassengers] = useState({});
@@ -41,6 +43,21 @@ export default function Priced() {
 			[`${passengerId}-${pickup}-${destination}`]:
 				!prev[`${passengerId}-${pickup}-${destination}`],
 		}));
+	};
+
+	const handleRevert = async (job) => {
+		try {
+			const response = await accountPostOrUnpostJobs(false, job?.bookingId);
+			if (response?.status === 'success') {
+				toast.success('Job reverted successfully');
+				handleShow();
+			} else {
+				toast.error('Failed to revert job');
+			}
+		} catch (error) {
+			console.error('Failed to revert job:', error);
+			toast.error('Failed to revert job');
+		}
 	};
 
 	return (
@@ -225,7 +242,7 @@ export default function Priced() {
 																					</td>
 																					<td className='border border-gray-300 px-4 py-2'>
 																						£
-																						{booking.parkingCharge?.toFixed(
+																						{booking.waitingPriceDriver?.toFixed(
 																							2
 																						) || '0.00'}
 																					</td>
@@ -255,14 +272,18 @@ export default function Priced() {
 																								booking?.parkingCharge || 0
 																							) +
 																							Number(
-																								booking?.waitingCharge || 0
+																								booking?.waitingPriceAccount ||
+																									0
 																							) +
 																							Number(booking.priceAccount || 0)
 																						).toFixed(2) || '0.00'}
 																					</td>
 																					<td className='border border-gray-300 px-4 py-2'>
 																						<EmailOutlined
-																							className={`${booking?.coa ? `${booking.postedForInvoicing ? 'text-red-500 dark:text-red-900' : 'text-blue-500 dark:text-white'}` : `${booking.postedForInvoicing ? 'text-red-500 dark:text-red-600' : 'text-blue-500 dark:text-cyan-400'}`}  `}
+																							className={`${booking?.coa ? `${booking.postedForInvoicing ? 'text-red-500 dark:text-red-900' : 'text-blue-500 dark:text-white'}` : `${booking.postedForInvoicing ? 'text-red-500 dark:text-red-600' : 'text-blue-500 dark:text-cyan-400'}`} cursor-pointer `}
+																							onClick={() =>
+																								handleRevert(booking)
+																							}
 																						/>
 																					</td>
 																				</tr>
