@@ -2,6 +2,7 @@
 
 import { createSlice } from '@reduxjs/toolkit';
 import {
+	accountGetChargeableGroupJobs,
 	accountGetChargeableJobs,
 	driverGetChargeableJobs,
 	driverGetStatements,
@@ -16,6 +17,7 @@ const initialState = {
 	invoiceHistory: [],
 	driverChargeableJobs: { priced: [], notPriced: [] },
 	accountChargeableJObs: { priced: [], notPriced: [] },
+	accountChargeableGroupJobs: { priced: [], notPriced: [] },
 	creditNotes: [],
 };
 
@@ -40,6 +42,9 @@ const billingSlice = createSlice({
 		},
 		setAccountChargeableJobs(state, action) {
 			state.accountChargeableJobs = action.payload;
+		},
+		setAccountChargeableGroupJobs(state, action) {
+			state.accountChargeableGroupJobs = action.payload;
 		},
 		setCreditNotes(state, action) {
 			state.creditNotes = action.payload;
@@ -156,6 +161,29 @@ export function refreshAccountChargeableJobs(accno, from, to) {
 	};
 }
 
+export function refreshAccountChargeableGroupJobs(accno, from, to) {
+	return async (dispatch) => {
+		dispatch(setLoading(true));
+		try {
+			const response = await accountGetChargeableGroupJobs(accno, from, to);
+			console.log(response);
+
+			if (response.status === 'success') {
+				dispatch(
+					setAccountChargeableGroupJobs({
+						priced: response.priced || [],
+						notPriced: response.notPriced || [],
+					})
+				);
+			}
+		} catch (error) {
+			console.error('Failed to refresh:', error);
+		} finally {
+			dispatch(setLoading(false));
+		}
+	};
+}
+
 export function refreshCreditNotes(accno) {
 	return async (dispatch) => {
 		dispatch(setLoading(true));
@@ -185,6 +213,7 @@ export const {
 	setInvoiceHistory,
 	setDriverChargeableJobs,
 	setAccountChargeableJobs,
+	setAccountChargeableGroupJobs,
 	setCreditNotes,
 } = billingSlice.actions;
 

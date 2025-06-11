@@ -237,7 +237,7 @@ const AirportRuns = () => {
 				)}
 			</div>
 
-			<Tablejourney />
+			<Tablejourney month={month} />
 		</div>
 	);
 };

@@ -108,6 +108,8 @@ export const billingAndPaymentEndpoints = {
     `${BASE}/api/Accounts/AccountPostOrUnPostJobs?postJob=${postJob}`,
   ACCOUNT_GET_CHARGEABLE_JOBS: (accno, from, to) =>
     `${BASE}/api/Accounts/AccountGetChargableJobs?from=${from}&to=${to}${accno ? `&accno=${accno}` : ""}`,
+  ACCOUNT_GET_CHARGEABLE_GROUP_JOBS: (accno, from, to) =>
+    `${BASE}/api/Accounts/AccountGetChargableJobsGrouped?from=${from}&to=${to}${accno ? `&accno=${accno}` : ""}`,
   ACCOUNT_UPDATE_CHARGES_DATA: `${BASE}/api/Accounts/AccountUpdateChargesData`,
   ACCOUNT_CREATE_INVOICE: (emailInvoices) =>
     `${BASE}/api/Accounts/AccountCreateInvoice?emailInvoices=${emailInvoices}`,
