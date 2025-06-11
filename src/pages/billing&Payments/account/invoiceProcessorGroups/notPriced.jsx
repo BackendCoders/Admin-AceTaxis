@@ -345,7 +345,7 @@ export default function NotPriced({ handleShow }) {
 									onClick={() => togglePassenger(passengerData.passenger)}
 								>
 									<td
-										colSpan='15'
+										colSpan='16'
 										className='border border-gray-300 px-4 py-2 font-semibold'
 									>
 										<span className='-ms-1 text-gray-700'>
@@ -372,7 +372,7 @@ export default function NotPriced({ handleShow }) {
 													}
 												>
 													<td
-														colSpan='15'
+														colSpan='16'
 														className='border border-gray-300 px-4 py-2 font-semibold'
 													>
 														<span className='-ms-1 ml-3 text-gray-700'>
@@ -406,7 +406,7 @@ export default function NotPriced({ handleShow }) {
 																	}
 																>
 																	<td
-																		colSpan='15'
+																		colSpan='16'
 																		className='border border-gray-300 px-4 py-2 font-semibold'
 																	>
 																		<div className='flex justify-start items-center gap-2'>
@@ -665,7 +665,7 @@ export default function NotPriced({ handleShow }) {
 																			itemsPerPage && (
 																			<tr>
 																				<td
-																					colSpan='15'
+																					colSpan='16'
 																					className='border border-gray-300 px-4 py-2'
 																				>
 																					<div className='flex justify-end items-center gap-2'>
@@ -732,7 +732,7 @@ export default function NotPriced({ handleShow }) {
 			{notPriced?.length > itemsPerPagePassenger && (
 				<div>
 					<div
-						colSpan='15'
+						colSpan='16'
 						className='border border-gray-300 px-4 py-2'
 					>
 						<div className='flex justify-end items-center gap-2'>
