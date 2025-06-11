@@ -6,7 +6,7 @@ import MoneyIcon from '@mui/icons-material/Money';
 import { EmailOutlined } from '@mui/icons-material';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import {
 	accountPostOrUnpostJobs,
