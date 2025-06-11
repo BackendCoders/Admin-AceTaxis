@@ -18,6 +18,7 @@ const {
 	ACCOUNT_PRICE_MANUALLY,
 	ACCOUNT_PRICE_JOB_BY_MILEAGE,
 	ACCOUNT_PRICE_JOB_HVS,
+	ACCOUNT_PRICE_JOB_HVS_BULK,
 	ACCOUNT_POST_OR_UNPOST_JOBS,
 	ACCOUNT_GET_CHARGEABLE_JOBS,
 	ACCOUNT_GET_CHARGEABLE_GROUP_JOBS,
@@ -260,6 +261,26 @@ export async function accountPriceJobHVS(data) {
 	const response = await handlePostReq(ACCOUNT_PRICE_JOB_HVS, data);
 
 	console.log('GET ACCOUNT_PRICE_JOB_HVS API RESPONSE.........', response);
+
+	if (response.status === 'success') {
+		// sendLogs(
+		// 	{
+		// 		url: GET_VATOUTPUTS,
+		// 		reqBody: null,
+		// 		headers: setHeaders(),
+		// 		response: response,
+		// 	},
+		// 	'info'
+		// );
+		return response;
+	}
+	return response;
+}
+
+export async function accountPriceJobHVSBulk(data) {
+	const response = await handlePostReq(ACCOUNT_PRICE_JOB_HVS_BULK, data);
+
+	console.log('GET ACCOUNT_PRICE_JOB_HVS_BULK API RESPONSE.........', response);
 
 	if (response.status === 'success') {
 		// sendLogs(

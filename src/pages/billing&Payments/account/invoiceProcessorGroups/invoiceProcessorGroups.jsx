@@ -247,12 +247,12 @@ function InvoiceProcessorGroups() {
 								<div className='card-body'>
 									<div className='flex justify-start items-center gap-4 ml-4 mt-2 mb-2'>
 										Awaiting Pricing - {notPriced?.length}
-										<button
+										{/* <button
 											className='btn btn-primary flex justify-center'
 											// onClick={handlePostAllPriced}
 										>
 											Post All Priced
-										</button>
+										</button> */}
 									</div>
 									{notPriced?.length > 0 ? (
 										<>

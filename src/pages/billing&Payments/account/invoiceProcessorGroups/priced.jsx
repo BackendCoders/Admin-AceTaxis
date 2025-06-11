@@ -295,7 +295,7 @@ export default function Priced() {
 																									);
 																								}}
 																								disabled={currentPage === 0}
-																								className='px-3 py-1 border rounded disabled:opacity-50'
+																								className='px-1 py-1 border rounded-full disabled:opacity-50'
 																							>
 																								<KeyboardArrowLeftIcon />
 																							</button>
@@ -314,7 +314,7 @@ export default function Priced() {
 																										itemsPerPage >=
 																									destinationGroup.jobs.length
 																								}
-																								className='px-3 py-1 border rounded disabled:opacity-50'
+																								className='px-1 py-1 border rounded-full disabled:opacity-50'
 																							>
 																								<KeyboardArrowRightIcon />
 																							</button>
@@ -357,7 +357,7 @@ export default function Priced() {
 										setCurrentPagePassenger((prev) => Math.max(prev - 1, 0));
 									}}
 									disabled={currentPagePassenger === 0}
-									className='px-3 py-1 border rounded disabled:opacity-50'
+									className='px-1 py-1 border rounded-full disabled:opacity-50'
 								>
 									<KeyboardArrowLeftIcon />
 								</button>
@@ -374,7 +374,7 @@ export default function Priced() {
 										(currentPagePassenger + 1) * itemsPerPagePassenger >=
 										priced.length
 									}
-									className='px-3 py-1 border rounded disabled:opacity-50'
+									className='px-1 py-1 border rounded-full disabled:opacity-50'
 								>
 									<KeyboardArrowRightIcon />
 								</button>

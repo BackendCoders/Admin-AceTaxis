@@ -18,7 +18,7 @@ export default function Priced() {
 		{}
 	);
 	const [currentPage, setCurrentPage] = useState(0);
-	const [itemsPerPage, setItemsPerPage] = useState(5);
+	const [itemsPerPage, setItemsPerPage] = useState(10);
 
 	const [currentPagePassenger, setCurrentPagePassenger] = useState(0);
 	const [itemsPerPagePassenger, setItemsPerPagePassenger] = useState(10);
@@ -173,17 +173,22 @@ export default function Priced() {
 																		colSpan='15'
 																		className='border border-gray-300 px-4 py-2 font-semibold'
 																	>
-																		<span className='-ms-1 ml-6 text-gray-700'>
-																			{expandedDestinationGroups[
-																				`${passengerData.passenger}-${pickupGroup.pickup}-${destinationGroup.destination}`
-																			] ? (
-																				<KeyboardArrowDownIcon />
-																			) : (
-																				<KeyboardArrowRightIcon />
-																			)}{' '}
-																			Destination -{' '}
-																			{destinationGroup.destination}
-																		</span>
+																		<div className='flex justify-start items-center gap-2'>
+																			<span className='-ms-1 ml-6 text-gray-700'>
+																				{expandedDestinationGroups[
+																					`${passengerData.passenger}-${pickupGroup.pickup}-${destinationGroup.destination}`
+																				] ? (
+																					<KeyboardArrowDownIcon />
+																				) : (
+																					<KeyboardArrowRightIcon />
+																				)}{' '}
+																				Destination -{' '}
+																				{destinationGroup.destination}
+																			</span>
+																			<button className='btn btn-primary flex justify-center'>
+																				Post All Priced
+																			</button>
+																		</div>
 																	</td>
 																</tr>
 																{expandedDestinationGroups[
@@ -310,7 +315,7 @@ export default function Priced() {
 																									);
 																								}}
 																								disabled={currentPage === 0}
-																								className='px-3 py-1 border rounded disabled:opacity-50'
+																								className='px-1 py-1 border rounded-full disabled:opacity-50'
 																							>
 																								<KeyboardArrowLeftIcon />
 																							</button>
@@ -329,7 +334,7 @@ export default function Priced() {
 																										itemsPerPage >=
 																									destinationGroup.jobs.length
 																								}
-																								className='px-3 py-1 border rounded disabled:opacity-50'
+																								className='px-1 py-1 border rounded-full disabled:opacity-50'
 																							>
 																								<KeyboardArrowRightIcon />
 																							</button>
@@ -372,7 +377,7 @@ export default function Priced() {
 										setCurrentPagePassenger((prev) => Math.max(prev - 1, 0));
 									}}
 									disabled={currentPagePassenger === 0}
-									className='px-3 py-1 border rounded disabled:opacity-50'
+									className='px-1 py-1 border rounded-full disabled:opacity-50'
 								>
 									<KeyboardArrowLeftIcon />
 								</button>
@@ -389,7 +394,7 @@ export default function Priced() {
 										(currentPagePassenger + 1) * itemsPerPagePassenger >=
 										notPriced.length
 									}
-									className='px-3 py-1 border rounded disabled:opacity-50'
+									className='px-1 py-1 border rounded-full disabled:opacity-50'
 								>
 									<KeyboardArrowRightIcon />
 								</button>
