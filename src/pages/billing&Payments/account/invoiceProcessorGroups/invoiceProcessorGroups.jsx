@@ -69,43 +69,6 @@ function InvoiceProcessorGroups() {
 		);
 	};
 
-	// const handlePostAllPriced = async () => {
-	//         try {
-	//             // Filter bookings with driverFare > 0
-	//             const jobsToPost = formattedNotPricedBookings.filter(
-	//                 (job) => Number(job.driverFare) > 0
-	//             );
-
-	//             // console.log({ formattedNotPricedBookings, jobsToPost });
-
-	//             if (jobsToPost.length === 0) {
-	//                 toast.error('No jobs available to post.');
-	//                 return;
-	//             }
-
-	//             // Create an array of API call promises
-	//             const postRequests = jobsToPost.map((job) =>
-	//                 accountPostOrUnpostJobs(true, job.id)
-	//             );
-
-	//             // Execute all API calls concurrently
-	//             const responses = await Promise.all(postRequests);
-
-	//             // Check responses for success/failure
-	//             const allSuccessful = responses.every((res) => res?.status === 'success');
-
-	//             if (allSuccessful) {
-	//                 toast.success(`${jobsToPost.length} jobs posted successfully!`);
-	//                 handleShow();
-	//             } else {
-	//                 toast.error('Some jobs failed to post.');
-	//             }
-	//         } catch (error) {
-	//             console.error('Error posting all jobs:', error);
-	//             toast.error('Failed to post all jobs.');
-	//         }
-	//     };
-
 	useEffect(() => {
 		dispatch(refreshAllAccounts());
 	}, [dispatch]);
@@ -247,12 +210,6 @@ function InvoiceProcessorGroups() {
 								<div className='card-body'>
 									<div className='flex justify-start items-center gap-4 ml-4 mt-2 mb-2'>
 										Awaiting Pricing - {notPriced?.length}
-										{/* <button
-											className='btn btn-primary flex justify-center'
-											// onClick={handlePostAllPriced}
-										>
-											Post All Priced
-										</button> */}
 									</div>
 									{notPriced?.length > 0 ? (
 										<>
