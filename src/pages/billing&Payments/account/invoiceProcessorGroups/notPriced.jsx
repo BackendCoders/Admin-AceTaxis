@@ -134,10 +134,10 @@ export default function NotPriced({ handleShow }) {
 		try {
 			const payload = {
 				bookingId: bookingId || 0,
-				waitingMinutes: bookingValues[bookingId]?.waitingMinutes || 0,
-				parkingCharge: bookingValues[bookingId]?.parkingCharge || 0,
-				priceAccount: bookingValues[bookingId]?.priceAccount || 0,
-				price: bookingValues[bookingId]?.price || 0,
+				waitingMinutes: Number(bookingValues[bookingId]?.waitingMinutes) || 0,
+				parkingCharge: Number(bookingValues[bookingId]?.parkingCharge) || 0,
+				priceAccount: Number(bookingValues[bookingId]?.priceAccount) || 0,
+				price: Number(bookingValues[bookingId]?.price) || 0,
 			};
 
 			const response = await accountUpdateChargesData(payload);
@@ -152,18 +152,16 @@ export default function NotPriced({ handleShow }) {
 	};
 
 	const handleInputChange = async (field, bookingId, value) => {
-		const newValue = value < 0 ? 0 : value;
-
 		setBookingValues((prev) => ({
 			...prev,
 			[bookingId]: {
 				...prev[bookingId],
-				[field]: newValue,
+				[field]: value,
 			},
 		}));
 
 		// Set debounced value for API call
-		setDebouncedValue({ field, bookingId, value: newValue });
+		// setDebouncedValue({ field, bookingId, value });
 	};
 
 	const handleKeyPress = (e, nextField) => {
@@ -505,8 +503,16 @@ export default function NotPriced({ handleShow }) {
 																									handleInputChange(
 																										'waitingMinutes',
 																										booking.bookingId,
-																										+e.target.value
+																										e.target.value
 																									)
+																								}
+																								onBlur={(e) =>
+																									setDebouncedValue({
+																										field: 'waitingMinutes',
+																										bookingId:
+																											booking.bookingId,
+																										value: e.target.value,
+																									})
 																								}
 																								onKeyDown={(e) =>
 																									handleKeyPress(
@@ -533,6 +539,7 @@ export default function NotPriced({ handleShow }) {
 																						{
 																							<input
 																								type='number'
+																								step='0.01'
 																								className='w-20 text-center border rounded p-1 bg-inherit ring-inherit dark:bg-inherit dark:ring-inherit'
 																								value={
 																									bookingValues[
@@ -544,8 +551,16 @@ export default function NotPriced({ handleShow }) {
 																									handleInputChange(
 																										'price',
 																										booking.bookingId,
-																										+e.target.value
+																										e.target.value
 																									)
+																								}
+																								onBlur={(e) =>
+																									setDebouncedValue({
+																										field: 'price',
+																										bookingId:
+																											booking.bookingId,
+																										value: e.target.value,
+																									})
 																								}
 																								onKeyDown={(e) =>
 																									handleKeyPress(
@@ -562,6 +577,7 @@ export default function NotPriced({ handleShow }) {
 																					<td className='border border-gray-300 px-4 py-2'>
 																						<input
 																							type='number'
+																							step='0.01'
 																							className='w-20 text-center border rounded p-1 bg-inherit ring-inherit dark:bg-inherit dark:ring-inherit'
 																							name={`priceAccount-${booking.bookingId}`}
 																							value={
@@ -572,8 +588,15 @@ export default function NotPriced({ handleShow }) {
 																								handleInputChange(
 																									'priceAccount',
 																									booking.bookingId,
-																									+e.target.value
+																									e.target.value
 																								)
+																							}
+																							onBlur={(e) =>
+																								setDebouncedValue({
+																									field: 'priceAccount',
+																									bookingId: booking.bookingId,
+																									value: e.target.value,
+																								})
 																							}
 																							onKeyDown={(e) =>
 																								handleKeyPress(
@@ -587,6 +610,7 @@ export default function NotPriced({ handleShow }) {
 																					<td className='border border-gray-300 px-4 py-2'>
 																						<input
 																							type='number'
+																							step='0.01'
 																							className='w-20 text-center border rounded p-1 bg-inherit ring-inherit dark:bg-inherit dark:ring-inherit'
 																							value={
 																								bookingValues[booking.bookingId]
@@ -597,8 +621,15 @@ export default function NotPriced({ handleShow }) {
 																								handleInputChange(
 																									'parkingCharge',
 																									booking.bookingId,
-																									+e.target.value
+																									e.target.value
 																								)
+																							}
+																							onBlur={(e) =>
+																								setDebouncedValue({
+																									field: 'parkingCharge',
+																									bookingId: booking.bookingId,
+																									value: e.target.value,
+																								})
 																							}
 																							onKeyDown={(e) =>
 																								handleKeyPress(e, null)
