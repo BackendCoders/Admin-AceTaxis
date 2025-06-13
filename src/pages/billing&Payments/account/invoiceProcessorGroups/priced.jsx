@@ -61,7 +61,7 @@ export default function Priced({ handleShow }) {
 	};
 
 	return (
-		<div>
+		<div className='mb-10'>
 			<table className='w-full border-collapse border border-gray-300'>
 				<thead>
 					<tr>
