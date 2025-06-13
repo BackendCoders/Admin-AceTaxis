@@ -167,7 +167,7 @@ function RowNotPriced({
     if (field === "parking") setParking(newValue);
 
     // Set debounced value for API call
-    setDebouncedValue({ field, value: newValue });
+    // setDebouncedValue({ field, value: newValue });
   };
 
   useEffect(() => {
@@ -284,6 +284,7 @@ function RowNotPriced({
             className="w-20 text-center border rounded p-1 bg-inherit ring-inherit dark:bg-inherit dark:ring-inherit"
             value={waiting}
             onChange={(e) => handleInputChange("waiting", +e.target.value)}
+            onBlur={(e) => setDebouncedValue({ field: "waiting", value: +e.target.value })}
             onKeyDown={(e) => handleKeyPress(e, `driverFare-${row.id}`)}
             onFocus={(e) => e.target.select()}
           />
@@ -303,10 +304,12 @@ function RowNotPriced({
         >
           <input
             type="number"
+			step="0.01"
             name={`driverFare-${row.id}`}
             className="w-20 text-center border rounded p-1 bg-inherit ring-inherit dark:bg-inherit dark:ring-inherit"
             value={driverFare}
             onChange={(e) => handleInputChange("driverFare", +e.target.value)}
+            onBlur={(e) => setDebouncedValue({ field: "driverFare", value: +e.target.value })}
             onKeyDown={(e) => handleKeyPress(e, `parking-${row.id}`)}
           />
         </TableCell>
@@ -315,10 +318,12 @@ function RowNotPriced({
         >
           <input
             type="number"
+			step="0.01"
             name={`parking-${row.id}`}
             className="w-20 text-center border rounded p-1 bg-inherit ring-inherit dark:bg-inherit dark:ring-inherit"
             value={parking}
             onChange={(e) => handleInputChange("parking", +e.target.value)}
+            onBlur={(e) => setDebouncedValue({ field: "parking", value: +e.target.value })}
             onKeyDown={(e) => handleKeyPress(e, null)}
           />
         </TableCell>
