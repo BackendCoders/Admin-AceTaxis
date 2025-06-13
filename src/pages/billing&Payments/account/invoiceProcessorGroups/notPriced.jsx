@@ -108,9 +108,9 @@ export default function NotPriced({ handleShow }) {
       // console.log('Response:', response);
       if (response.status === "success") {
         handleShow();
-        toast.success("Charge From Base Updated Successfully");
+        toast.success("Price Updated");
       } else {
-        toast.error("Failed to Update Charge From Base");
+        toast.error("Failed to Update Price");
       }
     } catch (error) {
       console.log(error);

@@ -155,9 +155,9 @@ function RowNotPriced({
       // console.log('Response:', response);
       if (response.status === "success") {
         handleShow();
-        toast.success("Charge From Base Updated Successfully");
+        toast.success("Price Updated");
       } else {
-        toast.error("Failed to Update Charge From Base");
+        toast.error("Failed to Update Price");
       }
     } catch (error) {
       console.log(error);
@@ -1974,10 +1974,10 @@ function PriceBase({ open, onOpenChange, bookingId, handleShow }) {
         }
         // console.log('Response:', response);
         if (response.status === "success") {
-          toast.success("Charge From Base Updated Successfully");
+          toast.success("Price Updated");
           handleShow();
         } else {
-          toast.error("Failed to Update Charge From Base");
+          toast.error("Failed to Update Price");
         }
       } catch (error) {
         console.log(error);
