@@ -47,7 +47,7 @@ export default function Priced({ handleShow }) {
 
 	const handleRevert = async (job) => {
 		try {
-			const response = await accountPostOrUnpostJobs(false, job?.bookingId);
+			const response = await accountPostOrUnpostJobs(false, [job?.bookingId]);
 			if (response?.status === 'success') {
 				toast.success('Job reverted successfully');
 				handleShow();

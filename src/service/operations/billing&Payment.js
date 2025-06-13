@@ -78,9 +78,9 @@ export async function driverPriceJobByMileage(data) {
   }
 }
 export async function driverPostOrUnpostJobs(postJob, id) {
-  const response = await handlePostReq(DRIVER_POST_OR_UNPOST_JOBS(postJob), [
+  const response = await handlePostReq(DRIVER_POST_OR_UNPOST_JOBS(postJob), 
     id,
-  ]);
+  );
 
   console.log("GET DRIVER_POST_OR_UNPOST_JOBS API RESPONSE.........", response);
 

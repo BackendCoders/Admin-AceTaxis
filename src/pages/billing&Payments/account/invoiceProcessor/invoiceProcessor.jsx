@@ -889,7 +889,7 @@ function InvoiceProcessor() {
   const handlePostButton = async (row) => {
     try {
       const postJob = row?.journeyCharge > 0 && true;
-      const response = await accountPostOrUnpostJobs(postJob, row?.id);
+      const response = await accountPostOrUnpostJobs(postJob, [row?.id]);
       if (response?.status === "success") {
         toast.success("Job posted successfully");
         handleShow();
@@ -904,7 +904,7 @@ function InvoiceProcessor() {
 
   const handleRevert = async (row) => {
     try {
-      const response = await accountPostOrUnpostJobs(false, row?.id);
+      const response = await accountPostOrUnpostJobs(false, [row?.id]);
       if (response?.status === "success") {
         toast.success("Job reverted successfully");
         handleShow();
@@ -931,7 +931,7 @@ function InvoiceProcessor() {
         return;
       }
 
-      const jobsIds = jobsToPost.map((job) => job.bookingId);
+      const jobsIds = jobsToPost.map((job) => job.id);
 
       const response = await accountPostOrUnpostJobs(true, jobsIds);
 
