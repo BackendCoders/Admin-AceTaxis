@@ -401,7 +401,7 @@ function RowNotPriced({
         </TableCell>
       </TableRow>
       <TableRow>
-        <TableCell colSpan={19} style={{ paddingBottom: 0, paddingTop: 0 }}>
+        <TableCell colSpan={20} style={{ paddingBottom: 0, paddingTop: 0 }}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box
               margin={1}
@@ -548,7 +548,7 @@ function RowPriced({ row, handleRevert }) {
         </TableCell>
       </TableRow>
       <TableRow>
-        <TableCell colSpan={16} style={{ paddingBottom: 0, paddingTop: 0 }}>
+        <TableCell colSpan={18} style={{ paddingBottom: 0, paddingTop: 0 }}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box
               margin={1}
@@ -1084,6 +1084,16 @@ function InvoiceProcessor() {
       scrollContainer.removeEventListener("mousemove", mouseMoveHandler);
     };
   }, []);
+
+  const grandTotal = formattedPricedBookings
+    .map(
+      (booking) =>
+        Number(booking?.parking?.toFixed(2)) +
+        Number(booking?.waitingCharge?.toFixed(2)) +
+        Number(booking.journeyCharge?.toFixed(2))
+    )
+    .reduce((acc, curr) => acc + curr, 0);
+  console.log(grandTotal);
 
   return (
     <Fragment>
@@ -1968,6 +1978,17 @@ function InvoiceProcessor() {
                   ) : (
                     <div className="text-start ml-4  text-yellow-600 dark:border dark:border-yellow-400 dark:opacity-50 dark:bg-transparent rounded-md bg-yellow-100 p-2 mr-4 mb-2">
                       ⚠️ No Data Available
+                    </div>
+                  )}
+
+                  {accountChargeableJobs?.priced?.length > 0 && (
+                    <div className="flex justify-end items-center mt-4 p-4 bg-gray-100 rounded-lg">
+                      <div className="font-bold text-lg text-gray-800 flex gap-4">
+                        <span>Total :</span>
+                        <div className="flex items-center gap-1">
+                          <span>£{grandTotal.toFixed(2)}</span>
+                        </div>
+                      </div>
                     </div>
                   )}
 
