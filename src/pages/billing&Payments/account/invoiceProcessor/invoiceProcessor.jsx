@@ -268,6 +268,11 @@ function RowNotPriced({
         >
           {row.passenger}
         </TableCell>
+		<TableCell
+          className={`${row?.coa ? "dark:text-white" : "dark:text-gray-700"} text-gray-900`}
+        >
+          {row.passengers}
+        </TableCell>
         <TableCell
           className={`${row?.coa ? "dark:text-white" : "dark:text-gray-700"} text-gray-900`}
         >
@@ -473,6 +478,11 @@ function RowPriced({ row, handleRevert }) {
         >
           {row.passenger}
         </TableCell>
+		 <TableCell
+          className={`${row?.coa ? "dark:text-white" : "dark:text-gray-700"} text-gray-900`}
+        >
+          {row.passengers}
+        </TableCell>
         <TableCell
           className={`${row?.coa ? "dark:text-white" : "dark:text-gray-700"} text-gray-900`}
         >
@@ -635,6 +645,7 @@ function InvoiceProcessor() {
     driver: booking?.userId || "-",
     pickup: `${booking?.pickup}`,
     destination: `${booking?.destination}`,
+    passengers: booking?.passengers || 0,
     passenger: booking?.passenger || "Unknown",
     hasVias: booking?.hasVias,
     coa: booking?.coa,
@@ -821,6 +832,7 @@ function InvoiceProcessor() {
       driver: booking?.userId || "-",
       pickup: `${booking?.pickup}`,
       destination: `${booking?.destination}`,
+	  passengers: booking?.passengers || 0,
       passenger: booking?.passenger || "Unknown",
       hasVias: booking?.hasVias,
       coa: booking?.coa,
@@ -1368,6 +1380,25 @@ function InvoiceProcessor() {
                                 </IconButton>
                               </div>
                             </TableCell>
+							<TableCell
+                              className="text-[#14151A] dark:text-gray-700 border-e"
+                              sx={{ fontWeight: "bold" }}
+                            >
+                              <TableSortLabel
+                                active={orderBy === "passengers"}
+                                direction={order}
+                                onClick={() => handleSort("passengers")}
+                                sx={{
+                                  "&:hover": { color: "#9A9CAE" }, // Change color on hover
+                                  "&.Mui-active": { color: "#9A9CAE" },
+                                  "&.Mui-active .MuiTableSortLabel-icon": {
+                                    color: "#9A9CAE",
+                                  }, // Change to blue when active
+                                }}
+                              >
+                                Pax
+                              </TableSortLabel>
+                            </TableCell>
                             <TableCell
                               className="text-[#14151A] dark:text-gray-700 border-e"
                               sx={{ fontWeight: "bold" }}
@@ -1737,6 +1768,25 @@ function InvoiceProcessor() {
                                   )}
                                 </IconButton>
                               </div>
+                            </TableCell>
+							<TableCell
+                              className="text-[#14151A] dark:text-gray-700 border-e"
+                              sx={{ fontWeight: "bold" }}
+                            >
+                              <TableSortLabel
+                                active={orderBy === "passengers"}
+                                direction={order}
+                                onClick={() => handleSort("passengers")}
+                                sx={{
+                                  "&:hover": { color: "#9A9CAE" }, // Change color on hover
+                                  "&.Mui-active": { color: "#9A9CAE" },
+                                  "&.Mui-active .MuiTableSortLabel-icon": {
+                                    color: "#9A9CAE",
+                                  }, // Change to blue when active
+                                }}
+                              >
+                                Pax
+                              </TableSortLabel>
                             </TableCell>
                             <TableCell
                               className="text-[#14151A] dark:text-gray-700 border-e"
