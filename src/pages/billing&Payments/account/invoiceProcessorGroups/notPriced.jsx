@@ -345,7 +345,7 @@ export default function NotPriced({ handleShow }) {
                       ) : (
                         <KeyboardArrowRightIcon />
                       )}{" "}
-                      Passenger - {passengerData.passenger}
+                      {passengerData.passenger}
                     </span>
                   </td>
                 </tr>
@@ -374,7 +374,7 @@ export default function NotPriced({ handleShow }) {
                               ) : (
                                 <KeyboardArrowRightIcon />
                               )}{" "}
-                              Pickup - {pickupGroup.pickup}
+                              {pickupGroup.pickup}
                             </span>
                           </td>
                         </tr>
@@ -409,7 +409,7 @@ export default function NotPriced({ handleShow }) {
                                         ) : (
                                           <KeyboardArrowRightIcon />
                                         )}{" "}
-                                        Destination -{" "}
+                                        {" "}
                                         {destinationGroup.destination}
                                       </span>
                                       <button
