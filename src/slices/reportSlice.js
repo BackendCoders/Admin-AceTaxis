@@ -287,11 +287,11 @@ export function refreshTotalProfitabilityByPeriod(from, to) {
       console.log(response);
 
       if (response.status === "success") {
-        const array = Object.keys(response)
-          .filter((key) => key !== "status") // Exclude 'status' field
-          .map((key) => response[key]);
+        // const array = Object.keys(response)
+        //   .filter((key) => key !== "status") // Exclude 'status' field
+        //   .map((key) => response[key]);
 
-        dispatch(setTotalProfitabilityByPeriod(array));
+        dispatch(setTotalProfitabilityByPeriod(response));
       }
     } catch (error) {
       console.error("Failed to refresh Total Profitability By Period:", error);
