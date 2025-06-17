@@ -97,27 +97,27 @@ function ProfitabilityOnInvoice() {
 
   const columns = useMemo(() => {
     let baseColumns = [
-      {
-        accessorKey: "date",
-        header: ({ column }) => (
-          <DataGridColumnHeader
-            title=<span className="font-bold">Date</span>
-            filter={<ColumnInputFilter column={column} />}
-            column={column}
-          />
-        ),
-        enableSorting: true,
-        cell: ({ row }) => (
-          <span className={`font-medium ${row.original.color}`}>
-            {row.original.date
-              ? new Date(row.original.date).toLocaleDateString("en-GB") +
-                " " +
-                row.original.date?.split("T")[1].slice(0, 5)
-              : "-"}
-          </span>
-        ),
-        meta: { headerClassName: "min-w-[120px]" },
-      },
+    //   {
+    //     accessorKey: "date",
+    //     header: ({ column }) => (
+    //       <DataGridColumnHeader
+    //         title=<span className="font-bold">Date</span>
+    //         filter={<ColumnInputFilter column={column} />}
+    //         column={column}
+    //       />
+    //     ),
+    //     enableSorting: true,
+    //     cell: ({ row }) => (
+    //       <span className={`font-medium ${row.original.color}`}>
+    //         {row.original.date
+    //           ? new Date(row.original.date).toLocaleDateString("en-GB") +
+    //             " " +
+    //             row.original.date?.split("T")[1].slice(0, 5)
+    //           : "-"}
+    //       </span>
+    //     ),
+    //     meta: { headerClassName: "min-w-[120px]" },
+    //   },
       {
         accessorKey: "invoiceNumber",
         header: ({ column }) => (
@@ -181,7 +181,7 @@ function ProfitabilityOnInvoice() {
         enableSorting: true,
         cell: ({ row }) => (
           <span className={`font-medium ${row.original.color}`}>
-            £{row.original.margin.toFixed(2)}
+            {row.original.margin.toFixed(2)} %
           </span>
         ),
         meta: { headerClassName: "min-w-[120px]" },
@@ -377,7 +377,7 @@ function ProfitabilityOnInvoice() {
                     rowSelection={true}
                     onRowSelectionChange={handleRowSelection}
                     pagination={{ size: 10 }}
-                    sorting={[{ id: "date", desc: true }]}
+                    sorting={[{ id: "invoiceNumber", desc: true }]}
                     layout={{ card: true }}
                   />
                 ) : (

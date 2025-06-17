@@ -211,7 +211,7 @@ function TotalProfitabilityByPeriod() {
         enableSorting: true,
         cell: ({ row }) => (
           <span className={`font-medium ${row.original.color}`}>
-            £{row.original.margin?.toFixed(2)}
+            {row.original.margin?.toFixed(2)} %
           </span>
         ),
         meta: { headerClassName: "min-w-[120px]" },

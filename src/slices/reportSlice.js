@@ -291,7 +291,7 @@ export function refreshTotalProfitabilityByPeriod(from, to) {
         //   .filter((key) => key !== "status") // Exclude 'status' field
         //   .map((key) => response[key]);
 
-        dispatch(setTotalProfitabilityByPeriod([...response]));
+        dispatch(setTotalProfitabilityByPeriod([{ ...response }]));
       }
     } catch (error) {
       console.error("Failed to refresh Total Profitability By Period:", error);
