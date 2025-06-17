@@ -229,14 +229,12 @@ function ProfitabilityOnInvoice() {
     return profitabilityOnInvoice.reduce(
       (totals, item) => {
         totals.cost += item.cost || 0;
-        totals.margin += item.margin || 0;
         totals.profit += item.profit || 0;
         totals.netTotal += item.netTotal || 0;
         return totals;
       },
       {
         cost: 0,
-        margin: 0,
         profit: 0,
         netTotal: 0,
       }
@@ -404,7 +402,12 @@ function ProfitabilityOnInvoice() {
                         Total Cost: £{totalProfitOnInvoice.cost.toFixed(2)}
                       </span>
                       <span className="">
-                        Total Margin: {totalProfitOnInvoice.margin?.toFixed(2)}{" "}
+                        Total Margin:{" "}
+                        {(
+                          (totalProfitOnInvoice.profit /
+                            totalProfitOnInvoice.netTotal) *
+                          100
+                        ).toFixed(2)}{" "}
                         %
                       </span>
                       <span className="">
