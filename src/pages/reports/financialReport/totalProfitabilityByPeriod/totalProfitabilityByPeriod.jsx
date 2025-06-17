@@ -126,7 +126,7 @@ function TotalProfitabilityByPeriod() {
         enableSorting: true,
         cell: ({ row }) => (
           <span className={`font-medium ${row.original.color}`}>
-            £{row.original.commissionNet.toFixed(2)}
+            £{row.original.commissionNet?.toFixed(2)}
           </span>
         ),
         meta: { headerClassName: "min-w-[120px]" },
@@ -143,7 +143,7 @@ function TotalProfitabilityByPeriod() {
         enableSorting: true,
         cell: ({ row }) => (
           <span className={`font-medium ${row.original.color}`}>
-            £{row.original.salesTotal.toFixed(2)}
+            £{row.original.salesTotal?.toFixed(2)}
           </span>
         ),
         meta: { headerClassName: "min-w-[120px]" },
@@ -160,7 +160,7 @@ function TotalProfitabilityByPeriod() {
         enableSorting: true,
         cell: ({ row }) => (
           <span className={`font-medium ${row.original.color}`}>
-            £{row.original.driverPayoutsTotal.toFixed(2)}
+            £{row.original.driverPayoutsTotal?.toFixed(2)}
           </span>
         ),
         meta: { headerClassName: "min-w-[120px]" },
@@ -177,7 +177,7 @@ function TotalProfitabilityByPeriod() {
         enableSorting: true,
         cell: ({ row }) => (
           <span className={`font-medium ${row.original.color}`}>
-            £{row.original.staffPayoutsTotal.toFixed(2)}
+            £{row.original.staffPayoutsTotal?.toFixed(2)}
           </span>
         ),
         meta: { headerClassName: "min-w-[120px]" },
@@ -194,7 +194,7 @@ function TotalProfitabilityByPeriod() {
         enableSorting: true,
         cell: ({ row }) => (
           <span className={`font-medium ${row.original.color}`}>
-            £{row.original.totalPayouts.toFixed(2)}
+            £{row.original.totalPayouts?.toFixed(2)}
           </span>
         ),
         meta: { headerClassName: "min-w-[200px]" },
@@ -211,7 +211,7 @@ function TotalProfitabilityByPeriod() {
         enableSorting: true,
         cell: ({ row }) => (
           <span className={`font-medium ${row.original.color}`}>
-            £{row.original.margin.toFixed(2)}
+            £{row.original.margin?.toFixed(2)}
           </span>
         ),
         meta: { headerClassName: "min-w-[120px]" },
@@ -228,7 +228,7 @@ function TotalProfitabilityByPeriod() {
         enableSorting: true,
         cell: ({ row }) => (
           <span className={`font-medium ${row.original.color}`}>
-            £{row.original.totalProfit.toFixed(2)}
+            £{row.original.totalProfit?.toFixed(2)}
           </span>
         ),
         meta: { headerClassName: "min-w-[120px]" },
