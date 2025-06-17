@@ -97,27 +97,27 @@ function ProfitabilityOnInvoice() {
 
   const columns = useMemo(() => {
     let baseColumns = [
-    //   {
-    //     accessorKey: "date",
-    //     header: ({ column }) => (
-    //       <DataGridColumnHeader
-    //         title=<span className="font-bold">Date</span>
-    //         filter={<ColumnInputFilter column={column} />}
-    //         column={column}
-    //       />
-    //     ),
-    //     enableSorting: true,
-    //     cell: ({ row }) => (
-    //       <span className={`font-medium ${row.original.color}`}>
-    //         {row.original.date
-    //           ? new Date(row.original.date).toLocaleDateString("en-GB") +
-    //             " " +
-    //             row.original.date?.split("T")[1].slice(0, 5)
-    //           : "-"}
-    //       </span>
-    //     ),
-    //     meta: { headerClassName: "min-w-[120px]" },
-    //   },
+      //   {
+      //     accessorKey: "date",
+      //     header: ({ column }) => (
+      //       <DataGridColumnHeader
+      //         title=<span className="font-bold">Date</span>
+      //         filter={<ColumnInputFilter column={column} />}
+      //         column={column}
+      //       />
+      //     ),
+      //     enableSorting: true,
+      //     cell: ({ row }) => (
+      //       <span className={`font-medium ${row.original.color}`}>
+      //         {row.original.date
+      //           ? new Date(row.original.date).toLocaleDateString("en-GB") +
+      //             " " +
+      //             row.original.date?.split("T")[1].slice(0, 5)
+      //           : "-"}
+      //       </span>
+      //     ),
+      //     meta: { headerClassName: "min-w-[120px]" },
+      //   },
       {
         accessorKey: "invoiceNumber",
         header: ({ column }) => (
@@ -164,7 +164,7 @@ function ProfitabilityOnInvoice() {
         enableSorting: true,
         cell: ({ row }) => (
           <span className={`font-medium ${row.original.color}`}>
-            £{row.original.cost.toFixed(2)}
+            £{row.original?.cost?.toFixed(2)}
           </span>
         ),
         meta: { headerClassName: "min-w-[120px]" },
@@ -181,7 +181,7 @@ function ProfitabilityOnInvoice() {
         enableSorting: true,
         cell: ({ row }) => (
           <span className={`font-medium ${row.original.color}`}>
-            {row.original.margin.toFixed(2)} %
+            {row.original?.margin?.toFixed(2)} %
           </span>
         ),
         meta: { headerClassName: "min-w-[120px]" },
@@ -198,7 +198,7 @@ function ProfitabilityOnInvoice() {
         enableSorting: true,
         cell: ({ row }) => (
           <span className={`font-medium ${row.original.color}`}>
-            £{row.original.profit.toFixed(2)}
+            £{row.original?.profit?.toFixed(2)}
           </span>
         ),
         meta: { headerClassName: "min-w-[120px]" },
@@ -215,7 +215,7 @@ function ProfitabilityOnInvoice() {
         enableSorting: true,
         cell: ({ row }) => (
           <span className={`font-medium ${row.original.color}`}>
-            £{row.original.netTotal.toFixed(2)}
+            £{row.original.netTotal?.toFixed(2)}
           </span>
         ),
         meta: { headerClassName: "min-w-[200px]" },
@@ -224,6 +224,24 @@ function ProfitabilityOnInvoice() {
 
     return baseColumns;
   }, []);
+
+  const totalProfitOnInvoice = useMemo(() => {
+    return profitabilityOnInvoice.reduce(
+      (totals, item) => {
+        totals.cost += item.cost || 0;
+        totals.margin += item.margin || 0;
+        totals.profit += item.profit || 0;
+        totals.netTotal += item.netTotal || 0;
+        return totals;
+      },
+      {
+        cost: 0,
+        margin: 0,
+        profit: 0,
+        netTotal: 0,
+      }
+    );
+  }, [profitabilityOnInvoice]);
 
   const handleRowSelection = (state) => {
     const selectedRowIds = Object.keys(state);
@@ -371,15 +389,32 @@ function ProfitabilityOnInvoice() {
               </div>
               <div className="card-body">
                 {profitabilityOnInvoice.length ? (
-                  <DataGrid
-                    columns={columns}
-                    data={profitabilityOnInvoice}
-                    rowSelection={true}
-                    onRowSelectionChange={handleRowSelection}
-                    pagination={{ size: 10 }}
-                    sorting={[{ id: "invoiceNumber", desc: true }]}
-                    layout={{ card: true }}
-                  />
+                  <>
+                    <DataGrid
+                      columns={columns}
+                      data={profitabilityOnInvoice}
+                      rowSelection={true}
+                      onRowSelectionChange={handleRowSelection}
+                      pagination={{ size: 10 }}
+                      sorting={[{ id: "invoiceNumber", desc: true }]}
+                      layout={{ card: true }}
+                    />
+                    <div className="flex justify-end gap-6 dark:bg-[#14151A] font-semibold p-3 mt-2">
+                      <span className="">
+                        Total Cost: £{totalProfitOnInvoice.cost.toFixed(2)}
+                      </span>
+                      <span className="">
+                        Total Margin: {totalProfitOnInvoice.margin?.toFixed(2)}{" "}
+                        %
+                      </span>
+                      <span className="">
+                        Total Profit: £{totalProfitOnInvoice.profit?.toFixed(2)}
+                      </span>
+                      <span className="">
+                        Total: £{totalProfitOnInvoice.netTotal?.toFixed(2)}
+                      </span>
+                    </div>
+                  </>
                 ) : (
                   <div className="text-center py-10 text-gray-500">
                     No data found
