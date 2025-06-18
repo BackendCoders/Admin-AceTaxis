@@ -74,7 +74,7 @@ const ChannelStats = () => {
 			icon: 'user-edit',
 			info:
 				data?.customerAquireCounts?.find((entry) => entry.periodWhen === 1) // ✅ Find the correct object
-					?.new || 0,
+					?.returning || 0,
 			desc: 'Week Returning Customer',
 			color: 'bg-orange-400',
 		},
@@ -82,7 +82,7 @@ const ChannelStats = () => {
 			icon: 'user',
 			info:
 				data?.customerAquireCounts?.find((entry) => entry.periodWhen === 2) // ✅ Find the correct object
-					?.new || 0,
+					?.returning || 0,
 			desc: 'Month Returning Customer',
 			color: 'bg-cyan-400',
 		},
