@@ -134,6 +134,7 @@ function NewBooking() {
 								type='checkbox'
 								name='arriveBy'
 								checked={row.original.arriveBy}
+								readOnly
 							/>
 						</label>
 					</span>
