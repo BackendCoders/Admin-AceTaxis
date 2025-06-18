@@ -38,6 +38,18 @@ import {
 	setDriverExpenses,
 } from '../../../slices/driverSlice';
 
+const categoryEnum = {
+	0: 'Fuel',
+	1: 'Parts',
+	2: 'Insurance',
+	3: 'MOT',
+	4: 'DBS',
+	5: 'VehicleBadge',
+	6: 'Maintanence',
+	7: 'Certification',
+	8: 'Other',
+};
+
 const DriverExpenses = () => {
 	const dispatch = useDispatch();
 	const { drivers } = useSelector((state) => state.driver);
@@ -99,18 +111,6 @@ const DriverExpenses = () => {
 				className='h-9 w-full max-w-40'
 			/>
 		);
-	};
-
-	const categoryEnum = {
-		0: 'Fuel',
-		1: 'Parts',
-		2: 'Insurance',
-		3: 'MOT',
-		4: 'DBS',
-		5: 'VehicleBadge',
-		6: 'Maintanence',
-		7: 'Certification',
-		8: 'Other',
 	};
 
 	const columns = useMemo(
@@ -230,9 +230,7 @@ const DriverExpenses = () => {
 			category,
 			total,
 		}));
-	}, [categoryEnum, data]);
-
-	console.log('totalByCategory', totalByCategory);
+	}, [data]);
 
 	return (
 		<Fragment>

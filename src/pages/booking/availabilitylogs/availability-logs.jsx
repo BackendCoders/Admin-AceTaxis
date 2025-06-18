@@ -47,7 +47,6 @@ const AvailabilityLogs = () => {
 			dispatch(setAvailabilityLog([])); // Reset table if input is empty
 			return;
 		}
-		console.log(new Date(date));
 		dispatch(
 			refreshAvailabilityLog(driverNumber, format(new Date(date), 'yyyy-MM-dd'))
 		);

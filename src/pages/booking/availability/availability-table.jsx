@@ -20,7 +20,6 @@ import isLightColor from '../../../utils/isLight';
 const AvailabilityTable = () => {
 	const { allAvailability } = useSelector((state) => state.availability);
 
-
 	const ColumnInputFilter = ({ column }) => {
 		return (
 			<Input

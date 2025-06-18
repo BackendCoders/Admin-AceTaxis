@@ -81,8 +81,6 @@ function RejectedBookings() {
 		});
 	}, [rejectedWebBookings, searchInput, date, selectedScope]);
 
-	console.log('.....', filteredBookings);
-
 	const ColumnInputFilter = ({ column }) => {
 		return (
 			<Input

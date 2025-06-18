@@ -52,8 +52,6 @@ function NewBooking() {
 	const [open, setOpen] = useState(false);
 	const { webBookings } = useSelector((state) => state.webBooking);
 
-	console.log(webBookings);
-
 	useEffect(() => {
 		dispatch(refreshWebBookings());
 	}, [dispatch]);
@@ -303,7 +301,7 @@ function NewBooking() {
 				meta: { headerClassName: 'min-w-[80px]' },
 			},
 		],
-		[]
+		[dispatch]
 	);
 
 	const handleCloseAcceptModal = () => {

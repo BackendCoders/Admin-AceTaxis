@@ -83,8 +83,6 @@ function AmendmentBookings() {
 		});
 	}, [amendRequests, searchInput, date]);
 
-	console.log('.....', filteredBookings);
-
 	const ColumnInputFilter = ({ column }) => {
 		return (
 			<Input

@@ -38,6 +38,32 @@ import {
 import toast from 'react-hot-toast';
 import { refreshAllDrivers } from '../../../slices/driverSlice';
 
+const monthNames = [
+	'',
+	'January',
+	'February',
+	'March',
+	'April',
+	'May',
+	'June',
+	'July',
+	'August',
+	'September',
+	'October',
+	'November',
+	'December',
+];
+
+const weekDayNames = [
+	'Sunday',
+	'Monday',
+	'Tuesday',
+	'Wednesday',
+	'Thursday',
+	'Friday',
+	'Saturday',
+];
+
 const AvailabilityReport = () => {
 	const dispatch = useDispatch();
 	const {
@@ -122,32 +148,6 @@ const AvailabilityReport = () => {
 		availableHoursByDay,
 		unavailable,
 	]);
-
-	const monthNames = [
-		'',
-		'January',
-		'February',
-		'March',
-		'April',
-		'May',
-		'June',
-		'July',
-		'August',
-		'September',
-		'October',
-		'November',
-		'December',
-	];
-
-	const weekDayNames = [
-		'Sunday',
-		'Monday',
-		'Tuesday',
-		'Wednesday',
-		'Thursday',
-		'Friday',
-		'Saturday',
-	];
 
 	// ✅ Dynamic column headers based on selected tab
 	const columns = useMemo(() => {
@@ -402,7 +402,7 @@ const AvailabilityReport = () => {
 			];
 		}
 		return [];
-	}, [selectedTab]);
+	}, [selectedTab, drivers]);
 
 	const formattedDataByTab = useMemo(() => {
 		if (selectedTab === 'dayHours') {
@@ -451,7 +451,7 @@ const AvailabilityReport = () => {
 			}));
 		}
 		return [];
-	}, [dataByTab, monthNames, selectedTab, weekDayNames]);
+	}, [dataByTab, selectedTab]);
 
 	const formatedTotalsByTab = useMemo(() => {
 		if (!Array.isArray(dataByTab)) return 0;
