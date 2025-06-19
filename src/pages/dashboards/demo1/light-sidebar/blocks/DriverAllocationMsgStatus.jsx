@@ -10,8 +10,6 @@ function DriverAllocationMsgStatus() {
 	const [searchQuery, setSearchQuery] = useState('');
 	const [tableData, setTableData] = useState([]);
 
-	console.log(allocationStatus);
-
 	useEffect(() => {
 		if (allocationStatus) {
 			setTableData(allocationStatus);

@@ -86,8 +86,6 @@ function AcceptedBookings() {
 		});
 	}, [acceptedWebBookings, searchInput, date, selectedScope]);
 
-	console.log('.....', filteredBookings);
-
 	const ColumnInputFilter = ({ column }) => {
 		return (
 			<Input

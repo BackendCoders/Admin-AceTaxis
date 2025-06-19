@@ -10,8 +10,6 @@ function DriverAllocation() {
 	const [searchQuery, setSearchQuery] = useState('');
 	const [tableData, setTableData] = useState([]);
 
-	console.log(allocationReplys);
-
 	useEffect(() => {
 		if (allocationReplys) {
 			setTableData(allocationReplys);

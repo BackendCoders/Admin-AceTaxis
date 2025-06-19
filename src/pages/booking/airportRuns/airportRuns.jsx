@@ -28,8 +28,6 @@ const AirportRuns = () => {
 	const [selectedOption, setSelectedOption] = useState('Last 1 Month');
 	// const [date, setDate] = useState(new Date());
 
-	console.log(airportRuns);
-
 	const filteredData = useMemo(() => {
 		return airportRuns || [];
 	}, [airportRuns]);

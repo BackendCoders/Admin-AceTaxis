@@ -36,8 +36,6 @@ const CompanySetting = () => {
 		fetchCompanySettings();
 	}, []);
 
-	console.log('company data', companyData);
-
 	// ✅ Handle Input Changes
 	const handleChange = (e) => {
 		setCompanyData({ ...companyData, [e.target.name]: e.target.value });

@@ -8,8 +8,6 @@ const Tablejourney = ({ month }) => {
 	const [expandedDrivers, setExpandedDrivers] = useState({});
 	const { lastJourney } = useSelector((state) => state.booking);
 
-	console.log(lastJourney);
-
 	const groupedJourneys = lastJourney?.reduce((acc, journey) => {
 		if (!acc[journey.userId]) {
 			acc[journey.userId] = {
