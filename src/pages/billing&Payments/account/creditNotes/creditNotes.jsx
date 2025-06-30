@@ -86,11 +86,8 @@ function CreditNotes() {
 	};
 
 	const downloadCreditNotesPDF = async (row) => {
-		console.log('row', row);
 		try {
 			const response = await downloadCreditNotes(row?.id);
-			console.log('downloadCreditNotesPDF', response);
-
 			if (!response || response.size === 0) {
 				console.error('Invalid or empty file received from API.');
 				toast.error('Error downloading credit notes.');

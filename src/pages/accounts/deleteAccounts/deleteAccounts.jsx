@@ -14,7 +14,6 @@ function DeleteAccounts({ open, onOpenChange }) {
 	const dispatch = useDispatch();
 	const { account } = useSelector((state) => state.account);
 	const handleDelete = async () => {
-		console.log('account deleted', account);
 		const response = await deleteAccounts(account?.accNo);
 		if (response.status === 'success') {
 			onOpenChange();

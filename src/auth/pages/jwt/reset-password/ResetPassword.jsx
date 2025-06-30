@@ -27,7 +27,6 @@ const ResetPassword = () => {
 			try {
 				const response = await resetUserPassword(values.userId);
 				if (response.status === 'success') {
-					console.log(response);
 					setNewPassword(response.password);
 					setHasErrors(false);
 					setLoading(false);
