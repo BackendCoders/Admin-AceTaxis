@@ -423,7 +423,7 @@ export default function NotPriced({ handleShow }) {
 																onKeyDown={(e) =>
 																	handleKeyPress(
 																		e,
-																		`parkingCharge-${booking.bookingId}`
+																		`priceAccount-${booking.bookingId}`
 																	)
 																}
 																onFocus={(e) => e.target.select()}
