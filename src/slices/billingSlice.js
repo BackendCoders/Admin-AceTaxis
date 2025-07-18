@@ -3,6 +3,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import {
 	accountGetChargeableGroupJobs,
+	accountGetChargeableGroupSplitJobs,
 	accountGetChargeableJobs,
 	driverGetChargeableJobs,
 	driverGetStatements,
@@ -18,6 +19,7 @@ const initialState = {
 	driverChargeableJobs: { priced: [], notPriced: [] },
 	accountChargeableJObs: { priced: [], notPriced: [] },
 	accountChargeableGroupJobs: { priced: [], notPriced: [] },
+	accountChargeableGroupSplitJobs: { shared: {}, singles: {} },
 	creditNotes: [],
 };
 
@@ -45,6 +47,9 @@ const billingSlice = createSlice({
 		},
 		setAccountChargeableGroupJobs(state, action) {
 			state.accountChargeableGroupJobs = action.payload;
+		},
+		setAccountChargeableGroupSplitJobs(state, action) {
+			state.accountChargeableGroupSplitJobs = action.payload;
 		},
 		setCreditNotes(state, action) {
 			state.creditNotes = action.payload;
@@ -184,6 +189,33 @@ export function refreshAccountChargeableGroupJobs(accno, from, to) {
 	};
 }
 
+export function refreshAccountChargeableGroupSplitJobs(accno, from, to) {
+	return async (dispatch) => {
+		dispatch(setLoading(true));
+		try {
+			const response = await accountGetChargeableGroupSplitJobs(
+				accno,
+				from,
+				to
+			);
+			console.log(response);
+
+			if (response.status === 'success') {
+				dispatch(
+					setAccountChargeableGroupSplitJobs({
+						shared: response?.shared,
+						singles: response?.singles,
+					})
+				);
+			}
+		} catch (error) {
+			console.error('Failed to refresh:', error);
+		} finally {
+			dispatch(setLoading(false));
+		}
+	};
+}
+
 export function refreshCreditNotes(accno) {
 	return async (dispatch) => {
 		dispatch(setLoading(true));
@@ -214,6 +246,7 @@ export const {
 	setDriverChargeableJobs,
 	setAccountChargeableJobs,
 	setAccountChargeableGroupJobs,
+	setAccountChargeableGroupSplitJobs,
 	setCreditNotes,
 } = billingSlice.actions;
 

@@ -34,7 +34,7 @@ export async function dashboard() {
 export async function getSmaHeartBeat() {
 	const response = await handleGetReq(GET_SMS_HEART_BEAT);
 
-	console.log('GET GET_SMS_HEART_BEAT API RESPONSE.........', response);
+	// console.log('GET GET_SMS_HEART_BEAT API RESPONSE.........', response);
 
 	if (response.status === 'success') {
 		// sendLogs(

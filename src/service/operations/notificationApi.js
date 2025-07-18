@@ -14,7 +14,7 @@ export async function getNotifications() {
 	// Fetch current user details using token
 	const response = await handleGetReq(GET_NOTIFICATIONS);
 
-	console.log('GET NOTIFICATION API RESPONSE.........', response);
+	// console.log('GET NOTIFICATION API RESPONSE.........', response);
 
 	if (response.status === 'success') {
 		// sendLogs(

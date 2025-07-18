@@ -25,18 +25,27 @@ import { cn } from '@/lib/utils';
 import { Calendar } from '@/components/ui/calendar';
 import { format, subDays } from 'date-fns';
 import { refreshAllAccounts } from '../../../../slices/accountSlice';
-import { refreshAccountChargeableGroupJobs } from '../../../../slices/billingSlice';
-import NotPriced from './notPriced';
-import Priced from './priced';
+import {
+	// refreshAccountChargeableGroupJobs,
+	refreshAccountChargeableGroupSplitJobs,
+} from '../../../../slices/billingSlice';
+// import NotPriced from './notPriced';
+// import Priced from './priced';
+import SinglesTab from './SinglesTab';
+import SharedTab from './SharedTab';
 
 function InvoiceProcessorGroups() {
 	const dispatch = useDispatch();
 	const { accounts } = useSelector((state) => state.account);
-	const { accountChargeableGroupJobs, loading } = useSelector(
-		(state) => state.billing
-	);
-	const { priced, notPriced } = accountChargeableGroupJobs;
+	const {
+		// accountChargeableGroupJobs,
+		accountChargeableGroupSplitJobs,
+		loading,
+	} = useSelector((state) => state.billing);
+	// const { priced, notPriced } = accountChargeableGroupJobs;
+	const { shared, singles } = accountChargeableGroupSplitJobs;
 	const [selectedAccount, setSelectedAccount] = useState(0);
+	const [activeTab, setActiveTab] = useState('singles');
 	const [open, setOpen] = useState(false);
 
 	const [dateRange, setDateRange] = useState({
@@ -44,6 +53,10 @@ function InvoiceProcessorGroups() {
 		to: new Date(), // Same default date
 	});
 	const [tempRange, setTempRange] = useState(dateRange);
+	const tabs = [
+		{ id: 1, label: 'singles', value: 'Singles' },
+		{ id: 2, label: 'shared', value: 'Shared' },
+	];
 
 	useEffect(() => {
 		if (open) {
@@ -59,9 +72,23 @@ function InvoiceProcessorGroups() {
 		}
 	};
 
-	const handleShow = () => {
+	const toggleActiveTab = (tab) => {
+		setActiveTab(tab);
+	};
+
+	// const handleShow = () => {
+	// 	dispatch(
+	// 		refreshAccountChargeableGroupJobs(
+	// 			selectedAccount,
+	// 			format(new Date(dateRange?.from), 'yyyy-MM-dd'),
+	// 			format(new Date(dateRange?.to), 'yyyy-MM-dd')
+	// 		)
+	// 	);
+	// };
+
+	const handleShowGroupSplit = () => {
 		dispatch(
-			refreshAccountChargeableGroupJobs(
+			refreshAccountChargeableGroupSplitJobs(
 				selectedAccount,
 				format(new Date(dateRange?.from), 'yyyy-MM-dd'),
 				format(new Date(dateRange?.to), 'yyyy-MM-dd')
@@ -199,7 +226,7 @@ function InvoiceProcessorGroups() {
 
 											<button
 												className='btn btn-primary flex justify-center mt-4'
-												onClick={handleShow}
+												onClick={handleShowGroupSplit}
 												disabled={loading}
 											>
 												{loading ? 'Searching...' : 'Show Jobs'}
@@ -207,34 +234,32 @@ function InvoiceProcessorGroups() {
 										</div>
 									</div>
 								</div>
-								<div className='card-body'>
-									<div className='flex justify-start items-center gap-4 ml-4 mt-2 mb-2'>
-										Awaiting Pricing - {notPriced?.length}
-									</div>
-									{notPriced?.length > 0 ? (
+								<div className='flex justify-start items-center gap-3 ml-4 mt-2 mb-2'>
+									{tabs?.map((tab) => (
 										<>
-											<NotPriced handleShow={handleShow} />
+											<button
+												className={`btn ${activeTab === tab.label ? 'btn-primary' : 'btn-secondary'} `}
+												key={tab.id}
+												onClick={() => toggleActiveTab(tab.label)}
+											>
+												{tab.value}
+											</button>
 										</>
-									) : (
-										<div className='text-start ml-4  text-yellow-600 dark:border dark:border-yellow-400 dark:opacity-50 dark:bg-transparent rounded-md bg-yellow-100 p-2 mr-4'>
-											⚠️ No Data Available
-										</div>
-									)}
+									))}
 								</div>
-								<div className='card-body mt-10'>
-									<div className='flex justify-start items-center gap-4 ml-4 mt-2 mb-2'>
-										Ready for Invoicing - {priced?.length}
-									</div>
-									{priced?.length > 0 ? (
-										<>
-											<Priced handleShow={handleShow} />
-										</>
-									) : (
-										<div className='text-start ml-4  text-yellow-600 dark:border dark:border-yellow-400 dark:opacity-50 dark:bg-transparent rounded-md bg-yellow-100 p-2 mr-4 mb-2'>
-											⚠️ No Data Available
-										</div>
-									)}
-								</div>
+								{activeTab === 'singles' && (
+									<SinglesTab
+										singles={singles}
+										handleShow={handleShowGroupSplit}
+									/>
+								)}
+
+								{activeTab === 'shared' && (
+									<SharedTab
+										shared={shared}
+										handleShow={handleShowGroupSplit}
+									/>
+								)}
 							</div>
 						</div>
 					</div>
