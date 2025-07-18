@@ -6,7 +6,7 @@ import { EmailOutlined } from '@mui/icons-material';
 
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { accountPostOrUnpostJobs } from '../../../../../service/operations/billing&Payment';
+import { accountDriverPostOrUnpostJobs } from '../../../../../service/operations/billing&Payment';
 import toast from 'react-hot-toast';
 
 export default function Priced({ handleShow }) {
@@ -32,7 +32,7 @@ export default function Priced({ handleShow }) {
 
 	const handleRevert = async (job) => {
 		try {
-			const response = await accountPostOrUnpostJobs(false, [job?.bookingId]);
+			const response = await accountDriverPostOrUnpostJobs(false, [job?.bookingId]);
 			if (response?.status === 'success') {
 				toast.success('Job reverted successfully');
 				handleShow();

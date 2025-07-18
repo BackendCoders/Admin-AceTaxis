@@ -9,7 +9,7 @@ import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import {
-	accountPostOrUnpostJobs,
+	accountDriverPostOrUnpostJobs,
 	accountPriceJobByMileage,
 	accountPriceJobHVS,
 	accountPriceJobHVSBulk,
@@ -195,7 +195,7 @@ export default function NotPriced({ handleShow }) {
 	const handlePostButton = async (booking) => {
 		try {
 			const postJob = booking?.priceAccount > 0 && true;
-			const response = await accountPostOrUnpostJobs(
+			const response = await accountDriverPostOrUnpostJobs(
 				postJob,
 				booking?.bookingId
 			);
@@ -225,7 +225,7 @@ export default function NotPriced({ handleShow }) {
 
 			const jobsIds = jobsToPost.map((job) => job.bookingId);
 
-			const response = await accountPostOrUnpostJobs(true, jobsIds);
+			const response = await accountDriverPostOrUnpostJobs(true, jobsIds);
 
 			if (response.status === 'success') {
 				toast.success(`${jobsToPost.length} jobs posted successfully!`);

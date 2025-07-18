@@ -20,6 +20,7 @@ const {
 	ACCOUNT_PRICE_JOB_HVS,
 	ACCOUNT_PRICE_JOB_HVS_BULK,
 	ACCOUNT_POST_OR_UNPOST_JOBS,
+  ACCOUNT_DRIVER_POST_OR_UNPOST_JOBS,
 	ACCOUNT_GET_CHARGEABLE_JOBS,
 	ACCOUNT_GET_CHARGEABLE_GROUP_JOBS,
 	ACCOUNT_GET_CHARGEABLE_GROUP_SPLIT_JOBS,
@@ -304,6 +305,32 @@ export async function accountPostOrUnpostJobs(postJob, id) {
 
 	console.log(
 		'GET ACCOUNT_POST_OR_UNPOST_JOBS API RESPONSE.........',
+		response
+	);
+
+	if (response.status === 'success') {
+		// sendLogs(
+		// 	{
+		// 		url: GET_VATOUTPUTS,
+		// 		reqBody: null,
+		// 		headers: setHeaders(),
+		// 		response: response,
+		// 	},
+		// 	'info'
+		// );
+		return response;
+	}
+	return response;
+}
+
+export async function accountDriverPostOrUnpostJobs(postJob, id) {
+	const response = await handlePostReq(
+		ACCOUNT_DRIVER_POST_OR_UNPOST_JOBS(postJob),
+		id
+	);
+
+	console.log(
+		'GET ACCOUNT_DRIVER_POST_OR_UNPOST_JOBS API RESPONSE.........',
 		response
 	);
 

@@ -107,6 +107,8 @@ export const billingAndPaymentEndpoints = {
 	ACCOUNT_PRICE_JOB_HVS_BULK: `${BASE}/api/Accounts/AccountPriceJobHVSBulk`,
 	ACCOUNT_POST_OR_UNPOST_JOBS: (postJob) =>
 		`${BASE}/api/Accounts/AccountPostOrUnPostJobs?postJob=${postJob}`,
+  ACCOUNT_DRIVER_POST_OR_UNPOST_JOBS: (postJob) =>
+		`${BASE}/api/Accounts/PostOrUnPostJobsAccountDriver?postJob=${postJob}`,
 	ACCOUNT_GET_CHARGEABLE_JOBS: (accno, from, to) =>
 		`${BASE}/api/Accounts/AccountGetChargableJobs?from=${from}&to=${to}${accno ? `&accno=${accno}` : ''}`,
 	ACCOUNT_GET_CHARGEABLE_GROUP_JOBS: (accno, from, to) =>
