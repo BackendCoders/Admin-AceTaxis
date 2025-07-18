@@ -50,11 +50,8 @@ export default function NotPriced({ handleShow }) {
 		notPriced?.forEach((data) => {
 			data.jobs?.forEach((booking) => {
 				initialValues[booking.bookingId] = {
-					waitingMinutes: booking.waitingMinutes || 0,
 					priceAccount: booking.priceAccount || 0,
 					price: booking.price || 0,
-					parkingCharge: booking.parkingCharge || 0,
-					waitingPriceAccount: booking.waitingPriceAccount || 0,
 				};
 			});
 		});
