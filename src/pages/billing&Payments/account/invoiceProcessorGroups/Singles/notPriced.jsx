@@ -30,7 +30,7 @@ export default function NotPriced({ handleShow }) {
 		{}
 	);
 
-	const [currentPageEachGroup, setCurrentPageEachGroup] = useState({});
+	const [currentPage, setCurrentPage] = useState(0);
 	const [itemsPerPage, setItemsPerPage] = useState(10);
 
 	const [currentPagePassenger, setCurrentPagePassenger] = useState(0);
@@ -441,164 +441,69 @@ export default function NotPriced({ handleShow }) {
 																</tr>
 																{expandedDestinationGroups[
 																	`${passengerData.passenger}-${pickupGroup.pickup}-${destinationGroup.destination}`
-																] &&
-																	(() => {
-																		const currentPage =
-																			currentPageEachGroup[
-																				`${passengerData.passenger}-${pickupGroup.pickup}-${destinationGroup.destination}`
-																			] || 0;
-																		const paginatedJobs =
-																			destinationGroup.jobs?.slice(
+																] && (
+																	<>
+																		{destinationGroup.jobs
+																			?.slice(
 																				currentPage * itemsPerPage,
 																				(currentPage + 1) * itemsPerPage
-																			);
-																		return (
-																			<>
-																				{paginatedJobs?.map((booking) => (
-																					<tr
-																						key={`booking-${booking.bookingId}`}
-																						className={`${booking?.coa ? ' bg-orange-500 hover:bg-orange-400' : 'bg-white dark:bg-[#14151A] hover:bg-gray-100'} border-t`}
-																					>
-																						<td className='border border-gray-300 px-4 py-2'>
-																							{booking.bookingId}
-																						</td>
-																						<td className='border border-gray-300 px-4 py-2'>
-																							{booking.date
-																								? new Date(
-																										booking.date
-																									).toLocaleDateString(
-																										'en-GB'
-																									) +
-																									' ' +
+																			)
+																			?.map((booking) => (
+																				<tr
+																					key={`booking-${booking.bookingId}`}
+																					className={`${booking?.coa ? ' bg-orange-500 hover:bg-orange-400' : 'bg-white dark:bg-[#14151A] hover:bg-gray-100'} border-t`}
+																				>
+																					<td className='border border-gray-300 px-4 py-2'>
+																						{booking.bookingId}
+																					</td>
+																					<td className='border border-gray-300 px-4 py-2'>
+																						{booking.date
+																							? new Date(
 																									booking.date
-																										.split('T')[1]
-																										.slice(0, 5)
-																								: 'N/A'}
-																						</td>
-																						<td className='border border-gray-300 px-4 py-2'>
-																							{booking.accNo}
-																						</td>
-																						<td className='border border-gray-300 px-4 py-2'>
-																							{booking.userId}
-																						</td>
-																						<td className='border border-gray-300 px-4 py-2'>
-																							{booking.passengers}
-																						</td>
-																						<td className='border border-gray-300 px-4 py-2'>
-																							{(booking.vias.length > 0 &&
-																								booking.vias
-																									.map((via) => via.address)
-																									.join(', ')) ||
-																								'-'}
-																						</td>
-																						<td className='border border-gray-300 px-4 py-2'>
-																							{
-																								<input
-																									type='number'
-																									className='w-20 text-center border rounded p-1 bg-inherit ring-inherit dark:bg-inherit dark:ring-inherit'
-																									name={`waitingMinutes-${booking.bookingId}`}
-																									value={
-																										bookingValues[
-																											booking.bookingId
-																										]?.waitingMinutes || 0
-																									}
-																									onChange={(e) =>
-																										handleInputChange(
-																											'waitingMinutes',
-																											booking.bookingId,
-																											e.target.value
-																										)
-																									}
-																									onBlur={(e) =>
-																										setDebouncedValue({
-																											field: 'waitingMinutes',
-																											bookingId:
-																												booking.bookingId,
-																											value: e.target.value,
-																										})
-																									}
-																									onKeyDown={(e) =>
-																										handleKeyPress(
-																											e,
-																											`price-${booking.bookingId}`
-																										)
-																									}
-																									onFocus={(e) =>
-																										e.target.select()
-																									}
-																								/>
-																							}
-																						</td>
-																						<td className='border border-gray-300 px-4 py-2'>
-																							£
-																							{booking?.waitingPriceAccount?.toFixed(
-																								2
-																							) || '0.00'}
-																						</td>
-																						<td className='border border-gray-300 px-4 py-2'>
-																							{booking.miles?.toFixed(1) ||
-																								'0.0'}
-																						</td>
-																						<td className='border border-gray-300 px-4 py-2'>
-																							{
-																								<input
-																									type='number'
-																									step='0.01'
-																									className='w-20 text-center border rounded p-1 bg-inherit ring-inherit dark:bg-inherit dark:ring-inherit'
-																									value={
-																										bookingValues[
-																											booking.bookingId
-																										]?.price || 0
-																									}
-																									name={`price-${booking.bookingId}`}
-																									onChange={(e) =>
-																										handleInputChange(
-																											'price',
-																											booking.bookingId,
-																											e.target.value
-																										)
-																									}
-																									onBlur={(e) =>
-																										setDebouncedValue({
-																											field: 'price',
-																											bookingId:
-																												booking.bookingId,
-																											value: e.target.value,
-																										})
-																									}
-																									onKeyDown={(e) =>
-																										handleKeyPress(
-																											e,
-																											`priceAccount-${booking.bookingId}`
-																										)
-																									}
-																									onFocus={(e) =>
-																										e.target.select()
-																									}
-																								/>
-																							}
-																						</td>
-																						<td className='border border-gray-300 px-4 py-2'>
+																								).toLocaleDateString('en-GB') +
+																								' ' +
+																								booking.date
+																									.split('T')[1]
+																									.slice(0, 5)
+																							: 'N/A'}
+																					</td>
+																					<td className='border border-gray-300 px-4 py-2'>
+																						{booking.accNo}
+																					</td>
+																					<td className='border border-gray-300 px-4 py-2'>
+																						{booking.userId}
+																					</td>
+																					<td className='border border-gray-300 px-4 py-2'>
+																						{booking.passengers}
+																					</td>
+																					<td className='border border-gray-300 px-4 py-2'>
+																						{(booking.vias.length > 0 &&
+																							booking.vias
+																								.map((via) => via.address)
+																								.join(', ')) ||
+																							'-'}
+																					</td>
+																					<td className='border border-gray-300 px-4 py-2'>
+																						{
 																							<input
 																								type='number'
-																								step='0.01'
 																								className='w-20 text-center border rounded p-1 bg-inherit ring-inherit dark:bg-inherit dark:ring-inherit'
-																								name={`priceAccount-${booking.bookingId}`}
+																								name={`waitingMinutes-${booking.bookingId}`}
 																								value={
 																									bookingValues[
 																										booking.bookingId
-																									]?.priceAccount || 0
+																									]?.waitingMinutes || 0
 																								}
 																								onChange={(e) =>
 																									handleInputChange(
-																										'priceAccount',
+																										'waitingMinutes',
 																										booking.bookingId,
 																										e.target.value
 																									)
 																								}
 																								onBlur={(e) =>
 																									setDebouncedValue({
-																										field: 'priceAccount',
+																										field: 'waitingMinutes',
 																										bookingId:
 																											booking.bookingId,
 																										value: e.target.value,
@@ -607,15 +512,26 @@ export default function NotPriced({ handleShow }) {
 																								onKeyDown={(e) =>
 																									handleKeyPress(
 																										e,
-																										`parkingCharge-${booking.bookingId}`
+																										`price-${booking.bookingId}`
 																									)
 																								}
 																								onFocus={(e) =>
 																									e.target.select()
 																								}
 																							/>
-																						</td>
-																						<td className='border border-gray-300 px-4 py-2'>
+																						}
+																					</td>
+																					<td className='border border-gray-300 px-4 py-2'>
+																						£
+																						{booking?.waitingPriceAccount?.toFixed(
+																							2
+																						) || '0.00'}
+																					</td>
+																					<td className='border border-gray-300 px-4 py-2'>
+																						{booking.miles?.toFixed(1) || '0.0'}
+																					</td>
+																					<td className='border border-gray-300 px-4 py-2'>
+																						{
 																							<input
 																								type='number'
 																								step='0.01'
@@ -623,181 +539,212 @@ export default function NotPriced({ handleShow }) {
 																								value={
 																									bookingValues[
 																										booking.bookingId
-																									]?.parkingCharge || 0
+																									]?.price || 0
 																								}
-																								name={`parkingCharge-${booking.bookingId}`}
+																								name={`price-${booking.bookingId}`}
 																								onChange={(e) =>
 																									handleInputChange(
-																										'parkingCharge',
+																										'price',
 																										booking.bookingId,
 																										e.target.value
 																									)
 																								}
 																								onBlur={(e) =>
 																									setDebouncedValue({
-																										field: 'parkingCharge',
+																										field: 'price',
 																										bookingId:
 																											booking.bookingId,
 																										value: e.target.value,
 																									})
 																								}
 																								onKeyDown={(e) =>
-																									handleKeyPress(e, null)
+																									handleKeyPress(
+																										e,
+																										`priceAccount-${booking.bookingId}`
+																									)
 																								}
 																								onFocus={(e) =>
 																									e.target.select()
 																								}
 																							/>
-																						</td>
-																						<td className='border border-gray-300 px-4 py-2'>
-																							£
-																							{(
-																								Number(
-																									bookingValues[
-																										booking.bookingId
-																									].parkingCharge || 0
-																								) +
-																								Number(
-																									booking?.waitingPriceAccount ||
-																										0
-																								) +
-																								Number(
-																									bookingValues[
-																										booking.bookingId
-																									].priceAccount || 0
+																						}
+																					</td>
+																					<td className='border border-gray-300 px-4 py-2'>
+																						<input
+																							type='number'
+																							step='0.01'
+																							className='w-20 text-center border rounded p-1 bg-inherit ring-inherit dark:bg-inherit dark:ring-inherit'
+																							name={`priceAccount-${booking.bookingId}`}
+																							value={
+																								bookingValues[booking.bookingId]
+																									?.priceAccount || 0
+																							}
+																							onChange={(e) =>
+																								handleInputChange(
+																									'priceAccount',
+																									booking.bookingId,
+																									e.target.value
 																								)
-																							).toFixed(2)}
-																						</td>
-																						<td className='border border-gray-300 px-4 py-2'>
-																							<MoneyIcon
-																								className={`${booking?.coa ? 'text-green-600 dark:text-green-600' : 'text-green-500 dark:text-green-400'} cursor-pointer`}
-																								onClick={() => {
-																									handlePriceFromBaseButton(
-																										booking
+																							}
+																							onBlur={(e) =>
+																								setDebouncedValue({
+																									field: 'priceAccount',
+																									bookingId: booking.bookingId,
+																									value: e.target.value,
+																								})
+																							}
+																							onKeyDown={(e) =>
+																								handleKeyPress(
+																									e,
+																									`parkingCharge-${booking.bookingId}`
+																								)
+																							}
+																							onFocus={(e) => e.target.select()}
+																						/>
+																					</td>
+																					<td className='border border-gray-300 px-4 py-2'>
+																						<input
+																							type='number'
+																							step='0.01'
+																							className='w-20 text-center border rounded p-1 bg-inherit ring-inherit dark:bg-inherit dark:ring-inherit'
+																							value={
+																								bookingValues[booking.bookingId]
+																									?.parkingCharge || 0
+																							}
+																							name={`parkingCharge-${booking.bookingId}`}
+																							onChange={(e) =>
+																								handleInputChange(
+																									'parkingCharge',
+																									booking.bookingId,
+																									e.target.value
+																								)
+																							}
+																							onBlur={(e) =>
+																								setDebouncedValue({
+																									field: 'parkingCharge',
+																									bookingId: booking.bookingId,
+																									value: e.target.value,
+																								})
+																							}
+																							onKeyDown={(e) =>
+																								handleKeyPress(e, null)
+																							}
+																							onFocus={(e) => e.target.select()}
+																						/>
+																					</td>
+																					<td className='border border-gray-300 px-4 py-2'>
+																						£
+																						{(
+																							Number(
+																								bookingValues[booking.bookingId]
+																									.parkingCharge || 0
+																							) +
+																							Number(
+																								booking?.waitingPriceAccount ||
+																									0
+																							) +
+																							Number(
+																								bookingValues[booking.bookingId]
+																									.priceAccount || 0
+																							)
+																						).toFixed(2)}
+																					</td>
+																					<td className='border border-gray-300 px-4 py-2'>
+																						<MoneyIcon
+																							className={`${booking?.coa ? 'text-green-600 dark:text-green-600' : 'text-green-500 dark:text-green-400'} cursor-pointer`}
+																							onClick={() => {
+																								handlePriceFromBaseButton(
+																									booking
+																								);
+																							}}
+																						/>
+																					</td>
+																					<td className='border border-gray-300 px-4 py-2'>
+																						<EmailOutlined
+																							className={`${booking?.coa ? `${booking.postedForInvoicing ? 'text-red-500 dark:text-red-900' : 'text-blue-500 dark:text-white'}` : `${booking.postedForInvoicing ? 'text-red-500 dark:text-red-600' : 'text-blue-500 dark:text-cyan-400'}`} cursor-pointer `}
+																							onClick={() => {
+																								if (
+																									bookingValues[
+																										booking.bookingId
+																									].priceAccount === 0
+																								) {
+																									toast.error(
+																										'Journey Charge Should not be 0'
+																									); // Show error if price is 0
+																								} else {
+																									handlePostButton(booking); // Post the job if valid
+																								}
+																							}}
+																						/>
+																					</td>
+																					<td className='border border-gray-300 px-4 py-2'>
+																						<DeleteOutlinedIcon
+																							className='text-red-500 dark:text-red-600 cursor-pointer'
+																							onClick={() =>
+																								handleCancel(booking.bookingId)
+																							}
+																						/>
+																					</td>
+																				</tr>
+																			))}
+																		{destinationGroup.jobs?.length >
+																			itemsPerPage && (
+																			<tr>
+																				<td
+																					colSpan='16'
+																					className='border border-gray-300 px-4 py-2'
+																				>
+																					<div className='flex justify-end items-center gap-2'>
+																						<div>
+																							Showing{' '}
+																							{currentPage * itemsPerPage + 1} -{' '}
+																							{Math.min(
+																								(currentPage + 1) *
+																									itemsPerPage,
+																								destinationGroup.jobs.length
+																							)}{' '}
+																							of {destinationGroup.jobs.length}{' '}
+																							jobs
+																						</div>
+																						<div className='flex space-x-2'>
+																							<button
+																								onClick={(e) => {
+																									e.stopPropagation();
+																									setCurrentPage((prev) =>
+																										Math.max(prev - 1, 0)
 																									);
 																								}}
-																							/>
-																						</td>
-																						<td className='border border-gray-300 px-4 py-2'>
-																							<EmailOutlined
-																								className={`${booking?.coa ? `${booking.postedForInvoicing ? 'text-red-500 dark:text-red-900' : 'text-blue-500 dark:text-white'}` : `${booking.postedForInvoicing ? 'text-red-500 dark:text-red-600' : 'text-blue-500 dark:text-cyan-400'}`} cursor-pointer `}
-																								onClick={() => {
-																									if (
-																										bookingValues[
-																											booking.bookingId
-																										].priceAccount === 0
-																									) {
-																										toast.error(
-																											'Journey Charge Should not be 0'
-																										); // Show error if price is 0
-																									} else {
-																										handlePostButton(booking); // Post the job if valid
-																									}
-																								}}
-																							/>
-																						</td>
-																						<td className='border border-gray-300 px-4 py-2'>
-																							<DeleteOutlinedIcon
-																								className='text-red-500 dark:text-red-600 cursor-pointer'
-																								onClick={() =>
-																									handleCancel(
-																										booking.bookingId
-																									)
-																								}
-																							/>
-																						</td>
-																					</tr>
-																				))}
-																				{destinationGroup.jobs?.length >
-																					itemsPerPage && (
-																					<tr>
-																						<td
-																							colSpan='16'
-																							className='border border-gray-300 px-4 py-2'
-																						>
-																							<div className='flex justify-end items-center gap-2'>
-																								<div>
-																									Showing{' '}
-																									{currentPage * itemsPerPage +
-																										1}{' '}
-																									-{' '}
-																									{Math.min(
-																										(currentPage + 1) *
-																											itemsPerPage,
+																								disabled={currentPage === 0}
+																								className='px-1 py-1 border rounded-full disabled:opacity-50'
+																							>
+																								<KeyboardArrowLeftIcon />
+																							</button>
+																							<button
+																								onClick={(e) => {
+																									e.stopPropagation();
+																									setCurrentPage((prev) =>
+																										(prev + 1) * itemsPerPage <
 																										destinationGroup.jobs.length
-																									)}{' '}
-																									of{' '}
-																									{destinationGroup.jobs.length}{' '}
-																									jobs
-																								</div>
-																								<div className='flex space-x-2'>
-																									<button
-																										onClick={(e) => {
-																											e.stopPropagation();
-																											setCurrentPageEachGroup(
-																												(prev) => ({
-																													...prev,
-																													[`${passengerData.passenger}-${pickupGroup.pickup}-${destinationGroup.destination}`]:
-																														Math.max(
-																															(prev[
-																																`${passengerData.passenger}-${pickupGroup.pickup}-${destinationGroup.destination}`
-																															] || 0) - 1,
-																															0
-																														),
-																												})
-																											);
-																										}}
-																										disabled={currentPage === 0}
-																										className='px-1 py-1 border rounded-full disabled:opacity-50'
-																									>
-																										<KeyboardArrowLeftIcon />
-																									</button>
-																									<button
-																										onClick={(e) => {
-																											e.stopPropagation();
-																											setCurrentPageEachGroup(
-																												(prev) => {
-																													const current =
-																														prev[
-																															`${passengerData.passenger}-${pickupGroup.pickup}-${destinationGroup.destination}`
-																														] || 0;
-																													const nextPage =
-																														current + 1;
-
-																													if (
-																														nextPage *
-																															itemsPerPage <
-																														destinationGroup
-																															.jobs.length
-																													) {
-																														return {
-																															...prev,
-																															[`${passengerData.passenger}-${pickupGroup.pickup}-${destinationGroup.destination}`]:
-																																nextPage,
-																														};
-																													}
-																													return prev;
-																												}
-																											);
-																										}}
-																										disabled={
-																											(currentPage + 1) *
-																												itemsPerPage >=
-																											destinationGroup.jobs
-																												.length
-																										}
-																										className='px-1 py-1 border rounded-full disabled:opacity-50'
-																									>
-																										<KeyboardArrowRightIcon />
-																									</button>
-																								</div>
-																							</div>
-																						</td>
-																					</tr>
-																				)}
-																			</>
-																		);
-																	})}
+																											? prev + 1
+																											: prev
+																									);
+																								}}
+																								disabled={
+																									(currentPage + 1) *
+																										itemsPerPage >=
+																									destinationGroup.jobs.length
+																								}
+																								className='px-1 py-1 border rounded-full disabled:opacity-50'
+																							>
+																								<KeyboardArrowRightIcon />
+																							</button>
+																						</div>
+																					</div>
+																				</td>
+																			</tr>
+																		)}
+																	</>
+																)}
 															</React.Fragment>
 														)
 													)}

@@ -15,7 +15,7 @@ export default function Priced({ handleShow }) {
 	);
 	const { shared } = accountChargeableGroupSplitJobs;
 	const { priced } = shared;
-	const [currentPageEachGroup, setCurrentPageEachGroup] = useState({});
+	const [currentPage, setCurrentPage] = useState(0);
 	const [itemsPerPage, setItemsPerPage] = useState(10);
 
 	const [currentPagePassenger, setCurrentPagePassenger] = useState(0);
@@ -80,22 +80,13 @@ export default function Priced({ handleShow }) {
 							Journey Miles
 						</th>
 						<th className='border border-gray-300 text-start px-4 py-2 text-gray-700'>
-							Journey Charge
-						</th>
-						<th className='border border-gray-300 text-start px-4 py-2 text-gray-700'>
 							Vias Count
 						</th>
 						<th className='border border-gray-300 text-start px-4 py-2 text-gray-700'>
-							Vias Price
-						</th>
-						<th className='border border-gray-300 text-start px-4 py-2 text-gray-700'>
-							Driver
+							Driver Price
 						</th>
 						<th className='border border-gray-300 text-start px-4 py-2 text-gray-700'>
 							Account Price
-						</th>
-						<th className='border border-gray-300 text-start px-4 py-2 text-gray-700'>
-							Total
 						</th>
 						<th className='border border-gray-300 text-start px-4 py-2 text-gray-700'>
 							Revert
@@ -128,151 +119,126 @@ export default function Priced({ handleShow }) {
 										</span>
 									</td>
 								</tr>
-								{expandedGroups[group.groupName] &&
-									(() => {
-										const currentPage =
-											currentPageEachGroup[group.groupName] || 0;
-										const paginatedJobs = group.jobs?.slice(
-											currentPage * itemsPerPage,
-											(currentPage + 1) * itemsPerPage
-										);
-										return (
-											<>
-												{paginatedJobs?.map((booking) => (
-													<tr
-														key={`booking-${booking.bookingId}`}
-														className={`${booking?.coa ? ' bg-orange-500 hover:bg-orange-400' : 'bg-white dark:bg-[#14151A] hover:bg-gray-100'} border-t`}
-													>
-														<td className='border border-gray-300 px-4 py-2'>
-															{booking.bookingId}
-														</td>
-														<td className='border border-gray-300 px-4 py-2'>
-															{booking.date
-																? new Date(booking.date).toLocaleDateString(
-																		'en-GB'
-																	) +
-																	' ' +
-																	booking.date.split('T')[1].slice(0, 5)
-																: 'N/A'}
-														</td>
-														<td className='border border-gray-300 px-4 py-2'>
-															{booking.accNo}
-														</td>
-														<td className='border border-gray-300 px-4 py-2'>
-															{booking.passenger}
-														</td>
-														<td className='border border-gray-300 px-4 py-2'>
-															{booking.pickup}
-														</td>
-														<td className='border border-gray-300 px-4 py-2'>
-															{booking.destination}
-														</td>
-														<td className='border border-gray-300 px-4 py-2'>
-															{booking.userId}
-														</td>
-														<td className='border border-gray-300 px-4 py-2'>
-															{(booking.vias.length > 0 &&
-																booking.vias
-																	.map((via) => via.address)
-																	.join(', ')) ||
-																'-'}
-														</td>
-														<td className='border border-gray-300 px-4 py-2'>
-															{booking.miles?.toFixed(2) || '0.0'}
-														</td>
-														<td className='border border-gray-300 px-4 py-2'>
-															£{booking?.priceAccount?.toFixed(2) || '0.00'}
-														</td>
-														<td className='border border-gray-300 px-4 py-2'>
-															{booking.vias.length || '0'}
-														</td>
-														<td className='border border-gray-300 px-4 py-2'>
-															£{booking.viasPrice?.toFixed(2) || '0.00'}
-														</td>
-														<td className='border border-gray-300 px-4 py-2'>
-															£{booking.price?.toFixed(2) || '0.00'}
-														</td>
-														<td className='border border-gray-300 px-4 py-2'>
-															£{booking.parkingCharge?.toFixed(2) || '0.00'}
-														</td>
-														<td className='border border-gray-300 px-4 py-2'>
-															£
-															{(
-																Number(booking?.parkingCharge || 0) +
-																Number(booking?.waitingPriceAccount || 0) +
-																Number(booking.priceAccount || 0)
-															).toFixed(2) || '0.00'}
-														</td>
-														<td className='border border-gray-300 px-4 py-2'>
-															<EmailOutlined
-																className={`${booking?.coa ? `${booking.postedForInvoicing ? 'text-red-500 dark:text-red-900' : 'text-blue-500 dark:text-white'}` : `${booking.postedForInvoicing ? 'text-red-500 dark:text-red-600' : 'text-blue-500 dark:text-cyan-400'}`} cursor-pointer `}
-																onClick={() => handleRevert(booking)}
-															/>
-														</td>
-													</tr>
-												))}
-												{group.jobs?.length > itemsPerPage && (
-													<tr>
-														<td
-															colSpan='15'
-															className='border border-gray-300 px-4 py-2'
-														>
-															<div className='flex justify-end items-center gap-2'>
-																<div>
-																	Showing {currentPage * itemsPerPage + 1} -{' '}
-																	{Math.min(
-																		(currentPage + 1) * itemsPerPage,
+								{expandedGroups[group.groupName] && (
+									<>
+										{group.jobs
+											?.slice(
+												currentPage * itemsPerPage,
+												(currentPage + 1) * itemsPerPage
+											)
+											?.map((booking) => (
+												<tr
+													key={`booking-${booking.bookingId}`}
+													className={`${booking?.coa ? ' bg-orange-500 hover:bg-orange-400' : 'bg-white dark:bg-[#14151A] hover:bg-gray-100'} border-t`}
+												>
+													<td className='border border-gray-300 px-4 py-2'>
+														{booking.bookingId}
+													</td>
+													<td className='border border-gray-300 px-4 py-2'>
+														{booking.date
+															? new Date(booking.date).toLocaleDateString(
+																	'en-GB'
+																) +
+																' ' +
+																booking.date.split('T')[1].slice(0, 5)
+															: 'N/A'}
+													</td>
+													<td className='border border-gray-300 px-4 py-2'>
+														{booking.accNo}
+													</td>
+													<td className='border border-gray-300 px-4 py-2'>
+														{booking.passenger}
+													</td>
+													<td className='border border-gray-300 px-4 py-2'>
+														{booking.pickup}
+													</td>
+													<td className='border border-gray-300 px-4 py-2'>
+														{booking.destination}
+													</td>
+													<td className='border border-gray-300 px-4 py-2'>
+														{booking.userId}
+													</td>
+													<td className='border border-gray-300 px-4 py-2'>
+														{(booking.vias.length > 0 &&
+															booking.vias
+																.map((via) => via.address)
+																.join(', ')) ||
+															'-'}
+													</td>
+													<td className='border border-gray-300 px-4 py-2'>
+														{booking.miles?.toFixed(2) || '0.0'}
+													</td>
+
+													<td className='border border-gray-300 px-4 py-2'>
+														{booking.vias.length || '0'}
+													</td>
+													<td className='border border-gray-300 px-4 py-2'>
+														£{booking.price?.toFixed(2) || '0.00'}
+													</td>
+													<td className='border border-gray-300 px-4 py-2'>
+														£{booking.priceAccount?.toFixed(2) || '0.00'}
+													</td>
+													<td className='border border-gray-300 px-4 py-2'>
+														<EmailOutlined
+															className={`${booking?.coa ? `${booking.postedForInvoicing ? 'text-red-500 dark:text-red-900' : 'text-blue-500 dark:text-white'}` : `${booking.postedForInvoicing ? 'text-red-500 dark:text-red-600' : 'text-blue-500 dark:text-cyan-400'}`} cursor-pointer `}
+															onClick={() => handleRevert(booking)}
+														/>
+													</td>
+												</tr>
+											))}
+										{group.jobs?.length > itemsPerPage && (
+											<tr>
+												<td
+													colSpan='15'
+													className='border border-gray-300 px-4 py-2'
+												>
+													<div className='flex justify-end items-center gap-2'>
+														<div>
+															Showing {currentPage * itemsPerPage + 1} -{' '}
+															{Math.min(
+																(currentPage + 1) * itemsPerPage,
+																group.jobs.length
+															)}{' '}
+															of {group.jobs.length} jobs
+														</div>
+														<div className='flex space-x-2'>
+															<button
+																onClick={(e) => {
+																	e.stopPropagation();
+																	setCurrentPage((prev) =>
+																		Math.max(prev - 1, 0)
+																	);
+																}}
+																disabled={currentPage === 0}
+																className='px-1 py-1 border rounded-full disabled:opacity-50'
+															>
+																<KeyboardArrowLeftIcon />
+															</button>
+															<button
+																onClick={(e) => {
+																	e.stopPropagation();
+																	setCurrentPage((prev) =>
+																		(prev + 1) * itemsPerPage <
 																		group.jobs.length
-																	)}{' '}
-																	of {group.jobs.length} jobs
-																</div>
-																<div className='flex space-x-2'>
-																	<button
-																		onClick={(e) => {
-																			e.stopPropagation();
-																			setCurrentPageEachGroup((prev) => ({
-																				...prev,
-																				[group.groupName]: Math.max(
-																					(prev[group.groupName] || 0) - 1,
-																					0
-																				),
-																			}));
-																		}}
-																		disabled={currentPage === 0}
-																		className='px-1 py-1 border rounded-full disabled:opacity-50'
-																	>
-																		<KeyboardArrowLeftIcon />
-																	</button>
-																	<button
-																		onClick={(e) => {
-																			e.stopPropagation();
-																			const nextPage = currentPage + 1;
-																			if (
-																				nextPage * itemsPerPage <
-																				group.jobs.length
-																			) {
-																				setCurrentPageEachGroup((prev) => ({
-																					...prev,
-																					[group.groupName]: nextPage,
-																				}));
-																			}
-																		}}
-																		disabled={
-																			(currentPage + 1) * itemsPerPage >=
-																			group.jobs.length
-																		}
-																		className='px-1 py-1 border rounded-full disabled:opacity-50'
-																	>
-																		<KeyboardArrowRightIcon />
-																	</button>
-																</div>
-															</div>
-														</td>
-													</tr>
-												)}
-											</>
-										);
-									})}
+																			? prev + 1
+																			: prev
+																	);
+																}}
+																disabled={
+																	(currentPage + 1) * itemsPerPage >=
+																	group.jobs.length
+																}
+																className='px-1 py-1 border rounded-full disabled:opacity-50'
+															>
+																<KeyboardArrowRightIcon />
+															</button>
+														</div>
+													</div>
+												</td>
+											</tr>
+										)}
+									</>
+								)}
 							</React.Fragment>
 						))}
 				</tbody>

@@ -20,7 +20,7 @@ export default function Priced({ handleShow }) {
 	const [expandedDestinationGroups, setExpandedDestinationGroups] = useState(
 		{}
 	);
-	const [currentPageEachGroup, setCurrentPageEachGroup] = useState({});
+	const [currentPage, setCurrentPage] = useState(0);
 	const [itemsPerPage, setItemsPerPage] = useState(10);
 
 	const [currentPagePassenger, setCurrentPagePassenger] = useState(0);
@@ -203,201 +203,157 @@ export default function Priced({ handleShow }) {
 																</tr>
 																{expandedDestinationGroups[
 																	`${passengerData.passenger}-${pickupGroup.pickup}-${destinationGroup.destination}`
-																] &&
-																	(() => {
-																		const currentPage =
-																			currentPageEachGroup[
-																				`${passengerData.passenger}-${pickupGroup.pickup}-${destinationGroup.destination}`
-																			] || 0;
-																		const paginatedJobs =
-																			destinationGroup.jobs?.slice(
+																] && (
+																	<>
+																		{destinationGroup.jobs
+																			?.slice(
 																				currentPage * itemsPerPage,
 																				(currentPage + 1) * itemsPerPage
-																			);
-																		return (
-																			<>
-																				{paginatedJobs?.map((booking) => (
-																					<tr
-																						key={`booking-${booking.bookingId}`}
-																						className={`${booking?.coa ? ' bg-orange-500 hover:bg-orange-400' : 'bg-white dark:bg-[#14151A] hover:bg-gray-100'} border-t`}
-																					>
-																						<td className='border border-gray-300 px-4 py-2'>
-																							{booking.bookingId}
-																						</td>
-																						<td className='border border-gray-300 px-4 py-2'>
-																							{booking.date
-																								? new Date(
-																										booking.date
-																									).toLocaleDateString(
-																										'en-GB'
-																									) +
-																									' ' +
+																			)
+																			?.map((booking) => (
+																				<tr
+																					key={`booking-${booking.bookingId}`}
+																					className={`${booking?.coa ? ' bg-orange-500 hover:bg-orange-400' : 'bg-white dark:bg-[#14151A] hover:bg-gray-100'} border-t`}
+																				>
+																					<td className='border border-gray-300 px-4 py-2'>
+																						{booking.bookingId}
+																					</td>
+																					<td className='border border-gray-300 px-4 py-2'>
+																						{booking.date
+																							? new Date(
 																									booking.date
-																										.split('T')[1]
-																										.slice(0, 5)
-																								: 'N/A'}
-																						</td>
-																						<td className='border border-gray-300 px-4 py-2'>
-																							{booking.accNo}
-																						</td>
-																						<td className='border border-gray-300 px-4 py-2'>
-																							{booking.userId}
-																						</td>
-																						<td className='border border-gray-300 px-4 py-2'>
-																							{booking.passengers}
-																						</td>
-																						<td className='border border-gray-300 px-4 py-2'>
-																							{(booking.vias.length > 0 &&
-																								booking.vias
-																									.map((via) => via.address)
-																									.join(', ')) ||
-																								'-'}
-																						</td>
-																						<td className='border border-gray-300 px-4 py-2'>
-																							{booking?.waitingMinutes || '0'}
-																						</td>
-																						<td className='border border-gray-300 px-4 py-2'>
-																							£
-																							{booking.waitingPriceDriver?.toFixed(
-																								2
-																							) || '0.00'}
-																						</td>
-																						<td className='border border-gray-300 px-4 py-2'>
-																							{booking.miles?.toFixed(1) ||
-																								'0.0'}
-																						</td>
-																						<td className='border border-gray-300 px-4 py-2'>
-																							£
-																							{booking?.price?.toFixed(2) ||
-																								'0.00'}
-																						</td>
-																						<td className='border border-gray-300 px-4 py-2'>
-																							£
-																							{booking.priceAccount?.toFixed(
-																								2
-																							) || '0.00'}
-																						</td>
-																						<td className='border border-gray-300 px-4 py-2'>
-																							£
-																							{booking.parkingCharge?.toFixed(
-																								2
-																							) || '0.00'}
-																						</td>
-																						<td className='border border-gray-300 px-4 py-2'>
-																							£
-																							{(
-																								Number(
-																									booking?.parkingCharge || 0
-																								) +
-																								Number(
-																									booking?.waitingPriceAccount ||
-																										0
-																								) +
-																								Number(
-																									booking.priceAccount || 0
-																								)
-																							).toFixed(2) || '0.00'}
-																						</td>
-																						<td className='border border-gray-300 px-4 py-2'>
-																							<EmailOutlined
-																								className={`${booking?.coa ? `${booking.postedForInvoicing ? 'text-red-500 dark:text-red-900' : 'text-blue-500 dark:text-white'}` : `${booking.postedForInvoicing ? 'text-red-500 dark:text-red-600' : 'text-blue-500 dark:text-cyan-400'}`} cursor-pointer `}
-																								onClick={() =>
-																									handleRevert(booking)
-																								}
-																							/>
-																						</td>
-																					</tr>
-																				))}
-																				{destinationGroup.jobs?.length >
-																					itemsPerPage && (
-																					<tr>
-																						<td
-																							colSpan='15'
-																							className='border border-gray-300 px-4 py-2'
-																						>
-																							<div className='flex justify-end items-center gap-2'>
-																								<div>
-																									Showing{' '}
-																									{currentPage * itemsPerPage +
-																										1}{' '}
-																									-{' '}
-																									{Math.min(
-																										(currentPage + 1) *
-																											itemsPerPage,
+																								).toLocaleDateString('en-GB') +
+																								' ' +
+																								booking.date
+																									.split('T')[1]
+																									.slice(0, 5)
+																							: 'N/A'}
+																					</td>
+																					<td className='border border-gray-300 px-4 py-2'>
+																						{booking.accNo}
+																					</td>
+																					<td className='border border-gray-300 px-4 py-2'>
+																						{booking.userId}
+																					</td>
+																					<td className='border border-gray-300 px-4 py-2'>
+																						{booking.passengers}
+																					</td>
+																					<td className='border border-gray-300 px-4 py-2'>
+																						{(booking.vias.length > 0 &&
+																							booking.vias
+																								.map((via) => via.address)
+																								.join(', ')) ||
+																							'-'}
+																					</td>
+																					<td className='border border-gray-300 px-4 py-2'>
+																						{booking?.waitingMinutes || '0'}
+																					</td>
+																					<td className='border border-gray-300 px-4 py-2'>
+																						£
+																						{booking.waitingPriceDriver?.toFixed(
+																							2
+																						) || '0.00'}
+																					</td>
+																					<td className='border border-gray-300 px-4 py-2'>
+																						{booking.miles?.toFixed(1) || '0.0'}
+																					</td>
+																					<td className='border border-gray-300 px-4 py-2'>
+																						£
+																						{booking?.price?.toFixed(2) ||
+																							'0.00'}
+																					</td>
+																					<td className='border border-gray-300 px-4 py-2'>
+																						£
+																						{booking.priceAccount?.toFixed(2) ||
+																							'0.00'}
+																					</td>
+																					<td className='border border-gray-300 px-4 py-2'>
+																						£
+																						{booking.parkingCharge?.toFixed(
+																							2
+																						) || '0.00'}
+																					</td>
+																					<td className='border border-gray-300 px-4 py-2'>
+																						£
+																						{(
+																							Number(
+																								booking?.parkingCharge || 0
+																							) +
+																							Number(
+																								booking?.waitingPriceAccount ||
+																									0
+																							) +
+																							Number(booking.priceAccount || 0)
+																						).toFixed(2) || '0.00'}
+																					</td>
+																					<td className='border border-gray-300 px-4 py-2'>
+																						<EmailOutlined
+																							className={`${booking?.coa ? `${booking.postedForInvoicing ? 'text-red-500 dark:text-red-900' : 'text-blue-500 dark:text-white'}` : `${booking.postedForInvoicing ? 'text-red-500 dark:text-red-600' : 'text-blue-500 dark:text-cyan-400'}`} cursor-pointer `}
+																							onClick={() =>
+																								handleRevert(booking)
+																							}
+																						/>
+																					</td>
+																				</tr>
+																			))}
+																		{destinationGroup.jobs?.length >
+																			itemsPerPage && (
+																			<tr>
+																				<td
+																					colSpan='15'
+																					className='border border-gray-300 px-4 py-2'
+																				>
+																					<div className='flex justify-end items-center gap-2'>
+																						<div>
+																							Showing{' '}
+																							{currentPage * itemsPerPage + 1} -{' '}
+																							{Math.min(
+																								(currentPage + 1) *
+																									itemsPerPage,
+																								destinationGroup.jobs.length
+																							)}{' '}
+																							of {destinationGroup.jobs.length}{' '}
+																							jobs
+																						</div>
+																						<div className='flex space-x-2'>
+																							<button
+																								onClick={(e) => {
+																									e.stopPropagation();
+																									setCurrentPage((prev) =>
+																										Math.max(prev - 1, 0)
+																									);
+																								}}
+																								disabled={currentPage === 0}
+																								className='px-1 py-1 border rounded-full disabled:opacity-50'
+																							>
+																								<KeyboardArrowLeftIcon />
+																							</button>
+																							<button
+																								onClick={(e) => {
+																									e.stopPropagation();
+																									setCurrentPage((prev) =>
+																										(prev + 1) * itemsPerPage <
 																										destinationGroup.jobs.length
-																									)}{' '}
-																									of{' '}
-																									{destinationGroup.jobs.length}{' '}
-																									jobs
-																								</div>
-																								<div className='flex space-x-2'>
-																									<button
-																										onClick={(e) => {
-																											e.stopPropagation();
-																											setCurrentPageEachGroup(
-																												(prev) => ({
-																													...prev,
-																													[`${passengerData.passenger}-${pickupGroup.pickup}-${destinationGroup.destination}`]:
-																														Math.max(
-																															(prev[
-																																`${passengerData.passenger}-${pickupGroup.pickup}-${destinationGroup.destination}`
-																															] || 0) - 1,
-																															0
-																														),
-																												})
-																											);
-																										}}
-																										disabled={currentPage === 0}
-																										className='px-1 py-1 border rounded-full disabled:opacity-50'
-																									>
-																										<KeyboardArrowLeftIcon />
-																									</button>
-																									<button
-																										onClick={(e) => {
-																											e.stopPropagation();
-																											setCurrentPageEachGroup(
-																												(prev) => {
-																													const current =
-																														prev[
-																															`${passengerData.passenger}-${pickupGroup.pickup}-${destinationGroup.destination}`
-																														] || 0;
-																													const nextPage =
-																														current + 1;
-
-																													if (
-																														nextPage *
-																															itemsPerPage <
-																														destinationGroup
-																															.jobs.length
-																													) {
-																														return {
-																															...prev,
-																															[`${passengerData.passenger}-${pickupGroup.pickup}-${destinationGroup.destination}`]:
-																																nextPage,
-																														};
-																													}
-																													return prev;
-																												}
-																											);
-																										}}
-																										disabled={
-																											(currentPage + 1) *
-																												itemsPerPage >=
-																											destinationGroup.jobs
-																												.length
-																										}
-																										className='px-1 py-1 border rounded-full disabled:opacity-50'
-																									>
-																										<KeyboardArrowRightIcon />
-																									</button>
-																								</div>
-																							</div>
-																						</td>
-																					</tr>
-																				)}
-																			</>
-																		);
-																	})}
+																											? prev + 1
+																											: prev
+																									);
+																								}}
+																								disabled={
+																									(currentPage + 1) *
+																										itemsPerPage >=
+																									destinationGroup.jobs.length
+																								}
+																								className='px-1 py-1 border rounded-full disabled:opacity-50'
+																							>
+																								<KeyboardArrowRightIcon />
+																							</button>
+																						</div>
+																					</div>
+																				</td>
+																			</tr>
+																		)}
+																	</>
+																)}
 															</React.Fragment>
 														)
 													)}

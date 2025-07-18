@@ -10,8 +10,8 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import {
 	accountPostOrUnpostJobs,
-	accountPriceJobByMileage,
-	accountPriceJobHVS,
+	// accountPriceJobByMileage,
+	// accountPriceJobHVS,
 	accountPriceJobHVSBulk,
 	accountUpdateChargesData,
 	clearInvoice,
@@ -26,7 +26,7 @@ export default function NotPriced({ handleShow }) {
 	const { notPriced } = shared;
 	console.log('shared not priced', notPriced);
 
-	const [currentPageEachGroup, setCurrentPageEachGroup] = useState({});
+	const [currentPage, setCurrentPage] = useState(0);
 	const [itemsPerPage, setItemsPerPage] = useState(10);
 
 	const [currentPagePassenger, setCurrentPagePassenger] = useState(0);
@@ -61,43 +61,43 @@ export default function NotPriced({ handleShow }) {
 		setBookingValues(initialValues);
 	}, [notPriced]);
 
-	const handlePriceFromBaseButton = async (booking) => {
-		try {
-			const payload = {
-				pickupPostcode: booking?.pickupPostcode || '',
-				viaPostcodes: booking?.vias?.length
-					? booking.vias.map((via) => via.postCode)
-					: [], // Map via postcodes
-				destinationPostcode: booking?.destinationPostcode || '',
-				pickupDateTime: booking?.date || new Date().toISOString(), // Use booking date if available
-				passengers: booking?.passengers || 0,
-				priceFromBase: true, // Use form value
-				bookingId: booking?.bookingId || 0,
-				actionByUserId: userData?.userId || 0,
-				updatedByName: userData?.fullName || '', // Change as needed
-				price: booking?.price || 0,
-				priceAccount: booking?.priceAccount || 0,
-				mileage: booking?.miles || 0,
-				mileageText: `${booking?.miles || 0} miles`, // Convert miles to string
-				durationText: '', // No duration available in provided object
-			};
-			let response;
-			if (booking?.accNo === 10026 || booking?.accNo === 9014) {
-				response = await accountPriceJobHVS(payload);
-			} else {
-				response = await accountPriceJobByMileage(payload);
-			}
-			// console.log('Response:', response);
-			if (response.status === 'success') {
-				handleShow();
-				toast.success('Price Updated');
-			} else {
-				toast.error('Failed to Update Price');
-			}
-		} catch (error) {
-			console.log(error);
-		}
-	};
+	// const handlePriceFromBaseButton = async (booking) => {
+	// 	try {
+	// 		const payload = {
+	// 			pickupPostcode: booking?.pickupPostcode || '',
+	// 			viaPostcodes: booking?.vias?.length
+	// 				? booking.vias.map((via) => via.postCode)
+	// 				: [], // Map via postcodes
+	// 			destinationPostcode: booking?.destinationPostcode || '',
+	// 			pickupDateTime: booking?.date || new Date().toISOString(), // Use booking date if available
+	// 			passengers: booking?.passengers || 0,
+	// 			priceFromBase: true, // Use form value
+	// 			bookingId: booking?.bookingId || 0,
+	// 			actionByUserId: userData?.userId || 0,
+	// 			updatedByName: userData?.fullName || '', // Change as needed
+	// 			price: booking?.price || 0,
+	// 			priceAccount: booking?.priceAccount || 0,
+	// 			mileage: booking?.miles || 0,
+	// 			mileageText: `${booking?.miles || 0} miles`, // Convert miles to string
+	// 			durationText: '', // No duration available in provided object
+	// 		};
+	// 		let response;
+	// 		if (booking?.accNo === 10026 || booking?.accNo === 9014) {
+	// 			response = await accountPriceJobHVS(payload);
+	// 		} else {
+	// 			response = await accountPriceJobByMileage(payload);
+	// 		}
+	// 		// console.log('Response:', response);
+	// 		if (response.status === 'success') {
+	// 			handleShow();
+	// 			toast.success('Price Updated');
+	// 		} else {
+	// 			toast.error('Failed to Update Price');
+	// 		}
+	// 	} catch (error) {
+	// 		console.log(error);
+	// 	}
+	// };
 
 	const handleCancel = async (bookingId) => {
 		try {
@@ -171,24 +171,24 @@ export default function NotPriced({ handleShow }) {
 		return () => clearTimeout(timer);
 	}, [debouncedValue]);
 
-	const handlePostButton = async (booking) => {
-		try {
-			const postJob = booking?.priceAccount > 0 && true;
-			const response = await accountPostOrUnpostJobs(
-				postJob,
-				booking?.bookingId
-			);
-			if (response?.status === 'success') {
-				toast.success('Job posted successfully');
-				handleShow();
-			} else {
-				toast.error('Failed to post job');
-			}
-		} catch (error) {
-			console.error('Failed to post job:', error);
-			toast.error('Failed to post job');
-		}
-	};
+	// const handlePostButton = async (booking) => {
+	// 	try {
+	// 		const postJob = booking?.priceAccount > 0 && true;
+	// 		const response = await accountPostOrUnpostJobs(
+	// 			postJob,
+	// 			booking?.bookingId
+	// 		);
+	// 		if (response?.status === 'success') {
+	// 			toast.success('Job posted successfully');
+	// 			handleShow();
+	// 		} else {
+	// 			toast.error('Failed to post job');
+	// 		}
+	// 	} catch (error) {
+	// 		console.error('Failed to post job:', error);
+	// 		toast.error('Failed to post job');
+	// 	}
+	// };
 
 	const handlePostAllPriced = async (jobs) => {
 		try {
@@ -282,24 +282,18 @@ export default function NotPriced({ handleShow }) {
 						<th className='border border-gray-300 text-start px-4 py-2 text-gray-700'>
 							Journey Miles
 						</th>
-						<th className='border border-gray-300 text-start px-4 py-2 text-gray-700'>
-							Journey Charge
-						</th>
+
 						<th className='border border-gray-300 text-start px-4 py-2 text-gray-700'>
 							Vias Count
 						</th>
-						<th className='border border-gray-300 text-start px-4 py-2 text-gray-700'>
-							Vias Price
-						</th>
+
 						<th className='border border-gray-300 text-start px-4 py-2 text-gray-700'>
 							Driver
 						</th>
 						<th className='border border-gray-300 text-start px-4 py-2 text-gray-700'>
 							Account Price
 						</th>
-						<th className='border border-gray-300 text-start px-4 py-2 text-gray-700'>
-							Total
-						</th>
+
 						<th className='border border-gray-300 text-start px-4 py-2 text-gray-700'>
 							Cancel
 						</th>
@@ -351,78 +345,80 @@ export default function NotPriced({ handleShow }) {
 										</div>
 									</td>
 								</tr>
-								{expandedGroups[group.groupName] &&
-									(() => {
-										const currentPage =
-											currentPageEachGroup[group.groupName] || 0;
-										const paginatedJobs = group.jobs?.slice(
-											currentPage * itemsPerPage,
-											(currentPage + 1) * itemsPerPage
-										);
-										return (
-											<>
-												{paginatedJobs?.map((booking) => (
-													<tr
-														key={`booking-${booking.bookingId}`}
-														className={`${booking?.coa ? ' bg-orange-500 hover:bg-orange-400' : 'bg-white dark:bg-[#14151A] hover:bg-gray-100'} border-t`}
-													>
-														<td className='border border-gray-300 px-4 py-2'>
-															{booking.bookingId}
-														</td>
-														<td className='border border-gray-300 px-4 py-2'>
-															{booking.date
-																? new Date(booking.date).toLocaleDateString(
-																		'en-GB'
-																	) +
-																	' ' +
-																	booking.date.split('T')[1].slice(0, 5)
-																: 'N/A'}
-														</td>
-														<td className='border border-gray-300 px-4 py-2'>
-															{booking.accNo}
-														</td>
-														<td className='border border-gray-300 px-4 py-2'>
-															{booking.passenger}
-														</td>
-														<td className='border border-gray-300 px-4 py-2'>
-															{booking.pickup}
-														</td>
-														<td className='border border-gray-300 px-4 py-2'>
-															{booking.destination}
-														</td>
-														<td className='border border-gray-300 px-4 py-2'>
-															{booking.userId}
-														</td>
-														<td className='border border-gray-300 px-4 py-2'>
-															{(booking.vias.length > 0 &&
-																booking.vias
-																	.map((via) => via.address)
-																	.join(', ')) ||
-																'-'}
-														</td>
-														<td className='border border-gray-300 px-4 py-2'>
-															{booking.miles?.toFixed(1) || '0.0'}
-														</td>
-														<td className='border border-gray-300 px-4 py-2'>
+								{expandedGroups[group.groupName] && (
+									<>
+										{group.jobs
+											?.slice(
+												currentPage * itemsPerPage,
+												(currentPage + 1) * itemsPerPage
+											)
+											?.map((booking) => (
+												<tr
+													key={`booking-${booking.bookingId}`}
+													className={`${booking?.coa ? ' bg-orange-500 hover:bg-orange-400' : 'bg-white dark:bg-[#14151A] hover:bg-gray-100'} border-t`}
+												>
+													<td className='border border-gray-300 px-4 py-2'>
+														{booking.bookingId}
+													</td>
+													<td className='border border-gray-300 px-4 py-2'>
+														{booking.date
+															? new Date(booking.date).toLocaleDateString(
+																	'en-GB'
+																) +
+																' ' +
+																booking.date.split('T')[1].slice(0, 5)
+															: 'N/A'}
+													</td>
+													<td className='border border-gray-300 px-4 py-2'>
+														{booking.accNo}
+													</td>
+													<td className='border border-gray-300 px-4 py-2'>
+														{booking.passenger}
+													</td>
+													<td className='border border-gray-300 px-4 py-2'>
+														{booking.pickup}
+													</td>
+													<td className='border border-gray-300 px-4 py-2'>
+														{booking.destination}
+													</td>
+													<td className='border border-gray-300 px-4 py-2'>
+														{booking.userId}
+													</td>
+													<td className='border border-gray-300 px-4 py-2'>
+														{(booking.vias.length > 0 &&
+															booking.vias
+																.map((via) => via.address)
+																.join(', ')) ||
+															'-'}
+													</td>
+													<td className='border border-gray-300 px-4 py-2'>
+														{booking.miles?.toFixed(1) || '0.0'}
+													</td>
+
+													<td className='border border-gray-300 px-4 py-2'>
+														{booking.vias.length || '0'}
+													</td>
+
+													<td className='border border-gray-300 px-4 py-2'>
+														{
 															<input
 																type='number'
 																step='0.01'
 																className='w-20 text-center border rounded p-1 bg-inherit ring-inherit dark:bg-inherit dark:ring-inherit'
-																name={`priceAccount-${booking.bookingId}`}
 																value={
-																	bookingValues[booking.bookingId]
-																		?.priceAccount || 0
+																	bookingValues[booking.bookingId]?.price || 0
 																}
+																name={`price-${booking.bookingId}`}
 																onChange={(e) =>
 																	handleInputChange(
-																		'priceAccount',
+																		'price',
 																		booking.bookingId,
 																		e.target.value
 																	)
 																}
 																onBlur={(e) =>
 																	setDebouncedValue({
-																		field: 'priceAccount',
+																		field: 'price',
 																		bookingId: booking.bookingId,
 																		value: e.target.value,
 																	})
@@ -430,165 +426,104 @@ export default function NotPriced({ handleShow }) {
 																onKeyDown={(e) =>
 																	handleKeyPress(
 																		e,
-																		`price-${booking.bookingId}`
+																		`parkingCharge-${booking.bookingId}`
 																	)
 																}
 																onFocus={(e) => e.target.select()}
 															/>
-														</td>
-														<td className='border border-gray-300 px-4 py-2'>
-															{booking.vias.length || '0'}
-														</td>
-														<td className='border border-gray-300 px-4 py-2'>
-															£{booking.viasPrice?.toFixed(2) || '0.00'}
-														</td>
-														<td className='border border-gray-300 px-4 py-2'>
-															{
-																<input
-																	type='number'
-																	step='0.01'
-																	className='w-20 text-center border rounded p-1 bg-inherit ring-inherit dark:bg-inherit dark:ring-inherit'
-																	value={
-																		bookingValues[booking.bookingId]?.price || 0
-																	}
-																	name={`price-${booking.bookingId}`}
-																	onChange={(e) =>
-																		handleInputChange(
-																			'price',
-																			booking.bookingId,
-																			e.target.value
-																		)
-																	}
-																	onBlur={(e) =>
-																		setDebouncedValue({
-																			field: 'price',
-																			bookingId: booking.bookingId,
-																			value: e.target.value,
-																		})
-																	}
-																	onKeyDown={(e) =>
-																		handleKeyPress(
-																			e,
-																			`accountPrice-${booking.bookingId}`
-																		)
-																	}
-																	onFocus={(e) => e.target.select()}
-																/>
-															}
-														</td>
+														}
+													</td>
 
-														<td className='border border-gray-300 px-4 py-2'>
-															<input
-																type='number'
-																step='0.01'
-																className='w-20 text-center border rounded p-1 bg-inherit ring-inherit dark:bg-inherit dark:ring-inherit'
-																value={
-																	bookingValues[booking.bookingId]
-																		?.priceAccount || 0
-																}
-																name={`accountPrice-${booking.bookingId}`}
-																onChange={(e) =>
-																	handleInputChange(
-																		'accountPrice',
-																		booking.bookingId,
-																		e.target.value
-																	)
-																}
-																onBlur={(e) =>
-																	setDebouncedValue({
-																		field: 'accountPrice',
-																		bookingId: booking.bookingId,
-																		value: e.target.value,
-																	})
-																}
-																onKeyDown={(e) => handleKeyPress(e, null)}
-																onFocus={(e) => e.target.select()}
-															/>
-														</td>
-														<td className='border border-gray-300 px-4 py-2'>
-															£
-															{(
-																Number(
-																	bookingValues[booking.bookingId]
-																		.parkingCharge || 0
-																) +
-																Number(booking?.waitingPriceAccount || 0) +
-																Number(
-																	bookingValues[booking.bookingId]
-																		.priceAccount || 0
+													<td className='border border-gray-300 px-4 py-2'>
+														<input
+															type='number'
+															step='0.01'
+															className='w-20 text-center border rounded p-1 bg-inherit ring-inherit dark:bg-inherit dark:ring-inherit'
+															value={
+																bookingValues[booking.bookingId]
+																	?.priceAccount || 0
+															}
+															name={`priceAccount-${booking.bookingId}`}
+															onChange={(e) =>
+																handleInputChange(
+																	'priceAccount',
+																	booking.bookingId,
+																	e.target.value
 																)
-															).toFixed(2)}
-														</td>
-														<td className='border border-gray-300 px-4 py-2'>
-															<DeleteOutlinedIcon
-																className='text-red-500 dark:text-red-600 cursor-pointer'
-																onClick={() => handleCancel(booking.bookingId)}
-															/>
-														</td>
-													</tr>
-												))}
-												{group.jobs?.length > itemsPerPage && (
-													<tr>
-														<td
-															colSpan='16'
-															className='border border-gray-300 px-4 py-2'
-														>
-															<div className='flex justify-end items-center gap-2'>
-																<div>
-																	Showing {currentPage * itemsPerPage + 1} -{' '}
-																	{Math.min(
-																		(currentPage + 1) * itemsPerPage,
+															}
+															onBlur={(e) =>
+																setDebouncedValue({
+																	field: 'priceAccount',
+																	bookingId: booking.bookingId,
+																	value: e.target.value,
+																})
+															}
+															onKeyDown={(e) => handleKeyPress(e, null)}
+															onFocus={(e) => e.target.select()}
+														/>
+													</td>
+
+													<td className='border border-gray-300 px-4 py-2'>
+														<DeleteOutlinedIcon
+															className='text-red-500 dark:text-red-600 cursor-pointer'
+															onClick={() => handleCancel(booking.bookingId)}
+														/>
+													</td>
+												</tr>
+											))}
+										{group.jobs?.length > itemsPerPage && (
+											<tr>
+												<td
+													colSpan='16'
+													className='border border-gray-300 px-4 py-2'
+												>
+													<div className='flex justify-end items-center gap-2'>
+														<div>
+															Showing {currentPage * itemsPerPage + 1} -{' '}
+															{Math.min(
+																(currentPage + 1) * itemsPerPage,
+																group.jobs.length
+															)}{' '}
+															of {group.jobs.length} jobs
+														</div>
+														<div className='flex space-x-2'>
+															<button
+																onClick={(e) => {
+																	e.stopPropagation();
+																	setCurrentPage((prev) =>
+																		Math.max(prev - 1, 0)
+																	);
+																}}
+																disabled={currentPage === 0}
+																className='px-1 py-1 border rounded-full disabled:opacity-50'
+															>
+																<KeyboardArrowLeftIcon />
+															</button>
+															<button
+																onClick={(e) => {
+																	e.stopPropagation();
+																	setCurrentPage((prev) =>
+																		(prev + 1) * itemsPerPage <
 																		group.jobs.length
-																	)}{' '}
-																	of {group.jobs.length} jobs
-																</div>
-																<div className='flex space-x-2'>
-																	<button
-																		onClick={(e) => {
-																			e.stopPropagation();
-																			setCurrentPageEachGroup((prev) => ({
-																				...prev,
-																				[group.groupName]: Math.max(
-																					(prev[group.groupName] || 0) - 1,
-																					0
-																				),
-																			}));
-																		}}
-																		disabled={currentPage === 0}
-																		className='px-1 py-1 border rounded-full disabled:opacity-50'
-																	>
-																		<KeyboardArrowLeftIcon />
-																	</button>
-																	<button
-																		onClick={(e) => {
-																			e.stopPropagation();
-																			const nextPage = currentPage + 1;
-																			if (
-																				nextPage * itemsPerPage <
-																				group.jobs.length
-																			) {
-																				setCurrentPageEachGroup((prev) => ({
-																					...prev,
-																					[group.groupName]: nextPage,
-																				}));
-																			}
-																		}}
-																		disabled={
-																			(currentPage + 1) * itemsPerPage >=
-																			group.jobs.length
-																		}
-																		className='px-1 py-1 border rounded-full disabled:opacity-50'
-																	>
-																		<KeyboardArrowRightIcon />
-																	</button>
-																</div>
-															</div>
-														</td>
-													</tr>
-												)}
-											</>
-										);
-									})}
+																			? prev + 1
+																			: prev
+																	);
+																}}
+																disabled={
+																	(currentPage + 1) * itemsPerPage >=
+																	group.jobs.length
+																}
+																className='px-1 py-1 border rounded-full disabled:opacity-50'
+															>
+																<KeyboardArrowRightIcon />
+															</button>
+														</div>
+													</div>
+												</td>
+											</tr>
+										)}
+									</>
+								)}
 							</React.Fragment>
 						))}
 				</tbody>
