@@ -234,12 +234,12 @@ export default function Priced({ handleShow }) {
 																		</td>
 																		<td className='border border-gray-300 px-4 py-2'>
 																			£
-																			{booking.priceAccount?.toFixed(2) ||
+																			{booking?.priceAccount?.toFixed(2) ||
 																				'0.00'}
 																		</td>
 																		<td className='border border-gray-300 px-4 py-2'>
 																			£
-																			{booking.parkingCharge?.toFixed(2) ||
+																			{booking?.parkingCharge?.toFixed(2) ||
 																				'0.00'}
 																		</td>
 																		<td className='border border-gray-300 px-4 py-2'>
@@ -249,7 +249,7 @@ export default function Priced({ handleShow }) {
 																				Number(
 																					booking?.waitingPriceAccount || 0
 																				) +
-																				Number(booking.priceAccount || 0)
+																				Number(booking?.priceAccount || 0)
 																			).toFixed(2) || '0.00'}
 																		</td>
 																		<td className='border border-gray-300 px-4 py-2'>

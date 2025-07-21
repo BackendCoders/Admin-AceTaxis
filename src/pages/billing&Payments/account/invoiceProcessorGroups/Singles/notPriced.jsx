@@ -624,14 +624,14 @@ export default function NotPriced({ handleShow }) {
 																			{(
 																				Number(
 																					bookingValues[booking.bookingId]
-																						.parkingCharge || 0
+																						?.parkingCharge || 0
 																				) +
 																				Number(
 																					booking?.waitingPriceAccount || 0
 																				) +
 																				Number(
 																					bookingValues[booking.bookingId]
-																						.priceAccount || 0
+																						?.priceAccount || 0
 																				)
 																			).toFixed(2)}
 																		</td>
@@ -649,7 +649,7 @@ export default function NotPriced({ handleShow }) {
 																				onClick={() => {
 																					if (
 																						bookingValues[booking.bookingId]
-																							.priceAccount === 0
+																							?.priceAccount === 0
 																					) {
 																						toast.error(
 																							'Journey Charge Should not be 0'
