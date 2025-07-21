@@ -401,7 +401,9 @@ export default function NotPriced({ handleShow }) {
 													<td className='border border-gray-300 px-4 py-2'>
 														{booking.passenger}
 													</td>
-													<td className='border border-gray-300 px-4 py-2'>
+													<td
+														className={`border border-gray-300 px-4 py-2 ${booking.passenger.split(',').length !== booking.passengers ? 'text-red-600' : ''}`}
+													>
 														{booking.passengers}
 													</td>
 													<td className='border border-gray-300 px-4 py-2'>
@@ -428,7 +430,9 @@ export default function NotPriced({ handleShow }) {
 														{booking.vias.length || '0'}
 													</td>
 
-													<td className='border border-gray-300 px-4 py-2'>
+													<td
+														className={`border border-gray-300 px-4 py-2 ${booking.price > booking.priceAccount ? 'text-red-600' : ''}`}
+													>
 														{
 															<input
 																type='number'

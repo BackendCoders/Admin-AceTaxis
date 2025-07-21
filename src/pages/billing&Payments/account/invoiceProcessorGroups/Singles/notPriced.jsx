@@ -35,6 +35,7 @@ export default function NotPriced({ handleShow }) {
 
 	const [currentPagePassenger, setCurrentPagePassenger] = useState(0);
 	const [itemsPerPagePassenger, setItemsPerPagePassenger] = useState(10);
+	const [priceRefrenceRes, SetPriceRefrenceRes] = useState([]);
 
 	const [bookingValues, setBookingValues] = useState({});
 	const [debouncedValue, setDebouncedValue] = useState(null);
@@ -262,6 +263,13 @@ export default function NotPriced({ handleShow }) {
 			const response = await accountPriceJobHVSBulk(payload);
 			if (response?.status === 'success') {
 				toast.success('All jobs priced successfully');
+				const priceArray = Object.keys(response)
+					.filter((key) => !isNaN(Number(key)))
+					.reduce((acc, key) => {
+						acc[key] = response[key]; // keep object mapped by bookingId
+						return acc;
+					}, {});
+				SetPriceRefrenceRes(priceArray);
 				handleShow();
 			}
 		} catch (error) {
@@ -405,6 +413,22 @@ export default function NotPriced({ handleShow }) {
 																>
 																	Post All Priced
 																</button>
+																{(() => {
+																	const jobWithPriceRef =
+																		destinationGroup.jobs.find(
+																			(job) => priceRefrenceRes?.[job.bookingId]
+																		);
+																	const priceRefObj =
+																		jobWithPriceRef &&
+																		priceRefrenceRes[jobWithPriceRef.bookingId];
+																	return (
+																		priceRefObj && (
+																			<div className='text-white bg-purple-600 p-1 rounded-lg mt-2 text-sm'>
+																				{priceRefObj.priceReference}
+																			</div>
+																		)
+																	);
+																})()}
 															</div>
 														</td>
 													</tr>
@@ -440,7 +464,9 @@ export default function NotPriced({ handleShow }) {
 																		<td className='border border-gray-300 px-4 py-2'>
 																			{booking.userId}
 																		</td>
-																		<td className='border border-gray-300 px-4 py-2'>
+																		<td
+																			className={`border border-gray-300 px-4 py-2 ${booking.passenger.split(',').length !== booking.passengers ? 'text-red-600' : ''}`}
+																		>
 																			{booking.passengers}
 																		</td>
 																		<td className='border border-gray-300 px-4 py-2'>
@@ -493,7 +519,9 @@ export default function NotPriced({ handleShow }) {
 																		<td className='border border-gray-300 px-4 py-2'>
 																			{booking.miles?.toFixed(1) || '0.0'}
 																		</td>
-																		<td className='border border-gray-300 px-4 py-2'>
+																		<td
+																			className={`border border-gray-300 px-4 py-2 ${booking.price > booking.priceAccount ? 'text-red-600' : ''}`}
+																		>
 																			{
 																				<input
 																					type='number'
