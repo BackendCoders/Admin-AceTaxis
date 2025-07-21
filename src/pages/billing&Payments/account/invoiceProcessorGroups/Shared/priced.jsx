@@ -32,7 +32,9 @@ export default function Priced({ handleShow }) {
 
 	const handleRevert = async (job) => {
 		try {
-			const response = await accountDriverPostOrUnpostJobs(false, [job?.bookingId]);
+			const response = await accountDriverPostOrUnpostJobs(false, [
+				job?.bookingId,
+			]);
 			if (response?.status === 'success') {
 				toast.success('Job reverted successfully');
 				handleShow();
@@ -63,6 +65,9 @@ export default function Priced({ handleShow }) {
 						</th>
 						<th className='border border-gray-300 text-start px-4 py-2 text-gray-700'>
 							Passengers
+						</th>
+						<th className='border border-gray-300 text-start px-4 py-2 text-gray-700'>
+							PAX
 						</th>
 						<th className='border border-gray-300 text-start px-4 py-2 text-gray-700'>
 							Pickup
@@ -148,6 +153,9 @@ export default function Priced({ handleShow }) {
 													</td>
 													<td className='border border-gray-300 px-4 py-2'>
 														{booking.passenger}
+													</td>
+													<td className='border border-gray-300 px-4 py-2'>
+														{booking.passengers}
 													</td>
 													<td className='border border-gray-300 px-4 py-2'>
 														{booking.pickup}

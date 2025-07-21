@@ -265,6 +265,9 @@ export default function NotPriced({ handleShow }) {
 							Passengers
 						</th>
 						<th className='border border-gray-300 text-start px-4 py-2 text-gray-700'>
+							PAX
+						</th>
+						<th className='border border-gray-300 text-start px-4 py-2 text-gray-700'>
 							Pickup
 						</th>
 						<th className='border border-gray-300 text-start px-4 py-2 text-gray-700'>
@@ -371,6 +374,9 @@ export default function NotPriced({ handleShow }) {
 													</td>
 													<td className='border border-gray-300 px-4 py-2'>
 														{booking.passenger}
+													</td>
+													<td className='border border-gray-300 px-4 py-2'>
+														{booking.passengers}
 													</td>
 													<td className='border border-gray-300 px-4 py-2'>
 														{booking.pickup}
