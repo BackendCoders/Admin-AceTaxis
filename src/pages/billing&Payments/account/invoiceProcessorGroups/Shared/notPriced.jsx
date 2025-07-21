@@ -31,6 +31,7 @@ export default function NotPriced({ handleShow }) {
 
 	const [currentPagePassenger, setCurrentPagePassenger] = useState(0);
 	const [itemsPerPagePassenger, setItemsPerPagePassenger] = useState(10);
+	const [priceRefrenceRes, SetPriceRefrenceRes] = useState([]);
 
 	const [expandedGroups, setExpandedGroups] = useState({});
 
@@ -239,6 +240,14 @@ export default function NotPriced({ handleShow }) {
 			const response = await accountPriceJobHVSBulk(payload);
 			if (response?.status === 'success') {
 				toast.success('All jobs priced successfully');
+				console.log('inside price all', response);
+				const priceArray = Object.keys(response)
+					.filter((key) => !isNaN(Number(key)))
+					.reduce((acc, key) => {
+						acc[key] = response[key]; // keep object mapped by bookingId
+						return acc;
+					}, {});
+				SetPriceRefrenceRes(priceArray);
 				handleShow();
 			}
 		} catch (error) {
@@ -246,6 +255,8 @@ export default function NotPriced({ handleShow }) {
 			toast.error('Failed to post all jobs.');
 		}
 	};
+
+	console.log('----', priceRefrenceRes);
 
 	return (
 		<div>
@@ -342,6 +353,21 @@ export default function NotPriced({ handleShow }) {
 											>
 												Post All Priced
 											</button>
+											{(() => {
+												const jobWithPriceRef = group.jobs.find(
+													(job) => priceRefrenceRes?.[job.bookingId]
+												);
+												const priceRefObj =
+													jobWithPriceRef &&
+													priceRefrenceRes[jobWithPriceRef.bookingId];
+												return (
+													priceRefObj && (
+														<div className='text-white bg-purple-600 p-1 rounded-lg mt-2 text-sm'>
+															{priceRefObj.priceReference}
+														</div>
+													)
+												);
+											})()}
 										</div>
 									</td>
 								</tr>
