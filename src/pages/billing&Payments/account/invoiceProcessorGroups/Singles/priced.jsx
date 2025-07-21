@@ -16,7 +16,7 @@ export default function Priced({ handleShow }) {
 	const { singles } = accountChargeableGroupSplitJobs;
 	const { priced } = singles;
 	const [expandedPassengers, setExpandedPassengers] = useState({});
-	const [expandedPickupGroups, setExpandedPickupGroups] = useState({});
+	// const [expandedPickupGroups, setExpandedPickupGroups] = useState({});
 	const [expandedDestinationGroups, setExpandedDestinationGroups] = useState(
 		{}
 	);
@@ -33,24 +33,25 @@ export default function Priced({ handleShow }) {
 		}));
 	};
 
-	const togglePickupGroup = (passengerId, pickup) => {
-		setExpandedPickupGroups((prev) => ({
-			...prev,
-			[`${passengerId}-${pickup}`]: !prev[`${passengerId}-${pickup}`],
-		}));
-	};
+	// const togglePickupGroup = (passengerId, pickup) => {
+	// 	setExpandedPickupGroups((prev) => ({
+	// 		...prev,
+	// 		[`${passengerId}-${pickup}`]: !prev[`${passengerId}-${pickup}`],
+	// 	}));
+	// };
 
-	const toggleDestinationGroup = (passengerId, pickup, destination) => {
+	const toggleDestinationGroup = (passengerId, destination) => {
 		setExpandedDestinationGroups((prev) => ({
 			...prev,
-			[`${passengerId}-${pickup}-${destination}`]:
-				!prev[`${passengerId}-${pickup}-${destination}`],
+			[`${passengerId}-${destination}`]: !prev[`${passengerId}-${destination}`],
 		}));
 	};
 
 	const handleRevert = async (job) => {
 		try {
-			const response = await accountDriverPostOrUnpostJobs(false, [job?.bookingId]);
+			const response = await accountDriverPostOrUnpostJobs(false, [
+				job?.bookingId,
+			]);
 			if (response?.status === 'success') {
 				toast.success('Job reverted successfully');
 				handleShow();
@@ -118,250 +119,207 @@ export default function Priced({ handleShow }) {
 							currentPagePassenger * itemsPerPagePassenger,
 							(currentPagePassenger + 1) * itemsPerPagePassenger
 						)
-						?.map((passengerData, passengerIndex) => (
-							<React.Fragment key={`passenger-${passengerIndex}`}>
-								<tr
-									className='bg-gray-100 cursor-pointer'
-									onClick={() => togglePassenger(passengerData.passenger)}
-								>
-									<td
-										colSpan='15'
-										className='border border-gray-300 px-4 py-2 font-semibold'
+						?.map((passengerData, passengerIndex) => {
+							const destinationGroups =
+								passengerData.pickupGroups?.flatMap((pickup) =>
+									pickup.destinationGroups?.map((group) => ({
+										...group,
+										pickup: pickup.pickup, // optional if needed
+									}))
+								) || [];
+							return (
+								<React.Fragment key={`passenger-${passengerIndex}`}>
+									<tr
+										className='bg-gray-100 cursor-pointer'
+										onClick={() => togglePassenger(passengerData.passenger)}
 									>
-										<span className='-ms-1 text-gray-700'>
-											{expandedPassengers[passengerData.passenger] ? (
-												<KeyboardArrowDownIcon />
-											) : (
-												<KeyboardArrowRightIcon />
-											)}{' '}
-											{passengerData.passenger}
-										</span>
-									</td>
-								</tr>
-								{expandedPassengers[passengerData.passenger] &&
-									passengerData.pickupGroups?.map(
-										(pickupGroup, pickupIndex) => (
-											<React.Fragment key={`pickup-${pickupIndex}`}>
-												<tr
-													className='bg-gray-100 cursor-pointer'
-													onClick={() =>
-														togglePickupGroup(
-															passengerData.passenger,
-															pickupGroup.pickup
-														)
-													}
-												>
-													<td
-														colSpan='15'
-														className='border border-gray-300 px-4 py-2 font-semibold'
+										<td
+											colSpan='15'
+											className='border border-gray-300 px-4 py-2 font-semibold'
+										>
+											<span className='-ms-1 text-gray-700'>
+												{expandedPassengers[passengerData.passenger] ? (
+													<KeyboardArrowDownIcon />
+												) : (
+													<KeyboardArrowRightIcon />
+												)}{' '}
+												{passengerData.passenger}
+											</span>
+										</td>
+									</tr>
+									{expandedPassengers[passengerData.passenger] &&
+										destinationGroups?.map(
+											(destinationGroup, destinationIndex) => (
+												<React.Fragment key={`destination-${destinationIndex}`}>
+													<tr
+														className='bg-gray-100 cursor-pointer'
+														onClick={() =>
+															toggleDestinationGroup(
+																passengerData.passenger,
+																destinationGroup.destination
+															)
+														}
 													>
-														<span className='-ms-1 ml-3 text-gray-700'>
-															{expandedPickupGroups[
-																`${passengerData.passenger}-${pickupGroup.pickup}`
-															] ? (
-																<KeyboardArrowDownIcon />
-															) : (
-																<KeyboardArrowRightIcon />
-															)}{' '}
-															{pickupGroup.pickup}
-														</span>
-													</td>
-												</tr>
-												{expandedPickupGroups[
-													`${passengerData.passenger}-${pickupGroup.pickup}`
-												] &&
-													pickupGroup.destinationGroups?.map(
-														(destinationGroup, destinationIndex) => (
-															<React.Fragment
-																key={`destination-${destinationIndex}`}
-															>
-																<tr
-																	className='bg-gray-100 cursor-pointer'
-																	onClick={() =>
-																		toggleDestinationGroup(
-																			passengerData.passenger,
-																			pickupGroup.pickup,
-																			destinationGroup.destination
-																		)
-																	}
-																>
+														<td
+															colSpan='15'
+															className='border border-gray-300 px-4 py-2 font-semibold'
+														>
+															<span className='-ms-1 ml-6 text-gray-700'>
+																{expandedDestinationGroups[
+																	`${passengerData.passenger}-${destinationGroup.destination}`
+																] ? (
+																	<KeyboardArrowDownIcon />
+																) : (
+																	<KeyboardArrowRightIcon />
+																)}{' '}
+																{destinationGroup.destination}
+															</span>
+														</td>
+													</tr>
+													{expandedDestinationGroups[
+														`${passengerData.passenger}-${destinationGroup.destination}`
+													] && (
+														<>
+															{destinationGroup.jobs
+																?.slice(
+																	currentPage * itemsPerPage,
+																	(currentPage + 1) * itemsPerPage
+																)
+																?.map((booking) => (
+																	<tr
+																		key={`booking-${booking.bookingId}`}
+																		className={`${booking?.coa ? ' bg-orange-500 hover:bg-orange-400' : 'bg-white dark:bg-[#14151A] hover:bg-gray-100'} border-t`}
+																	>
+																		<td className='border border-gray-300 px-4 py-2'>
+																			{booking.bookingId}
+																		</td>
+																		<td className='border border-gray-300 px-4 py-2'>
+																			{booking.date
+																				? new Date(
+																						booking.date
+																					).toLocaleDateString('en-GB') +
+																					' ' +
+																					booking.date.split('T')[1].slice(0, 5)
+																				: 'N/A'}
+																		</td>
+																		<td className='border border-gray-300 px-4 py-2'>
+																			{booking.accNo}
+																		</td>
+																		<td className='border border-gray-300 px-4 py-2'>
+																			{booking.userId}
+																		</td>
+																		<td className='border border-gray-300 px-4 py-2'>
+																			{booking.passengers}
+																		</td>
+																		<td className='border border-gray-300 px-4 py-2'>
+																			{(booking.vias.length > 0 &&
+																				booking.vias
+																					.map((via) => via.address)
+																					.join(', ')) ||
+																				'-'}
+																		</td>
+																		<td className='border border-gray-300 px-4 py-2'>
+																			{booking?.waitingMinutes || '0'}
+																		</td>
+																		<td className='border border-gray-300 px-4 py-2'>
+																			£
+																			{booking.waitingPriceDriver?.toFixed(2) ||
+																				'0.00'}
+																		</td>
+																		<td className='border border-gray-300 px-4 py-2'>
+																			{booking.miles?.toFixed(1) || '0.0'}
+																		</td>
+																		<td className='border border-gray-300 px-4 py-2'>
+																			£{booking?.price?.toFixed(2) || '0.00'}
+																		</td>
+																		<td className='border border-gray-300 px-4 py-2'>
+																			£
+																			{booking.priceAccount?.toFixed(2) ||
+																				'0.00'}
+																		</td>
+																		<td className='border border-gray-300 px-4 py-2'>
+																			£
+																			{booking.parkingCharge?.toFixed(2) ||
+																				'0.00'}
+																		</td>
+																		<td className='border border-gray-300 px-4 py-2'>
+																			£
+																			{(
+																				Number(booking?.parkingCharge || 0) +
+																				Number(
+																					booking?.waitingPriceAccount || 0
+																				) +
+																				Number(booking.priceAccount || 0)
+																			).toFixed(2) || '0.00'}
+																		</td>
+																		<td className='border border-gray-300 px-4 py-2'>
+																			<EmailOutlined
+																				className={`${booking?.coa ? `${booking.postedForInvoicing ? 'text-red-500 dark:text-red-900' : 'text-blue-500 dark:text-white'}` : `${booking.postedForInvoicing ? 'text-red-500 dark:text-red-600' : 'text-blue-500 dark:text-cyan-400'}`} cursor-pointer `}
+																				onClick={() => handleRevert(booking)}
+																			/>
+																		</td>
+																	</tr>
+																))}
+															{destinationGroup.jobs?.length > itemsPerPage && (
+																<tr>
 																	<td
 																		colSpan='15'
-																		className='border border-gray-300 px-4 py-2 font-semibold'
+																		className='border border-gray-300 px-4 py-2'
 																	>
-																		<span className='-ms-1 ml-6 text-gray-700'>
-																			{expandedDestinationGroups[
-																				`${passengerData.passenger}-${pickupGroup.pickup}-${destinationGroup.destination}`
-																			] ? (
-																				<KeyboardArrowDownIcon />
-																			) : (
-																				<KeyboardArrowRightIcon />
-																			)}{' '}
-																			{destinationGroup.destination}
-																		</span>
+																		<div className='flex justify-end items-center gap-2'>
+																			<div>
+																				Showing {currentPage * itemsPerPage + 1}{' '}
+																				-{' '}
+																				{Math.min(
+																					(currentPage + 1) * itemsPerPage,
+																					destinationGroup.jobs.length
+																				)}{' '}
+																				of {destinationGroup.jobs.length} jobs
+																			</div>
+																			<div className='flex space-x-2'>
+																				<button
+																					onClick={(e) => {
+																						e.stopPropagation();
+																						setCurrentPage((prev) =>
+																							Math.max(prev - 1, 0)
+																						);
+																					}}
+																					disabled={currentPage === 0}
+																					className='px-1 py-1 border rounded-full disabled:opacity-50'
+																				>
+																					<KeyboardArrowLeftIcon />
+																				</button>
+																				<button
+																					onClick={(e) => {
+																						e.stopPropagation();
+																						setCurrentPage((prev) =>
+																							(prev + 1) * itemsPerPage <
+																							destinationGroup.jobs.length
+																								? prev + 1
+																								: prev
+																						);
+																					}}
+																					disabled={
+																						(currentPage + 1) * itemsPerPage >=
+																						destinationGroup.jobs.length
+																					}
+																					className='px-1 py-1 border rounded-full disabled:opacity-50'
+																				>
+																					<KeyboardArrowRightIcon />
+																				</button>
+																			</div>
+																		</div>
 																	</td>
 																</tr>
-																{expandedDestinationGroups[
-																	`${passengerData.passenger}-${pickupGroup.pickup}-${destinationGroup.destination}`
-																] && (
-																	<>
-																		{destinationGroup.jobs
-																			?.slice(
-																				currentPage * itemsPerPage,
-																				(currentPage + 1) * itemsPerPage
-																			)
-																			?.map((booking) => (
-																				<tr
-																					key={`booking-${booking.bookingId}`}
-																					className={`${booking?.coa ? ' bg-orange-500 hover:bg-orange-400' : 'bg-white dark:bg-[#14151A] hover:bg-gray-100'} border-t`}
-																				>
-																					<td className='border border-gray-300 px-4 py-2'>
-																						{booking.bookingId}
-																					</td>
-																					<td className='border border-gray-300 px-4 py-2'>
-																						{booking.date
-																							? new Date(
-																									booking.date
-																								).toLocaleDateString('en-GB') +
-																								' ' +
-																								booking.date
-																									.split('T')[1]
-																									.slice(0, 5)
-																							: 'N/A'}
-																					</td>
-																					<td className='border border-gray-300 px-4 py-2'>
-																						{booking.accNo}
-																					</td>
-																					<td className='border border-gray-300 px-4 py-2'>
-																						{booking.userId}
-																					</td>
-																					<td className='border border-gray-300 px-4 py-2'>
-																						{booking.passengers}
-																					</td>
-																					<td className='border border-gray-300 px-4 py-2'>
-																						{(booking.vias.length > 0 &&
-																							booking.vias
-																								.map((via) => via.address)
-																								.join(', ')) ||
-																							'-'}
-																					</td>
-																					<td className='border border-gray-300 px-4 py-2'>
-																						{booking?.waitingMinutes || '0'}
-																					</td>
-																					<td className='border border-gray-300 px-4 py-2'>
-																						£
-																						{booking.waitingPriceDriver?.toFixed(
-																							2
-																						) || '0.00'}
-																					</td>
-																					<td className='border border-gray-300 px-4 py-2'>
-																						{booking.miles?.toFixed(1) || '0.0'}
-																					</td>
-																					<td className='border border-gray-300 px-4 py-2'>
-																						£
-																						{booking?.price?.toFixed(2) ||
-																							'0.00'}
-																					</td>
-																					<td className='border border-gray-300 px-4 py-2'>
-																						£
-																						{booking.priceAccount?.toFixed(2) ||
-																							'0.00'}
-																					</td>
-																					<td className='border border-gray-300 px-4 py-2'>
-																						£
-																						{booking.parkingCharge?.toFixed(
-																							2
-																						) || '0.00'}
-																					</td>
-																					<td className='border border-gray-300 px-4 py-2'>
-																						£
-																						{(
-																							Number(
-																								booking?.parkingCharge || 0
-																							) +
-																							Number(
-																								booking?.waitingPriceAccount ||
-																									0
-																							) +
-																							Number(booking.priceAccount || 0)
-																						).toFixed(2) || '0.00'}
-																					</td>
-																					<td className='border border-gray-300 px-4 py-2'>
-																						<EmailOutlined
-																							className={`${booking?.coa ? `${booking.postedForInvoicing ? 'text-red-500 dark:text-red-900' : 'text-blue-500 dark:text-white'}` : `${booking.postedForInvoicing ? 'text-red-500 dark:text-red-600' : 'text-blue-500 dark:text-cyan-400'}`} cursor-pointer `}
-																							onClick={() =>
-																								handleRevert(booking)
-																							}
-																						/>
-																					</td>
-																				</tr>
-																			))}
-																		{destinationGroup.jobs?.length >
-																			itemsPerPage && (
-																			<tr>
-																				<td
-																					colSpan='15'
-																					className='border border-gray-300 px-4 py-2'
-																				>
-																					<div className='flex justify-end items-center gap-2'>
-																						<div>
-																							Showing{' '}
-																							{currentPage * itemsPerPage + 1} -{' '}
-																							{Math.min(
-																								(currentPage + 1) *
-																									itemsPerPage,
-																								destinationGroup.jobs.length
-																							)}{' '}
-																							of {destinationGroup.jobs.length}{' '}
-																							jobs
-																						</div>
-																						<div className='flex space-x-2'>
-																							<button
-																								onClick={(e) => {
-																									e.stopPropagation();
-																									setCurrentPage((prev) =>
-																										Math.max(prev - 1, 0)
-																									);
-																								}}
-																								disabled={currentPage === 0}
-																								className='px-1 py-1 border rounded-full disabled:opacity-50'
-																							>
-																								<KeyboardArrowLeftIcon />
-																							</button>
-																							<button
-																								onClick={(e) => {
-																									e.stopPropagation();
-																									setCurrentPage((prev) =>
-																										(prev + 1) * itemsPerPage <
-																										destinationGroup.jobs.length
-																											? prev + 1
-																											: prev
-																									);
-																								}}
-																								disabled={
-																									(currentPage + 1) *
-																										itemsPerPage >=
-																									destinationGroup.jobs.length
-																								}
-																								className='px-1 py-1 border rounded-full disabled:opacity-50'
-																							>
-																								<KeyboardArrowRightIcon />
-																							</button>
-																						</div>
-																					</div>
-																				</td>
-																			</tr>
-																		)}
-																	</>
-																)}
-															</React.Fragment>
-														)
+															)}
+														</>
 													)}
-											</React.Fragment>
-										)
-									)}
-							</React.Fragment>
-						))}
+												</React.Fragment>
+											)
+										)}
+								</React.Fragment>
+							);
+						})}
 				</tbody>
 			</table>
 			{priced?.length > itemsPerPagePassenger && (

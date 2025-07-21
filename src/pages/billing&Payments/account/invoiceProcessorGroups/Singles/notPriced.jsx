@@ -25,7 +25,7 @@ export default function NotPriced({ handleShow }) {
 	const { singles } = accountChargeableGroupSplitJobs;
 	const { notPriced } = singles;
 	const [expandedPassengers, setExpandedPassengers] = useState({});
-	const [expandedPickupGroups, setExpandedPickupGroups] = useState({});
+	// const [expandedPickupGroups, setExpandedPickupGroups] = useState({});
 	const [expandedDestinationGroups, setExpandedDestinationGroups] = useState(
 		{}
 	);
@@ -67,18 +67,17 @@ export default function NotPriced({ handleShow }) {
 		}));
 	};
 
-	const togglePickupGroup = (passengerId, pickup) => {
-		setExpandedPickupGroups((prev) => ({
-			...prev,
-			[`${passengerId}-${pickup}`]: !prev[`${passengerId}-${pickup}`],
-		}));
-	};
+	// const togglePickupGroup = (passengerId, pickup) => {
+	// 	setExpandedPickupGroups((prev) => ({
+	// 		...prev,
+	// 		[`${passengerId}-${pickup}`]: !prev[`${passengerId}-${pickup}`],
+	// 	}));
+	// };
 
-	const toggleDestinationGroup = (passengerId, pickup, destination) => {
+	const toggleDestinationGroup = (passengerId, destination) => {
 		setExpandedDestinationGroups((prev) => ({
 			...prev,
-			[`${passengerId}-${pickup}-${destination}`]:
-				!prev[`${passengerId}-${pickup}-${destination}`],
+			[`${passengerId}-${destination}`]: !prev[`${passengerId}-${destination}`],
 		}));
 	};
 
@@ -332,427 +331,377 @@ export default function NotPriced({ handleShow }) {
 							currentPagePassenger * itemsPerPagePassenger,
 							(currentPagePassenger + 1) * itemsPerPagePassenger
 						)
-						?.map((passengerData, passengerIndex) => (
-							<React.Fragment key={`passenger-${passengerIndex}`}>
-								<tr
-									className='bg-gray-100 cursor-pointer'
-									onClick={() => togglePassenger(passengerData.passenger)}
-								>
-									<td
-										colSpan='16'
-										className='border border-gray-300 px-4 py-2 font-semibold'
+						?.map((passengerData, passengerIndex) => {
+							const destinationGroups =
+								passengerData.pickupGroups?.flatMap((pickup) =>
+									pickup.destinationGroups?.map((group) => ({
+										...group,
+										pickup: pickup.pickup, // optional if needed
+									}))
+								) || [];
+							return (
+								<React.Fragment key={`passenger-${passengerIndex}`}>
+									<tr
+										className='bg-gray-100 cursor-pointer'
+										onClick={() => togglePassenger(passengerData.passenger)}
 									>
-										<span className='-ms-1 text-gray-700'>
-											{expandedPassengers[passengerData.passenger] ? (
-												<KeyboardArrowDownIcon />
-											) : (
-												<KeyboardArrowRightIcon />
-											)}{' '}
-											{passengerData.passenger}
-										</span>
-									</td>
-								</tr>
-								{expandedPassengers[passengerData.passenger] &&
-									passengerData.pickupGroups?.map(
-										(pickupGroup, pickupIndex) => (
-											<React.Fragment key={`pickup-${pickupIndex}`}>
-												<tr
-													className='bg-gray-100 cursor-pointer'
-													onClick={() =>
-														togglePickupGroup(
-															passengerData.passenger,
-															pickupGroup.pickup
-														)
-													}
-												>
-													<td
-														colSpan='16'
-														className='border border-gray-300 px-4 py-2 font-semibold'
+										<td
+											colSpan='16'
+											className='border border-gray-300 px-4 py-2 font-semibold'
+										>
+											<span className='-ms-1 text-gray-700'>
+												{expandedPassengers[passengerData.passenger] ? (
+													<KeyboardArrowDownIcon />
+												) : (
+													<KeyboardArrowRightIcon />
+												)}{' '}
+												{passengerData.passenger}
+											</span>
+										</td>
+									</tr>
+									{expandedPassengers[passengerData.passenger] &&
+										destinationGroups?.map(
+											(destinationGroup, destinationIndex) => (
+												<React.Fragment key={`destination-${destinationIndex}`}>
+													<tr
+														className='bg-gray-100 cursor-pointer'
+														onClick={() =>
+															toggleDestinationGroup(
+																passengerData.passenger,
+																destinationGroup.destination
+															)
+														}
 													>
-														<span className='-ms-1 ml-3 text-gray-700'>
-															{expandedPickupGroups[
-																`${passengerData.passenger}-${pickupGroup.pickup}`
-															] ? (
-																<KeyboardArrowDownIcon />
-															) : (
-																<KeyboardArrowRightIcon />
-															)}{' '}
-															{pickupGroup.pickup}
-														</span>
-													</td>
-												</tr>
-												{expandedPickupGroups[
-													`${passengerData.passenger}-${pickupGroup.pickup}`
-												] &&
-													pickupGroup.destinationGroups?.map(
-														(destinationGroup, destinationIndex) => (
-															<React.Fragment
-																key={`destination-${destinationIndex}`}
-															>
-																<tr
-																	className='bg-gray-100 cursor-pointer'
-																	onClick={() =>
-																		toggleDestinationGroup(
-																			passengerData.passenger,
-																			pickupGroup.pickup,
-																			destinationGroup.destination
-																		)
-																	}
+														<td
+															colSpan='16'
+															className='border border-gray-300 px-4 py-2 font-semibold'
+														>
+															<div className='flex justify-start items-center gap-2'>
+																<span className='-ms-1 ml-6 text-gray-700'>
+																	{expandedDestinationGroups[
+																		`${passengerData.passenger}-${destinationGroup.destination}`
+																	] ? (
+																		<KeyboardArrowDownIcon />
+																	) : (
+																		<KeyboardArrowRightIcon />
+																	)}{' '}
+																	{destinationGroup.destination}
+																</span>
+																<button
+																	className='btn btn-primary bg-green-600 flex justify-center'
+																	onClick={(e) => {
+																		e.stopPropagation();
+																		handleAllPriced(destinationGroup.jobs);
+																	}}
 																>
+																	Price All
+																</button>
+																<button
+																	className='btn btn-primary flex justify-center'
+																	onClick={(e) => {
+																		e.stopPropagation();
+																		handlePostAllPriced(destinationGroup.jobs);
+																	}}
+																>
+																	Post All Priced
+																</button>
+															</div>
+														</td>
+													</tr>
+													{expandedDestinationGroups[
+														`${passengerData.passenger}-${destinationGroup.destination}`
+													] && (
+														<>
+															{destinationGroup.jobs
+																?.slice(
+																	currentPage * itemsPerPage,
+																	(currentPage + 1) * itemsPerPage
+																)
+																?.map((booking) => (
+																	<tr
+																		key={`booking-${booking.bookingId}`}
+																		className={`${booking?.coa ? ' bg-orange-500 hover:bg-orange-400' : 'bg-white dark:bg-[#14151A] hover:bg-gray-100'} border-t`}
+																	>
+																		<td className='border border-gray-300 px-4 py-2'>
+																			{booking.bookingId}
+																		</td>
+																		<td className='border border-gray-300 px-4 py-2'>
+																			{booking.date
+																				? new Date(
+																						booking.date
+																					).toLocaleDateString('en-GB') +
+																					' ' +
+																					booking.date.split('T')[1].slice(0, 5)
+																				: 'N/A'}
+																		</td>
+																		<td className='border border-gray-300 px-4 py-2'>
+																			{booking.accNo}
+																		</td>
+																		<td className='border border-gray-300 px-4 py-2'>
+																			{booking.userId}
+																		</td>
+																		<td className='border border-gray-300 px-4 py-2'>
+																			{booking.passengers}
+																		</td>
+																		<td className='border border-gray-300 px-4 py-2'>
+																			{(booking.vias.length > 0 &&
+																				booking.vias
+																					.map((via) => via.address)
+																					.join(', ')) ||
+																				'-'}
+																		</td>
+																		<td className='border border-gray-300 px-4 py-2'>
+																			{
+																				<input
+																					type='number'
+																					className='w-20 text-center border rounded p-1 bg-inherit ring-inherit dark:bg-inherit dark:ring-inherit'
+																					name={`waitingMinutes-${booking.bookingId}`}
+																					value={
+																						bookingValues[booking.bookingId]
+																							?.waitingMinutes || 0
+																					}
+																					onChange={(e) =>
+																						handleInputChange(
+																							'waitingMinutes',
+																							booking.bookingId,
+																							e.target.value
+																						)
+																					}
+																					onBlur={(e) =>
+																						setDebouncedValue({
+																							field: 'waitingMinutes',
+																							bookingId: booking.bookingId,
+																							value: e.target.value,
+																						})
+																					}
+																					onKeyDown={(e) =>
+																						handleKeyPress(
+																							e,
+																							`price-${booking.bookingId}`
+																						)
+																					}
+																					onFocus={(e) => e.target.select()}
+																				/>
+																			}
+																		</td>
+																		<td className='border border-gray-300 px-4 py-2'>
+																			£
+																			{booking?.waitingPriceAccount?.toFixed(
+																				2
+																			) || '0.00'}
+																		</td>
+																		<td className='border border-gray-300 px-4 py-2'>
+																			{booking.miles?.toFixed(1) || '0.0'}
+																		</td>
+																		<td className='border border-gray-300 px-4 py-2'>
+																			{
+																				<input
+																					type='number'
+																					step='0.01'
+																					className='w-20 text-center border rounded p-1 bg-inherit ring-inherit dark:bg-inherit dark:ring-inherit'
+																					value={
+																						bookingValues[booking.bookingId]
+																							?.price || 0
+																					}
+																					name={`price-${booking.bookingId}`}
+																					onChange={(e) =>
+																						handleInputChange(
+																							'price',
+																							booking.bookingId,
+																							e.target.value
+																						)
+																					}
+																					onBlur={(e) =>
+																						setDebouncedValue({
+																							field: 'price',
+																							bookingId: booking.bookingId,
+																							value: e.target.value,
+																						})
+																					}
+																					onKeyDown={(e) =>
+																						handleKeyPress(
+																							e,
+																							`priceAccount-${booking.bookingId}`
+																						)
+																					}
+																					onFocus={(e) => e.target.select()}
+																				/>
+																			}
+																		</td>
+																		<td className='border border-gray-300 px-4 py-2'>
+																			<input
+																				type='number'
+																				step='0.01'
+																				className='w-20 text-center border rounded p-1 bg-inherit ring-inherit dark:bg-inherit dark:ring-inherit'
+																				name={`priceAccount-${booking.bookingId}`}
+																				value={
+																					bookingValues[booking.bookingId]
+																						?.priceAccount || 0
+																				}
+																				onChange={(e) =>
+																					handleInputChange(
+																						'priceAccount',
+																						booking.bookingId,
+																						e.target.value
+																					)
+																				}
+																				onBlur={(e) =>
+																					setDebouncedValue({
+																						field: 'priceAccount',
+																						bookingId: booking.bookingId,
+																						value: e.target.value,
+																					})
+																				}
+																				onKeyDown={(e) =>
+																					handleKeyPress(
+																						e,
+																						`parkingCharge-${booking.bookingId}`
+																					)
+																				}
+																				onFocus={(e) => e.target.select()}
+																			/>
+																		</td>
+																		<td className='border border-gray-300 px-4 py-2'>
+																			<input
+																				type='number'
+																				step='0.01'
+																				className='w-20 text-center border rounded p-1 bg-inherit ring-inherit dark:bg-inherit dark:ring-inherit'
+																				value={
+																					bookingValues[booking.bookingId]
+																						?.parkingCharge || 0
+																				}
+																				name={`parkingCharge-${booking.bookingId}`}
+																				onChange={(e) =>
+																					handleInputChange(
+																						'parkingCharge',
+																						booking.bookingId,
+																						e.target.value
+																					)
+																				}
+																				onBlur={(e) =>
+																					setDebouncedValue({
+																						field: 'parkingCharge',
+																						bookingId: booking.bookingId,
+																						value: e.target.value,
+																					})
+																				}
+																				onKeyDown={(e) =>
+																					handleKeyPress(e, null)
+																				}
+																				onFocus={(e) => e.target.select()}
+																			/>
+																		</td>
+																		<td className='border border-gray-300 px-4 py-2'>
+																			£
+																			{(
+																				Number(
+																					bookingValues[booking.bookingId]
+																						.parkingCharge || 0
+																				) +
+																				Number(
+																					booking?.waitingPriceAccount || 0
+																				) +
+																				Number(
+																					bookingValues[booking.bookingId]
+																						.priceAccount || 0
+																				)
+																			).toFixed(2)}
+																		</td>
+																		<td className='border border-gray-300 px-4 py-2'>
+																			<MoneyIcon
+																				className={`${booking?.coa ? 'text-green-600 dark:text-green-600' : 'text-green-500 dark:text-green-400'} cursor-pointer`}
+																				onClick={() => {
+																					handlePriceFromBaseButton(booking);
+																				}}
+																			/>
+																		</td>
+																		<td className='border border-gray-300 px-4 py-2'>
+																			<EmailOutlined
+																				className={`${booking?.coa ? `${booking.postedForInvoicing ? 'text-red-500 dark:text-red-900' : 'text-blue-500 dark:text-white'}` : `${booking.postedForInvoicing ? 'text-red-500 dark:text-red-600' : 'text-blue-500 dark:text-cyan-400'}`} cursor-pointer `}
+																				onClick={() => {
+																					if (
+																						bookingValues[booking.bookingId]
+																							.priceAccount === 0
+																					) {
+																						toast.error(
+																							'Journey Charge Should not be 0'
+																						); // Show error if price is 0
+																					} else {
+																						handlePostButton(booking); // Post the job if valid
+																					}
+																				}}
+																			/>
+																		</td>
+																		<td className='border border-gray-300 px-4 py-2'>
+																			<DeleteOutlinedIcon
+																				className='text-red-500 dark:text-red-600 cursor-pointer'
+																				onClick={() =>
+																					handleCancel(booking.bookingId)
+																				}
+																			/>
+																		</td>
+																	</tr>
+																))}
+															{destinationGroup.jobs?.length > itemsPerPage && (
+																<tr>
 																	<td
 																		colSpan='16'
-																		className='border border-gray-300 px-4 py-2 font-semibold'
+																		className='border border-gray-300 px-4 py-2'
 																	>
-																		<div className='flex justify-start items-center gap-2'>
-																			<span className='-ms-1 ml-6 text-gray-700'>
-																				{expandedDestinationGroups[
-																					`${passengerData.passenger}-${pickupGroup.pickup}-${destinationGroup.destination}`
-																				] ? (
-																					<KeyboardArrowDownIcon />
-																				) : (
-																					<KeyboardArrowRightIcon />
+																		<div className='flex justify-end items-center gap-2'>
+																			<div>
+																				Showing {currentPage * itemsPerPage + 1}{' '}
+																				-{' '}
+																				{Math.min(
+																					(currentPage + 1) * itemsPerPage,
+																					destinationGroup.jobs.length
 																				)}{' '}
-																				{destinationGroup.destination}
-																			</span>
-																			<button
-																				className='btn btn-primary bg-green-600 flex justify-center'
-																				onClick={(e) => {
-																					e.stopPropagation();
-																					handleAllPriced(
-																						destinationGroup.jobs
-																					);
-																				}}
-																			>
-																				Price All
-																			</button>
-																			<button
-																				className='btn btn-primary flex justify-center'
-																				onClick={(e) => {
-																					e.stopPropagation();
-																					handlePostAllPriced(
-																						destinationGroup.jobs
-																					);
-																				}}
-																			>
-																				Post All Priced
-																			</button>
+																				of {destinationGroup.jobs.length} jobs
+																			</div>
+																			<div className='flex space-x-2'>
+																				<button
+																					onClick={(e) => {
+																						e.stopPropagation();
+																						setCurrentPage((prev) =>
+																							Math.max(prev - 1, 0)
+																						);
+																					}}
+																					disabled={currentPage === 0}
+																					className='px-1 py-1 border rounded-full disabled:opacity-50'
+																				>
+																					<KeyboardArrowLeftIcon />
+																				</button>
+																				<button
+																					onClick={(e) => {
+																						e.stopPropagation();
+																						setCurrentPage((prev) =>
+																							(prev + 1) * itemsPerPage <
+																							destinationGroup.jobs.length
+																								? prev + 1
+																								: prev
+																						);
+																					}}
+																					disabled={
+																						(currentPage + 1) * itemsPerPage >=
+																						destinationGroup.jobs.length
+																					}
+																					className='px-1 py-1 border rounded-full disabled:opacity-50'
+																				>
+																					<KeyboardArrowRightIcon />
+																				</button>
+																			</div>
 																		</div>
 																	</td>
 																</tr>
-																{expandedDestinationGroups[
-																	`${passengerData.passenger}-${pickupGroup.pickup}-${destinationGroup.destination}`
-																] && (
-																	<>
-																		{destinationGroup.jobs
-																			?.slice(
-																				currentPage * itemsPerPage,
-																				(currentPage + 1) * itemsPerPage
-																			)
-																			?.map((booking) => (
-																				<tr
-																					key={`booking-${booking.bookingId}`}
-																					className={`${booking?.coa ? ' bg-orange-500 hover:bg-orange-400' : 'bg-white dark:bg-[#14151A] hover:bg-gray-100'} border-t`}
-																				>
-																					<td className='border border-gray-300 px-4 py-2'>
-																						{booking.bookingId}
-																					</td>
-																					<td className='border border-gray-300 px-4 py-2'>
-																						{booking.date
-																							? new Date(
-																									booking.date
-																								).toLocaleDateString('en-GB') +
-																								' ' +
-																								booking.date
-																									.split('T')[1]
-																									.slice(0, 5)
-																							: 'N/A'}
-																					</td>
-																					<td className='border border-gray-300 px-4 py-2'>
-																						{booking.accNo}
-																					</td>
-																					<td className='border border-gray-300 px-4 py-2'>
-																						{booking.userId}
-																					</td>
-																					<td className='border border-gray-300 px-4 py-2'>
-																						{booking.passengers}
-																					</td>
-																					<td className='border border-gray-300 px-4 py-2'>
-																						{(booking.vias.length > 0 &&
-																							booking.vias
-																								.map((via) => via.address)
-																								.join(', ')) ||
-																							'-'}
-																					</td>
-																					<td className='border border-gray-300 px-4 py-2'>
-																						{
-																							<input
-																								type='number'
-																								className='w-20 text-center border rounded p-1 bg-inherit ring-inherit dark:bg-inherit dark:ring-inherit'
-																								name={`waitingMinutes-${booking.bookingId}`}
-																								value={
-																									bookingValues[
-																										booking.bookingId
-																									]?.waitingMinutes || 0
-																								}
-																								onChange={(e) =>
-																									handleInputChange(
-																										'waitingMinutes',
-																										booking.bookingId,
-																										e.target.value
-																									)
-																								}
-																								onBlur={(e) =>
-																									setDebouncedValue({
-																										field: 'waitingMinutes',
-																										bookingId:
-																											booking.bookingId,
-																										value: e.target.value,
-																									})
-																								}
-																								onKeyDown={(e) =>
-																									handleKeyPress(
-																										e,
-																										`price-${booking.bookingId}`
-																									)
-																								}
-																								onFocus={(e) =>
-																									e.target.select()
-																								}
-																							/>
-																						}
-																					</td>
-																					<td className='border border-gray-300 px-4 py-2'>
-																						£
-																						{booking?.waitingPriceAccount?.toFixed(
-																							2
-																						) || '0.00'}
-																					</td>
-																					<td className='border border-gray-300 px-4 py-2'>
-																						{booking.miles?.toFixed(1) || '0.0'}
-																					</td>
-																					<td className='border border-gray-300 px-4 py-2'>
-																						{
-																							<input
-																								type='number'
-																								step='0.01'
-																								className='w-20 text-center border rounded p-1 bg-inherit ring-inherit dark:bg-inherit dark:ring-inherit'
-																								value={
-																									bookingValues[
-																										booking.bookingId
-																									]?.price || 0
-																								}
-																								name={`price-${booking.bookingId}`}
-																								onChange={(e) =>
-																									handleInputChange(
-																										'price',
-																										booking.bookingId,
-																										e.target.value
-																									)
-																								}
-																								onBlur={(e) =>
-																									setDebouncedValue({
-																										field: 'price',
-																										bookingId:
-																											booking.bookingId,
-																										value: e.target.value,
-																									})
-																								}
-																								onKeyDown={(e) =>
-																									handleKeyPress(
-																										e,
-																										`priceAccount-${booking.bookingId}`
-																									)
-																								}
-																								onFocus={(e) =>
-																									e.target.select()
-																								}
-																							/>
-																						}
-																					</td>
-																					<td className='border border-gray-300 px-4 py-2'>
-																						<input
-																							type='number'
-																							step='0.01'
-																							className='w-20 text-center border rounded p-1 bg-inherit ring-inherit dark:bg-inherit dark:ring-inherit'
-																							name={`priceAccount-${booking.bookingId}`}
-																							value={
-																								bookingValues[booking.bookingId]
-																									?.priceAccount || 0
-																							}
-																							onChange={(e) =>
-																								handleInputChange(
-																									'priceAccount',
-																									booking.bookingId,
-																									e.target.value
-																								)
-																							}
-																							onBlur={(e) =>
-																								setDebouncedValue({
-																									field: 'priceAccount',
-																									bookingId: booking.bookingId,
-																									value: e.target.value,
-																								})
-																							}
-																							onKeyDown={(e) =>
-																								handleKeyPress(
-																									e,
-																									`parkingCharge-${booking.bookingId}`
-																								)
-																							}
-																							onFocus={(e) => e.target.select()}
-																						/>
-																					</td>
-																					<td className='border border-gray-300 px-4 py-2'>
-																						<input
-																							type='number'
-																							step='0.01'
-																							className='w-20 text-center border rounded p-1 bg-inherit ring-inherit dark:bg-inherit dark:ring-inherit'
-																							value={
-																								bookingValues[booking.bookingId]
-																									?.parkingCharge || 0
-																							}
-																							name={`parkingCharge-${booking.bookingId}`}
-																							onChange={(e) =>
-																								handleInputChange(
-																									'parkingCharge',
-																									booking.bookingId,
-																									e.target.value
-																								)
-																							}
-																							onBlur={(e) =>
-																								setDebouncedValue({
-																									field: 'parkingCharge',
-																									bookingId: booking.bookingId,
-																									value: e.target.value,
-																								})
-																							}
-																							onKeyDown={(e) =>
-																								handleKeyPress(e, null)
-																							}
-																							onFocus={(e) => e.target.select()}
-																						/>
-																					</td>
-																					<td className='border border-gray-300 px-4 py-2'>
-																						£
-																						{(
-																							Number(
-																								bookingValues[booking.bookingId]
-																									.parkingCharge || 0
-																							) +
-																							Number(
-																								booking?.waitingPriceAccount ||
-																									0
-																							) +
-																							Number(
-																								bookingValues[booking.bookingId]
-																									.priceAccount || 0
-																							)
-																						).toFixed(2)}
-																					</td>
-																					<td className='border border-gray-300 px-4 py-2'>
-																						<MoneyIcon
-																							className={`${booking?.coa ? 'text-green-600 dark:text-green-600' : 'text-green-500 dark:text-green-400'} cursor-pointer`}
-																							onClick={() => {
-																								handlePriceFromBaseButton(
-																									booking
-																								);
-																							}}
-																						/>
-																					</td>
-																					<td className='border border-gray-300 px-4 py-2'>
-																						<EmailOutlined
-																							className={`${booking?.coa ? `${booking.postedForInvoicing ? 'text-red-500 dark:text-red-900' : 'text-blue-500 dark:text-white'}` : `${booking.postedForInvoicing ? 'text-red-500 dark:text-red-600' : 'text-blue-500 dark:text-cyan-400'}`} cursor-pointer `}
-																							onClick={() => {
-																								if (
-																									bookingValues[
-																										booking.bookingId
-																									].priceAccount === 0
-																								) {
-																									toast.error(
-																										'Journey Charge Should not be 0'
-																									); // Show error if price is 0
-																								} else {
-																									handlePostButton(booking); // Post the job if valid
-																								}
-																							}}
-																						/>
-																					</td>
-																					<td className='border border-gray-300 px-4 py-2'>
-																						<DeleteOutlinedIcon
-																							className='text-red-500 dark:text-red-600 cursor-pointer'
-																							onClick={() =>
-																								handleCancel(booking.bookingId)
-																							}
-																						/>
-																					</td>
-																				</tr>
-																			))}
-																		{destinationGroup.jobs?.length >
-																			itemsPerPage && (
-																			<tr>
-																				<td
-																					colSpan='16'
-																					className='border border-gray-300 px-4 py-2'
-																				>
-																					<div className='flex justify-end items-center gap-2'>
-																						<div>
-																							Showing{' '}
-																							{currentPage * itemsPerPage + 1} -{' '}
-																							{Math.min(
-																								(currentPage + 1) *
-																									itemsPerPage,
-																								destinationGroup.jobs.length
-																							)}{' '}
-																							of {destinationGroup.jobs.length}{' '}
-																							jobs
-																						</div>
-																						<div className='flex space-x-2'>
-																							<button
-																								onClick={(e) => {
-																									e.stopPropagation();
-																									setCurrentPage((prev) =>
-																										Math.max(prev - 1, 0)
-																									);
-																								}}
-																								disabled={currentPage === 0}
-																								className='px-1 py-1 border rounded-full disabled:opacity-50'
-																							>
-																								<KeyboardArrowLeftIcon />
-																							</button>
-																							<button
-																								onClick={(e) => {
-																									e.stopPropagation();
-																									setCurrentPage((prev) =>
-																										(prev + 1) * itemsPerPage <
-																										destinationGroup.jobs.length
-																											? prev + 1
-																											: prev
-																									);
-																								}}
-																								disabled={
-																									(currentPage + 1) *
-																										itemsPerPage >=
-																									destinationGroup.jobs.length
-																								}
-																								className='px-1 py-1 border rounded-full disabled:opacity-50'
-																							>
-																								<KeyboardArrowRightIcon />
-																							</button>
-																						</div>
-																					</div>
-																				</td>
-																			</tr>
-																		)}
-																	</>
-																)}
-															</React.Fragment>
-														)
+															)}
+														</>
 													)}
-											</React.Fragment>
-										)
-									)}
-							</React.Fragment>
-						))}
+												</React.Fragment>
+											)
+										)}
+								</React.Fragment>
+							);
+						})}
 				</tbody>
 			</table>
 			{notPriced?.length > itemsPerPagePassenger && (
