@@ -16,6 +16,7 @@ import { AddAccounts } from '../addAccounts';
 import { EditAccounts } from '../editAccounts';
 import { DeleteAccounts } from '../deleteAccounts';
 import { refreshAllAccounts, setAccount } from '../../../slices/accountSlice';
+import { refreshAllAccountTariffs } from '../../../slices/tariffsSlice';
 function ListAccounts() {
 	const dispatch = useDispatch();
 	const [searchInput, setSearchInput] = useState('');
@@ -35,6 +36,7 @@ function ListAccounts() {
 
 	useEffect(() => {
 		dispatch(refreshAllAccounts());
+		dispatch(refreshAllAccountTariffs());
 	}, [dispatch]);
 
 	const ColumnInputFilter = ({ column }) => {

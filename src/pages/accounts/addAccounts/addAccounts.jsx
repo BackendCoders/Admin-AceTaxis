@@ -7,20 +7,21 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from '@/components/ui/dialog';
-// import {
-// 	Select,
-// 	SelectContent,
-// 	SelectItem,
-// 	SelectTrigger,
-// 	SelectValue,
-// } from '@/components/ui/select';
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from '@/components/ui/select';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import clsx from 'clsx';
 import { createAccounts } from '../../../service/operations/accountApi';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { refreshAllAccounts } from '../../../slices/accountSlice';
 function AddAccounts({ open, onOpenChange }) {
+	const { accountTariffs } = useSelector((state) => state.tariff);
 	const dispatch = useDispatch();
 	const addLocalSchema = Yup.object().shape({
 		contactName: Yup.string().required('Contact Name is required'),
@@ -45,6 +46,7 @@ function AddAccounts({ open, onOpenChange }) {
 		bookerName: '',
 		purchaseOrderNo: '',
 		reference: '',
+		accountTariffId: 0,
 	};
 
 	const formik = useFormik({
@@ -342,6 +344,41 @@ function AddAccounts({ open, onOpenChange }) {
 								)}
 							</div>
 							<div className='flex flex-col gap-1 pb-2 w-full'>
+								<label className='form-label text-gray-900'>
+									Account Tariff
+								</label>
+
+								<Select
+									value={formik.values.accountTariffId}
+									onValueChange={(value) =>
+										formik.setFieldValue('accountTariffId', Number(value))
+									}
+								>
+									<SelectTrigger className=' w-56'>
+										<SelectValue placeholder='Select' />
+									</SelectTrigger>
+									<SelectContent>
+										<SelectItem value={0}>Not Set</SelectItem>
+										{accountTariffs.map((acc) => (
+											<>
+												<SelectItem value={acc.id}>{acc?.name}</SelectItem>
+											</>
+										))}
+									</SelectContent>
+								</Select>
+								{formik.touched.accountTariffId &&
+									formik.errors.accountTariffId && (
+										<span
+											role='alert'
+											className='text-danger text-xs mt-1'
+										>
+											{formik.errors.accountTariffId}
+										</span>
+									)}
+							</div>
+						</div>
+						<div className='w-full flex justify-center items-center gap-2'>
+							<div className='flex flex-col gap-1 pb-2 w-full'>
 								<label className='form-label text-gray-900'>PO Number</label>
 								<label className='input'>
 									<input
@@ -366,29 +403,28 @@ function AddAccounts({ open, onOpenChange }) {
 										</span>
 									)}
 							</div>
-						</div>
-
-						<div className='flex flex-col gap-1 pb-2 w-full'>
-							<label className='form-label text-gray-900'>Reference</label>
-							<label className='input'>
-								<input
-									placeholder='Enter reference'
-									autoComplete='off'
-									{...formik.getFieldProps('reference')}
-									className={clsx('form-control', {
-										'is-invalid':
-											formik.touched.reference && formik.errors.reference,
-									})}
-								/>
-							</label>
-							{formik.touched.reference && formik.errors.reference && (
-								<span
-									role='alert'
-									className='text-danger text-xs mt-1'
-								>
-									{formik.errors.reference}
-								</span>
-							)}
+							<div className='flex flex-col gap-1 pb-2 w-full'>
+								<label className='form-label text-gray-900'>Reference</label>
+								<label className='input'>
+									<input
+										placeholder='Enter reference'
+										autoComplete='off'
+										{...formik.getFieldProps('reference')}
+										className={clsx('form-control', {
+											'is-invalid':
+												formik.touched.reference && formik.errors.reference,
+										})}
+									/>
+								</label>
+								{formik.touched.reference && formik.errors.reference && (
+									<span
+										role='alert'
+										className='text-danger text-xs mt-1'
+									>
+										{formik.errors.reference}
+									</span>
+								)}
+							</div>
 						</div>
 
 						<div className='flex justify-end mb-2 mt-2'>
