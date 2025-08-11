@@ -106,6 +106,25 @@ const SelectedAvailabilityTable = ({ selectedDriver, selectedDate }) => {
 				meta: { headerClassName: 'min-w-[200px] text-center' },
 			},
 			{
+				accessorKey: 'date',
+				header: ({ column }) => (
+					<DataGridColumnHeader
+						title=<span className='font-bold'>Date</span>
+						column={column}
+						className={` justify-center`}
+					/>
+				),
+				enableSorting: true,
+				cell: ({ row }) => (
+					<div className={`p-2 rounded-md text-center text-gray-700`}>
+						{row.original.date
+							? new Date(row.original.date).toLocaleDateString('en-GB')
+							: '-'}
+					</div>
+				),
+				meta: { headerClassName: 'min-w-[180px] text-center' },
+			},
+			{
 				accessorKey: 'availableHours',
 				header: ({ column }) => (
 					<DataGridColumnHeader

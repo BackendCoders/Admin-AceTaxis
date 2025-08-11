@@ -12,6 +12,8 @@ const {
 	UPDATE_MSG_CONFIG,
 	GET_TARIFF_CONFIG,
 	SET_TARIFF_CONFIG,
+	GET_ACCOUNT_TARIFFS,
+	UPDATE_ACCOUNT_TARIFFS,
 } = settingsEndpoints;
 
 export async function getMsgConfig() {
@@ -121,6 +123,44 @@ export async function setTariffConfig(data) {
 		// 	{
 		// 		url: SET_TARIFF_CONFIG,
 		// 		reqBody: data,
+		// 		headers: setHeaders(),
+		// 		response: response,
+		// 	},
+		// 	'info'
+		// );
+		return response;
+	}
+}
+
+export async function getAccountTariffs() {
+	const response = await handleGetReq(GET_ACCOUNT_TARIFFS);
+
+	console.log('GET ACCOUNT TARIFF API RESPONSE.........', response);
+
+	if (response.status === 'success') {
+		// sendLogs(
+		// 	{
+		// 		url: GET_TARIFF_CONFIG,
+		// 		reqBody: null,
+		// 		headers: setHeaders(),
+		// 		response: response,
+		// 	},
+		// 	'info'
+		// );
+		return response;
+	}
+}
+
+export async function updateAccountTariffs(data) {
+	const response = await handlePostReq(UPDATE_ACCOUNT_TARIFFS, data);
+
+	console.log('UPDATE ACCOUNT TARIFF API RESPONSE.........', response);
+
+	if (response.status === 'success') {
+		// sendLogs(
+		// 	{
+		// 		url: GET_TARIFF_CONFIG,
+		// 		reqBody: null,
 		// 		headers: setHeaders(),
 		// 		response: response,
 		// 	},

@@ -13,6 +13,7 @@ import notificationReducer from '../slices/notificationSlice';
 import driverReducer from '../slices/driverSlice';
 import billingReducer from '../slices/billingSlice';
 import reportReducer from '../slices/reportSlice';
+import tariffReducer from '../slices/tariffsSlice';
 
 const rootReducer = combineReducers({
 	auth: authReducer,
@@ -26,6 +27,7 @@ const rootReducer = combineReducers({
 	driver: driverReducer,
 	billing: billingReducer,
 	reports: reportReducer,
+	tariff: tariffReducer,
 });
 
 export default rootReducer;

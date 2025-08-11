@@ -58,6 +58,7 @@ import {
 	TotalProfitabilityByPeriod,
 } from '../pages/reports';
 import { HvsAccountChanges } from '@/pages/bookingUtilities';
+import { ListAccountTariffs } from '@/pages/accountTariffs';
 
 const AppRoutingSetup = () => {
 	const userRole = JSON.parse(localStorage.getItem('userData'))?.roleId || 0;
@@ -250,6 +251,12 @@ const AppRoutingSetup = () => {
 						<Route
 							path='/tariffs'
 							element={<Tariff />}
+						/>
+					)}
+					{userRole !== 2 && (
+						<Route
+							path='/accountTariffs'
+							element={<ListAccountTariffs />}
 						/>
 					)}
 					{userRole !== 2 && (
