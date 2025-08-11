@@ -250,6 +250,7 @@ export default function NotPriced({ handleShow }) {
 				pickupDateTime: firstJob.date,
 				passengers: firstJob.passengers,
 				priceFromBase: true,
+				accountNo: firstJob.accNo || 0,
 				bookingId: 999999,
 				actionByUserId: userData?.userId || 0,
 				updatedByName: userData?.fullName || '',
