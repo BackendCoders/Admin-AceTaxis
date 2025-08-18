@@ -954,6 +954,7 @@ function StateProcessing() {
 				driverChargeableJobs.priced.length === 0
 			) {
 				toast.info('No jobs available to post.');
+				setProcessLoading(false);
 				return;
 			}
 			// API expects { jobs: [...] }, so we wrap the array inside an object
