@@ -138,25 +138,29 @@ function RowNotPriced({
 				passengers: booking?.passengers || 0,
 				priceFromBase: true, // Use form value
 				accountNo: booking?.accNo || 0,
-				bookingId: booking?.bookingId || 0,
-				actionByUserId: userData?.userId || 0,
-				updatedByName: userData?.fullName || '', // Change as needed
-				price: booking?.price || 0,
-				priceAccount: booking?.priceAccount || 0,
-				mileage: booking?.miles || 0,
-				mileageText: `${booking?.miles || 0} miles`, // Convert miles to string
-				durationText: '', // No duration available in provided object
+				// bookingId: booking?.bookingId || 0,
+				// actionByUserId: userData?.userId || 0,
+				// updatedByName: userData?.fullName || '', // Change as needed
+				// price: booking?.price || 0,
+				// priceAccount: booking?.priceAccount || 0,
+				// mileage: booking?.miles || 0,
+				// mileageText: `${booking?.miles || 0} miles`, // Convert miles to string
+				// durationText: '', // No duration available in provided object
 			};
-			let response;
-			if (booking?.accNo === 10026 || booking?.accNo === 9014) {
-				response = await accountPriceJobHVS(payload);
-			} else {
-				response = await accountPriceJobByMileage(payload);
-			}
+			// let response;
+			// if (booking?.accNo === 10026 || booking?.accNo === 9014) {
+			// 	response = await accountPriceJobHVS(payload);
+			// } else {
+			// 	response = await accountPriceJobByMileage(payload);
+			// }
+			const response = await accountPriceJobHVS(payload);
 			// console.log('Response:', response);
 			if (response.status === 'success') {
-				handleShow();
 				toast.success('Price Updated');
+				// handleShow();
+				setJourneyCharge(response.priceAccount);
+				setDriverFare(response.priceDriver);
+				updateCharges(response.priceAccount, response.priceDriver);
 			} else {
 				toast.error('Failed to Update Price');
 			}
@@ -194,14 +198,14 @@ function RowNotPriced({
 		}
 	};
 
-	const updateCharges = async () => {
+	const updateCharges = async (journeyOverride, fareOverride) => {
 		try {
 			const payload = {
 				bookingId: row?.id || 0,
 				waitingMinutes: waiting || 0,
 				parkingCharge: parking || 0,
-				priceAccount: journeyCharge || 0,
-				price: driverFare || 0,
+				priceAccount: (journeyOverride ?? journeyCharge) || 0,
+				price: (fareOverride ?? driverFare) || 0,
 			};
 
 			const response = await accountUpdateChargesData(payload);
@@ -314,7 +318,7 @@ function RowNotPriced({
 					<input
 						type='number'
 						step='0.01'
-						className={`w-20 text-center border rounded p-1 ring-inherit ${driverFare > journeyCharge ? "bg-[#ff000052]" : "bg-inherit dark:bg-inherit"}  dark:ring-inherit`}
+						className={`w-20 text-center border rounded p-1 ring-inherit ${driverFare > journeyCharge ? 'bg-[#ff000052]' : 'bg-inherit dark:bg-inherit'}  dark:ring-inherit`}
 						value={driverFare}
 						name={`driverFare-${row.id}`}
 						onChange={(e) => handleInputChange('driverFare', +e.target.value)}

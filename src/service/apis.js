@@ -105,7 +105,7 @@ export const billingAndPaymentEndpoints = {
 		`${BASE}/api/Accounts/MarkStatementAsPaid?statementNo=${statementNo}`,
 	ACCOUNT_PRICE_MANUALLY: `${BASE}/api/Accounts/AccountPriceManually`,
 	ACCOUNT_PRICE_JOB_BY_MILEAGE: `${BASE}/api/Accounts/AccountPriceJobByMileage`,
-	ACCOUNT_PRICE_JOB_HVS: `${BASE}/api/Accounts/AccountPriceJobHVS`,
+	ACCOUNT_PRICE_JOB_HVS: `${BASE}/api/Bookings/GetPrice`, // /api/Accounts/AccountPriceJobHVS this api is replaced
 	ACCOUNT_PRICE_JOB_HVS_BULK: `${BASE}/api/Accounts/PriceBulk`, // /api/Accounts/AccountPriceJobHVSBulk this api is replaced
 	ACCOUNT_POST_OR_UNPOST_JOBS: (postJob) =>
 		`${BASE}/api/Accounts/AccountPostOrUnPostJobs?postJob=${postJob}`,
