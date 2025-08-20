@@ -141,7 +141,7 @@ function RowNotPriced({
 				toast.success('Price Updated');
 				// handleShow();
 				setDriverFare(response.priceDriver);
-				updateCharges();
+				updateCharges(response.priceDriver);
 			} else {
 				toast.error('Failed to Update Price');
 			}
@@ -188,26 +188,29 @@ function RowNotPriced({
 		}
 	};
 
-	const updateCharges = useCallback(async () => {
-		try {
-			const payload = {
-				bookingId: row?.id || 0,
-				waitingMinutes: waiting || 0,
-				parkingCharge: parking || 0,
-				priceAccount: 0,
-				price: driverFare || 0,
-			};
+	const updateCharges = useCallback(
+		async (fareOverride) => {
+			try {
+				const payload = {
+					bookingId: row?.id || 0,
+					waitingMinutes: waiting || 0,
+					parkingCharge: parking || 0,
+					priceAccount: 0,
+					price: (fareOverride ?? driverFare) || 0,
+				};
 
-			const response = await driverUpdateChargesData(payload);
+				const response = await driverUpdateChargesData(payload);
 
-			if (response?.status === 'success') {
-				toast.success('Value Updated');
-				handleShow(); // Refresh the data after updating
+				if (response?.status === 'success') {
+					toast.success('Value Updated');
+					handleShow(); // Refresh the data after updating
+				}
+			} catch (error) {
+				console.error('Error updating charges:', error);
 			}
-		} catch (error) {
-			console.error('Error updating charges:', error);
-		}
-	}, [driverFare, handleShow, parking, row?.id, waiting]);
+		},
+		[driverFare, handleShow, parking, row?.id, waiting]
+	);
 
 	useEffect(() => {
 		if (!debouncedValue) return;
