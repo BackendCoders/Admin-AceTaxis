@@ -314,7 +314,7 @@ function RowNotPriced({
 					<input
 						type='number'
 						step='0.01'
-						className='w-20 text-center border rounded p-1 bg-inherit ring-inherit dark:bg-inherit dark:ring-inherit'
+						className={`w-20 text-center border rounded p-1 ring-inherit ${driverFare > journeyCharge ? "bg-[#ff000052]" : "bg-inherit dark:bg-inherit"}  dark:ring-inherit`}
 						value={driverFare}
 						name={`driverFare-${row.id}`}
 						onChange={(e) => handleInputChange('driverFare', +e.target.value)}
