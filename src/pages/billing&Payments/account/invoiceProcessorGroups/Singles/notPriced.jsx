@@ -521,13 +521,13 @@ export default function NotPriced({ handleShow }) {
 																			{booking.miles?.toFixed(1) || '0.0'}
 																		</td>
 																		<td
-																			className={`border border-gray-300 px-4 py-2 ${booking.price > booking.priceAccount ? 'text-red-600' : ''}`}
+																			className={`border border-gray-300 px-4 py-2`}
 																		>
 																			{
 																				<input
 																					type='number'
 																					step='0.01'
-																					className='w-20 text-center border rounded p-1 bg-inherit ring-inherit dark:bg-inherit dark:ring-inherit'
+																					className={`w-20 text-center border rounded p-1 ${booking.price > booking.priceAccount ? 'bg-[#ff000052]' : 'bg-inherit'} ring-inherit dark:ring-inherit`}
 																					value={
 																						bookingValues[booking.bookingId]
 																							?.price || 0
