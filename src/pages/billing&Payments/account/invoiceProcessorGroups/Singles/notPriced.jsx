@@ -10,7 +10,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import {
 	accountDriverPostOrUnpostJobs,
-	accountPriceJobByMileage,
+	// accountPriceJobByMileage,
 	accountPriceJobHVS,
 	accountPriceJobHVSBulk,
 	accountUpdateChargesData,
@@ -93,25 +93,38 @@ export default function NotPriced({ handleShow }) {
 				pickupDateTime: booking?.date || new Date().toISOString(), // Use booking date if available
 				passengers: booking?.passengers || 0,
 				priceFromBase: true, // Use form value
-				bookingId: booking?.bookingId || 0,
-				actionByUserId: userData?.userId || 0,
-				updatedByName: userData?.fullName || '', // Change as needed
-				price: booking?.price || 0,
-				priceAccount: booking?.priceAccount || 0,
-				mileage: booking?.miles || 0,
-				mileageText: `${booking?.miles || 0} miles`, // Convert miles to string
-				durationText: '', // No duration available in provided object
+				accountNo: booking?.accNo || 0,
+				// bookingId: booking?.bookingId || 0,
+				// actionByUserId: userData?.userId || 0,
+				// updatedByName: userData?.fullName || '', // Change as needed
+				// price: booking?.price || 0,
+				// priceAccount: booking?.priceAccount || 0,
+				// mileage: booking?.miles || 0,
+				// mileageText: `${booking?.miles || 0} miles`, // Convert miles to string
+				// durationText: '', // No duration available in provided object
 			};
-			let response;
-			if (booking?.accNo === 10026 || booking?.accNo === 9014) {
-				response = await accountPriceJobHVS(payload);
-			} else {
-				response = await accountPriceJobByMileage(payload);
-			}
+
+			const response = await accountPriceJobHVS(payload);
+
 			// console.log('Response:', response);
 			if (response.status === 'success') {
-				handleShow();
+				// handleShow();
 				toast.success('Price Updated');
+				setBookingValues((prev) => ({
+					...prev,
+					[booking.bookingId]: {
+						...prev[booking.bookingId],
+						price: response.priceDriver,
+						priceAccount: response.priceAccount,
+					},
+				}));
+
+				// 🔹 Call updateCharges with overridden values
+				await updateCharges(
+					booking.bookingId,
+					response.priceDriver,
+					response.priceAccount
+				);
 			} else {
 				toast.error('Failed to Update Price');
 			}
@@ -133,14 +146,21 @@ export default function NotPriced({ handleShow }) {
 		}
 	};
 
-	const updateCharges = async (bookingId) => {
+	const updateCharges = async (
+		bookingId,
+		priceOverride,
+		priceAccountOverride
+	) => {
 		try {
 			const payload = {
 				bookingId: bookingId || 0,
 				waitingMinutes: Number(bookingValues[bookingId]?.waitingMinutes) || 0,
 				parkingCharge: Number(bookingValues[bookingId]?.parkingCharge) || 0,
-				priceAccount: Number(bookingValues[bookingId]?.priceAccount) || 0,
-				price: Number(bookingValues[bookingId]?.price) || 0,
+				priceAccount:
+					(priceAccountOverride ??
+						Number(bookingValues[bookingId]?.priceAccount)) ||
+					0,
+				price: (priceOverride ?? Number(bookingValues[bookingId]?.price)) || 0,
 			};
 
 			const response = await accountUpdateChargesData(payload);
