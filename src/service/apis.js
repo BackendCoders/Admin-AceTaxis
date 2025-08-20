@@ -90,7 +90,7 @@ export const settingsEndpoints = {
 
 export const billingAndPaymentEndpoints = {
 	GET_VATOUTPUTS: `${BASE}/api/Accounts/VATOutputs`,
-	DRIVER_PRICE_JOB_BY_MILEAGE: `${BASE}/api/Accounts/DriverPriceJobByMileage`,
+	DRIVER_PRICE_JOB_BY_MILEAGE: `${BASE}/api/Bookings/GetPrice`, // i need to replace this Api with getPrices /api/Accounts/DriverPriceJobByMileage
 	DRIVER_POST_OR_UNPOST_JOBS: (postJob) =>
 		`${BASE}/api/Accounts/DriverPostOrUnPostJobs?postJob=${postJob}`,
 	DRIVER_GET_CHARGEABLE_JOBS: (userId, scope, lastDate) =>

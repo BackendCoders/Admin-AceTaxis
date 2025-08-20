@@ -1,5 +1,5 @@
 /** @format */
-import { useState, Fragment, useEffect, useRef } from 'react';
+import { useState, Fragment, useEffect, useRef, useCallback } from 'react';
 import {
 	Box,
 	Collapse,
@@ -127,19 +127,21 @@ function RowNotPriced({
 				passengers: booking?.passengers || 0,
 				priceFromBase: true, // Use form value
 				accountNo: booking?.accNo || 0,
-				bookingId: booking?.bookingId || 0,
-				actionByUserId: userData?.userId || 0,
-				updatedByName: userData?.fullName || '', // Change as needed
-				price: booking?.price || 0,
-				priceAccount: booking?.priceAccount || 0,
-				mileage: booking?.miles || 0,
-				mileageText: `${booking?.miles || 0} miles`, // Convert miles to string
-				durationText: '', // No duration available in provided object
+				// bookingId: booking?.bookingId || 0,
+				// actionByUserId: userData?.userId || 0,
+				// updatedByName: userData?.fullName || '', // Change as needed
+				// price: booking?.price || 0,
+				// priceAccount: booking?.priceAccount || 0,
+				// mileage: booking?.miles || 0,
+				// mileageText: `${booking?.miles || 0} miles`, // Convert miles to string
+				// durationText: '', // No duration available in provided object
 			};
 			const response = await driverPriceJobByMileage(payload);
 			if (response.status === 'success') {
 				toast.success('Price Updated');
-				handleShow();
+				// handleShow();
+				setDriverFare(response.priceDriver);
+				updateCharges();
 			} else {
 				toast.error('Failed to Update Price');
 			}
@@ -171,16 +173,6 @@ function RowNotPriced({
 		// setDebouncedValue({ field, value: newValue });
 	};
 
-	useEffect(() => {
-		if (!debouncedValue) return;
-
-		const timer = setTimeout(() => {
-			updateCharges();
-		}, 500); // Delay of 500ms
-
-		return () => clearTimeout(timer);
-	}, [debouncedValue]);
-
 	const handleKeyPress = (event, nextField) => {
 		if (event.key === 'Enter') {
 			event.preventDefault(); // Prevent form submission
@@ -196,7 +188,7 @@ function RowNotPriced({
 		}
 	};
 
-	const updateCharges = async () => {
+	const updateCharges = useCallback(async () => {
 		try {
 			const payload = {
 				bookingId: row?.id || 0,
@@ -215,7 +207,17 @@ function RowNotPriced({
 		} catch (error) {
 			console.error('Error updating charges:', error);
 		}
-	};
+	}, [driverFare, handleShow, parking, row?.id, waiting]);
+
+	useEffect(() => {
+		if (!debouncedValue) return;
+
+		const timer = setTimeout(() => {
+			updateCharges();
+		}, 500); // Delay of 500ms
+
+		return () => clearTimeout(timer);
+	}, [debouncedValue, updateCharges]);
 
 	return (
 		<>
