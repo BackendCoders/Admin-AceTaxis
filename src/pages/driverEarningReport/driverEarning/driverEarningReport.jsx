@@ -44,7 +44,7 @@ function DriverEarningReport() {
 	});
 	const { drivers } = useSelector((state) => state.driver);
 	const colors = ['var(--tw-primary)', 'var(--tw-success)', 'var(--tw-info)'];
-	const [driverNumber, setDriverNumber] = useState();
+	const [driverNumber, setDriverNumber] = useState(0);
 	const [earningData, setEarningData] = useState([]);
 	const [open, setOpen] = useState(false);
 	const [date, setDate] = useState({
@@ -371,6 +371,7 @@ function DriverEarningReport() {
 													<SelectValue placeholder='Select' />
 												</SelectTrigger>
 												<SelectContent className='w-36'>
+													<SelectItem value={0}>All</SelectItem>
 													{drivers?.length > 0 &&
 														drivers?.map((driver) => (
 															<>

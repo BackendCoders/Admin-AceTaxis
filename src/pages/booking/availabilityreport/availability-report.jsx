@@ -664,7 +664,7 @@ const AvailabilityReport = () => {
 														: ''}
 											</span>
 											<div className='flex items-center gap-1'>
-												<span>£{formatedTotalsByTab.toFixed(2)}</span>
+												<span>{formatedTotalsByTab.toFixed(2)}</span>
 											</div>
 										</div>
 									</div>
