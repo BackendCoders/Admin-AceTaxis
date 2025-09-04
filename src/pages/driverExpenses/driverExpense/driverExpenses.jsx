@@ -232,6 +232,11 @@ const DriverExpenses = () => {
 		}));
 	}, [data]);
 
+	const netTotal = useMemo(
+		() => totalByCategory.reduce((sum, { total }) => sum + total, 0),
+		[totalByCategory]
+	);
+
 	return (
 		<Fragment>
 			<div className='pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1850px] w-full'>
@@ -385,6 +390,16 @@ const DriverExpenses = () => {
 														</div>
 													);
 												})}
+										</div>
+										<div className='flex justify-end gap-6 dark:bg-[#14151A] font-semibold p-3 mt-2'>
+											<div className='flex gap-2'>
+												<span className=' font-medium text-gray-600'>
+													Net Total :
+												</span>
+												<span className=' font-bold text-gray-800'>
+													£ {netTotal?.toFixed(2)}
+												</span>
+											</div>
 										</div>
 									</>
 								) : (
