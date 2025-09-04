@@ -390,8 +390,6 @@ const DriverExpenses = () => {
 														</div>
 													);
 												})}
-										</div>
-										<div className='flex justify-end gap-6 dark:bg-[#14151A] font-semibold p-3 mt-2'>
 											<div className='flex gap-2'>
 												<span className=' font-medium text-gray-600'>
 													Net Total :
