@@ -47,7 +47,7 @@ function RejectWebBooking({ open, onOpenChange }) {
 			};
 			const response = await rejectWebBookings(payload);
 			if (response.status === 'success') {
-				toast.success('Booking accepted Successfully');
+				toast.success('Booking rejected Successfully');
 				await dispatch(refreshWebBookings());
 				setSubmitting(false);
 				onOpenChange(); // Reset Formik's submitting state
