@@ -240,7 +240,7 @@ function NewBooking() {
 	const [open, setOpen] = useState(false);
 	const { webBookings } = useSelector((state) => state.webBooking);
 	const [order, setOrder] = useState('asc'); // Sort order
-	const [orderBy, setOrderBy] = useState(''); // Default sorted column
+	const [orderBy, setOrderBy] = useState('pickUpDateTime'); // Default sorted column
 	const [page, setPage] = useState(0);
 	const [rowPerPage, setRowPerPage] = useState(10);
 
