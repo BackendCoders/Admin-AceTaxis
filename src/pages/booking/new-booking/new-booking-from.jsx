@@ -180,7 +180,8 @@ function Row({ row, setAcceptModal, setRejectModal, dispatch }) {
 							</Typography>
 							<Box
 								display='flex'
-								justifyContent='space-between'
+								justifyContent='space-start'
+								gap='12rem'
 							>
 								<Box>
 									<Typography variant='body2'>
@@ -189,6 +190,8 @@ function Row({ row, setAcceptModal, setRejectModal, dispatch }) {
 									<Typography variant='body2'>
 										<strong>Details:</strong> {row.details}
 									</Typography>
+								</Box>
+								<Box>
 									<Typography variant='body2'>
 										<strong>Passengers:</strong> {row.passengers}
 									</Typography>
@@ -203,6 +206,8 @@ function Row({ row, setAcceptModal, setRejectModal, dispatch }) {
 									<Typography variant='body2'>
 										<strong>Email:</strong> {row.email}
 									</Typography>
+								</Box>
+								<Box>
 									<Typography variant='body2'>
 										<strong>Luggage:</strong> {row.luggage}
 									</Typography>
