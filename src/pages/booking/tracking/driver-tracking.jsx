@@ -310,7 +310,7 @@ const DriverTracking = () => {
 					>
 						<Typography
 							variant='caption'
-							className='text-gray-800 font-semibold'
+							className='text-gray-800 font-semibold whitespace-nowrap'
 						>
 							🔍 Press <strong>F12</strong> to view the map in fullscreen mode.
 						</Typography>
@@ -318,7 +318,7 @@ const DriverTracking = () => {
 				</Box>
 				{/* Updated Table section design */}
 				<Box
-					className='rounded-lg'
+					className='rounded-lg mt-6'
 					style={{ flex: '43%' }}
 				>
 					<div className='card card-grid min-w-full'>

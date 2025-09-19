@@ -201,9 +201,9 @@ const AvailabilityLogs = () => {
 				<div className='flex flex-col items-stretch gap-5 lg:gap-7.5'>
 					<div className='flex flex-wrap items-center gap-5 justify-between'>
 						<div className='card card-grid min-w-full'>
-							<div className='card-header flex-wrap gap-2'>
+							<div className='card-header flex flex-wrap gap-2'>
 								<div className='flex flex-wrap gap-2 lg:gap-5'>
-									<div className='flex gap-2'>
+									<div className='flex flex-wrap gap-2'>
 										{/* <label
 											className='input input-sm'
 											style={{ height: '40px' }}
