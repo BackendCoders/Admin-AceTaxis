@@ -16,6 +16,21 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select';
+import {
+	Box,
+	Collapse,
+	IconButton,
+	Table,
+	TableBody,
+	TableCell,
+	TableContainer,
+	TableHead,
+	TableRow,
+	Paper,
+	Typography,
+	TableSortLabel,
+	TablePagination,
+} from '@mui/material';
 // import { Container } from '@/components/container';
 import {
 	Popover,
@@ -25,14 +40,14 @@ import {
 import { Calendar } from '@/components/ui/calendar';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
-import {
-	DataGrid,
-	DataGridColumnHeader,
-	// useDataGrid,
-	// DataGridRowSelectAll,
-	// DataGridRowSelect,
-} from '@/components';
-import { Input } from '@/components/ui/input';
+// import {
+// 	DataGrid,
+// 	DataGridColumnHeader,
+// 	// useDataGrid,
+// 	// DataGridRowSelectAll,
+// 	// DataGridRowSelect,
+// } from '@/components';
+// import { Input } from '@/components/ui/input';
 import { useDispatch, useSelector } from 'react-redux';
 import {
 	refreshWebBookings,
@@ -42,6 +57,174 @@ import { AcceptWebBooking } from './acceptWebBooking';
 import { RejectWebBooking } from './rejectWebBooking';
 import { Link } from 'react-router-dom';
 import RefreshIcon from '@mui/icons-material/Refresh';
+
+import {
+	KeyboardArrowDown,
+	KeyboardArrowUp,
+	// EmailOutlined,
+} from '@mui/icons-material';
+
+function Row({ row, setAcceptModal, setRejectModal, dispatch }) {
+	const [open, setOpen] = useState(false);
+
+	return (
+		<>
+			<TableRow className='bg-white dark:bg-[#14151A] hover:bg-gray-100'>
+				<TableCell>
+					<IconButton
+						size='small'
+						onClick={() => setOpen(!open)}
+					>
+						{open ? (
+							<KeyboardArrowUp className='text-[#14151A] dark:text-gray-700' />
+						) : (
+							<KeyboardArrowDown className='text-[#14151A] dark:text-gray-700' />
+						)}
+					</IconButton>
+				</TableCell>
+				<TableCell className='text-[#14151A] dark:text-gray-700'>
+					<Typography className='dark:text-cyan-400 text-blue-400'>
+						<span className={`font-medium ${row.color}`}>
+							<label className='switch'>
+								<input
+									type='checkbox'
+									name='arriveBy'
+									checked={row.arriveBy}
+									readOnly
+								/>
+							</label>
+						</span>
+					</Typography>
+				</TableCell>
+				<TableCell className='text-[#14151A] dark:text-gray-700'>
+					<span className={`font-medium ${row.color}`}>
+						{new Date(row.pickupDateTime?.split('T')[0])?.toLocaleDateString(
+							'en-GB'
+						)}{' '}
+						{row.pickupDateTime?.split('T')[1].split('.')[0]?.slice(0, 5)}
+					</span>
+				</TableCell>
+				<TableCell className='text-[#14151A] dark:text-gray-700'>
+					<span className={`font-medium ${row.color}`}>
+						{row?.pickupAddress}, {row?.pickupPostCode}
+					</span>
+				</TableCell>
+				<TableCell className='text-[#14151A] dark:text-gray-700'>
+					<span className={`font-medium ${row.color}`}>
+						{row.destinationAddress}, {row.destinationPostCode}
+					</span>
+				</TableCell>
+				<TableCell className='text-[#14151A] dark:text-gray-700'>
+					<span className={row.color}>{row?.passengerName}</span>
+				</TableCell>
+				<TableCell className='text-[#14151A] dark:text-gray-700'>
+					<span className={row.color}>{row?.passengers}</span>
+				</TableCell>
+				<TableCell className='text-[#14151A] dark:text-gray-700'>
+					<span className={row.color}>
+						{row.phoneNumber ? row.phoneNumber : '-'}
+					</span>
+				</TableCell>
+				<TableCell className='text-[#14151A] dark:text-gray-700'>
+					<span className={row.color}>
+						{row.repeatText ? row.repeatText : '-'}
+					</span>
+				</TableCell>
+				<TableCell>
+					<div className='w-full flex justify-start items-center gap-2'>
+						{!row?.accepted && (
+							<button
+								className='btn btn-sm btn-success px-4 py-4'
+								onClick={() => {
+									setAcceptModal(true);
+									dispatch(setWebBooking(row));
+								}}
+							>
+								Accept
+							</button>
+						)}
+						{!row?.accepted && (
+							<button
+								className='btn btn-sm btn-danger px-4 py-4'
+								onClick={() => {
+									setRejectModal(true);
+									dispatch(setWebBooking(row));
+								}}
+							>
+								Reject
+							</button>
+						)}
+					</div>
+				</TableCell>
+			</TableRow>
+			<TableRow>
+				<TableCell
+					colSpan={18}
+					style={{ paddingBottom: 0, paddingTop: 0 }}
+				>
+					<Collapse
+						in={open}
+						timeout='auto'
+						unmountOnExit
+					>
+						<Box
+							margin={1}
+							className='border border-gray-400 rounded p-4 bg-gray-100 dark:bg-[#14151A] text-[#14151A] dark:text-gray-500'
+						>
+							<Typography
+								variant='h6'
+								gutterBottom
+								className='text-blue-400 dark:text-cyan-400'
+							>
+								Booking #: {row.id}
+							</Typography>
+							<Box
+								display='flex'
+								justifyContent='space-between'
+							>
+								<Box>
+									<Typography variant='body2'>
+										<strong>Account No:</strong> {row.accNo}
+									</Typography>
+									<Typography variant='body2'>
+										<strong>Details:</strong> {row.details}
+									</Typography>
+									<Typography variant='body2'>
+										<strong>Passengers:</strong> {row.passengers}
+									</Typography>
+									<Typography variant='body2'>
+										<strong>Passenger Name:</strong> {row.passengerName}
+									</Typography>
+								</Box>
+								<Box>
+									<Typography variant='body2'>
+										<strong>Phone Number:</strong> {row.phoneNumber}
+									</Typography>
+									<Typography variant='body2'>
+										<strong>Email:</strong> {row.email}
+									</Typography>
+									<Typography variant='body2'>
+										<strong>Luggage:</strong> {row.luggage}
+									</Typography>
+									<Typography variant='body2'>
+										<strong>Price:</strong> {row.price}
+									</Typography>
+									<Typography variant='body2'>
+										<strong>Created On:</strong>{' '}
+										{new Date(row.createdOn?.split('T')[0])?.toLocaleDateString(
+											'en-GB'
+										)}{' '}
+										{row.createdOn?.split('T')[1].split('.')[0]?.slice(0, 5)}
+									</Typography>
+								</Box>
+							</Box>
+						</Box>
+					</Collapse>
+				</TableCell>
+			</TableRow>
+		</>
+	);
+}
 function NewBooking() {
 	const dispatch = useDispatch();
 	const [acceptModal, setAcceptModal] = useState(false);
@@ -51,6 +234,25 @@ function NewBooking() {
 	const [date, setDate] = useState(null);
 	const [open, setOpen] = useState(false);
 	const { webBookings } = useSelector((state) => state.webBooking);
+	const [order, setOrder] = useState('asc'); // Sort order
+	const [orderBy, setOrderBy] = useState(''); // Default sorted column
+	const [page, setPage] = useState(0);
+	const [rowPerPage, setRowPerPage] = useState(10);
+
+	const handleChangePage = (e, newPage) => {
+		setPage(newPage);
+	};
+
+	const handleChangeRowsPerPage = (e) => {
+		setRowPerPage(parseInt(e.target.value, 10));
+		setPage(0);
+	};
+
+	const handleSort = (property) => {
+		const isAscending = orderBy === property && order === 'asc';
+		setOrder(isAscending ? 'desc' : 'asc');
+		setOrderBy(property);
+	};
 
 	useEffect(() => {
 		dispatch(refreshWebBookings());
@@ -87,222 +289,230 @@ function NewBooking() {
 		});
 	}, [webBookings, searchInput, date, selectedScope]);
 
-	const ColumnInputFilter = ({ column }) => {
-		return (
-			<Input
-				placeholder='Filter...'
-				value={column.getFilterValue() ?? ''}
-				onChange={(event) => column.setFilterValue(event.target.value)}
-				className='h-9 w-full max-w-40'
-			/>
-		);
-	};
+	const sortedBookings = [...filteredBookings].sort((a, b) => {
+		if (order === 'asc') {
+			return a[orderBy] > b[orderBy] ? 1 : -1;
+		} else {
+			return a[orderBy] < b[orderBy] ? 1 : -1;
+		}
+	});
 
-	const columns = useMemo(
-		() => [
-			// {
-			// 	accessorKey: 'id',
-			// 	header: ({ column }) => (
-			// 		<DataGridColumnHeader
-			// 			title=<span className='font-bold'># id</span>
-			// 			filter={<ColumnInputFilter column={column} />}
-			// 			column={column}
-			// 		/>
-			// 	),
-			// 	enableSorting: true,
-			// 	cell: ({ row }) => (
-			// 		<span className={`p-2 rounded-md`}>{row?.original?.id}</span>
-			// 	),
-			// 	meta: { headerClassName: 'w-10' },
-			// },
-			{
-				accessorKey: 'arriveBy',
-				header: ({ column }) => (
-					<DataGridColumnHeader
-						title=<span className='font-bold'>Arrive By</span>
-						filter={<ColumnInputFilter column={column} />}
-						column={column}
-					/>
-				),
-				enableSorting: true,
-				cell: ({ row }) => (
-					<span className={`font-medium ${row.original.color}`}>
-						<label className='switch'>
-							<input
-								type='checkbox'
-								name='arriveBy'
-								checked={row.original.arriveBy}
-								readOnly
-							/>
-						</label>
-					</span>
-				),
-				meta: { headerClassName: 'w-10' },
-			},
-			{
-				accessorKey: 'pickUpDateTime',
-				header: ({ column }) => (
-					<DataGridColumnHeader
-						title=<span className='font-bold'>Date/Time</span>
-						filter={<ColumnInputFilter column={column} />}
-						column={column}
-					/>
-				),
-				enableSorting: true,
-				cell: ({ row }) => (
-					<span className={`font-medium ${row.original.color}`}>
-						{new Date(
-							row.original.pickupDateTime?.split('T')[0]
-						)?.toLocaleDateString('en-GB')}{' '}
-						{row.original.pickupDateTime
-							?.split('T')[1]
-							.split('.')[0]
-							?.slice(0, 5)}
-					</span>
-				),
-				meta: { headerClassName: 'min-w-[160px]' },
-			},
+	// const ColumnInputFilter = ({ column }) => {
+	// 	return (
+	// 		<Input
+	// 			placeholder='Filter...'
+	// 			value={column.getFilterValue() ?? ''}
+	// 			onChange={(event) => column.setFilterValue(event.target.value)}
+	// 			className='h-9 w-full max-w-40'
+	// 		/>
+	// 	);
+	// };
 
-			{
-				accessorKey: 'pickupAddress',
-				header: ({ column }) => (
-					<DataGridColumnHeader
-						title=<span className='font-bold'>Pickup Address</span>
-						filter={<ColumnInputFilter column={column} />}
-						column={column}
-					/>
-				),
-				enableSorting: true,
-				cell: ({ row }) => (
-					<span className={`font-medium ${row.original.color}`}>
-						{row?.original?.pickupAddress}, {row?.original?.pickupPostCode}
-					</span>
-				),
-				meta: { headerClassName: 'min-w-[200px]' },
-			},
-			{
-				accessorKey: 'destinationAddress',
-				header: ({ column }) => (
-					<DataGridColumnHeader
-						title=<span className='font-bold'>Destination Address</span>
-						filter={<ColumnInputFilter column={column} />}
-						column={column}
-					/>
-				),
-				enableSorting: true,
-				cell: ({ row }) => (
-					<span className={`font-medium ${row.original.color}`}>
-						{row.original.destinationAddress},{' '}
-						{row.original.destinationPostCode}
-					</span>
-				),
-				meta: { headerClassName: 'min-w-[200px]' },
-			},
-			{
-				accessorKey: 'passengerName',
-				header: ({ column }) => (
-					<DataGridColumnHeader
-						title=<span className='font-bold'>Passenger Name</span>
-						column={column}
-					/>
-				),
-				enableSorting: true,
-				cell: ({ row }) => (
-					<span className={row.original.color}>
-						{row?.original?.passengerName}
-					</span>
-				),
-				meta: { headerClassName: 'w-18' },
-			},
-			{
-				accessorKey: 'passengers',
-				header: ({ column }) => (
-					<DataGridColumnHeader
-						title=<span className='font-bold'>Passenger</span>
-						column={column}
-					/>
-				),
-				enableSorting: true,
-				cell: ({ row }) => (
-					<span className={row.original.color}>
-						{row?.original?.passengers}
-					</span>
-				),
-				meta: { headerClassName: 'w-18' },
-			},
-			{
-				accessorKey: 'phoneNumber',
-				header: ({ column }) => (
-					<DataGridColumnHeader
-						title=<span className='font-bold'>Phone Number</span>
-						column={column}
-					/>
-				),
-				enableSorting: true,
-				cell: ({ row }) => (
-					<span className={row.original.color}>
-						{row.original.phoneNumber ? row.original.phoneNumber : '-'}
-					</span>
-				),
-				meta: { headerClassName: 'min-w-[80px]' },
-			},
-			{
-				accessorKey: 'repeatText',
-				header: ({ column }) => (
-					<DataGridColumnHeader
-						title=<span className='font-bold'>Days & Ends on Date</span>
-						column={column}
-					/>
-				),
-				enableSorting: true,
-				cell: ({ row }) => (
-					<span className={row.original.color}>
-						{row.original.repeatText ? row.original.repeatText : '-'}
-					</span>
-				),
-				meta: { headerClassName: 'min-w-[80px]' },
-			},
+	// const columns = useMemo(
+	// 	() => [
+	// 		// {
+	// 		// 	accessorKey: 'id',
+	// 		// 	header: ({ column }) => (
+	// 		// 		<DataGridColumnHeader
+	// 		// 			title=<span className='font-bold'># id</span>
+	// 		// 			filter={<ColumnInputFilter column={column} />}
+	// 		// 			column={column}
+	// 		// 		/>
+	// 		// 	),
+	// 		// 	enableSorting: true,
+	// 		// 	cell: ({ row }) => (
+	// 		// 		<span className={`p-2 rounded-md`}>{row?.original?.id}</span>
+	// 		// 	),
+	// 		// 	meta: { headerClassName: 'w-10' },
+	// 		// },
+	// 		{
+	// 			accessorKey: 'arriveBy',
+	// 			header: ({ column }) => (
+	// 				<DataGridColumnHeader
+	// 					title=<span className='font-bold'>Arrive By</span>
+	// 					filter={<ColumnInputFilter column={column} />}
+	// 					column={column}
+	// 				/>
+	// 			),
+	// 			enableSorting: true,
+	// 			cell: ({ row }) => (
+	// 				<span className={`font-medium ${row.original.color}`}>
+	// 					<label className='switch'>
+	// 						<input
+	// 							type='checkbox'
+	// 							name='arriveBy'
+	// 							checked={row.original.arriveBy}
+	// 							readOnly
+	// 						/>
+	// 					</label>
+	// 				</span>
+	// 			),
+	// 			meta: { headerClassName: 'w-10' },
+	// 		},
+	// 		{
+	// 			accessorKey: 'pickUpDateTime',
+	// 			header: ({ column }) => (
+	// 				<DataGridColumnHeader
+	// 					title=<span className='font-bold'>Date/Time</span>
+	// 					filter={<ColumnInputFilter column={column} />}
+	// 					column={column}
+	// 				/>
+	// 			),
+	// 			enableSorting: true,
+	// 			cell: ({ row }) => (
+	// 				<span className={`font-medium ${row.original.color}`}>
+	// 					{new Date(
+	// 						row.original.pickupDateTime?.split('T')[0]
+	// 					)?.toLocaleDateString('en-GB')}{' '}
+	// 					{row.original.pickupDateTime
+	// 						?.split('T')[1]
+	// 						.split('.')[0]
+	// 						?.slice(0, 5)}
+	// 				</span>
+	// 			),
+	// 			meta: { headerClassName: 'min-w-[160px]' },
+	// 		},
 
-			{
-				accessorKey: 'action',
-				header: ({ column }) => (
-					<DataGridColumnHeader
-						title=<span className='font-bold'>Actions</span>
-						column={column}
-					/>
-				),
-				enableSorting: true,
-				cell: ({ row }) => (
-					<div className='w-full flex justify-start items-center gap-2'>
-						{!row?.accepted && (
-							<button
-								className='btn btn-sm btn-success px-4 py-4'
-								onClick={() => {
-									setAcceptModal(true);
-									dispatch(setWebBooking(row.original));
-								}}
-							>
-								Accept
-							</button>
-						)}
-						{!row?.accepted && (
-							<button
-								className='btn btn-sm btn-danger px-4 py-4'
-								onClick={() => {
-									setRejectModal(true);
-									dispatch(setWebBooking(row.original));
-								}}
-							>
-								Reject
-							</button>
-						)}
-					</div>
-				),
-				meta: { headerClassName: 'min-w-[80px]' },
-			},
-		],
-		[dispatch]
-	);
+	// 		{
+	// 			accessorKey: 'pickupAddress',
+	// 			header: ({ column }) => (
+	// 				<DataGridColumnHeader
+	// 					title=<span className='font-bold'>Pickup Address</span>
+	// 					filter={<ColumnInputFilter column={column} />}
+	// 					column={column}
+	// 				/>
+	// 			),
+	// 			enableSorting: true,
+	// 			cell: ({ row }) => (
+	// 				<span className={`font-medium ${row.original.color}`}>
+	// 					{row?.original?.pickupAddress}, {row?.original?.pickupPostCode}
+	// 				</span>
+	// 			),
+	// 			meta: { headerClassName: 'min-w-[200px]' },
+	// 		},
+	// 		{
+	// 			accessorKey: 'destinationAddress',
+	// 			header: ({ column }) => (
+	// 				<DataGridColumnHeader
+	// 					title=<span className='font-bold'>Destination Address</span>
+	// 					filter={<ColumnInputFilter column={column} />}
+	// 					column={column}
+	// 				/>
+	// 			),
+	// 			enableSorting: true,
+	// 			cell: ({ row }) => (
+	// 				<span className={`font-medium ${row.original.color}`}>
+	// 					{row.original.destinationAddress},{' '}
+	// 					{row.original.destinationPostCode}
+	// 				</span>
+	// 			),
+	// 			meta: { headerClassName: 'min-w-[200px]' },
+	// 		},
+	// 		{
+	// 			accessorKey: 'passengerName',
+	// 			header: ({ column }) => (
+	// 				<DataGridColumnHeader
+	// 					title=<span className='font-bold'>Passenger Name</span>
+	// 					column={column}
+	// 				/>
+	// 			),
+	// 			enableSorting: true,
+	// 			cell: ({ row }) => (
+	// 				<span className={row.original.color}>
+	// 					{row?.original?.passengerName}
+	// 				</span>
+	// 			),
+	// 			meta: { headerClassName: 'w-18' },
+	// 		},
+	// 		{
+	// 			accessorKey: 'passengers',
+	// 			header: ({ column }) => (
+	// 				<DataGridColumnHeader
+	// 					title=<span className='font-bold'>Passenger</span>
+	// 					column={column}
+	// 				/>
+	// 			),
+	// 			enableSorting: true,
+	// 			cell: ({ row }) => (
+	// 				<span className={row.original.color}>
+	// 					{row?.original?.passengers}
+	// 				</span>
+	// 			),
+	// 			meta: { headerClassName: 'w-18' },
+	// 		},
+	// 		{
+	// 			accessorKey: 'phoneNumber',
+	// 			header: ({ column }) => (
+	// 				<DataGridColumnHeader
+	// 					title=<span className='font-bold'>Phone Number</span>
+	// 					column={column}
+	// 				/>
+	// 			),
+	// 			enableSorting: true,
+	// 			cell: ({ row }) => (
+	// 				<span className={row.original.color}>
+	// 					{row.original.phoneNumber ? row.original.phoneNumber : '-'}
+	// 				</span>
+	// 			),
+	// 			meta: { headerClassName: 'min-w-[80px]' },
+	// 		},
+	// 		{
+	// 			accessorKey: 'repeatText',
+	// 			header: ({ column }) => (
+	// 				<DataGridColumnHeader
+	// 					title=<span className='font-bold'>Days & Ends on Date</span>
+	// 					column={column}
+	// 				/>
+	// 			),
+	// 			enableSorting: true,
+	// 			cell: ({ row }) => (
+	// 				<span className={row.original.color}>
+	// 					{row.original.repeatText ? row.original.repeatText : '-'}
+	// 				</span>
+	// 			),
+	// 			meta: { headerClassName: 'min-w-[80px]' },
+	// 		},
+
+	// 		{
+	// 			accessorKey: 'action',
+	// 			header: ({ column }) => (
+	// 				<DataGridColumnHeader
+	// 					title=<span className='font-bold'>Actions</span>
+	// 					column={column}
+	// 				/>
+	// 			),
+	// 			enableSorting: true,
+	// 			cell: ({ row }) => (
+	// 				<div className='w-full flex justify-start items-center gap-2'>
+	// 					{!row?.accepted && (
+	// 						<button
+	// 							className='btn btn-sm btn-success px-4 py-4'
+	// 							onClick={() => {
+	// 								setAcceptModal(true);
+	// 								dispatch(setWebBooking(row.original));
+	// 							}}
+	// 						>
+	// 							Accept
+	// 						</button>
+	// 					)}
+	// 					{!row?.accepted && (
+	// 						<button
+	// 							className='btn btn-sm btn-danger px-4 py-4'
+	// 							onClick={() => {
+	// 								setRejectModal(true);
+	// 								dispatch(setWebBooking(row.original));
+	// 							}}
+	// 						>
+	// 							Reject
+	// 						</button>
+	// 					)}
+	// 				</div>
+	// 			),
+	// 			meta: { headerClassName: 'min-w-[80px]' },
+	// 		},
+	// 	],
+	// 	[dispatch]
+	// );
 
 	const handleCloseAcceptModal = () => {
 		setAcceptModal(false);
@@ -312,12 +522,12 @@ function NewBooking() {
 		setRejectModal(false);
 	};
 
-	const handleRowSelection = (state) => {
-		const selectedRowIds = Object.keys(state);
-		if (selectedRowIds.length > 0) {
-			alert(`Selected Drivers: ${selectedRowIds.join(', ')}`);
-		}
-	};
+	// const handleRowSelection = (state) => {
+	// 	const selectedRowIds = Object.keys(state);
+	// 	if (selectedRowIds.length > 0) {
+	// 		alert(`Selected Drivers: ${selectedRowIds.join(', ')}`);
+	// 	}
+	// };
 
 	const handleDateSelect = (date) => {
 		setDate(date); // Update the date range
@@ -454,7 +664,7 @@ function NewBooking() {
 								</div>
 							</div>
 							<div className='card-body'>
-								<DataGrid
+								{/* <DataGrid
 									columns={columns}
 									data={filteredBookings}
 									rowSelection={true}
@@ -462,7 +672,267 @@ function NewBooking() {
 									pagination={{ size: 10 }}
 									sorting={[{ id: 'pickUpDateTime', desc: false }]}
 									layout={{ card: true }}
-								/>
+								/> */}
+								{/* Table */}
+								<TableContainer
+									component={Paper}
+									className='shadow-none bg-white dark:bg-[#14151A]'
+								>
+									<Table className='text-[#14151A] dark:text-gray-100'>
+										<TableHead
+											className='bg-gray-100 dark:bg-[#14151A]'
+											sx={{
+												'& .MuiTableCell-root': {
+													// borderBottom: '1px solid #464852',
+												},
+											}}
+										>
+											<TableRow>
+												<TableCell />
+												{/* <TableCell className='text-[#14151A] dark:text-gray-700 border-e'>
+													<TableSortLabel
+														active={orderBy === 'id'}
+														direction={order}
+														onClick={() => handleSort('id')}
+														sx={{
+															'&:hover': { color: '#9A9CAE' }, // Change color on hover
+															'&.Mui-active': { color: '#9A9CAE' },
+															'&.Mui-active .MuiTableSortLabel-icon': {
+																color: '#9A9CAE',
+															}, // Change to blue when active
+															'fontWeight': 'bold',
+														}}
+													>
+														#
+													</TableSortLabel>
+												</TableCell> */}
+												<TableCell className='text-[#14151A] dark:text-gray-700 border-e'>
+													<TableSortLabel
+														active={orderBy === 'arriveBy'}
+														direction={order}
+														onClick={() => handleSort('arriveBy')}
+														sx={{
+															'&:hover': { color: '#9A9CAE' }, // Change color on hover
+															'&.Mui-active': { color: '#9A9CAE' },
+															'&.Mui-active .MuiTableSortLabel-icon': {
+																color: '#9A9CAE',
+															}, // Change to blue when active
+															'fontWeight': 'bold',
+														}}
+													>
+														Arrive By
+													</TableSortLabel>
+												</TableCell>
+												<TableCell className='text-[#14151A] dark:text-gray-700 border-e'>
+													<TableSortLabel
+														active={orderBy === 'pickUpDateTime'}
+														direction={order}
+														onClick={() => handleSort('pickUpDateTime')}
+														sx={{
+															'&:hover': { color: '#9A9CAE' }, // Change color on hover
+															'&.Mui-active': { color: '#9A9CAE' },
+															'&.Mui-active .MuiTableSortLabel-icon': {
+																color: '#9A9CAE',
+															}, // Change to blue when active
+															'fontWeight': 'bold',
+														}}
+													>
+														Date/Time
+													</TableSortLabel>
+												</TableCell>
+												<TableCell
+													className='text-[#14151A] dark:text-gray-700 border-e'
+													sx={{ fontWeight: 'bold' }}
+												>
+													<TableSortLabel
+														active={orderBy === 'pickupAddress'}
+														direction={order}
+														onClick={() => handleSort('pickupAddress')}
+														sx={{
+															'&:hover': { color: '#9A9CAE' }, // Change color on hover
+															'&.Mui-active': { color: '#9A9CAE' },
+															'&.Mui-active .MuiTableSortLabel-icon': {
+																color: '#9A9CAE',
+															}, // Change to blue when active
+															'fontWeight': 'bold',
+														}}
+													>
+														Pickup Address
+													</TableSortLabel>
+												</TableCell>
+												<TableCell
+													className='text-[#14151A] dark:text-gray-700 border-e'
+													sx={{ fontWeight: 'bold' }}
+												>
+													<TableSortLabel
+														active={orderBy === 'destinationAddress'}
+														direction={order}
+														onClick={() => handleSort('destinationAddress')}
+														sx={{
+															'&:hover': { color: '#9A9CAE' }, // Change color on hover
+															'&.Mui-active': { color: '#9A9CAE' },
+															'&.Mui-active .MuiTableSortLabel-icon': {
+																color: '#9A9CAE',
+															}, // Change to blue when active
+															'fontWeight': 'bold',
+														}}
+													>
+														Destination Address
+													</TableSortLabel>
+												</TableCell>
+												<TableCell
+													className='text-[#14151A] dark:text-gray-700 border-e'
+													sx={{ fontWeight: 'bold' }}
+												>
+													<TableSortLabel
+														active={orderBy === 'passengerName'}
+														direction={order}
+														onClick={() => handleSort('passengerName')}
+														sx={{
+															'&:hover': { color: '#9A9CAE' }, // Change color on hover
+															'&.Mui-active': { color: '#9A9CAE' },
+															'&.Mui-active .MuiTableSortLabel-icon': {
+																color: '#9A9CAE',
+															}, // Change to blue when active
+															'fontWeight': 'bold',
+														}}
+													>
+														Passenger Name
+													</TableSortLabel>
+												</TableCell>
+												<TableCell
+													className='text-[#14151A] dark:text-gray-700 border-e'
+													sx={{ fontWeight: 'bold' }}
+												>
+													<TableSortLabel
+														active={orderBy === 'passengers'}
+														direction={order}
+														onClick={() => handleSort('passengers')}
+														sx={{
+															'&:hover': { color: '#9A9CAE' }, // Change color on hover
+															'&.Mui-active': { color: '#9A9CAE' },
+															'&.Mui-active .MuiTableSortLabel-icon': {
+																color: '#9A9CAE',
+															}, // Change to blue when active
+															'fontWeight': 'bold',
+														}}
+													>
+														Passengers
+													</TableSortLabel>
+												</TableCell>
+												<TableCell className='text-[#14151A] dark:text-gray-700 border-e'>
+													<TableSortLabel
+														active={orderBy === 'phoneNumber'}
+														direction={order}
+														onClick={() => handleSort('phoneNumber')}
+														sx={{
+															'&:hover': { color: '#9A9CAE' }, // Change color on hover
+															'&.Mui-active': { color: '#9A9CAE' },
+															'&.Mui-active .MuiTableSortLabel-icon': {
+																color: '#9A9CAE',
+															}, // Change to blue when active
+															'fontWeight': 'bold',
+														}}
+													>
+														Phone Number
+													</TableSortLabel>
+												</TableCell>
+
+												<TableCell
+													className='text-[#14151A] dark:text-gray-700 border-e'
+													sx={{ fontWeight: 'bold' }}
+												>
+													<TableSortLabel
+														active={orderBy === 'repeatText'}
+														direction={order}
+														onClick={() => handleSort('repeatText')}
+														sx={{
+															'&:hover': { color: '#9A9CAE' }, // Change color on hover
+															'&.Mui-active': { color: '#9A9CAE' },
+															'&.Mui-active .MuiTableSortLabel-icon': {
+																color: '#9A9CAE',
+															}, // Change to blue when active
+														}}
+													>
+														Days & Ends on Date
+													</TableSortLabel>
+												</TableCell>
+												<TableCell
+													className='text-[#14151A] dark:text-gray-700 border-e'
+													sx={{ fontWeight: 'bold' }}
+												>
+													Actions
+												</TableCell>
+											</TableRow>
+										</TableHead>
+										<TableBody
+											sx={{
+												'& .MuiTableCell-root': {
+													// borderBottom: '1px solid #464852',
+												},
+											}}
+										>
+											{sortedBookings
+												?.slice(
+													page * rowPerPage,
+													page * rowPerPage + rowPerPage
+												)
+												.map((row) => (
+													<Row
+														key={row.id}
+														row={row}
+														setAcceptModal={setAcceptModal}
+														setRejectModal={setRejectModal}
+														dispatch={dispatch}
+													/>
+												))}
+										</TableBody>
+									</Table>
+									<TablePagination
+										component='div'
+										count={sortedBookings.length}
+										page={page}
+										onPageChange={handleChangePage}
+										rowsPerPage={rowPerPage}
+										onRowsPerPageChange={handleChangeRowsPerPage}
+										rowsPerPageOptions={[5, 10, 25, 50]}
+										className='text-sm text-gray-900 dark:text-gray-700 px-4'
+										SelectProps={{
+											MenuProps: {
+												PaperProps: {
+													sx: {
+														'& .MuiMenuItem-root': {
+															'fontSize': '0.875rem',
+															'&:hover': {
+																backgroundColor: 'transparent', // Tailwind's gray-100
+																color: '#071437', // Tailwind's blue-800
+															},
+															'&.Mui-selected': {
+																backgroundColor: '#F1F1F4', // selected bg
+																color: '#071437', // selected text (blue-800)
+															},
+														},
+														// Dark mode styles (optional)
+														'@media (prefers-color-scheme: dark)': {
+															'backgroundColor': 'transparent', // dark gray bg
+															'color': '#9A9CAE',
+															'& .MuiMenuItem-root': {
+																'&:hover': {
+																	backgroundColor: '#374151', // hover dark gray
+																	color: '#9A9CAE',
+																},
+																'&.Mui-selected': {
+																	backgroundColor: '#0D0E12',
+																	color: '#9A9CAE',
+																},
+															},
+														},
+													},
+												},
+											},
+										}}
+									/>
+								</TableContainer>
 							</div>
 						</div>
 					</div>
