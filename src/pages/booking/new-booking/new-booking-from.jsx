@@ -681,10 +681,9 @@ function NewBooking() {
 								{/* Table */}
 								<TableContainer
 									component={Paper}
-									className='shadow-none bg-white dark:bg-[#14151A] overflow-x-auto'
+									className='shadow-none bg-white dark:bg-[#14151A]'
 								>
-									<div className='w-full max-w-full'>
-										<Table className='text-[#14151A] dark:text-gray-100 min-w-max'>
+										<Table className='text-[#14151A] dark:text-gray-100'>
 											<TableHead
 												className='bg-gray-100 dark:bg-[#14151A]'
 												sx={{
@@ -894,7 +893,7 @@ function NewBooking() {
 													))}
 											</TableBody>
 										</Table>
-									</div>
+									
 									<TablePagination
 										component='div'
 										count={sortedBookings.length}
