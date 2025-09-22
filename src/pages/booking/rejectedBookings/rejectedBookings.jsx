@@ -34,16 +34,21 @@ import {
 } from '@/components';
 import { Input } from '@/components/ui/input';
 import { useDispatch, useSelector } from 'react-redux';
-import { refreshRejectedWebBookings } from '../../../slices/webBookingSlice';
+import {
+	refreshRejectedWebBookings,
+	setRejectBooking,
+} from '../../../slices/webBookingSlice';
 import { Link } from 'react-router-dom';
 import RefreshIcon from '@mui/icons-material/Refresh';
+import { AmendRejectedBooking } from './amendRejectedBooking';
 
 function RejectedBookings() {
 	const dispatch = useDispatch();
 	const { rejectedWebBookings } = useSelector((state) => state.webBooking);
 	const [searchInput, setSearchInput] = useState('');
 	const [selectedScope, setSelectedScope] = useState('3');
-	const [date, setDate] = useState(new Date());
+	const [amendRejectModal, setAmendRejectModal] = useState(false);
+	const [date, setDate] = useState();
 	const [open, setOpen] = useState(false);
 
 	useEffect(() => {
@@ -90,6 +95,10 @@ function RejectedBookings() {
 				className='h-9 w-full max-w-40'
 			/>
 		);
+	};
+
+	const handleClose = () => {
+		setAmendRejectModal(false);
 	};
 
 	const columns = useMemo(
@@ -268,6 +277,30 @@ function RejectedBookings() {
 				),
 				meta: { headerClassName: 'min-w-[80px]' },
 			},
+			{
+				accessorKey: 'action',
+				header: ({ column }) => (
+					<DataGridColumnHeader
+						title=<span className='font-bold'>Actions</span>
+						column={column}
+					/>
+				),
+				enableSorting: true,
+				cell: ({ row }) => (
+					<div className='w-full flex justify-start items-center gap-2'>
+						<button
+							className='btn btn-sm btn-success px-4 py-4 whitespace-nowrap'
+							onClick={() => {
+								setAmendRejectModal(true);
+								dispatch(setRejectBooking(row.original));
+							}}
+						>
+							Amend Accept
+						</button>
+					</div>
+				),
+				meta: { headerClassName: 'min-w-[80px]' },
+			},
 		],
 		[]
 	);
@@ -427,6 +460,12 @@ function RejectedBookings() {
 						</div>
 					</div>
 				</div>
+				{amendRejectModal && (
+					<AmendRejectedBooking
+						open={amendRejectModal}
+						onOpenChange={handleClose}
+					/>
+				)}
 			</div>
 		</Fragment>
 	);

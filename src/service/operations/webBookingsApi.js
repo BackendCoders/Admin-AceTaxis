@@ -13,6 +13,7 @@ const {
 	REJECT_WEB_BOOKING,
 	GET_DURATION,
 	CANCEL_BOOKING,
+	AMEND_ACCEPT_REJECTED_BOOKING,
 } = webBookingEndpoints;
 export async function getWebBookings() {
 	// Fetch current user details using token
@@ -190,6 +191,27 @@ export async function cancelBooking(data) {
 	const response = await handlePostReq(CANCEL_BOOKING, data);
 
 	console.log('CANCEL BOOKING API RESPONSE.........', response);
+
+	if (response.status === 'success') {
+		// sendLogs(
+		//     {
+		//         url: CANCEL_BOOKING,
+		//         reqBody: data,
+		//         headers: setHeaders(),
+		//         response: response,
+		//     },
+		//     'info'
+		// );
+		return response;
+	}
+	return response;
+}
+
+export async function amendAcceptBooking(data) {
+	// Fetch current user details using token
+	const response = await handlePostReq(AMEND_ACCEPT_REJECTED_BOOKING, data);
+
+	console.log('AMEND ACCEPT REJECTED BOOKING API RESPONSE.........', response);
 
 	if (response.status === 'success') {
 		// sendLogs(

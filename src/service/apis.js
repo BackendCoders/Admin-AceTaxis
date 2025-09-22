@@ -152,6 +152,7 @@ export const webBookingEndpoints = {
 	REJECT_WEB_BOOKING: `${BASE}/api/WeBooking/Reject`,
 	GET_DURATION: (id) => `${BASE}/api/WeBooking/GetDuration?wid=${id}`,
 	CANCEL_BOOKING: `${BASE}/api/Bookings/Cancel`,
+	AMEND_ACCEPT_REJECTED_BOOKING: `${BASE}/api/WeBooking/AmendAccept`,
 };
 
 export const notificationEndpoints = {

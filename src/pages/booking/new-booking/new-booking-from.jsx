@@ -204,7 +204,13 @@ function Row({ row, setAcceptModal, setRejectModal, dispatch }) {
 										<strong>Phone Number:</strong> {row.phoneNumber}
 									</Typography>
 									<Typography variant='body2'>
-										<strong>Email:</strong> {row.email}
+										<strong>Email:</strong>
+										<a
+											href={`mailto:${row.email}`}
+											className='hover:underline'
+										>
+											{row.email}
+										</a>
 									</Typography>
 								</Box>
 								<Box>
@@ -212,7 +218,7 @@ function Row({ row, setAcceptModal, setRejectModal, dispatch }) {
 										<strong>Luggage:</strong> {row.luggage}
 									</Typography>
 									<Typography variant='body2'>
-										<strong>Price:</strong> {row.price}
+										<strong>Price:</strong> £ {row.price?.toFixed(2)}
 									</Typography>
 									<Typography variant='body2'>
 										<strong>Created On:</strong>{' '}
@@ -683,18 +689,18 @@ function NewBooking() {
 									component={Paper}
 									className='shadow-none bg-white dark:bg-[#14151A]'
 								>
-										<Table className='text-[#14151A] dark:text-gray-100'>
-											<TableHead
-												className='bg-gray-100 dark:bg-[#14151A]'
-												sx={{
-													'& .MuiTableCell-root': {
-														// borderBottom: '1px solid #464852',
-													},
-												}}
-											>
-												<TableRow>
-													<TableCell />
-													{/* <TableCell className='text-[#14151A] dark:text-gray-700 border-e'>
+									<Table className='text-[#14151A] dark:text-gray-100'>
+										<TableHead
+											className='bg-gray-100 dark:bg-[#14151A]'
+											sx={{
+												'& .MuiTableCell-root': {
+													// borderBottom: '1px solid #464852',
+												},
+											}}
+										>
+											<TableRow>
+												<TableCell />
+												{/* <TableCell className='text-[#14151A] dark:text-gray-700 border-e'>
 													<TableSortLabel
 														active={orderBy === 'id'}
 														direction={order}
@@ -711,189 +717,189 @@ function NewBooking() {
 														#
 													</TableSortLabel>
 												</TableCell> */}
-													<TableCell className='text-[#14151A] dark:text-gray-700 border-e'>
-														<TableSortLabel
-															active={orderBy === 'arriveBy'}
-															direction={order}
-															onClick={() => handleSort('arriveBy')}
-															sx={{
-																'&:hover': { color: '#9A9CAE' }, // Change color on hover
-																'&.Mui-active': { color: '#9A9CAE' },
-																'&.Mui-active .MuiTableSortLabel-icon': {
-																	color: '#9A9CAE',
-																}, // Change to blue when active
-																'fontWeight': 'bold',
-															}}
-														>
-															Arrive By
-														</TableSortLabel>
-													</TableCell>
-													<TableCell className='text-[#14151A] dark:text-gray-700 border-e'>
-														<TableSortLabel
-															active={orderBy === 'pickUpDateTime'}
-															direction={order}
-															onClick={() => handleSort('pickUpDateTime')}
-															sx={{
-																'&:hover': { color: '#9A9CAE' }, // Change color on hover
-																'&.Mui-active': { color: '#9A9CAE' },
-																'&.Mui-active .MuiTableSortLabel-icon': {
-																	color: '#9A9CAE',
-																}, // Change to blue when active
-																'fontWeight': 'bold',
-															}}
-														>
-															Date/Time
-														</TableSortLabel>
-													</TableCell>
-													<TableCell
-														className='text-[#14151A] dark:text-gray-700 border-e'
-														sx={{ fontWeight: 'bold' }}
+												<TableCell className='text-[#14151A] dark:text-gray-700 border-e'>
+													<TableSortLabel
+														active={orderBy === 'arriveBy'}
+														direction={order}
+														onClick={() => handleSort('arriveBy')}
+														sx={{
+															'&:hover': { color: '#9A9CAE' }, // Change color on hover
+															'&.Mui-active': { color: '#9A9CAE' },
+															'&.Mui-active .MuiTableSortLabel-icon': {
+																color: '#9A9CAE',
+															}, // Change to blue when active
+															'fontWeight': 'bold',
+														}}
 													>
-														<TableSortLabel
-															active={orderBy === 'pickupAddress'}
-															direction={order}
-															onClick={() => handleSort('pickupAddress')}
-															sx={{
-																'&:hover': { color: '#9A9CAE' }, // Change color on hover
-																'&.Mui-active': { color: '#9A9CAE' },
-																'&.Mui-active .MuiTableSortLabel-icon': {
-																	color: '#9A9CAE',
-																}, // Change to blue when active
-																'fontWeight': 'bold',
-															}}
-														>
-															Pickup Address
-														</TableSortLabel>
-													</TableCell>
-													<TableCell
-														className='text-[#14151A] dark:text-gray-700 border-e'
-														sx={{ fontWeight: 'bold' }}
+														Arrive By
+													</TableSortLabel>
+												</TableCell>
+												<TableCell className='text-[#14151A] dark:text-gray-700 border-e'>
+													<TableSortLabel
+														active={orderBy === 'pickUpDateTime'}
+														direction={order}
+														onClick={() => handleSort('pickUpDateTime')}
+														sx={{
+															'&:hover': { color: '#9A9CAE' }, // Change color on hover
+															'&.Mui-active': { color: '#9A9CAE' },
+															'&.Mui-active .MuiTableSortLabel-icon': {
+																color: '#9A9CAE',
+															}, // Change to blue when active
+															'fontWeight': 'bold',
+														}}
 													>
-														<TableSortLabel
-															active={orderBy === 'destinationAddress'}
-															direction={order}
-															onClick={() => handleSort('destinationAddress')}
-															sx={{
-																'&:hover': { color: '#9A9CAE' }, // Change color on hover
-																'&.Mui-active': { color: '#9A9CAE' },
-																'&.Mui-active .MuiTableSortLabel-icon': {
-																	color: '#9A9CAE',
-																}, // Change to blue when active
-																'fontWeight': 'bold',
-															}}
-														>
-															Destination Address
-														</TableSortLabel>
-													</TableCell>
-													<TableCell
-														className='text-[#14151A] dark:text-gray-700 border-e'
-														sx={{ fontWeight: 'bold' }}
+														Date/Time
+													</TableSortLabel>
+												</TableCell>
+												<TableCell
+													className='text-[#14151A] dark:text-gray-700 border-e'
+													sx={{ fontWeight: 'bold' }}
+												>
+													<TableSortLabel
+														active={orderBy === 'pickupAddress'}
+														direction={order}
+														onClick={() => handleSort('pickupAddress')}
+														sx={{
+															'&:hover': { color: '#9A9CAE' }, // Change color on hover
+															'&.Mui-active': { color: '#9A9CAE' },
+															'&.Mui-active .MuiTableSortLabel-icon': {
+																color: '#9A9CAE',
+															}, // Change to blue when active
+															'fontWeight': 'bold',
+														}}
 													>
-														<TableSortLabel
-															active={orderBy === 'passengerName'}
-															direction={order}
-															onClick={() => handleSort('passengerName')}
-															sx={{
-																'&:hover': { color: '#9A9CAE' }, // Change color on hover
-																'&.Mui-active': { color: '#9A9CAE' },
-																'&.Mui-active .MuiTableSortLabel-icon': {
-																	color: '#9A9CAE',
-																}, // Change to blue when active
-																'fontWeight': 'bold',
-															}}
-														>
-															Passenger Name
-														</TableSortLabel>
-													</TableCell>
-													<TableCell
-														className='text-[#14151A] dark:text-gray-700 border-e'
-														sx={{ fontWeight: 'bold' }}
+														Pickup Address
+													</TableSortLabel>
+												</TableCell>
+												<TableCell
+													className='text-[#14151A] dark:text-gray-700 border-e'
+													sx={{ fontWeight: 'bold' }}
+												>
+													<TableSortLabel
+														active={orderBy === 'destinationAddress'}
+														direction={order}
+														onClick={() => handleSort('destinationAddress')}
+														sx={{
+															'&:hover': { color: '#9A9CAE' }, // Change color on hover
+															'&.Mui-active': { color: '#9A9CAE' },
+															'&.Mui-active .MuiTableSortLabel-icon': {
+																color: '#9A9CAE',
+															}, // Change to blue when active
+															'fontWeight': 'bold',
+														}}
 													>
-														<TableSortLabel
-															active={orderBy === 'passengers'}
-															direction={order}
-															onClick={() => handleSort('passengers')}
-															sx={{
-																'&:hover': { color: '#9A9CAE' }, // Change color on hover
-																'&.Mui-active': { color: '#9A9CAE' },
-																'&.Mui-active .MuiTableSortLabel-icon': {
-																	color: '#9A9CAE',
-																}, // Change to blue when active
-																'fontWeight': 'bold',
-															}}
-														>
-															Passengers
-														</TableSortLabel>
-													</TableCell>
-													<TableCell className='text-[#14151A] dark:text-gray-700 border-e'>
-														<TableSortLabel
-															active={orderBy === 'phoneNumber'}
-															direction={order}
-															onClick={() => handleSort('phoneNumber')}
-															sx={{
-																'&:hover': { color: '#9A9CAE' }, // Change color on hover
-																'&.Mui-active': { color: '#9A9CAE' },
-																'&.Mui-active .MuiTableSortLabel-icon': {
-																	color: '#9A9CAE',
-																}, // Change to blue when active
-																'fontWeight': 'bold',
-															}}
-														>
-															Phone Number
-														</TableSortLabel>
-													</TableCell>
+														Destination Address
+													</TableSortLabel>
+												</TableCell>
+												<TableCell
+													className='text-[#14151A] dark:text-gray-700 border-e'
+													sx={{ fontWeight: 'bold' }}
+												>
+													<TableSortLabel
+														active={orderBy === 'passengerName'}
+														direction={order}
+														onClick={() => handleSort('passengerName')}
+														sx={{
+															'&:hover': { color: '#9A9CAE' }, // Change color on hover
+															'&.Mui-active': { color: '#9A9CAE' },
+															'&.Mui-active .MuiTableSortLabel-icon': {
+																color: '#9A9CAE',
+															}, // Change to blue when active
+															'fontWeight': 'bold',
+														}}
+													>
+														Passenger Name
+													</TableSortLabel>
+												</TableCell>
+												<TableCell
+													className='text-[#14151A] dark:text-gray-700 border-e'
+													sx={{ fontWeight: 'bold' }}
+												>
+													<TableSortLabel
+														active={orderBy === 'passengers'}
+														direction={order}
+														onClick={() => handleSort('passengers')}
+														sx={{
+															'&:hover': { color: '#9A9CAE' }, // Change color on hover
+															'&.Mui-active': { color: '#9A9CAE' },
+															'&.Mui-active .MuiTableSortLabel-icon': {
+																color: '#9A9CAE',
+															}, // Change to blue when active
+															'fontWeight': 'bold',
+														}}
+													>
+														Passengers
+													</TableSortLabel>
+												</TableCell>
+												<TableCell className='text-[#14151A] dark:text-gray-700 border-e'>
+													<TableSortLabel
+														active={orderBy === 'phoneNumber'}
+														direction={order}
+														onClick={() => handleSort('phoneNumber')}
+														sx={{
+															'&:hover': { color: '#9A9CAE' }, // Change color on hover
+															'&.Mui-active': { color: '#9A9CAE' },
+															'&.Mui-active .MuiTableSortLabel-icon': {
+																color: '#9A9CAE',
+															}, // Change to blue when active
+															'fontWeight': 'bold',
+														}}
+													>
+														Phone Number
+													</TableSortLabel>
+												</TableCell>
 
-													<TableCell
-														className='text-[#14151A] dark:text-gray-700 border-e'
-														sx={{ fontWeight: 'bold' }}
+												<TableCell
+													className='text-[#14151A] dark:text-gray-700 border-e'
+													sx={{ fontWeight: 'bold' }}
+												>
+													<TableSortLabel
+														active={orderBy === 'repeatText'}
+														direction={order}
+														onClick={() => handleSort('repeatText')}
+														sx={{
+															'&:hover': { color: '#9A9CAE' }, // Change color on hover
+															'&.Mui-active': { color: '#9A9CAE' },
+															'&.Mui-active .MuiTableSortLabel-icon': {
+																color: '#9A9CAE',
+															}, // Change to blue when active
+														}}
 													>
-														<TableSortLabel
-															active={orderBy === 'repeatText'}
-															direction={order}
-															onClick={() => handleSort('repeatText')}
-															sx={{
-																'&:hover': { color: '#9A9CAE' }, // Change color on hover
-																'&.Mui-active': { color: '#9A9CAE' },
-																'&.Mui-active .MuiTableSortLabel-icon': {
-																	color: '#9A9CAE',
-																}, // Change to blue when active
-															}}
-														>
-															Days & Ends on Date
-														</TableSortLabel>
-													</TableCell>
-													<TableCell
-														className='text-[#14151A] dark:text-gray-700 border-e'
-														sx={{ fontWeight: 'bold' }}
-													>
-														Actions
-													</TableCell>
-												</TableRow>
-											</TableHead>
-											<TableBody
-												sx={{
-													'& .MuiTableCell-root': {
-														// borderBottom: '1px solid #464852',
-													},
-												}}
-											>
-												{sortedBookings
-													?.slice(
-														page * rowPerPage,
-														page * rowPerPage + rowPerPage
-													)
-													.map((row) => (
-														<Row
-															key={row.id}
-															row={row}
-															setAcceptModal={setAcceptModal}
-															setRejectModal={setRejectModal}
-															dispatch={dispatch}
-														/>
-													))}
-											</TableBody>
-										</Table>
-									
+														Days & Ends on Date
+													</TableSortLabel>
+												</TableCell>
+												<TableCell
+													className='text-[#14151A] dark:text-gray-700 border-e'
+													sx={{ fontWeight: 'bold' }}
+												>
+													Actions
+												</TableCell>
+											</TableRow>
+										</TableHead>
+										<TableBody
+											sx={{
+												'& .MuiTableCell-root': {
+													// borderBottom: '1px solid #464852',
+												},
+											}}
+										>
+											{sortedBookings
+												?.slice(
+													page * rowPerPage,
+													page * rowPerPage + rowPerPage
+												)
+												.map((row) => (
+													<Row
+														key={row.id}
+														row={row}
+														setAcceptModal={setAcceptModal}
+														setRejectModal={setRejectModal}
+														dispatch={dispatch}
+													/>
+												))}
+										</TableBody>
+									</Table>
+
 									<TablePagination
 										component='div'
 										count={sortedBookings.length}

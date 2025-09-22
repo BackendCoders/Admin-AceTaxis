@@ -43,7 +43,7 @@ function AcceptedBookings() {
 	const { acceptedWebBookings } = useSelector((state) => state.webBooking);
 	const [searchInput, setSearchInput] = useState('');
 	const [selectedScope, setSelectedScope] = useState('3');
-	const [date, setDate] = useState(new Date());
+	const [date, setDate] = useState();
 	const [open, setOpen] = useState(false);
 
 	const handleDateSelect = (date) => {

@@ -85,7 +85,7 @@ function RowNotPriced({
 	handlePostButton,
 	handleShow,
 }) {
-	const userData = JSON.parse(localStorage.getItem('userData'));
+	// const userData = JSON.parse(localStorage.getItem('userData'));
 	const [open, setOpen] = useState(false);
 	const [waiting, setWaiting] = useState(row.waiting);
 	const [journeyCharge, setJourneyCharge] = useState(row.journeyCharge);

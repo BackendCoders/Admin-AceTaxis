@@ -79,7 +79,7 @@ function RowNotPriced({
 	handlePostButton,
 	handleShow,
 }) {
-	const userData = JSON.parse(localStorage.getItem('userData'));
+	// const userData = JSON.parse(localStorage.getItem('userData'));
 	const { driverChargeableJobs } = useSelector((state) => state.billing);
 	const notPriced = driverChargeableJobs?.notPriced;
 	const booking = notPriced?.find((job) => job?.bookingId === row?.id);

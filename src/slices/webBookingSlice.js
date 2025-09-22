@@ -16,6 +16,7 @@ const initialState = {
 	amendRequests: [],
 	amendRequest: null,
 	webBooking: null,
+	rejectBooking: null,
 };
 
 const webBookingSlice = createSlice({
@@ -42,6 +43,9 @@ const webBookingSlice = createSlice({
 		},
 		setAmendRequest: (state, action) => {
 			state.amendRequest = action.payload;
+		},
+		setRejectBooking: (state, action) => {
+			state.rejectBooking = action.payload;
 		},
 	},
 });
@@ -131,5 +135,6 @@ export const {
 	setAcceptedWebBookings,
 	setAmendRequests,
 	setAmendRequest,
+	setRejectBooking,
 } = webBookingSlice.actions;
 export default webBookingSlice.reducer;
