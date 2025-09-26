@@ -52,7 +52,9 @@ import {
 	GrowthByPeriod,
 	PayoutsByMonth,
 	PickupsByPostcode,
+	ProfitabilityByDateRange,
 	ProfitabilityOnInvoice,
+	QrScansAdverts,
 	RevenueByMonth,
 	TopCustomer,
 	TotalProfitabilityByPeriod,
@@ -329,6 +331,18 @@ const AppRoutingSetup = () => {
 						<Route
 							path='/financial/total-profitability-by-period'
 							element={<TotalProfitabilityByPeriod />}
+						/>
+					)}
+					{userRole !== 2 && (
+						<Route
+							path='/financial/profitability-by-date-range'
+							element={<ProfitabilityByDateRange />}
+						/>
+					)}
+					{userRole !== 2 && (
+						<Route
+							path='/financial/qr-code-adverts'
+							element={<QrScansAdverts />}
 						/>
 					)}
 					{userRole !== 2 && (

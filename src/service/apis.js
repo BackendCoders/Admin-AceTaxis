@@ -205,4 +205,8 @@ export const reportsEndpoints = {
 		`${BASE}/api/Reporting/ProfitabilityOnInvoices?from=${from}&to=${to}`,
 	GET_TOTAL_PROFITABILITY_BY_PERIOD: (from, to) =>
 		`${BASE}/api/Reporting/TotalProfitabilityByPeriod?from=${from}&to=${to}`,
+	GET_PROFITABILITY_BY_DATE_RANGE: (from, to) =>
+		`${BASE}/api/Reporting/ProfitsByDateRange?from=${from}&to=${to}`,
+	GET_QR_SCANS: `${BASE}/api/Reporting/GetQRScans`,
+
 };

@@ -8,7 +8,9 @@ import {
   getGrowthByPeriod,
   getPayoutsByMonth,
   getPickupPostcodes,
+  getProfitabilityByDateRange,
   getProfitabilityOnInvoice,
+  getQrScans,
   getRevenueByMonth,
   getTopCustomer,
   getTotalProfitabilityByPeriod,
@@ -28,6 +30,8 @@ const initialState = {
   payoutsByMonth: [],
   profitabilityOnInvoice: [],
   totalProfitabilityByPeriod: [],
+  profitabilityByDateRange: [],
+  qrScansAdverts: [],
 };
 
 const reportSlice = createSlice({
@@ -69,6 +73,12 @@ const reportSlice = createSlice({
     },
     setTotalProfitabilityByPeriod(state, action) {
       state.totalProfitabilityByPeriod = action.payload;
+    },
+    setProfitabilityByDateRange(state, action) {
+      state.profitabilityByDateRange = action.payload;
+    },
+    setQrScansAdverts(state, action) {
+      state.qrScansAdverts = action.payload;
     },
   },
 });
@@ -299,6 +309,44 @@ export function refreshTotalProfitabilityByPeriod(from, to) {
   };
 }
 
+export function refreshProfitabilityByDateRange(from, to) {
+  return async (dispatch) => {
+    try {
+      const response = await getProfitabilityByDateRange(from, to);
+      console.log(response);
+
+      if (response.status === "success") {
+        // const array = Object.keys(response)
+        //   .filter((key) => key !== "status") // Exclude 'status' field
+        //   .map((key) => response[key]);
+
+        dispatch(setProfitabilityByDateRange([{ ...response }]));
+      }
+    } catch (error) {
+      console.error("Failed to refresh Profitability By DateRange:", error);
+    }
+  };
+}
+
+export function refreshQrScansAdverts() {
+  return async (dispatch) => {
+    try {
+      const response = await getQrScans();
+      console.log(response);
+
+      if (response.status === "success") {
+        const array = Object.keys(response)
+          .filter((key) => key !== "status") // Exclude 'status' field
+          .map((key) => response[key]);
+
+        dispatch(setQrScansAdverts(array));
+      }
+    } catch (error) {
+      console.error("Failed to refresh Total Profitability By Period:", error);
+    }
+  };
+}
+
 export const {
   setLoading,
   setDuplicateBookings,
@@ -312,6 +360,8 @@ export const {
   setVehicleTypeCounts,
   setProfitabilityOnInvoice,
   setTotalProfitabilityByPeriod,
+  setProfitabilityByDateRange,
+  setQrScansAdverts
 } = reportSlice.actions;
 
 export default reportSlice.reducer;

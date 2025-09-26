@@ -1,7 +1,7 @@
 /** @format */
 
 // import { sendLogs } from '../../utils/getLogs';
-import { handlePostReq } from "../apiRequestHandler";
+import { handleGetReq, handlePostReq } from "../apiRequestHandler";
 import { reportsEndpoints } from "../apis";
 
 const {
@@ -16,6 +16,8 @@ const {
   GET_PAYOUTS_BY_MONTH,
   GET_PROFITABILITY_ON_INVOICE,
   GET_TOTAL_PROFITABILITY_BY_PERIOD,
+  GET_PROFITABILITY_BY_DATE_RANGE,
+  GET_QR_SCANS
 } = reportsEndpoints;
 
 export async function duplicateBookings(startDate) {
@@ -231,6 +233,54 @@ export async function getTotalProfitabilityByPeriod(from, to) {
 
   console.log(
     "GET_TOTAL_PROFITABILITY_BY_PERIOD API RESPONSE.........",
+    response
+  );
+
+  if (response.status === "success") {
+    // sendLogs(
+    // 	{
+    // 		url: UPDATE_MSG_CONFIG,
+    // 		reqBody: data,
+    // 		headers: setHeaders(),
+    // 		response: response,
+    // 	},
+    // 	'info'
+    // );
+    return response;
+  }
+}
+
+export async function getProfitabilityByDateRange(from, to) {
+  const response = await handlePostReq(
+    GET_PROFITABILITY_BY_DATE_RANGE(from, to)
+  );
+
+  console.log(
+    "GET_PROFITABILITY_BY_DATE_RANGE API RESPONSE.........",
+    response
+  );
+
+  if (response.status === "success") {
+    // sendLogs(
+    // 	{
+    // 		url: UPDATE_MSG_CONFIG,
+    // 		reqBody: data,
+    // 		headers: setHeaders(),
+    // 		response: response,
+    // 	},
+    // 	'info'
+    // );
+    return response;
+  }
+}
+
+export async function getQrScans() {
+  const response = await handleGetReq(
+    GET_QR_SCANS
+  );
+
+  console.log(
+    "GET_QR_SCANS API RESPONSE.........",
     response
   );
 

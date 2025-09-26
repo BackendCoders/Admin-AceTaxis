@@ -405,6 +405,16 @@ export const MENU_SIDEBAR = [
 						path: '/financial/total-profitability-by-period',
 						roles: [1],
 					},
+					{
+						title: 'Profitability By DateRange',
+						path: '/financial/profitability-by-date-range',
+						roles: [1],
+					},
+					{
+						title: 'QR Code Adverts',
+						path: '/financial/qr-code-adverts',
+						roles: [1],
+					},
 				],
 			},
 		],
