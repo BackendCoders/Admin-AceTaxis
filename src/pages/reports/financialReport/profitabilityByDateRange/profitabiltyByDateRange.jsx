@@ -27,6 +27,7 @@ import {
     refreshProfitabilityByDateRange,
     setProfitabilityByDateRange,
 } from '../../../../slices/reportSlice';
+import { Stats } from './StatsBlocks';
 
 function ProfitabilityByDateRange() {
     const dispatch = useDispatch();
@@ -229,7 +230,11 @@ function ProfitabilityByDateRange() {
             <div className='pe-[1.875rem] ps-[1.875rem] ms-auto me-auto max-w-[1850px] w-full'>
                 <div className='flex flex-col items-stretch gap-5 lg:gap-7.5'>
                     <div className='flex flex-wrap items-center gap-5 justify-between'>
+                        <div className="flex flex-wrap justify-start items-center gap-4">
+                            <Stats />
+                        </div>
                         <div className='card card-grid min-w-full'>
+                       
                             <div className='card-header flex-wrap gap-2'>
                                 <div className='flex flex-wrap gap-2 lg:gap-5'>
                                     <div className='flex flex-wrap items-center gap-2.5'>
