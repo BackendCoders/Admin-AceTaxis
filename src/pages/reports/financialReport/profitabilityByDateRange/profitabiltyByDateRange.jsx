@@ -89,8 +89,8 @@ function ProfitabilityByDateRange() {
                 enableSorting: true,
                 cell: ({ row }) => (
                     <span className={`font-medium ${row.original.color}`}>
-                        £{row.original.accountPayouts
-                            ? row.original.accountPayouts
+                        {row.original.accountPayouts
+                            ? `£${row.original.accountPayouts?.toFixed(2)}`
                             : '-'}
                     </span>
                 ),
@@ -108,7 +108,7 @@ function ProfitabilityByDateRange() {
                 enableSorting: true,
                 cell: ({ row }) => (
                     <span className={`font-medium ${row.original.color}`}>
-                        £{row.original.totalAccountProfitNet ? row.original.totalAccountProfitNet : '-'}
+                        {row.original.totalAccountProfitNet ? `£${row.original.totalAccountProfitNet?.toFixed(2)}` : '-'}
                     </span>
                 ),
                 meta: { headerClassName: 'min-w-[120px]' },
@@ -125,7 +125,7 @@ function ProfitabilityByDateRange() {
                 enableSorting: true,
                 cell: ({ row }) => (
                     <span className={`font-medium ${row.original.color}`}>
-                        {row.original.accountProfitMargin ? row.original.accountProfitMargin : '-'} %
+                        {row.original.accountProfitMargin ? `${row.original.accountProfitMargin?.toFixed(2)}%` : '-'}
                     </span>
                 ),
                 meta: { headerClassName: 'min-w-[120px]' },
@@ -142,7 +142,7 @@ function ProfitabilityByDateRange() {
                 enableSorting: true,
                 cell: ({ row }) => (
                     <span className={`font-medium ${row.original.color}`}>
-                        £{row.original?.totalCommsProfitGross?.toFixed(2)}
+                        {row.original?.totalCommsProfitGross ? `£${row.original?.totalCommsProfitGross?.toFixed(2)}` : "-"}
                     </span>
                 ),
                 meta: { headerClassName: 'min-w-[120px]' },
@@ -159,7 +159,7 @@ function ProfitabilityByDateRange() {
                 enableSorting: true,
                 cell: ({ row }) => (
                     <span className={`font-medium ${row.original.color}`}>
-                        £{row.original?.totalCommsProfitNet?.toFixed(2)}
+                        {row.original?.totalCommsProfitNet ? `£${row.original?.totalCommsProfitNet?.toFixed(2)}` : "-"}
                     </span>
                 ),
                 meta: { headerClassName: 'min-w-[120px]' },
@@ -176,7 +176,7 @@ function ProfitabilityByDateRange() {
                 enableSorting: true,
                 cell: ({ row }) => (
                     <span className={`font-medium ${row.original.color}`}>
-                        £{row.original?.grossProfit?.toFixed(2)}
+                        {row.original?.grossProfit ? `£${row.original?.grossProfit?.toFixed(2)}` : "-" }
                     </span>
                 ),
                 meta: { headerClassName: 'min-w-[120px]' },
@@ -193,7 +193,7 @@ function ProfitabilityByDateRange() {
                 enableSorting: true,
                 cell: ({ row }) => (
                     <span className={`font-medium ${row.original.color}`}>
-                        £{row.original.netProfit?.toFixed(2)}
+                        {row.original.netProfit ? `£${row.original.netProfit?.toFixed(2)}` : "-"}
                     </span>
                 ),
                 meta: { headerClassName: 'min-w-[200px]' },

@@ -10,38 +10,38 @@ const Stats = () => {
     const items = [
         {
             icon: 'car',
-            info: profitabilityByDateRange?.accountSales || 0,
+            info: profitabilityByDateRange[0]?.accountSales || 0,
             desc: 'Account Sales',
             color: 'bg-danger',
         },
         {
             icon: 'briefcase',
-            info: profitabilityByDateRange?.cashProfitsGross || 0,
+            info: profitabilityByDateRange[0]?.cashProfitsGross || 0,
             desc: 'Cash Comms Gross',
             color: 'bg-primary',
         },
         {
             icon: 'underlining',
-            info: profitabilityByDateRange?.cashProfitsNet || 0,
+            info: profitabilityByDateRange[0]?.cashProfitsNet || 0,
             desc: 'Cash Comms Net',
             color: 'bg-purple-400',
         },
         {
             icon: 'users',
-            info: profitabilityByDateRange?.rankProfitsGross || 0,
+            info: profitabilityByDateRange[0]?.rankProfitsGross || 0,
             desc: 'Rank Comms Gross',
             color: 'bg-cyan-400',
         },
         {
             icon: 'map',
-            info: profitabilityByDateRange?.rankProfitsNet || 0,
+            info: profitabilityByDateRange[0]?.rankProfitsNet || 0,
             desc: 'Rank Comms Net',
             color: 'bg-success',
         },
         {
             icon: 'user',
             info:
-                profitabilityByDateRange?.totalCosts || 0,
+                profitabilityByDateRange[0]?.totalCosts || 0,
             desc: 'Total Costs',
             color: 'bg-teal-400',
         },
