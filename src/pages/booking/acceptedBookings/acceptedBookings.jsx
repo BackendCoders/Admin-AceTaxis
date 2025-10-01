@@ -115,7 +115,7 @@ function AcceptedBookings() {
 				meta: { headerClassName: 'w-20' },
 			},
 			{
-				accessorKey: 'pickUpDateTime',
+				accessorKey: 'pickupDateTime',
 				header: ({ column }) => (
 					<DataGridColumnHeader
 						title=<span className='font-bold'>Pickup Date/Time</span>
