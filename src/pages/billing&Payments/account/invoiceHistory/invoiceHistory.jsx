@@ -22,7 +22,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
-import { format, addDays } from "date-fns";
+import { format, subDays } from "date-fns";
 import { cn } from "@/lib/utils";
 import {
   DataGrid,
@@ -513,8 +513,8 @@ function InvoiceHistory() {
     button: null,
   });
   const [date, setDate] = useState({
-    from: new Date(),
-    to: addDays(new Date(), 20),
+    from: subDays(new Date(), 689),
+    to: new Date(),
   });
   const [openDate, setOpenDate] = useState(false);
   const [tempRange, setTempRange] = useState(date);
