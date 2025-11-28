@@ -35,10 +35,17 @@ export default function NotPriced({ handleShow }) {
 
   const [expandedGroups, setExpandedGroups] = useState({});
 
-  const toggleGroup = (groupName) => {
+  // const toggleGroup = (groupName) => {
+  //   setExpandedGroups((prev) => ({
+  //     ...prev,
+  //     [groupName]: !prev[groupName],
+  //   }));
+  // };
+
+  const toggleGroup = (groupId) => {
     setExpandedGroups((prev) => ({
       ...prev,
-      [groupName]: !prev[groupName],
+      [groupId]: !prev[groupId],
     }));
   };
 
@@ -317,11 +324,12 @@ export default function NotPriced({ handleShow }) {
               currentPagePassenger * itemsPerPagePassenger,
               (currentPagePassenger + 1) * itemsPerPagePassenger
             )
-            ?.map((group, groupIndex) => (
-              <React.Fragment key={groupIndex}>
+            ?.map((group) => (
+              <React.Fragment key={group.jobs?.[0]?.bookingId}>
                 <tr
                   className="bg-gray-100 cursor-pointer"
-                  onClick={() => toggleGroup(group.groupName)}
+                  // onClick={() => toggleGroup(group.groupName)}
+                  onClick={() => toggleGroup(group.jobs?.[0]?.bookingId)}
                 >
                   <td
                     colSpan="18"
@@ -329,7 +337,8 @@ export default function NotPriced({ handleShow }) {
                   >
                     <div className="flex justify-start items-center gap-2">
                       <span className="-ms-1 text-gray-700">
-                        {expandedGroups[group.groupName] ? (
+                        {/* {expandedGroups[group.groupName] ? ( */}
+                        {expandedGroups[group.jobs?.[0]?.bookingId] ? (
                           <KeyboardArrowDownIcon />
                         ) : (
                           <KeyboardArrowRightIcon />
@@ -372,7 +381,7 @@ export default function NotPriced({ handleShow }) {
                     </div>
                   </td>
                 </tr>
-                {expandedGroups[group.groupName] && (
+                {expandedGroups[group.jobs?.[0]?.bookingId] && (
                   <>
                     {group.jobs
                       ?.slice(
