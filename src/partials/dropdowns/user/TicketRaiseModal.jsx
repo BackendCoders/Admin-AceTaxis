@@ -13,6 +13,7 @@ import * as Yup from "yup";
 import clsx from "clsx";
 // import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
+import { submitTicket } from "../../../service/operations/reportsApi";
 
 function TicketRaiseModal({ open, onClose }) {
   //   const { user } = useSelector((state) => state.auth);
@@ -22,12 +23,12 @@ function TicketRaiseModal({ open, onClose }) {
   const addLocalSchema = Yup.object().shape({
     // Changed from email to username
     subject: Yup.string().required("Subject is required"),
-    description: Yup.string().required("Description is required"),
+    message: Yup.string().required("Message is required"),
   });
 
   const initialValues = {
     subject: "",
-    description: "",
+    message: "",
   };
 
   const formik = useFormik({
@@ -36,23 +37,9 @@ function TicketRaiseModal({ open, onClose }) {
     onSubmit: async (values, { setSubmitting }) => {
       console.log("Submitted Values:", values);
       try {
-        // if (isDirectMsgModal) {
-        //   if (selectedDrivers.length === 0) {
-        //     toast.error("Please select at least one driver.");
-        //     setSubmitting(false);
-        //     return;
-        //   }
+        await submitTicket(values.subject, values.message);
+        toast.success("Ticket sent successfully!");
 
-        //   const promises = selectedDrivers.map((driverId) =>
-        //     sendDirectMsgToDriver(driverId, values.message)
-        //   );
-        //   await Promise.all(promises);
-        //   toast.success("Messages sent successfully!");
-        // }
-        // if (isGlobalMsgModal) {
-        //   await sendGlobalMsgToDriver(values.message);
-        //   toast.success("Global message sent successfully!");
-        // }
         onClose();
       } catch (error) {
         toast.error("Failed to send ticket.");
@@ -97,26 +84,25 @@ function TicketRaiseModal({ open, onClose }) {
                 )}
               </div>
               <div className="flex flex-col gap-1 pb-2">
-                <label className="form-label text-gray-900">Description</label>
+                <label className="form-label text-gray-900">Message</label>
                 <label className="">
                   <textarea
-                    placeholder="Enter description"
+                    placeholder="Enter message"
                     rows={6}
                     autoComplete="off"
-                    {...formik.getFieldProps("description")}
+                    {...formik.getFieldProps("message")}
                     className={clsx(
                       "form-control textarea text-2sm text-gray-600 font-normal",
                       {
                         "is-invalid":
-                          formik.touched.description &&
-                          formik.errors.description,
+                          formik.touched.message && formik.errors.message,
                       }
                     )}
                   />
                 </label>
-                {formik.touched.description && formik.errors.description && (
+                {formik.touched.message && formik.errors.message && (
                   <span role="alert" className="text-danger text-xs mt-1">
-                    {formik.errors.description}
+                    {formik.errors.message}
                   </span>
                 )}
               </div>

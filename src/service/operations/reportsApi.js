@@ -17,7 +17,8 @@ const {
   GET_PROFITABILITY_ON_INVOICE,
   GET_TOTAL_PROFITABILITY_BY_PERIOD,
   GET_PROFITABILITY_BY_DATE_RANGE,
-  GET_QR_SCANS
+  GET_QR_SCANS,
+  SUBMIT_TICKET,
 } = reportsEndpoints;
 
 export async function duplicateBookings(startDate) {
@@ -275,14 +276,28 @@ export async function getProfitabilityByDateRange(from, to) {
 }
 
 export async function getQrScans() {
-  const response = await handleGetReq(
-    GET_QR_SCANS
-  );
+  const response = await handleGetReq(GET_QR_SCANS);
 
-  console.log(
-    "GET_QR_SCANS API RESPONSE.........",
-    response
-  );
+  console.log("GET_QR_SCANS API RESPONSE.........", response);
+
+  if (response.status === "success") {
+    // sendLogs(
+    // 	{
+    // 		url: UPDATE_MSG_CONFIG,
+    // 		reqBody: data,
+    // 		headers: setHeaders(),
+    // 		response: response,
+    // 	},
+    // 	'info'
+    // );
+    return response;
+  }
+}
+
+export async function submitTicket(subject, message) {
+  const response = await handlePostReq(SUBMIT_TICKET(subject, message));
+
+  console.log("SUBMIT_TICKET API RESPONSE.........", response);
 
   if (response.status === "success") {
     // sendLogs(
