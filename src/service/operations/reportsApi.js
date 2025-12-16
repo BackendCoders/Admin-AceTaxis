@@ -1,6 +1,7 @@
 /** @format */
 
 // import { sendLogs } from '../../utils/getLogs';
+import axios from "axios";
 import { handleGetReq, handlePostReq } from "../apiRequestHandler";
 import { reportsEndpoints } from "../apis";
 
@@ -294,21 +295,37 @@ export async function getQrScans() {
   }
 }
 
-export async function submitTicket(subject, message) {
-  const response = await handlePostReq(SUBMIT_TICKET(subject, message));
+export async function submitTicket(formData) {
+  const accessToken = localStorage.getItem("authToken");
+  if (!accessToken) return {};
 
-  console.log("SUBMIT_TICKET API RESPONSE.........", response);
+  try {
+    const response = await axios.post(SUBMIT_TICKET, formData, {
+      headers: {
+        Accept: "*/*",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    if (response.status >= 200 && response.status < 300) {
+      return {
+        ...response.data,
+        status: "success",
+      };
+    }
+    // fallback (rare case)
+    return {
+      status: "fail",
+      message: "Unexpected response status",
+    };
+  } catch (err) {
+    console.error("SubmitTicket Error:", err);
 
-  if (response.status === "success") {
-    // sendLogs(
-    // 	{
-    // 		url: UPDATE_MSG_CONFIG,
-    // 		reqBody: data,
-    // 		headers: setHeaders(),
-    // 		response: response,
-    // 	},
-    // 	'info'
-    // );
-    return response;
+    return {
+      ...err.response,
+      status: err.response?.status > 499 ? "error" : "fail",
+      message: `${
+        err.response?.status > 499 ? "server error" : "Failed"
+      } while submitting ticket`,
+    };
   }
 }

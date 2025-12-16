@@ -14,12 +14,13 @@ import clsx from "clsx";
 // import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import { submitTicket } from "../../../service/operations/reportsApi";
+import { useState } from "react";
 
 function TicketRaiseModal({ open, onClose }) {
   //   const { user } = useSelector((state) => state.auth);
   //   const fullName = user?.fullName || "Guest User";
   //   const email = user?.email || "";
-
+  const [preview, setPreview] = useState(null);
   const addLocalSchema = Yup.object().shape({
     // Changed from email to username
     subject: Yup.string().required("Subject is required"),
@@ -29,6 +30,7 @@ function TicketRaiseModal({ open, onClose }) {
   const initialValues = {
     subject: "",
     message: "",
+    attachment: null,
   };
 
   const formik = useFormik({
@@ -37,10 +39,25 @@ function TicketRaiseModal({ open, onClose }) {
     onSubmit: async (values, { setSubmitting }) => {
       console.log("Submitted Values:", values);
       try {
-        await submitTicket(values.subject, values.message);
-        toast.success("Ticket sent successfully!");
+        const formData = new FormData();
+        formData.append("subject", values.subject);
+        formData.append("message", values.message);
 
-        onClose();
+        // 🔥 Swagger-compatible behavior
+        if (values.attachment) {
+          formData.append("attachment", values.attachment);
+        } else {
+          formData.append("attachment", ""); // send empty value
+        }
+
+        const res = await submitTicket(formData);
+
+        if (res.status === "success") {
+          toast.success("Ticket sent successfully!");
+          onClose();
+        } else {
+          toast.error(res.message || "Failed to send ticket");
+        }
       } catch (error) {
         toast.error("Failed to send ticket.");
         console.error(error);
@@ -88,7 +105,7 @@ function TicketRaiseModal({ open, onClose }) {
                 <label className="">
                   <textarea
                     placeholder="Enter message"
-                    rows={6}
+                    rows={3}
                     autoComplete="off"
                     {...formik.getFieldProps("message")}
                     className={clsx(
@@ -105,6 +122,83 @@ function TicketRaiseModal({ open, onClose }) {
                     {formik.errors.message}
                   </span>
                 )}
+              </div>
+              <div className="flex flex-col gap-1 pb-2">
+                <label className="form-label text-gray-900">
+                  Attachment (optional)
+                </label>
+
+                <div
+                  className="border-2 border-dashed border-gray-400 bg-inherit rounded-md p-3 text-center cursor-pointer
+               hover:border-blue-500 transition"
+                  onDragOver={(e) => e.preventDefault()}
+                  onDrop={(e) => {
+                    e.preventDefault();
+                    const f = e.dataTransfer.files[0];
+                    if (!f) return;
+
+                    formik.setFieldValue("attachment", f);
+                    if (f.type.startsWith("image/")) {
+                      setPreview(URL.createObjectURL(f));
+                    } else {
+                      setPreview(null);
+                    }
+                  }}
+                >
+                  {!formik.values.attachment ? (
+                    <>
+                      <p className="text-gray-600 text-sm font-medium">
+                        Drag & Drop to Upload File
+                      </p>
+                      <p className="text-gray-500 text-xs my-1">OR</p>
+
+                      <label className="btn btn-light btn-sm cursor-pointer">
+                        Browse File
+                        <input
+                          type="file"
+                          hidden
+                          accept="image/*,.pdf,.doc,.docx"
+                          onChange={(e) => {
+                            const f = e.target.files[0];
+                            if (!f) return;
+
+                            formik.setFieldValue("attachment", f);
+                            if (f.type.startsWith("image/")) {
+                              setPreview(URL.createObjectURL(f));
+                            } else {
+                              setPreview(null);
+                            }
+                          }}
+                        />
+                      </label>
+                    </>
+                  ) : (
+                    <div className="flex flex-col items-center">
+                      {formik.values.attachment.type?.startsWith("image/") ? (
+                        <img
+                          src={preview}
+                          alt="Preview"
+                          className="w-[4.5rem] h-[4.5rem] object-cover rounded-md mb-2"
+                        />
+                      ) : (
+                        <p className="text-gray-700 text-sm mb-2">
+                          📄 {formik.values.attachment.name}
+                        </p>
+                      )}
+
+                      <button
+                        type="button"
+                        className="btn btn-light btn-sm"
+                        onClick={() => {
+                          formik.setFieldValue("attachment", null);
+                          setPreview(null);
+                        }}
+                      >
+                        Remove File
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
 
               <div className="flex justify-end mb-2 mt-2">

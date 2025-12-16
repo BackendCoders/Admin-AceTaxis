@@ -208,6 +208,5 @@ export const reportsEndpoints = {
   GET_PROFITABILITY_BY_DATE_RANGE: (from, to) =>
     `${BASE}/api/Reporting/ProfitsByDateRange?from=${from}&to=${to}`,
   GET_QR_SCANS: `${BASE}/api/Reporting/GetQRScans`,
-  SUBMIT_TICKET: (subject, message) =>
-    `${BASE}/api/AdminUI/SubmitTicket?subject=${subject}&message=${message}`,
+  SUBMIT_TICKET: `${BASE}/api/AdminUI/SubmitTicket`,
 };
