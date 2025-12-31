@@ -214,7 +214,7 @@ export default function NotPriced({ handleShow }) {
 
   const handlePostButton = async (booking) => {
     try {
-      const postJob = booking?.priceAccount > 0 && true;
+      const postJob = Number(booking?.priceAccount) > 0 && true;
       const response = await accountDriverPostOrUnpostJobs(
         postJob,
         booking?.bookingId
