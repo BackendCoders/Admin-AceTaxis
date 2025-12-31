@@ -17,6 +17,7 @@ import {
   clearInvoice,
 } from "../../../../../service/operations/billing&Payment";
 import toast from "react-hot-toast";
+import { cancelBooking } from "../../../../../service/operations/webBookingsApi";
 export default function NotPriced({ handleShow }) {
   const userData = JSON.parse(localStorage.getItem("userData"));
   const { accountChargeableGroupSplitJobs } = useSelector(
@@ -34,6 +35,7 @@ export default function NotPriced({ handleShow }) {
   const [priceRefrenceRes, SetPriceRefrenceRes] = useState([]);
 
   const [expandedGroups, setExpandedGroups] = useState({});
+  const user = JSON.parse(localStorage.getItem("userData"));
 
   // const toggleGroup = (groupName) => {
   //   setExpandedGroups((prev) => ({
@@ -106,7 +108,15 @@ export default function NotPriced({ handleShow }) {
 
   const handleCancel = async (bookingId) => {
     try {
-      const response = await clearInvoice(bookingId);
+      const payload = {
+        bookingId: bookingId,
+        cancelledByName: user?.fullName,
+        cancelBlock: false,
+        cancelledOnArrival: false,
+        actionByUserId: user?.userId,
+      };
+      const response = await cancelBooking(payload);
+      // const response = await clearInvoice(bookingId);
       if (response?.status === "success") {
         toast.success("Invoice Cancellation Successful");
         handleShow();

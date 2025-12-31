@@ -77,6 +77,7 @@ import {
 import { refreshAccountChargeableJobs } from "../../../../slices/billingSlice";
 import TableFilterPopover from "../../tableFilterBar/tableFilterBar";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
+import { cancelBooking } from "../../../../service/operations/webBookingsApi";
 // Collapsible Row Component
 function RowNotPriced({
   row,
@@ -94,6 +95,7 @@ function RowNotPriced({
   const { accountChargeableJobs } = useSelector((state) => state.billing);
   const notPriced = accountChargeableJobs?.notPriced;
   const booking = notPriced?.find((job) => job?.bookingId === row?.id);
+  const user = JSON.parse(localStorage.getItem("userData"));
 
   const calculatedTotal =
     Number(parking) + Number(row?.waitingCharge) + Number(journeyCharge);
@@ -102,7 +104,15 @@ function RowNotPriced({
 
   const handleCancel = async () => {
     try {
-      const response = await clearInvoice(row?.id);
+      const payload = {
+        bookingId: row?.id,
+        cancelledByName: user?.fullName,
+        cancelBlock: false,
+        cancelledOnArrival: false,
+        actionByUserId: user?.userId,
+      };
+      const response = await cancelBooking(payload);
+      // const response = await clearInvoice(row?.id);
       if (response?.status === "success") {
         toast.success("Invoice Cancellation Successful");
         handleShow();

@@ -17,6 +17,7 @@ import {
   clearInvoice,
 } from "../../../../../service/operations/billing&Payment";
 import toast from "react-hot-toast";
+import { cancelBooking } from "../../../../../service/operations/webBookingsApi";
 export default function NotPriced({ handleShow }) {
   const userData = JSON.parse(localStorage.getItem("userData"));
   const { accountChargeableGroupSplitJobs } = useSelector(
@@ -39,6 +40,7 @@ export default function NotPriced({ handleShow }) {
 
   const [bookingValues, setBookingValues] = useState({});
   const [debouncedValue, setDebouncedValue] = useState(null);
+  const user = JSON.parse(localStorage.getItem("userData"));
 
   // Initialize booking values when data loads
   useEffect(() => {
@@ -135,7 +137,15 @@ export default function NotPriced({ handleShow }) {
 
   const handleCancel = async (bookingId) => {
     try {
-      const response = await clearInvoice(bookingId);
+      const payload = {
+        bookingId: bookingId,
+        cancelledByName: user?.fullName,
+        cancelBlock: false,
+        cancelledOnArrival: false,
+        actionByUserId: user?.userId,
+      };
+      const response = await cancelBooking(payload);
+      // const response = await clearInvoice(bookingId);
       if (response?.status === "success") {
         toast.success("Invoice Cancellation Successful");
         handleShow();
