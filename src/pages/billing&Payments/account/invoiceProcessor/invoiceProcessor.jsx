@@ -923,7 +923,7 @@ function InvoiceProcessor() {
 
   const handlePostButton = async (row) => {
     try {
-      const postJob = row?.journeyCharge > 0 && true;
+      const postJob = Number(row?.journeyCharge) > 0 && true;
       const response = await accountPostOrUnpostJobs(postJob, [row?.id]);
       if (response?.status === "success") {
         toast.success("Job posted successfully");
