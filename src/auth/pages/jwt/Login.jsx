@@ -54,12 +54,11 @@ const Login = () => {
 			if (token && token !== fcmToken) {
 				setFcmToken(token);
 				const response = await updateFCM(token);
-				if (response?.status === "success") {
+				if (response?.status === 'success') {
 					toast.success('FCM token updated successfully!');
 					localStorage.setItem('isNotification', true);
 					dispatch(setIsNotifications(true));
 				}
-				
 			}
 		} catch (error) {
 			console.error('Error updating FCM token:', error);
@@ -158,7 +157,7 @@ const Login = () => {
 					<div className='flex items-center justify-between gap-1'>
 						<label className='form-label text-gray-900'>Password</label>
 						<Link
-							to='/forgot-password'
+							to='/auth/reset-password'
 							className='text-2sm link shrink-0'
 						>
 							Forgot Password?
