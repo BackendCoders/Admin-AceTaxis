@@ -12,9 +12,8 @@ const initialState = {
 		? JSON.parse(localStorage.getItem('userData'))
 		: null,
 	getUser: null,
-	isNotifications: localStorage?.getItem('isNotification')
-		? localStorage?.getItem('isNotification')
-		: false,
+	isNotifications:
+		localStorage?.getItem('isNotification') === 'true' ? true : false,
 };
 
 const authSlice = createSlice({

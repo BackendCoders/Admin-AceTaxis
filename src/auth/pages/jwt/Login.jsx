@@ -79,8 +79,8 @@ const Login = () => {
 						username: values.username, // Pass username
 						password: values.password, // Pass password
 					},
-					navigate // Pass navigate to handle navigation after login
-				)
+					navigate, // Pass navigate to handle navigation after login
+				),
 			);
 			await handleFCMUpdate();
 
