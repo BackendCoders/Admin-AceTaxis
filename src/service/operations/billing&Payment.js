@@ -20,7 +20,7 @@ const {
 	ACCOUNT_PRICE_JOB_HVS,
 	ACCOUNT_PRICE_JOB_HVS_BULK,
 	ACCOUNT_POST_OR_UNPOST_JOBS,
-  ACCOUNT_DRIVER_POST_OR_UNPOST_JOBS,
+	ACCOUNT_DRIVER_POST_OR_UNPOST_JOBS,
 	ACCOUNT_GET_CHARGEABLE_JOBS,
 	ACCOUNT_GET_CHARGEABLE_GROUP_JOBS,
 	ACCOUNT_GET_CHARGEABLE_GROUP_SPLIT_JOBS,
@@ -63,7 +63,7 @@ export async function driverPriceJobByMileage(data) {
 
 	console.log(
 		'GET DRIVER_PRICE_JOB_BY_MILEAGE API RESPONSE.........',
-		response
+		response,
 	);
 
 	if (response.status === 'success') {
@@ -101,7 +101,7 @@ export async function driverPostOrUnpostJobs(postJob, id) {
 export async function driverGetChargeableJobs(userId, scope, lastDate) {
 	const response = await handlePostReq(
 		DRIVER_GET_CHARGEABLE_JOBS(userId, scope, lastDate),
-		null
+		null,
 	);
 
 	console.log('GET DRIVER_GET_CHARGEABLE_JOBS API RESPONSE.........', response);
@@ -158,7 +158,7 @@ export async function driverCreateStatements(data) {
 export async function driverGetStatements(from, to, userId) {
 	const response = await handlePostReq(
 		DRIVER_GET_STATEMENTS(from, to, userId),
-		null
+		null,
 	);
 
 	console.log('GET DRIVER_GET_STATEMENTS API RESPONSE.........', response);
@@ -239,7 +239,7 @@ export async function accountPriceJobByMileage(data) {
 
 	console.log(
 		'GET ACCOUNT_PRICE_JOB_BY_MILEAGE API RESPONSE.........',
-		response
+		response,
 	);
 
 	if (response.status === 'success') {
@@ -300,12 +300,12 @@ export async function accountPriceJobHVSBulk(data) {
 export async function accountPostOrUnpostJobs(postJob, id) {
 	const response = await handlePostReq(
 		ACCOUNT_POST_OR_UNPOST_JOBS(postJob),
-		id
+		id,
 	);
 
 	console.log(
 		'GET ACCOUNT_POST_OR_UNPOST_JOBS API RESPONSE.........',
-		response
+		response,
 	);
 
 	if (response.status === 'success') {
@@ -326,12 +326,12 @@ export async function accountPostOrUnpostJobs(postJob, id) {
 export async function accountDriverPostOrUnpostJobs(postJob, id) {
 	const response = await handlePostReq(
 		ACCOUNT_DRIVER_POST_OR_UNPOST_JOBS(postJob),
-		id
+		[].concat(id),
 	);
 
 	console.log(
 		'GET ACCOUNT_DRIVER_POST_OR_UNPOST_JOBS API RESPONSE.........',
-		response
+		response,
 	);
 
 	if (response.status === 'success') {
@@ -351,12 +351,12 @@ export async function accountDriverPostOrUnpostJobs(postJob, id) {
 
 export async function accountGetChargeableJobs(accNo, from, to) {
 	const response = await handlePostReq(
-		ACCOUNT_GET_CHARGEABLE_JOBS(accNo, from, to)
+		ACCOUNT_GET_CHARGEABLE_JOBS(accNo, from, to),
 	);
 
 	console.log(
 		'GET ACCOUNT_GET_CHARGEABLE_JOBS API RESPONSE.........',
-		response
+		response,
 	);
 
 	if (response.status === 'success') {
@@ -376,12 +376,12 @@ export async function accountGetChargeableJobs(accNo, from, to) {
 
 export async function accountGetChargeableGroupJobs(accNo, from, to) {
 	const response = await handlePostReq(
-		ACCOUNT_GET_CHARGEABLE_GROUP_JOBS(accNo, from, to)
+		ACCOUNT_GET_CHARGEABLE_GROUP_JOBS(accNo, from, to),
 	);
 
 	console.log(
 		'GET ACCOUNT_GET_CHARGEABLE_GROUP_JOBS API RESPONSE.........',
-		response
+		response,
 	);
 
 	if (response.status === 'success') {
@@ -401,12 +401,12 @@ export async function accountGetChargeableGroupJobs(accNo, from, to) {
 
 export async function accountGetChargeableGroupSplitJobs(accNo, from, to) {
 	const response = await handlePostReq(
-		ACCOUNT_GET_CHARGEABLE_GROUP_SPLIT_JOBS(accNo, from, to)
+		ACCOUNT_GET_CHARGEABLE_GROUP_SPLIT_JOBS(accNo, from, to),
 	);
 
 	console.log(
 		'GET ACCOUNT_GET_CHARGEABLE_GROUP_SPLIT_JOBS API RESPONSE.........',
-		response
+		response,
 	);
 
 	if (response.status === 'success') {
@@ -429,7 +429,7 @@ export async function accountUpdateChargesData(data) {
 
 	console.log(
 		'GET ACCOUNT_UPDATE_CHARGES_DATA API RESPONSE.........',
-		response
+		response,
 	);
 
 	if (response.status === 'success') {
@@ -450,7 +450,7 @@ export async function accountUpdateChargesData(data) {
 export async function accountCreateInvoice(emailInvoices, data) {
 	const response = await handlePostReq(
 		ACCOUNT_CREATE_INVOICE(emailInvoices),
-		data
+		data,
 	);
 
 	console.log('GET ACCOUNT_CREATE_INVOICE API RESPONSE.........', response);
