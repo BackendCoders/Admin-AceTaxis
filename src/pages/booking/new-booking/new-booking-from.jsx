@@ -99,7 +99,7 @@ function Row({ row, setAcceptModal, setRejectModal, dispatch }) {
 				<TableCell className='text-[#14151A] dark:text-gray-700'>
 					<span className={`font-medium ${row.color}`}>
 						{new Date(row.pickupDateTime?.split('T')[0])?.toLocaleDateString(
-							'en-GB'
+							'en-GB',
 						)}{' '}
 						{row.pickupDateTime?.split('T')[1].split('.')[0]?.slice(0, 5)}
 					</span>
@@ -223,7 +223,7 @@ function Row({ row, setAcceptModal, setRejectModal, dispatch }) {
 									<Typography variant='body2'>
 										<strong>Created On:</strong>{' '}
 										{new Date(row.createdOn?.split('T')[0])?.toLocaleDateString(
-											'en-GB'
+											'en-GB',
 										)}{' '}
 										{row.createdOn?.split('T')[1].split('.')[0]?.slice(0, 5)}
 									</Typography>
@@ -596,7 +596,7 @@ function NewBooking() {
 														id='date'
 														className={cn(
 															'input data-[state=open]:border-primary',
-															!date && 'text-muted-foreground'
+															!date && 'text-muted-foreground',
 														)}
 														style={{ width: '13rem', marginTop: '16px' }}
 													>
@@ -886,7 +886,7 @@ function NewBooking() {
 											{sortedBookings
 												?.slice(
 													page * rowPerPage,
-													page * rowPerPage + rowPerPage
+													page * rowPerPage + rowPerPage,
 												)
 												.map((row) => (
 													<Row

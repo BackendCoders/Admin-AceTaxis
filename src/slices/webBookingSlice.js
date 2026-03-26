@@ -94,6 +94,7 @@ export function refreshRejectedWebBookings() {
 export function refreshAcceptedWebBookings() {
 	return async (dispatch) => {
 		try {
+			dispatch(setLoading(true));
 			const response = await getAcceptedWebBookings();
 
 			if (response.status === 'success') {
@@ -105,6 +106,8 @@ export function refreshAcceptedWebBookings() {
 			}
 		} catch (error) {
 			console.error('Failed to refresh rejected web bookings:', error);
+		} finally {
+			dispatch(setLoading(false));
 		}
 	};
 }

@@ -22,6 +22,7 @@ import { useState } from 'react';
 
 function AcceptWebBooking({ open, onOpenChange }) {
 	const dispatch = useDispatch();
+	const [loading, setLoading] = useState(false);
 	const { user } = useSelector((state) => state.auth);
 	const { webBooking } = useSelector((state) => state.webBooking);
 	const [journeyTime, setJourneyTime] = useState(null);
@@ -70,6 +71,8 @@ function AcceptWebBooking({ open, onOpenChange }) {
 		}
 	};
 
+	console.log(loading);
+
 	const formik = useFormik({
 		initialValues,
 		validationSchema: addLocalSchema,
@@ -81,6 +84,7 @@ function AcceptWebBooking({ open, onOpenChange }) {
 				requiredTime: values.requiredTime, // Changed from pickupDateTime to requiredTime
 				price: values.price || 0,
 			};
+			setLoading(true);
 			const response = await acceptWebBookings(payload);
 			if (response.status === 'success') {
 				toast.success('Booking accepted Successfully');
@@ -88,8 +92,10 @@ function AcceptWebBooking({ open, onOpenChange }) {
 				onOpenChange(); // Reset Formik's submitting state
 				setSubmitting(false);
 			}
+			setLoading(false);
 		},
 	});
+
 	return (
 		<Dialog
 			open={open}
@@ -215,6 +221,7 @@ function AcceptWebBooking({ open, onOpenChange }) {
 							<button
 								className='btn btn-primary ml-2'
 								type='submit'
+								disabled={loading}
 							>
 								Submit
 							</button>
